@@ -35,8 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Verifica se a página de destino ainda é um exemplo
             if (targetPage.includes('curso-')) {
                 // Previne o link de abrir imediatamente
-                event.preventDefault(); 
-                alert(`Este é um exemplo. Para funcionar, crie o arquivo HTML chamado "${targetPage}" e coloque o conteúdo do seu curso nele.`);
+                
                 // Após o alerta, redireciona para a página
                 window.location.href = targetPage;
             }
