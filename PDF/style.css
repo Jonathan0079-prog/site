@@ -1,0 +1,143 @@
+/* Importa a fonte do Google Fonts definida no HTML */
+:root {
+    --cor-primaria: #007bff;
+    --cor-primaria-hover: #0056b3;
+    --cor-texto: #343a40;
+    --cor-texto-claro: #6c757d;
+    --cor-fundo: #f8f9fa;
+    --cor-card: #ffffff;
+    --sombra-card: 0 10px 20px rgba(0,0,0,0.07);
+    --borda-radius: 12px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+header h1 {
+    font-size: 2.8rem;
+    color: var(--cor-texto);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+header p {
+    font-size: 1.1rem;
+    color: var(--cor-texto-claro);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#lista-pdfs {
+    display: grid;
+    /* Define o número de colunas e o tamanho mínimo */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.card-pdf {
+    background: var(--cor-card);
+    border-radius: var(--borda-radius);
+    box-shadow: var(--sombra-card);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Animação de fade-in (usado pelo JavaScript) */
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.card-pdf.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.card-pdf:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+}
+
+.card-capa {
+    width: 100%;
+    /* Mantém a proporção da capa (ex: A4) */
+    aspect-ratio: 1 / 1.414;
+    background-color: #e9ecef;
+}
+
+.card-capa img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+}
+
+.card-info {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Faz esta área crescer para ocupar o espaço */
+}
+
+.card-titulo {
+    font-size: 1.4rem;
+    margin: 0 0 10px 0;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.card-descricao {
+    font-size: 1rem;
+    color: var(--cor-texto-claro);
+    flex-grow: 1; /* Empurra o botão para baixo */
+    margin-bottom: 20px;
+}
+
+.botao-download {
+    display: block;
+    background-color: var(--cor-primaria);
+    color: #ffffff;
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: auto; /* Alinha o botão na parte inferior */
+}
+
+.botao-download:hover, .botao-download:focus {
+    background-color: var(--cor-primaria-hover);
+}
+
+footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+    font-size: 0.9rem;
+    color: var(--cor-texto-claro);
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.2rem;
+    }
+}
+
