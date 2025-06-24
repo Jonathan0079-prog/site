@@ -1,0 +1,172 @@
+/* --- Reset Básico e Configurações Gerais --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* --- Cabeçalho e Navegação --- */
+header {
+    background-color: #1a2b40; /* Azul escuro industrial */
+    color: #ffffff;
+    padding: 1rem 0;
+    border-bottom: 4px solid #f39c12; /* Laranja/âmbar industrial */
+}
+
+header h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+}
+
+header nav {
+    margin-top: 1rem;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+header nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header nav a:hover {
+    background-color: #f39c12;
+    color: #1a2b40;
+}
+
+/* --- Seção de Banner --- */
+#banner {
+    background: linear-gradient(rgba(26, 43, 64, 0.8), rgba(26, 43, 64, 0.8)), url('https://via.placeholder.com/1920x500.png?text=Fundo+Industrial') no-repeat center center/cover;
+    color: #ffffff;
+    text-align: center;
+    padding: 4rem 0;
+}
+
+#banner h2 {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+}
+
+#banner p {
+    font-size: 1.4rem;
+}
+
+/* --- Seção de Cursos --- */
+#cursos {
+    padding: 3rem 0;
+}
+
+#cursos h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+    color: #1a2b40;
+}
+
+.cursos-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.curso-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    /* Animação de entrada */
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.curso-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.curso-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.curso-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.curso-info {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.curso-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #1a2b40;
+}
+
+.curso-info p {
+    flex-grow: 1; /* Faz o parágrafo ocupar o espaço disponível */
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #f39c12;
+    color: #1a2b40;
+    padding: 12px 25px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #e67e22; /* Laranja mais escuro */
+    transform: scale(1.05);
+}
+
+/* --- Rodapé --- */
+footer {
+    background-color: #1a2b40;
+    color: #aeb9c7;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+}
