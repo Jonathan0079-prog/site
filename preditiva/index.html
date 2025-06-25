@@ -3,78 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso de Manutenção Preditiva - ARQUIVOS</title>
+    <title>Curso: Inspeção de Máquinas Industriais</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <h1>Curso de Manutenção Preditiva</h1>
-        <p>Técnicas e Ferramentas para Análise de Ativos</p>
+        <h1>🛠️ Curso de Inspeção de Máquinas Industriais</h1>
+        <p>Do Básico ao Avançado com Certificação em PDF</p>
     </header>
 
-    <div class="main-container">
-        <nav class="sidebar">
-            <h3>Navegação do Curso</h3>
-            <ul>
-                <li><a href="#modulo1">Módulo 1: Introdução à Preditiva</a></li>
-                <li><a href="#modulo2">Módulo 2: Análise de Vibração</a></li>
-                <li><a href="#modulo3">Módulo 3: Termografia</a></li>
-                <li><a href="#modulo4">Módulo 4: Análise de Óleo</a></li>
-                <li><a href="#modulo_final">Módulo Final: Quiz e Certificado</a></li>
-            </ul>
-        </nav>
+    <nav id="keyboard-nav"></nav>
 
+    <div class="main-container">
         <main class="content">
             
-            <section id="modulo1" class="module">
-                <h2>Módulo 1: Introdução à Manutenção Preditiva</h2>
-                <p>A Manutenção Preditiva é uma estratégia proativa que utiliza ferramentas e técnicas de monitoramento de condição para acompanhar o desempenho de equipamentos em tempo real. O objetivo é identificar sinais de deterioração e prever falhas antes que elas ocorram, permitindo que a manutenção seja agendada de forma planejada, evitando paradas não programadas e otimizando a vida útil dos ativos.</p>
-                <img src="https://images.unsplash.com/photo-1564022542842-3958a03510c4?q=80&w=1000&auto=format&fit=crop" alt="Engenheiro analisando dados em um tablet industrial">
+            <section id="module-1" class="module">
+                <h2>Módulo 1: Introdução à Inspeção</h2>
+                <p>Inspecionar uma máquina não é só dar uma olhada rápida. É sobre entender que cada peça, cada ruído estranho, e cada gota de óleo fora do lugar pode ser um sinal de algo maior — uma falha prestes a acontecer. A inspeção existe para detectar sinais de falhas antes que elas causem paradas inesperadas, acidentes ou prejuízo financeiro.</p>
+                <h3>Os 3 Pilares da Inspeção</h3>
+                <ul>
+                    <li><strong>Inspeção Preventiva:</strong> É feita de forma programada, independente do estado do equipamento. Mesmo que esteja tudo “aparentemente bem”, o técnico verifica pontos específicos, lubrifica e limpa, seguindo um cronograma.</li>
+                    <li><strong>Inspeção Preditiva:</strong> Utiliza dados reais, coletados com instrumentos (sensores de vibração, termografia), para prever falhas futuras. Se um motor começa a vibrar mais, a inspeção preditiva alerta antes que a falha ocorra.</li>
+                    <li><strong>Inspeção Corretiva:</strong> Entra em ação quando o problema já apareceu. É a mais “cara”, pois envolve tempo de máquina parada e produção perdida.</li>
+                </ul>
+            </section>
+
+            <section id="module-2" class="module">
+                <h2>Módulo 2: Tipos de Inspeção</h2>
+                <p>Existem várias formas de inspecionar uma máquina. Algumas são simples, outras requerem instrumentos avançados.</p>
+                <h3>Inspeções Sensitivas - Os 5 Sentidos</h3>
+                <ul>
+                    <li><strong>Visão:</strong> Permite detectar vazamentos, trincas, corrosão, deformações e luzes de alarme.</li>
+                    <li><strong>Audição:</strong> Identifica batidas metálicas, ruído de cavitação, assobios de vazamentos e vibrações anormais.</li>
+                    <li><strong>Tato:</strong> Permite sentir excesso de calor em mancais, vibrações fora do padrão e folgas.</li>
+                    <li><strong>Olfato:</strong> Detecta odores de queimado (sobrecarga elétrica ou atrito) ou vazamentos de gás.</li>
+                </ul>
+                <h3>Inspeções Instrumentadas</h3>
+                 <ul>
+                    <li><strong>Termografia:</strong> Usa uma câmera infravermelha para ver “pontos quentes” que indicam atrito, sobrecarga ou falhas.</li>
+                    <li><strong>Ultrassom:</strong> Escuta vazamentos (ar, vapor) e identifica trincas internas que o ouvido humano não capta.</li>
+                    <li><strong>Análise de Vibração:</strong> Mede o padrão de vibração de motores e bombas para detectar desbalanceamento, desgaste ou folgas.</li>
+                </ul>
             </section>
             
-            <section id="modulo2" class="module">
-                <h2>Módulo 2: Análise de Vibração</h2>
-                <p>Toda máquina em operação produz vibração. A análise de vibração é a técnica preditiva mais utilizada e consiste em medir os níveis de vibração de um equipamento e analisar o espectro de frequência para identificar problemas específicos como desbalanceamento, desalinhamento, folgas mecânicas e falhas em rolamentos. Cada falha gera uma "assinatura" de vibração característica.</p>
+            <section id="module-3" class="module">
+                <h2>Módulo 3: Procedimentos Padrão</h2>
+                <p>Um procedimento padrão é um passo a passo claro e objetivo que orienta como uma inspeção deve ser realizada. Isso garante que nada seja esquecido e padroniza o trabalho entre diferentes técnicos.</p>
+                <ul>
+                    <li><strong>Checklist: O Aliado da Memória:</strong> Garante que nenhum ponto importante fique de fora, mesmo nas tarefas mais rotineiras.</li>
+                    <li><strong>Ferramentas e Equipamentos Certos:</strong> Cada inspeção exige instrumentos adequados. Não se mede vibração com a mão ou temperatura sem uma câmera termográfica.</li>
+                    <li><strong>Segurança em Primeiro Lugar:</strong> Usar os EPIs corretos e seguir as normas de segurança é parte fundamental do procedimento. Inspeção segura é inspeção eficiente.</li>
+                </ul>
             </section>
 
-            <section id="modulo3" class="module">
-                <h2>Módulo 3: Termografia</h2>
-                <p>A termografia utiliza câmeras infravermelhas para medir a distribuição de calor em superfícies. Em sistemas mecânicos e elétricos, pontos quentes anormais são indicativos de problemas como atrito excessivo, sobrecarga em circuitos, conexões elétricas frouxas ou problemas de refrigeração. É uma técnica não invasiva e muito eficaz para inspeções rápidas.</p>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Termografia_-_motor_eletrico.jpg" alt="Imagem termográfica de um motor elétrico">
+            <section id="module-4" class="module">
+                <h2>Módulo 4: Registro e Análise de Dados</h2>
+                <p>O que não é registrado, se perde. Registrar as observações de uma inspeção transforma um dado momentâneo em informação estratégica para a equipe de manutenção.</p>
+                <h3>O que Registrar?</h3>
+                <ul>
+                    <li>Data, hora e nome do técnico.</li>
+                    <li>Equipamento inspecionado.</li>
+                    <li>Condições encontradas (ruído, aquecimento, vibração).</li>
+                    <li>Fotos ou vídeos, se possível.</li>
+                    <li>Ações recomendadas (lubrificar, trocar, monitorar).</li>
+                </ul>
+                <p><strong>Análise de tendências:</strong> Um registro isolado vale pouco. Mas quando você compara dados ao longo do tempo, começa a enxergar padrões, como um motor que esquenta cada vez mais ou uma vibração que cresce gradualmente, permitindo agir antes da falha.</p>
             </section>
 
-            <section id="modulo4" class="module">
-                <h2>Módulo 4: Análise de Óleo</h2>
-                <p>O lubrificante é a "corrente sanguínea" de uma máquina. A análise de óleo avalia as propriedades físico-químicas do lubrificante e a presença de contaminantes (como água, poeira) e partículas de desgaste metálico. Essa análise revela a saúde tanto do óleo quanto do componente que ele lubrifica, permitindo a detecção de desgaste acelerado em engrenagens, rolamentos e outros componentes internos.</p>
+            <section id="module-5" class="module">
+                <h2>Módulo 5: Estudo de Casos Práticos</h2>
+                <p>Vamos analisar alguns cenários práticos que ocorrem em ambientes industriais para estimular a análise crítica.</p>
+                <ul>
+                    <li><strong>Caso 1: Vibração fora do normal:</strong> Ao inspecionar um motor, você percebe uma leve vibração diferente. A ação recomendada é acionar uma análise de vibração com equipamento portátil no mesmo dia, pois ignorar o sinal pode levar a uma falha maior.</li>
+                    <li><strong>Caso 2: Cheiro de queimado em painel elétrico:</strong> Você sente um cheiro de "plástico queimando". Visualmente, tudo parece normal. A ação ideal é solicitar uma inspeção termográfica imediatamente com um profissional autorizado para encontrar o ponto quente antes que cause um incêndio.</li>
+                    <li><strong>Caso 3: Vazamento intermitente de óleo:</strong> Uma prensa vaza óleo apenas sob carga máxima. O caminho ideal é programar uma manutenção corretiva agendada para fora do turno de produção, evitando uma parada inesperada.</li>
+                </ul>
+            </section>
+            
+            <section id="module-6" class="module">
+                <h2>Módulo 6: Principais Falhas Mecânicas</h2>
+                <p>Nenhuma falha surge do nada. Toda falha apresenta sinais, e o bom inspetor sabe reconhecê-los.</p>
+                <h3>Falhas Comuns por Componente:</h3>
+                <ul>
+                    <li><strong>Rolamentos:</strong> Causas comuns são falta ou excesso de lubrificação, contaminação e montagem incorreta. Os efeitos são aumento de vibração, ruído e aquecimento.</li>
+                    <li><strong>Acoplamentos:</strong> Geralmente falham por desalinhamento ou desgaste dos elementos elásticos. Os efeitos são vibração excessiva e ruído metálico.</li>
+                    <li><strong>Redutores:</strong> As principais causas são nível de óleo insuficiente ou contaminação. Os efeitos são aquecimento elevado, ruídos e vazamentos.</li>
+                    <li><strong>Bombas:</strong> Falham por cavitação, desgaste do rotor ou obstrução. Os efeitos são perda de vazão e ruídos anormais.</li>
+                </ul>
             </section>
 
-            <section id="modulo_final" class="module">
-                <h2>Módulo Final: Quiz e Emissão do Certificado</h2>
-                <p>Teste seus conhecimentos para validar a conclusão do curso e emitir seu certificado em PDF.</p>
+            <section id="module-7" class="module">
+                <h2>Módulo 7: Principais Falhas Elétricas</h2>
+                <p>Falhas elétricas estão entre as principais causas de paradas, queima de equipamentos e incêndios.</p>
+                <ul>
+                    <li><strong>Sobreaquecimento de Painéis:</strong> Causado por conexões frouxas, sobrecarga ou componentes defeituosos. O principal efeito é o risco de incêndio e queima de componentes.</li>
+                    <li><strong>Isolamento Danificado:</strong> Causado por vibração, envelhecimento ou danos mecânicos. Pode levar a curtos-circuitos e risco de choque elétrico.</li>
+                    <li><strong>Sinais em Motores e Inversores:</strong> Fique atento a aquecimento excessivo, odor de verniz queimado, ruídos agudos e desarmes frequentes.</li>
+                </ul>
+            </section>
+
+            <section id="module-8" class="module">
+                <h2>Módulo 8: Ferramentas Avançadas de Inspeção</h2>
+                <p>Para aumentar a precisão e segurança, são utilizadas ferramentas avançadas que complementam a inspeção sensorial.</p>
+                <ul>
+                    <li><strong>Termografia:</strong> Detecta variações de temperatura, identificando pontos de aquecimento anormal.</li>
+                    <li><strong>Analisador de Vibração:</strong> Mede e interpreta vibrações, identificando desbalanceamento, desalinhamento e folgas.</li>
+                    <li><strong>Ultrassom Industrial:</strong> Capta sons de alta frequência que indicam vazamentos, trincas ou falhas internas.</li>
+                    <li><strong>Boroscópio (Câmera de Inspeção):</strong> Permite a visualização interna de máquinas sem a necessidade de desmontagem.</li>
+                </ul>
+            </section>
+
+            <section id="module-9" class="module">
+                <h2>Módulo 9: Desgaste e Lubrificação</h2>
+                <p>A lubrificação correta é a principal barreira para reduzir o atrito, minimizar o desgaste e controlar a temperatura de componentes mecânicos.</p>
+                <h3>Funções da Lubrificação:</h3>
+                <ul>
+                    <li>Reduzir atrito e minimizar o desgaste.</li>
+                    <li>Dissipar calor e proteger contra corrosão.</li>
+                    <li>Selar contra contaminantes.</li>
+                </ul>
+                <p>As consequências da lubrificação inadequada incluem desgaste acelerado, aumento da temperatura, travamento de componentes e quebra prematura.</p>
+            </section>
+
+            <section id="module-10" class="module">
+                <h2>Módulo 10: Sistemas Pneumáticos e Hidráulicos</h2>
+                <p>Pequenas falhas em sistemas de ar comprimido ou óleo pressurizado podem gerar grandes perdas de eficiência e acidentes.</p>
+                <ul>
+                    <li><strong>Inspeção Pneumática:</strong> Foco em vazamentos (detectáveis pelo som), filtros saturados e acúmulo de água nas linhas. Vazamentos causam grande perda de energia.</li>
+                    <li><strong>Inspeção Hidráulica:</strong> Foco em vazamentos de óleo, contaminação do fluido (cor, partículas), superaquecimento e ruídos de cavitação na bomba.</li>
+                </ul>
+            </section>
+
+            <section id="module-11" class="module">
+                <h2>Módulo 11: Inspeção Estrutural e de Segurança</h2>
+                <p>Esta inspeção garante a integridade física de equipamentos, protege a vida dos trabalhadores e evita acidentes.</p>
+                <h3>Itens Críticos a Inspecionar:</h3>
+                <ul>
+                    <li><strong>Estruturas Metálicas e Suportes:</strong> Verificar trincas, deformações e corrosão.</li>
+                    <li><strong>Bases de Máquinas e Fundações:</strong> Procurar por trincas no concreto e parafusos de fixação frouxos.</li>
+                    <li><strong>Tubulações e Tanques:</strong> Inspecionar vazamentos, corrosão e integridade dos suportes.</li>
+                    <li><strong>Itens de Segurança:</strong> Garantir que proteções de máquinas, barreiras e sinalizações estejam em perfeitas condições.</li>
+                </ul>
+            </section>
+
+            <section id="module-12" class="module">
+                <h2>Módulo 12: Plano de Inspeção e Melhoria Contínua</h2>
+                <p>Um plano de inspeção é um documento que define o que inspecionar, com que frequência, quem é o responsável e quais ferramentas usar.</p>
+                <h3>Como Montar um Plano de Inspeção:</h3>
+                <ol>
+                    <li>Levantamento de todos os ativos (máquinas).</li>
+                    <li>Definição dos itens a inspecionar em cada máquina.</li>
+                    <li>Definição da frequência (diária, semanal, mensal).</li>
+                    <li>Criação de checklists padronizados.</li>
+                    <li>Definição dos responsáveis e das ferramentas.</li>
+                </ol>
+                <p>A cultura da inspeção, onde todos se sentem responsáveis, é a chave para a melhoria contínua e a confiabilidade dos equipamentos.</p>
+            </section>
+            
+            <section id="module-13" class="module">
+                <h2>Módulo Final: Quiz e Certificação</h2>
+                <p>Parabéns por chegar até aqui! Agora, teste seus conhecimentos para obter o certificado. Você precisa de 100% de acerto para ser aprovado.</p>
                 
-                <div id="quiz-container" class="quiz-container-dinamico">
+                <div id="quiz-container">
                     <h3 id="pergunta-titulo"></h3>
                     <div id="opcoes-quiz"></div>
                     <div id="feedback"></div>
-                    <button id="proxima-pergunta-btn" style="display: none;">Próxima Pergunta</button>
                 </div>
 
                 <div id="certificado-form-container" class="form-certificado" style="display: none;">
-                     <h3>Parabéns! Você foi aprovado.</h3>
-                    <p>Preencha seus dados para gerar o certificado em PDF.</p>
-                    <label for="nome-aluno">Nome Completo:</label>
+                    <h3>✅ APROVADO! PARABÉNS! ✅</h3>
+                    <p>Você acertou todas as perguntas. Preencha seus dados abaixo para gerar seu certificado em PDF.</p>
+                    
+                    <label for="nome-aluno">Seu Nome Completo:</label>
                     <input type="text" id="nome-aluno" placeholder="Digite seu nome completo aqui">
+                    
+                    <label for="cpf-aluno">Seu CPF:</label>
+                    <input type="text" id="cpf-aluno" placeholder="Digite seu CPF (apenas números)">
+
                     <div class="botoes-certificado">
-                        <button id="gerar-certificado-btn">Gerar PDF e Baixar</button>
+                        <button id="gerar-certificado-btn">Gerar e Baixar Certificado PDF</button>
                     </div>
                 </div>
+
+                 <div id="reprovado-container" class="reprovado-container" style="display: none;">
+                    <h3>❌ Não foi desta vez...</h3>
+                    <p>Você não atingiu 100% de acerto. Recomendamos revisar os módulos e tentar novamente para obter seu certificado.</p>
+                    <button id="tentar-novamente-btn">Tentar Novamente</button>
+                </div>
             </section>
+
         </main>
     </div>
-
-    <button id="backToTopBtn" title="Voltar ao topo">^</button>
 
     <script src="script.js"></script>
 </body>
