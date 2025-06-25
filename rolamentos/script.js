@@ -200,12 +200,12 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.text("Conteúdos Estudados:", 20, 135);
         doc.setFont("helvetica", "normal");
         const conteudos = [
-            "Módulo 1: O Olhar Clínico: Inspeção Visual e Dimensional",
-            "Módulo 2: Preparando o Terreno: Limpeza Impecável dos Componentes",
-            "Módulo 3: O Arsenal do Montador: As Ferramentas Certas para o Trabalho",
-            "Módulo 4: Frio ou Quente? A Decisão Estratégica da Montagem",
-            "Módulo 5: Mãos à Obra: O Cuidado em Cada Etapa da Montagem",
-            "Módulo 6: As "Pegadinhas" da Montagem e Como Fugir Delas"
+            "Inspeção Visual e Dimensional de Peças",
+            "Limpeza e Preparação de Componentes",
+            "Ferramentas Básicas para Montagem",
+            "Técnicas de Montagem a Frio e a Quente",
+            "Cuidados Essenciais Durante a Montagem",
+            "Erros Comuns e Como Evitá-los"
         ];
         
         let yPos = 140;
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dataFormatada = hoje.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
         doc.setFontSize(12);
         doc.line(110, 185, 185, 185);
-        doc.text("Jonathan Oliveira - Instrutor", 147.5, 190, { align: "center" });
+        doc.text("Assinatura do Responsável", 147.5, 190, { align: "center" });
         doc.text(`Emitido em: ${dataFormatada}`, 147.5, 197, { align: "center" });
         
         doc.save(`Certificado - Montagem de Rolamentos - ${nome}.pdf`);
