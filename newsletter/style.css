@@ -221,7 +221,7 @@ hr {
     margin: 40px 0;
 }
 
-/* QUIZ (seções do quiz, copiadas do seu último CSS fornecido) */
+/* QUIZ (seções do quiz) */
 #quiz-container {
     padding: 1.5rem;
     background-color: #f0f6fc;
@@ -407,9 +407,11 @@ hr {
     overflow: hidden;
     max-width: 400px; /* Define a largura máxima para a "janela pequena" */
     margin: 20px auto; /* Centraliza o vídeo e adiciona margem */
-    border-radius: 8px; /* Bordas arredondadas */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para destacar a "janela" */
-    background-color: #000; /* Fundo preto para o player */
+    /* REMOVIDAS as propriedades que causavam a borda, sombra e fundo do container */
+    /* Remova as linhas abaixo para um estilo "sem borda" */
+    /* border-radius: 8px; */
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
+    /* background-color: #000; */
 }
 
 .video-container-small iframe {
@@ -418,7 +420,8 @@ hr {
     left: 0;
     width: 100%;
     height: 100%;
-    border: none; /* Remove a borda padrão do iframe */
+    border: none; /* Garante que o iframe não tenha borda */
+    outline: none; /* Remove qualquer outline de foco */
 }
 
 /* MEDIA QUERY PARA RESPONSIVIDADE (Correções para Rolagem Horizontal e Fontes Mobile) */
@@ -517,12 +520,4 @@ hr {
         font-size: 0.9rem;
         min-width: 40px;
     }
-}
-
-/* Estilos adicionais para a linha divisória (hr) */
-hr {
-    border: 0;
-    height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    margin: 40px 0;
 }
