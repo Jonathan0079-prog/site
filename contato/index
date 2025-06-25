@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - [Seu Nome]</title>
+    
+    <link rel="stylesheet" href="estilo.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="container-contato">
+        
+        <div class="painel-perfil">
+            <img src="https://via.placeholder.com/150" alt="Foto de [Seu Nome]" class="foto-perfil">
+            
+            <h1 class="nome">[Seu Nome]</h1>
+            <p class="titulo">[Sua Profissão ou Título]</p>
+            
+            <div class="sobre-mim">
+                <h2>Sobre Mim</h2>
+                <p>
+                    Escreva aqui um parágrafo cativante sobre você. Fale sobre suas paixões, 
+                    sua área de atuação e o que te motiva. Mantenha o texto conciso e interessante 
+                    para quem visita sua página.
+                </p>
+            </div>
+            
+            <div class="links-sociais">
+                <h2>Conecte-se Comigo</h2>
+                <ul>
+                    <li>
+                        <a href="https://www.youtube.com/c/Aqui%C3%A9oSeuCanal" target="_blank" title="Meu Canal">
+                            <i class="fa-brands fa-youtube"></i> <span>Meu Canal</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/search" target="_blank" title="Meu Perfil no LinkedIn">
+                            <i class="fa-brands fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="painel-formulario">
+            <h2>Entre em Contato</h2>
+            <p class="subtitulo-form">Tem alguma pergunta ou proposta? Me envie uma mensagem!</p>
+            
+            <form action="[SEU LINK DO FORMSPREE AQUI]" method="POST">
+                <div class="grupo-form">
+                    <label for="name">Seu Nome</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="grupo-form">
+                    <label for="email">Seu E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="grupo-form">
+                    <label for="message">Sua Mensagem</label>
+                    <textarea id="message" name="message" rows="6" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>
