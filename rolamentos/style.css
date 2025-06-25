@@ -1,12 +1,12 @@
 /* GERAL E RESET */
 :root {
-    --cor-primaria: #003366;
-    --cor-secundaria: #005a9c;
-    --cor-destaque: #ffc107;
-    --cor-fundo: #f8f9fa;
-    --cor-texto: #212529;
-    --cor-sucesso: #28a745;
-    --cor-erro: #dc3545;
+    --cor-primaria: #003366; /* Azul escuro principal */
+    --cor-secundaria: #005a9c; /* Azul secundário, um pouco mais claro */
+    --cor-destaque: #ffc107; /* Amarelo/laranja para destaque */
+    --cor-fundo: #f8f9fa; /* Cor de fundo clara para o corpo */
+    --cor-texto: #212529; /* Cor de texto padrão */
+    --cor-sucesso: #28a745; /* Verde para sucesso */
+    --cor-erro: #dc3545; /* Vermelho para erro */
 }
 
 * {
@@ -16,35 +16,45 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, 'Lato', sans-serif; /* Adicionado Lato para consistência */
     line-height: 1.7;
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
     padding-bottom: 80px; /* Espaço para o navegador flutuante */
 }
 
-/* HEADER */
+/* HEADER (Compatível com .tab-header, mas agora como <header> direto) */
 header {
     background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
     color: #ffffff;
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 1rem; /* Mais flexível que 30px 20px */
     text-align: center;
     border-bottom: 5px solid var(--cor-destaque);
 }
 
 header h1 {
-    font-size: 2.2rem;
+    font-family: 'Oswald', sans-serif; /* Mantido Oswald conforme original */
+    font-size: 2.2rem; /* Ajustado para consistência */
+    margin-top: 0;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+header p {
+    font-family: 'Roboto Mono', monospace; /* Mantido Roboto Mono conforme original */
+    font-size: 1.1em;
+    opacity: 0.9;
 }
 
 /* CONTEÚDO PRINCIPAL E MÓDULOS */
 .main-container {
     max-width: 900px;
-    margin: 2rem auto;
+    margin: 2rem auto; /* Ajustado para consistência com o header */
     padding: 0 1rem;
 }
 
 .module {
-    display: none;
+    display: none; /* Esconde os módulos por padrão */
     background: #ffffff;
     padding: 2rem;
     border-radius: 8px;
@@ -53,7 +63,7 @@ header h1 {
 }
 
 .module.active {
-    display: block;
+    display: block; /* Exibe o módulo ativo */
 }
 
 @keyframes fadeIn {
@@ -62,6 +72,7 @@ header h1 {
 }
 
 .module h2 {
+    font-family: 'Oswald', sans-serif; /* Adicionado para consistência */
     font-size: 2rem;
     color: var(--cor-primaria);
     margin-bottom: 1.5rem;
@@ -70,6 +81,7 @@ header h1 {
 }
 
 .module h3 {
+    font-family: 'Oswald', sans-serif; /* Adicionado para consistência */
     font-size: 1.5rem;
     color: var(--cor-secundaria);
     margin-top: 2rem;
@@ -90,11 +102,13 @@ header h1 {
     background-color: #f0f6fc;
     border-left: 5px solid var(--cor-secundaria);
     border-radius: 0 8px 8px 0;
+    margin-top: 2rem; /* Adicionado para separar do conteúdo acima */
 }
 
 #pergunta-titulo {
     font-size: 1.3rem;
     margin-bottom: 1.5rem;
+    color: var(--cor-primaria); /* Cor mais escura para o título da pergunta */
 }
 
 #opcoes-quiz button {
@@ -113,6 +127,7 @@ header h1 {
 
 #opcoes-quiz button:hover:not(:disabled) {
     background-color: #dfe9f5;
+    border-color: var(--cor-secundaria); /* Borda mais escura no hover */
 }
 
 #opcoes-quiz button:disabled {
@@ -121,20 +136,23 @@ header h1 {
 }
 
 #opcoes-quiz button.correta {
-    background-color: #d4edda;
-    border-color: var(--cor-sucesso);
+    background-color: #d4edda; /* Fundo verde claro */
+    border-color: var(--cor-sucesso); /* Borda verde */
     font-weight: bold;
+    color: var(--cor-sucesso); /* Texto verde */
 }
 
 #opcoes-quiz button.incorreta {
-    background-color: #f8d7da;
-    border-color: var(--cor-erro);
+    background-color: #f8d7da; /* Fundo vermelho claro */
+    border-color: var(--cor-erro); /* Borda vermelha */
+    color: var(--cor-erro); /* Texto vermelho */
 }
 
 #feedback {
     margin-top: 1rem;
     font-weight: bold;
     font-size: 1.1rem;
+    text-align: center; /* Centraliza o feedback */
 }
 
 /* CERTIFICADO E REPROVAÇÃO */
@@ -146,18 +164,20 @@ header h1 {
 }
 
 .form-certificado {
-    background-color: #eaf5e9;
+    background-color: #eaf5e9; /* Fundo verde muito claro */
     border: 2px solid var(--cor-sucesso);
 }
 
 .reprovado-container {
-    background-color: #fdeaea;
+    background-color: #fdeaea; /* Fundo vermelho muito claro */
     border: 2px solid var(--cor-erro);
 }
 
 .form-certificado label {
     font-weight: bold;
     color: var(--cor-texto);
+    display: block; /* Para que o label ocupe a linha inteira */
+    margin-bottom: 0.5rem; /* Espaço entre label e input */
 }
 
 .form-certificado input {
@@ -179,7 +199,8 @@ header h1 {
     border: none;
     color: white;
     font-weight: bold;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease; /* Adicionado transição de cor */
+    margin: 0.5rem; /* Espaçamento entre botões */
 }
 
 #gerar-certificado-btn {
@@ -192,6 +213,7 @@ header h1 {
 
 .botoes-certificado button:hover, #tentar-novamente-btn:hover {
     transform: scale(1.05);
+    opacity: 0.9; /* Pequena opacidade no hover */
 }
 
 /* NAVEGADOR FLUTUANTE */
@@ -214,7 +236,7 @@ header h1 {
 .floating-nav.hidden {
     opacity: 0;
     transform: scale(0.5);
-    pointer-events: none;
+    pointer-events: none; /* Desabilita interações quando oculto */
 }
 
 .floating-nav button {
@@ -234,7 +256,7 @@ header h1 {
 }
 
 .floating-nav button:hover {
-    background-color: #007bff;
+    background-color: #007bff; /* Azul mais claro no hover */
 }
 
 .floating-nav button:disabled {
@@ -249,6 +271,29 @@ header h1 {
     font-size: 1rem;
     min-width: 50px;
     text-align: center;
+}
+
+/* Estilos para o container de vídeo pequeno e responsivo */
+.video-container-small {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* Proporção 16:9 */
+    height: 0;
+    overflow: hidden;
+    max-width: 400px; /* Define a largura máxima para a "janela pequena" */
+    margin: 20px auto; /* Centraliza o vídeo e adiciona margem */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para destacar a "janela" */
+    background-color: #000; /* Fundo preto para o player */
+}
+
+.video-container-small iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none; /* Remove a borda padrão do iframe */
 }
 
 /* MEDIA QUERY PARA RESPONSIVIDADE */
@@ -280,5 +325,27 @@ header h1 {
     .floating-nav {
         right: 10px;
         bottom: 10px;
+        /* Para telas muito pequenas, pode ser bom ajustar o tamanho do botão */
+        /* width: auto; */
+        /* padding: 8px 12px; */
     }
+
+    .floating-nav button {
+        width: 35px;
+        height: 35px;
+        font-size: 1.3rem;
+    }
+
+    #module-indicator {
+        font-size: 0.9rem;
+        min-width: 40px;
+    }
+}
+
+/* Adicionando alguns estilos básicos para a linha divisória (hr) que não estavam no novo CSS */
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    margin: 40px 0;
 }
