@@ -20,6 +20,8 @@ body {
     line-height: 1.7;
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
+    /* Adiciona padding na base para o navegador flutuante não cobrir o conteúdo */
+    padding-bottom: 80px;
 }
 
 /* HEADER */
@@ -33,43 +35,6 @@ header {
 
 header h1 {
     font-size: 2.2rem;
-}
-
-/* NAVEGAÇÃO SUPERIOR */
-#keyboard-nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 10px;
-    background-color: #e9ecef;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    border-bottom: 1px solid #dee2e6;
-}
-
-.nav-button {
-    padding: 10px 15px;
-    font-size: 1rem;
-    font-weight: bold;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.nav-button:hover {
-    background-color: #f0f0f0;
-    border-color: var(--cor-secundaria);
-}
-
-.nav-button.active {
-    background-color: var(--cor-secundaria);
-    color: #fff;
-    border-color: var(--cor-primaria);
 }
 
 /* CONTEÚDO PRINCIPAL E MÓDULOS */
@@ -118,40 +83,6 @@ header h1 {
 
 .module ul, .module ol {
     padding-left: 2rem;
-}
-
-.module img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 1rem auto;
-    display: block;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* BOTÕES DE NAVEGAÇÃO INFERIORES */
-.module-nav-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-    border-top: 1px solid #eee;
-    padding-top: 1.5rem;
-}
-
-.nav-btn-module {
-    padding: 0.8rem 1.8rem;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: var(--cor-secundaria);
-    color: white;
-    transition: background-color 0.3s;
-}
-
-.nav-btn-module:hover {
-    background-color: var(--cor-primaria);
 }
 
 /* QUIZ */
@@ -264,6 +195,57 @@ header h1 {
     transform: scale(1.05);
 }
 
+/* NOVO NAVEGADOR FLUTUANTE */
+.floating-nav {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--cor-primaria);
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    z-index: 1001;
+    transition: opacity 0.3s ease;
+}
+
+.floating-nav button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--cor-secundaria);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.floating-nav button:hover {
+    background-color: #007bff;
+}
+
+.floating-nav button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+#module-indicator {
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    min-width: 50px;
+    text-align: center;
+}
+
+
 /* MEDIA QUERY PARA RESPONSIVIDADE */
 @media (max-width: 768px) {
     body {
@@ -288,5 +270,10 @@ header h1 {
 
     .module h3 {
         font-size: 1.3rem;
+    }
+
+    .floating-nav {
+        right: 10px;
+        bottom: 10px;
     }
 }
