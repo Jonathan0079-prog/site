@@ -94,19 +94,14 @@ header h1 {
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
+/* ... Estilos dos Módulos, Quiz, etc. do código anterior permanecem aqui ... */
+
 .module h2 {
     font-size: 2rem;
     color: #003366;
     margin-bottom: 1.5rem;
     border-bottom: 3px solid #ffc107;
     padding-bottom: 0.75rem;
-}
-
-.module h3 {
-    font-size: 1.5rem;
-    color: #005a9c;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
 }
 
 .module p, .module ul, .module ol {
@@ -127,41 +122,6 @@ header h1 {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.module pre {
-    background-color: #2d2d2d;
-    color: #f8f8f2;
-    padding: 1.5rem;
-    border-radius: 5px;
-    overflow-x: auto;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 1.1rem;
-}
-
-.module code {
-    font-family: "Courier New", Courier, monospace;
-}
-
-/* Galerias de Imagens */
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-}
-
-.gallery figure {
-    margin: 0;
-    text-align: center;
-}
-
-.gallery figcaption {
-    margin-top: 0.5rem;
-    font-style: italic;
-    color: #555;
-    font-size: 0.95rem;
-}
-
-/* Quiz */
 .quiz-container {
     margin-top: 2rem;
     padding: 1.5rem;
@@ -170,26 +130,38 @@ header h1 {
     border-radius: 0 8px 8px 0;
 }
 
-.quiz-container h4 {
-    margin-top: 0;
-    font-size: 1.3rem;
+/* ... (outros estilos de módulo) ... */
+
+/* --- NOVOS ESTILOS PARA O CERTIFICADO --- */
+
+.form-certificado {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 500px;
+    margin-top: 1.5rem;
 }
 
-.quiz-options label {
-    display: block;
-    margin: 0.75rem 0;
-    cursor: pointer;
-    padding: 0.5rem;
+.form-certificado label {
+    font-weight: bold;
+    color: #003366;
+}
+
+.form-certificado input {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    transition: background-color 0.2s;
+    font-size: 1rem;
 }
 
-.quiz-options label:hover {
-    background-color: #dfe9f5;
+.botoes-certificado {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-.quiz-submit-btn {
-    background-color: #005a9c;
+#gerar-certificado-btn, #imprimir-certificado-btn {
+    background-color: #28a745;
     color: white;
     border: none;
     padding: 0.8rem 1.8rem;
@@ -199,30 +171,132 @@ header h1 {
     transition: background-color 0.3s;
 }
 
-.quiz-submit-btn:hover {
-    background-color: #003366;
+#imprimir-certificado-btn {
+    background-color: #007bff;
 }
 
-.quiz-result {
-    margin-top: 1rem;
-    font-weight: bold;
+#gerar-certificado-btn:hover {
+    background-color: #218838;
+}
+
+#imprimir-certificado-btn:hover {
+    background-color: #0056b3;
+}
+
+#certificado-wrapper {
+    margin-top: 3rem;
     padding: 1rem;
+    background-color: #e9ecef;
     border-radius: 5px;
 }
 
-.quiz-result.correct {
-    color: #155724;
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
+#certificado-container {
+    background-color: #ffffff;
+    border: 10px solid #003366;
+    padding: 2rem;
+    font-family: 'Times New Roman', Times, serif;
+    color: #000;
+    text-align: center;
+    max-width: 800px;
+    margin: auto;
+    position: relative; /* Crucial para o posicionamento da logo */
 }
 
-.quiz-result.incorrect {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+.logo-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%; /* Tamanho grande da logo */
+    opacity: 0.10; /* Transparência */
+    z-index: 0; /* Coloca a logo atrás do texto */
 }
 
-/* Botão Voltar ao Topo */
+/* Garante que o texto fique na frente da logo */
+.certificado-header, .certificado-body, .certificado-footer {
+    position: relative;
+    z-index: 1;
+}
+
+.certificado-header h1 {
+    font-size: 2.5rem;
+    color: #003366;
+    margin-bottom: 2rem;
+}
+
+.certificado-body p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin: 0.5rem 0;
+}
+
+.certificado-body h2 {
+    font-size: 2.2rem;
+    font-family: 'Georgia', serif;
+    color: #005a9c;
+    margin: 1rem 0;
+}
+
+.certificado-body h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 1.5rem 0;
+}
+
+.certificado-footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-top: 4rem;
+}
+
+.assinatura, .data-escola {
+    font-size: 0.9rem;
+}
+
+.assinatura p, .data-escola p {
+    margin: 0.2rem 0;
+}
+
+/* --- ESTILOS PARA IMPRESSÃO --- */
+@media print {
+    body, html {
+        background-color: #fff;
+    }
+    header, .sidebar, #backToTopBtn, .form-certificado, #modulo1, #modulo2, #modulo3, #modulo4, #modulo5, #modulo6, #modulo7, #modulo8, #modulo9, #modulo10, #modulo11, #modulo12, #modulo13, .quiz-container, #modulo14 > p, #modulo14 > h2 {
+        display: none !important;
+    }
+
+    .main-container {
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .content {
+        padding: 0;
+    }
+
+    #certificado-wrapper {
+        margin: 0;
+        padding: 0;
+        background-color: #fff;
+    }
+
+    #certificado-container {
+        display: block !important;
+        width: 100%;
+        max-width: 100%;
+        border: 10px solid #003366;
+        box-shadow: none;
+        margin: 0;
+    }
+}
+
+
+/* Botão Voltar ao Topo e Responsividade */
+/* ... (Cole o restante do CSS do código anterior aqui, sem alterações) ... */
+
 #backToTopBtn {
     display: none;
     position: fixed;
@@ -248,7 +322,6 @@ header h1 {
     background-color: #003366;
 }
 
-/* Responsividade */
 @media (max-width: 1024px) {
     .main-container {
         flex-direction: column;
@@ -260,17 +333,5 @@ header h1 {
     }
     .content {
         padding-left: 0;
-    }
-}
-
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2rem;
-    }
-    .module {
-        padding: 1.5rem;
-    }
-    .module h2 {
-        font-size: 1.75rem;
     }
 }
