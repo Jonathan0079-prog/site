@@ -1,0 +1,113 @@
+/* --- Variáveis de Cor (Paleta Industrial) --- */
+:root {
+    --background-color: #222222; /* Cinza Carvão Escuro */
+    --card-background: #333333; /* Cinza Médio */
+    --border-color: #4a4a4a;
+    --text-color-primary: #f0f0f0; /* Branco Suave */
+    --text-color-secondary: #a0a0a0; /* Cinza Claro para metadados */
+    --accent-color: #d4af37; /* Âmbar/Dourado para destaque */
+    --accent-color-hover: #e7c564;
+}
+
+/* --- Estilo Base --- */
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color-primary);
+    margin: 0;
+    padding: 2rem;
+}
+
+/* --- Container da Aba de Newsletter --- */
+.newsletter-tab {
+    max-width: 800px;
+    margin: auto;
+}
+
+/* --- Cabeçalho da Aba --- */
+.tab-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.tab-header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.5rem;
+    color: var(--text-color-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.tab-header p {
+    font-family: 'Roboto Mono', monospace;
+    color: var(--text-color-secondary);
+    margin-top: 0.5rem;
+}
+
+/* --- Feed de Notícias --- */
+.newsletter-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* --- Card de Conteúdo da Newsletter --- */
+.newsletter-article {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.5rem 2rem;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.newsletter-article:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+}
+
+/* --- Cabeçalho de cada artigo --- */
+.article-header h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.8rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-color-primary);
+    text-transform: uppercase;
+}
+
+.article-meta {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text-color-secondary);
+    margin-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 1rem;
+}
+
+/* --- Conteúdo do Artigo --- */
+.article-content p {
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.read-more-btn {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    text-decoration: none;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    padding: 0.5rem 1.5rem;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.read-more-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--background-color);
+}
