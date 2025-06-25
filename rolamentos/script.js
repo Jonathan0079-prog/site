@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dataFormatada = hoje.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
         doc.setFontSize(12);
         doc.line(110, 185, 185, 185);
-        doc.text("Assinatura do Responsável", 147.5, 190, { align: "center" });
+        doc.text("Jonathan Oliveira - Instrutor", 147.5, 190, { align: "center" });
         doc.text(`Emitido em: ${dataFormatada}`, 147.5, 197, { align: "center" });
         
         doc.save(`Certificado - Montagem de Rolamentos - ${nome}.pdf`);
