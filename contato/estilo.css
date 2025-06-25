@@ -1,0 +1,219 @@
+/* Importa uma fonte moderna do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Variáveis de Cor para fácil customização */
+:root {
+    --cor-fundo-principal: #1a1a2e;
+    --cor-fundo-container: #16213e;
+    --cor-primaria-destaque: #0f3460;
+    --cor-acento: #e94560;
+    --cor-texto-principal: #ffffff;
+    --cor-texto-secundario: #a8a8a8;
+    --cor-borda: #c0c0c04d;
+}
+
+/* Reset e Configurações Globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--cor-fundo-principal);
+    color: var(--cor-texto-principal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+/* Container Principal */
+.container-contato {
+    background-color: var(--cor-fundo-container);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    display: flex;
+    max-width: 1100px;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Painel Esquerdo (Perfil) */
+.painel-perfil {
+    background-color: var(--cor-primaria-destaque);
+    padding: 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.foto-perfil {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid var(--cor-acento);
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.nome {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--cor-texto-principal);
+}
+
+.titulo {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 30px;
+}
+
+.sobre-mim h2, .links-sociais h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--cor-texto-principal);
+    border-bottom: 2px solid var(--cor-acento);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.sobre-mim p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 30px;
+}
+
+.links-sociais ul {
+    list-style: none;
+    padding: 0;
+}
+
+.links-sociais li {
+    margin-bottom: 15px;
+}
+
+.links-sociais a {
+    color: var(--cor-texto-secundario);
+    text-decoration: none;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.links-sociais a:hover {
+    color: var(--cor-acento);
+    transform: scale(1.05);
+}
+
+.links-sociais i {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    width: 25px; /* Alinhamento dos ícones */
+}
+
+
+/* Painel Direito (Formulário) */
+.painel-formulario {
+    padding: 40px;
+    flex: 1.5;
+}
+
+.painel-formulario h2 {
+    font-size: 2.5rem;
+    color: var(--cor-texto-principal);
+    margin-bottom: 10px;
+}
+
+.subtitulo-form {
+    color: var(--cor-texto-secundario);
+    margin-bottom: 30px;
+}
+
+.grupo-form {
+    margin-bottom: 25px;
+}
+
+.grupo-form label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--cor-texto-secundario);
+}
+
+.grupo-form input,
+.grupo-form textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--cor-borda);
+    background-color: var(--cor-primaria-destaque);
+    color: var(--cor-texto-principal);
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grupo-form input:focus,
+.grupo-form textarea:focus {
+    outline: none;
+    border-color: var(--cor-acento);
+    box-shadow: 0 0 10px var(--cor-acento);
+}
+
+textarea {
+    resize: vertical; /* Permite redimensionar apenas na vertical */
+}
+
+.btn-enviar {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--cor-acento);
+    color: var(--cor-texto-principal);
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-enviar:hover {
+    background-color: #d63c56; /* Um tom mais escuro do acento */
+    transform: translateY(-2px);
+}
+
+/* Responsividade para Telas Menores (Celulares) */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+    }
+    .container-contato {
+        flex-direction: column;
+        border-radius: 0;
+        min-height: 100vh;
+    }
+    
+    .painel-perfil, .painel-formulario {
+        flex: 1;
+        padding: 30px;
+    }
+
+    .nome {
+        font-size: 1.8rem;
+    }
+
+    .painel-formulario h2 {
+        font-size: 2rem;
+    }
+}
+
