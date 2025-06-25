@@ -1,12 +1,12 @@
 /* GERAL E RESET */
 :root {
-    --cor-primaria: #003366;
-    --cor-secundaria: #005a9c;
-    --cor-destaque: #ffc107;
-    --cor-fundo: #f8f9fa;
-    --cor-texto: #212529;
-    --cor-sucesso: #28a745;
-    --cor-erro: #dc3545;
+    --cor-primaria: #003366; /* Azul escuro principal */
+    --cor-secundaria: #005a9c; /* Azul secundário, um pouco mais claro */
+    --cor-destaque: #ffc107; /* Amarelo/laranja para destaque */
+    --cor-fundo: #f8f9fa; /* Cor de fundo clara para o corpo */
+    --cor-texto: #212529; /* Cor de texto padrão */
+    --cor-sucesso: #28a745; /* Verde para sucesso */
+    --cor-erro: #dc3545; /* Vermelho para erro */
 }
 
 * {
@@ -16,54 +16,55 @@
 }
 
 body {
-    font-family: 'Lato', sans-serif; /* Mantive Lato para consistência */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, 'Lato', sans-serif; /* Adicionado Lato para consistência */
     line-height: 1.7;
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
+    padding: 20px; /* Padding padrão para o body, ajustado em media query para mobile */
     padding-bottom: 80px; /* Espaço para o navegador flutuante */
 }
 
-/* HEADER */
-header { /* Revertido para o seletor original 'header' conforme o CSS fornecido */
+/* HEADER (Compatível com .tab-header, mas agora como <header> direto) */
+header {
     background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
     color: #ffffff;
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 1rem; /* Mais flexível que 30px 20px */
     text-align: center;
     border-bottom: 5px solid var(--cor-destaque);
 }
 
 header h1 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Oswald', sans-serif; /* Mantido Oswald conforme original */
+    font-size: 2.2rem; /* Ajustado para consistência */
     margin-top: 0;
     margin-bottom: 10px;
-    font-size: 2.2rem; /* Alterado para rem para melhor escalabilidade */
     letter-spacing: 1px;
 }
 
 header p {
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Roboto Mono', monospace; /* Mantido Roboto Mono conforme original */
     font-size: 1.1rem; /* Alterado para rem */
     opacity: 0.9;
 }
 
-/* CONTEÚDO PRINCIPAL E MÓDULOS */
-.main-container { /* Se você estiver usando .main-container ao invés de .newsletter-feed */
+/* CONTEÚDO PRINCIPAL E MÓDULOS (Aplicável se você estiver usando esta estrutura) */
+.main-container {
     max-width: 900px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
-.module { /* Se você estiver usando .module ao invés de .newsletter-item */
-    display: none;
+.module {
+    display: none; /* Esconde os módulos por padrão */
     background: #ffffff;
-    padding: 2rem;
+    padding: 2rem; /* Padding padrão para módulos, ajustado em media query para mobile */
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     animation: fadeIn 0.5s ease-in-out;
 }
 
 .module.active {
-    display: block;
+    display: block; /* Exibe o módulo ativo */
 }
 
 @keyframes fadeIn {
@@ -71,7 +72,8 @@ header p {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.module h2 { /* Se você estiver usando .module ao invés de .newsletter-item */
+.module h2 {
+    font-family: 'Oswald', sans-serif; /* Adicionado para consistência */
     font-size: 2rem;
     color: var(--cor-primaria);
     margin-bottom: 1.5rem;
@@ -79,7 +81,8 @@ header p {
     padding-bottom: 0.75rem;
 }
 
-.module h3 { /* Se você estiver usando .module ao invés de .newsletter-item */
+.module h3 {
+    font-family: 'Oswald', sans-serif; /* Adicionado para consistência */
     font-size: 1.5rem;
     color: var(--cor-secundaria);
     margin-top: 2rem;
@@ -94,27 +97,23 @@ header p {
     padding-left: 2rem;
 }
 
-
-/* SEÇÕES newsletter-tab e newsletter-feed - DO CÓDIGO ANTERIOR */
+/* SEÇÕES ESPECÍFICAS DA NEWSLETTER/FEED (Base do código original do usuário) */
 .newsletter-tab {
     max-width: 900px;
-    margin: 30px auto;
+    margin: 30px auto; /* Margem padrão para o tab, ajustado em media query para mobile */
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
-/* O seletor .tab-header foi substituído pelo 'header' diretamente no novo CSS que você forneceu */
-/* O .tab-header h1 e p também foram substituídos por 'header h1' e 'header p' */
-
 .newsletter-feed {
-    padding: 20px 30px;
+    padding: 20px 30px; /* Padding padrão para o feed, ajustado em media query para mobile */
 }
 
 .newsletter-item {
     background-color: #ffffff;
-    padding: 20px;
+    padding: 20px; /* Padding padrão para o item, ajustado em media query para mobile */
     margin-bottom: 25px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -172,7 +171,7 @@ header p {
 /* Estilos para o container do artigo carregado */
 .article-container {
     margin-top: 25px;
-    padding: 20px;
+    padding: 20px; /* Padding padrão para o container do artigo, ajustado em media query para mobile */
     border: 1px solid #cce5ff;
     border-radius: 8px;
     background-color: #e6f3ff;
@@ -181,8 +180,7 @@ header p {
     line-height: 1.7;
 }
 
-/* IMPORTANTE: ESTILOS PARA OS TEXTOS DENTRO DO ARTIGO CARREGADO */
-/* Estes são os textos que você quer que fiquem maiores no celular */
+/* ESTILOS PARA OS TEXTOS DENTRO DO ARTIGO CARREGADO (TAMANHOS BASE MAIORES) */
 .article-container h1 {
     color: #2c3e50;
     margin-top: 15px;
@@ -223,49 +221,308 @@ hr {
     margin: 40px 0;
 }
 
-/* MEDIA QUERY PARA RESPONSIVIDADE */
+/* QUIZ (seções do quiz, copiadas do seu último CSS fornecido) */
+#quiz-container {
+    padding: 1.5rem;
+    background-color: #f0f6fc;
+    border-left: 5px solid var(--cor-secundaria);
+    border-radius: 0 8px 8px 0;
+    margin-top: 2rem;
+}
+
+#pergunta-titulo {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: var(--cor-primaria);
+}
+
+#opcoes-quiz button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+#opcoes-quiz button:hover:not(:disabled) {
+    background-color: #dfe9f5;
+    border-color: var(--cor-secundaria);
+}
+
+#opcoes-quiz button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+#opcoes-quiz button.correta {
+    background-color: #d4edda;
+    border-color: var(--cor-sucesso);
+    font-weight: bold;
+    color: var(--cor-sucesso);
+}
+
+#opcoes-quiz button.incorreta {
+    background-color: #f8d7da;
+    border-color: var(--cor-erro);
+    color: var(--cor-erro);
+}
+
+#feedback {
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* CERTIFICADO E REPROVAÇÃO */
+.form-certificado, .reprovado-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.form-certificado {
+    background-color: #eaf5e9;
+    border: 2px solid var(--cor-sucesso);
+}
+
+.reprovado-container {
+    background-color: #fdeaea;
+    border: 2px solid var(--cor-erro);
+}
+
+.form-certificado label {
+    font-weight: bold;
+    color: var(--cor-texto);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-certificado input {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0.5rem auto 1rem auto;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.botoes-certificado button, #tentar-novamente-btn {
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    margin: 0.5rem;
+}
+
+#gerar-certificado-btn {
+    background-color: var(--cor-sucesso);
+}
+
+#tentar-novamente-btn {
+    background-color: var(--cor-secundaria);
+}
+
+.botoes-certificado button:hover, #tentar-novamente-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* NAVEGADOR FLUTUANTE */
+.floating-nav {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--cor-primaria);
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    z-index: 1001;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: scale(1);
+}
+
+.floating-nav.hidden {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
+}
+
+.floating-nav button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--cor-secundaria);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.floating-nav button:hover {
+    background-color: #007bff;
+}
+
+.floating-nav button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#module-indicator {
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Estilos para o container de vídeo pequeno e responsivo */
+.video-container-small {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* Proporção 16:9 */
+    height: 0;
+    overflow: hidden;
+    max-width: 400px; /* Define a largura máxima para a "janela pequena" */
+    margin: 20px auto; /* Centraliza o vídeo e adiciona margem */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para destacar a "janela" */
+    background-color: #000; /* Fundo preto para o player */
+}
+
+.video-container-small iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none; /* Remove a borda padrão do iframe */
+}
+
+/* MEDIA QUERY PARA RESPONSIVIDADE (Correções para Rolagem Horizontal e Fontes Mobile) */
 @media (max-width: 768px) {
-    .newsletter-tab {
-        margin: 20px;
+    body {
+        line-height: 1.6;
+        padding: 10px; /* REDUZIDO para telas pequenas para evitar rolagem horizontal */
     }
-    .tab-header h1 { /* Este é o h1 do header principal da página */
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .main-container {
+        margin: 1.5rem auto;
+    }
+
+    .module {
+        padding: 1rem; /* REDUZIDO para telas pequenas */
+    }
+
+    .module h2 {
+        font-size: 1.7rem;
+    }
+
+    .module h3 {
+        font-size: 1.3rem;
+    }
+
+    .newsletter-tab {
+        margin: 10px; /* REDUZIDO para telas pequenas para evitar rolagem horizontal */
+    }
+    
+    .tab-header h1 {
         font-size: 2em;
     }
-    .newsletter-item h2 { /* Este é o h2 dos blocos de "newsletter-item" */
+
+    .newsletter-item {
+        padding: 15px; /* REDUZIDO para telas pequenas */
+    }
+
+    .newsletter-item h2 {
         font-size: 1.5em;
     }
+
     .article-button {
         width: 100%;
         box-sizing: border-box;
     }
 
-    /* ******************************************************************* */
-    /* NOVAS REGRAS PARA AUMENTAR A FONTE DO CONTEÚDO DO ARTIGO NO CELULAR */
-    /* ******************************************************************* */
+    /* Ajustes de Fonte para o conteúdo do artigo carregado em mobile */
+    .article-container {
+        padding: 15px; /* REDUZIDO para telas pequenas */
+    }
+
     .article-container h1 {
-        font-size: 1.8em; /* Ajusta H1 dentro do artigo para celular */
+        font-size: 1.8em;
     }
 
     .article-container h2 {
-        font-size: 1.5em; /* Ajusta H2 dentro do artigo para celular */
+        font-size: 1.5em;
     }
 
     .article-container h3 {
-        font-size: 1.2em; /* Ajusta H3 dentro do artigo para celular */
+        font-size: 1.2em;
     }
 
     .article-container p,
     .article-container ul,
     .article-container ol,
     .article-container li {
-        font-size: 1em; /* Tamanho de texto base para parágrafos e listas no celular */
-        line-height: 1.6; /* Garante bom espaçamento */
+        font-size: 1em; /* Tamanho de texto base legível para mobile */
+        line-height: 1.6;
+        word-wrap: break-word; /* Previne quebras de linha em palavras muito longas */
+        overflow-wrap: break-word; /* Alternativa para word-wrap para melhor compatibilidade */
     }
 
-    /* Ajuste para o vídeo pequeno em mobile, se necessário */
+    /* Ajuste para o vídeo pequeno em mobile, para que ocupe a largura total */
     .video-container-small {
-        max-width: 100%; /* Ocupa a largura total disponível no celular */
-        margin: 15px 0; /* Ajusta margem para mobile */
+        max-width: 100%;
+        margin: 15px 0;
     }
-    /* ******************************************************************* */
+
+    .floating-nav {
+        right: 10px;
+        bottom: 10px;
+    }
+
+    .floating-nav button {
+        width: 35px;
+        height: 35px;
+        font-size: 1.3rem;
+    }
+
+    #module-indicator {
+        font-size: 0.9rem;
+        min-width: 40px;
+    }
+}
+
+/* Estilos adicionais para a linha divisória (hr) */
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    margin: 40px 0;
 }
