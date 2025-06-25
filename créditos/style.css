@@ -41,7 +41,7 @@ header {
     border-bottom: 4px solid #f39c12; /* Laranja/âmbar industrial */
     text-align: center; /* Mantido do segundo código para centralizar o texto */
     padding: 4rem 2rem; /* Mantido do segundo código para espaçamento interno */
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://www.freevector.com/uploads/vector/preview/28842/Two_Gears.jpg') no-repeat center center/cover; /* Mantido o background com imagem e overlay */
+    background: (rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://www.freevector.com/uploads/vector/preview/28842/Two_Gears.jpg') no-repeat center center/cover; /* Mantido o background com imagem e overlay */
     color: white; /* Mantido para garantir que o texto do header seja branco */
 }
 
