@@ -31,7 +31,11 @@ header {
     border-bottom: 5px solid var(--cor-destaque);
 }
 
-/* NOVA NAVEGAÇÃO SUPERIOR */
+header h1 {
+    font-size: 2.2rem;
+}
+
+/* NAVEGAÇÃO SUPERIOR */
 #keyboard-nav {
     display: flex;
     justify-content: center;
@@ -101,11 +105,28 @@ header {
     padding-bottom: 0.75rem;
 }
 
+.module h3 {
+    font-size: 1.5rem;
+    color: var(--cor-secundaria);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.module p, .module li {
+    margin-bottom: 1rem;
+}
+
+.module ul, .module ol {
+    padding-left: 2rem;
+}
+
 .module img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    margin: 1rem 0;
+    margin: 1rem auto;
+    display: block;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 /* BOTÕES DE NAVEGAÇÃO INFERIORES */
@@ -223,6 +244,7 @@ header {
     border: none;
     color: white;
     font-weight: bold;
+    transition: transform 0.2s ease;
 }
 
 #gerar-certificado-btn {
@@ -232,3 +254,35 @@ header {
 #tentar-novamente-btn {
     background-color: var(--cor-secundaria);
 }
+
+.botoes-certificado button:hover, #tentar-novamente-btn:hover {
+    transform: scale(1.05);
+}
+
+/* **ADIÇÃO SUGERIDA** - MEDIA QUERY PARA RESPONSIVIDADE */
+@media (max-width: 768px) {
+    body {
+        line-height: 1.6;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .main-container {
+        margin: 1.5rem auto;
+    }
+
+    .module {
+        padding: 1.5rem;
+    }
+
+    .module h2 {
+        font-size: 1.7rem;
+    }
+
+    .module h3 {
+        font-size: 1.3rem;
+    }
+}
+
