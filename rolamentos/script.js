@@ -10,27 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const floatingNav = document.querySelector('.floating-nav');
 
     function showModule(index) {
-        if (index < 0 || index >= modules.length) {
-            return;
-        }
+        if (index < 0 || index >= modules.length) return;
+        
         currentModuleIndex = index;
-
-        modules.forEach(m => {
-            m.classList.remove('active');
-        });
-
+        modules.forEach(m => m.classList.remove('active'));
         modules[currentModuleIndex].classList.add('active');
 
         moduleIndicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
         prevModuleBtn.disabled = (currentModuleIndex === 0);
         nextModuleBtn.disabled = (currentModuleIndex === modules.length - 1);
         
-        if (currentModuleIndex === modules.length - 1) {
-            floatingNav.classList.add('hidden');
-        } else {
-            floatingNav.classList.remove('hidden');
-        }
-
+        floatingNav.classList.toggle('hidden', currentModuleIndex === modules.length - 1);
         window.scrollTo(0, 0);
     }
 
@@ -54,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resposta: "Limpeza ultrassônica"
         },
         {
-            pergunta: "De acordo com o curso, qual é um dos erros mais frequentes que pode comprometer a montagem de um componente?",
+            pergunta: "Qual é um dos erros mais frequentes que pode comprometer a montagem de um componente?",
             opcoes: ["Usar luvas de proteção", "Realizar a montagem em local silencioso", "Falha na limpeza e preparação das peças", "Consultar o manual do fabricante"],
             resposta: "Falha na limpeza e preparação das peças"
         },
@@ -142,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
     }
 
+    // --- FUNÇÃO DE GERAR O CERTIFICADO ATUALIZADA ---
     function gerarCertificadoPDF() {
         const nome = document.getElementById('nome-aluno').value.trim();
         const cpf = document.getElementById('cpf-aluno').value.trim();
@@ -150,82 +141,119 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-        const LOGO_BASE64 = ''; // Cole sua logo Base64 aqui
+        // --- ATUALIZAÇÃO DA LOGO ---
+        // Coloque o caminho para sua logo aqui. 
+        // Pode ser um arquivo local (ex: 'logo.png') ou um link da internet.
+        // Lembre-se: para arquivos locais, use o Live Server.
+        const logoUrl = 'logo.png'; 
 
-        doc.setFillColor(230, 240, 255);
-        doc.rect(0, 0, 297, 210, 'F');
-        doc.setDrawColor(0, 51, 102);
-        doc.setLineWidth(2);
-        doc.rect(5, 5, 287, 200);
-        
-        if (LOGO_BASE64) {
-            const imgProps = doc.getImageProperties(LOGO_BASE64);
-            const imgWidth = 80;
-            const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-            doc.addImage(LOGO_BASE64, 'PNG', (doc.internal.pageSize.getWidth() - imgWidth) / 2, 15, imgWidth, imgHeight);
+        const criarPDF = (logoCarregada = null) => {
+            const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+            // Design do certificado
+            doc.setFillColor(230, 240, 255);
+            doc.rect(0, 0, 297, 210, 'F');
+            doc.setDrawColor(0, 51, 102);
+            doc.setLineWidth(2);
+            doc.rect(5, 5, 287, 200);
+            
+            // Adiciona a logo se ela foi carregada com sucesso
+            if (logoCarregada) {
+                const imgWidth = 50; // Largura da logo no PDF
+                const imgHeight = (logoCarregada.height * imgWidth) / logoCarregada.width;
+                const x = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
+                doc.addImage(logoCarregada, 'PNG', x, 15, imgWidth, imgHeight);
+            }
+
+            // Títulos
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(30);
+            doc.setTextColor(0, 51, 102);
+            doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 55, { align: "center" });
+
+            // Corpo do texto
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(16);
+            doc.setTextColor(50, 50, 50);
+            doc.text(`Certificamos que`, 148.5, 75, { align: "center" });
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(24);
+            doc.setTextColor(0, 102, 204);
+            doc.text(nome.toUpperCase(), 148.5, 87, { align: "center" });
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(14);
+            doc.setTextColor(50, 50, 50);
+            doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 97, { align: "center" });
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+            doc.setTextColor(0, 51, 102);
+            doc.text("MONTAGEM DE ROLAMENTOS", 148.5, 107, { align: "center" });
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(14);
+            doc.text("Carga Horária: 2 horas", 148.5, 117, { align: "center" });
+
+            // Conteúdos Estudados
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(10);
+            doc.text("Conteúdos Estudados:", 20, 130);
+            doc.setFont("helvetica", "normal");
+            const conteudos = [
+                "Módulo 1: O Olhar Clínico: Inspeção Visual e Dimensional",
+                "Módulo 2: Preparando o Terreno: Limpeza Impecável dos Componentes",
+                "Módulo 3: O Arsenal do Montador: As Ferramentas Certas para o Trabalho",
+                "Módulo 4: Frio ou Quente? A Decisão Estratégica da Montagem",
+                "Módulo 5: Mãos à Obra: O Cuidado em Cada Etapa da Montagem",
+                "Módulo 6: As \"Pegadinhas\" da Montagem e Como Fugir Delas"
+            ];
+            
+            let yPos = 137;
+            conteudos.forEach(item => {
+                doc.text(`• ${item}`, 20, yPos);
+                yPos += 6;
+            });
+
+            const hoje = new Date();
+            const dataFormatada = hoje.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+            doc.setFontSize(12);
+
+            // Assinatura e Escola
+            doc.line(105, 180, 190, 180); 
+            doc.setFont("helvetica", "bold");
+            doc.text("JONATHAN DA SILVA OLIVEIRA", 147.5, 187, { align: "center" });
+            doc.setFont("helvetica", "normal");
+            doc.text("Escola Manutenção Industrial ARQUIVOS", 147.5, 193, { align: "center" });
+            doc.text(`Emitido em: ${dataFormatada}`, 147.5, 200, { align: "center" });
+            
+            doc.save(`Certificado - Montagem de Rolamentos - ${nome}.pdf`);
+        };
+
+        // Lógica para carregar a imagem ANTES de criar o PDF
+        if (logoUrl) {
+            const logo = new Image();
+            logo.src = logoUrl;
+            // Habilita o carregamento de imagens de outros domínios, se eles permitirem (CORS)
+            logo.crossOrigin = 'Anonymous'; 
+
+            // Se a imagem carregar com sucesso, cria o PDF com ela
+            logo.onload = () => {
+                criarPDF(logo);
+            };
+            // Se der erro ao carregar a imagem, cria o PDF sem ela
+            logo.onerror = () => {
+                alert("Não foi possível carregar a imagem da logo. Verifique o caminho ou link. O certificado será gerado sem ela.");
+                criarPDF(null);
+            };
+        } else {
+            // Se não houver URL de logo, cria o PDF diretamente
+            criarPDF(null);
         }
-
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(30);
-        doc.setTextColor(0, 51, 102);
-        doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 60, { align: "center" });
-
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(16);
-        doc.setTextColor(50, 50, 50);
-        doc.text(`Certificamos que`, 148.5, 80, { align: "center" });
-
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(24);
-        doc.setTextColor(0, 102, 204);
-        doc.text(nome.toUpperCase(), 148.5, 92, { align: "center" });
-
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(14);
-        doc.setTextColor(50, 50, 50);
-        doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 102, { align: "center" });
-        
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(18);
-        doc.setTextColor(0, 51, 102);
-        doc.text("MONTAGEM DE ROLAMENTOS", 148.5, 112, { align: "center" });
-        
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(14);
-        doc.text("Carga Horária: 2 horas", 148.5, 122, { align: "center" });
-
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(10);
-        doc.text("Conteúdos Estudados:", 20, 135);
-        doc.setFont("helvetica", "normal");
-        const conteudos = [
-            "Inspeção Visual e Dimensional de Peças",
-            "Limpeza e Preparação de Componentes",
-            "Ferramentas Básicas para Montagem",
-            "Técnicas de Montagem a Frio e a Quente",
-            "Cuidados Essenciais Durante a Montagem",
-            "Erros Comuns e Como Evitá-los"
-        ];
-        
-        let yPos = 140;
-        conteudos.forEach(item => {
-            doc.text(`• ${item}`, 20, yPos);
-            yPos += 7;
-        });
-
-        const hoje = new Date();
-        const dataFormatada = hoje.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
-        doc.setFontSize(12);
-        doc.line(110, 185, 185, 185);
-        doc.text("Assinatura do Responsável", 147.5, 190, { align: "center" });
-        doc.text(`Emitido em: ${dataFormatada}`, 147.5, 197, { align: "center" });
-        
-        doc.save(`Certificado - Montagem de Rolamentos - ${nome}.pdf`);
     }
 
     // --- INICIALIZAÇÃO ---
     showModule(0);
     iniciarQuiz();
-
 });
