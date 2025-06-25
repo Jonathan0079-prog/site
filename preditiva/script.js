@@ -2,73 +2,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const { jsPDF } = window.jspdf;
     const modules = document.querySelectorAll('.module');
-    const keyboardNav = document.getElementById('keyboard-nav');
     let currentModuleIndex = 0;
 
-    // --- CRIAÇÃO DOS BOTÕES DE NAVEGAÇÃO ---
-    modules.forEach((module, index) => {
-        const navButton = document.createElement('button');
-        navButton.classList.add('nav-button');
-        navButton.textContent = (index + 1);
-        if (index === modules.length - 1) {
-            navButton.textContent = 'C'; // C de Certificado
-            navButton.title = "Certificado";
-        } else {
-            navButton.title = module.querySelector('h2').textContent;
-        }
-        navButton.dataset.index = index;
-        keyboardNav.appendChild(navButton);
+    // Elementos do novo navegador flutuante
+    const prevModuleBtn = document.getElementById('prev-module-btn');
+    const nextModuleBtn = document.getElementById('next-module-btn');
+    const moduleIndicator = document.getElementById('module-indicator');
+    const floatingNav = document.querySelector('.floating-nav');
 
-        const navButtonsContainer = document.createElement('div');
-        navButtonsContainer.classList.add('module-nav-buttons');
-
-        if (index > 0) {
-            const prevButton = document.createElement('button');
-            prevButton.textContent = '← Módulo Anterior';
-            prevButton.classList.add('nav-btn-module');
-            prevButton.addEventListener('click', () => showModule(index - 1));
-            navButtonsContainer.appendChild(prevButton);
-        }
-        
-        if (index === 0) {
-            const spacer = document.createElement('div');
-            navButtonsContainer.appendChild(spacer);
-        }
-
-        if (index < modules.length - 1) {
-            const nextButton = document.createElement('button');
-            nextButton.textContent = 'Próximo Módulo →';
-            nextButton.classList.add('nav-btn-module');
-            nextButton.addEventListener('click', () => showModule(index + 1));
-            navButtonsContainer.appendChild(nextButton);
-        }
-        
-        module.appendChild(navButtonsContainer);
-    });
-    
-    keyboardNav.addEventListener('click', (e) => {
-        if (e.target.classList.contains('nav-button')) {
-            const index = parseInt(e.target.dataset.index, 10);
-            showModule(index);
+    // Adiciona eventos aos novos botões
+    prevModuleBtn.addEventListener('click', () => {
+        if (currentModuleIndex > 0) {
+            showModule(currentModuleIndex - 1);
         }
     });
 
-    // --- FUNÇÃO PARA MOSTRAR MÓDULO ---
+    nextModuleBtn.addEventListener('click', () => {
+        if (currentModuleIndex < modules.length - 1) {
+            showModule(currentModuleIndex + 1);
+        }
+    });
+
+
+    // --- FUNÇÃO PARA MOSTRAR MÓDULO E ATUALIZAR NAVEGADOR ---
     function showModule(index) {
         if (index < 0 || index >= modules.length) return;
+        
         currentModuleIndex = index;
+
+        // Oculta todos os módulos e mostra apenas o ativo
         modules.forEach(m => m.classList.remove('active'));
         modules[currentModuleIndex].classList.add('active');
 
-        document.querySelectorAll('.nav-button').forEach((btn, i) => {
-            btn.classList.toggle('active', i === currentModuleIndex);
-        });
+        // Atualiza o indicador de progresso
+        moduleIndicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
+
+        // Habilita/desabilita os botões de navegação
+        prevModuleBtn.disabled = (currentModuleIndex === 0);
+        nextModuleBtn.disabled = (currentModuleIndex === modules.length - 1);
+
+        // Esconde o navegador flutuante no último módulo (quiz)
+        if (currentModuleIndex === modules.length - 1) {
+            floatingNav.style.opacity = '0';
+        } else {
+            floatingNav.style.opacity = '1';
+        }
         
+        // Rola a página para o topo ao trocar de módulo
         window.scrollTo(0, 0);
     }
 
     // --- LÓGICA DO QUIZ ---
-    // Perguntas extraídas do seu HTML e convertidas para o formato necessário
     const perguntas = [
         {
             pergunta: "Para que serve a inspeção em ambientes industriais, mesmo quando os equipamentos aparentam estar funcionando normalmente?",
@@ -133,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function mostrarPergunta() {
-        // Embaralha as perguntas no início de cada quiz
         if (perguntaAtual === 0) {
             perguntas.sort(() => Math.random() - 0.5);
         }
@@ -196,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
     }
 
-    // --- NOVA FUNÇÃO PARA GERAR O CERTIFICADO PDF ---
     function gerarCertificadoPDF() {
         const nome = document.getElementById('nome-aluno').value.trim();
         const cpf = document.getElementById('cpf-aluno').value.trim();
@@ -207,42 +189,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+        const LOGO_BASE64 = ''; // Cole sua logo em Base64 aqui
 
-        // ** ADICIONE SUA LOGO AQUI **
-        // 1. Converta sua imagem (PNG com fundo transparente) para o formato Base64.
-        //    Use um site como 'base64-image.de'.
-        // 2. Cole a string gerada dentro das aspas da constante abaixo.
-        const LOGO_BASE64 = ''; // Ex: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA...'
-
-        // --- DESIGN DO CERTIFICADO ---
         doc.setFillColor(230, 240, 255);
         doc.rect(0, 0, 297, 210, 'F');
         doc.setDrawColor(0, 51, 102);
         doc.setLineWidth(2);
         doc.rect(5, 5, 287, 200);
         
-        // --- LOGO CENTRALIZADA ---
         if (LOGO_BASE64) {
             const imgProps = doc.getImageProperties(LOGO_BASE64);
-            const imgWidth = 80; // Largura da logo em mm
+            const imgWidth = 80;
             const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
             const x = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
-            const y = 15; // Posição Y (topo)
+            const y = 15;
             doc.addImage(LOGO_BASE64, 'PNG', x, y, imgWidth, imgHeight);
         }
 
-        // --- TÍTULO ---
         doc.setFont("helvetica", "bold");
         doc.setFontSize(30);
         doc.setTextColor(0, 51, 102);
         doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 60, { align: "center" });
 
-        // --- TEXTO PRINCIPAL ---
         doc.setFont("helvetica", "normal");
         doc.setFontSize(16);
         doc.setTextColor(50, 50, 50);
-        const textoPrincipal = `Certificamos que`;
-        doc.text(textoPrincipal, 148.5, 80, { align: "center" });
+        doc.text(`Certificamos que`, 148.5, 80, { align: "center" });
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(24);
@@ -259,12 +231,10 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.setTextColor(0, 51, 102);
         doc.text("INSPEÇÃO DE MÁQUINAS INDUSTRIAIS", 148.5, 112, { align: "center" });
         
-        // --- CARGA HORÁRIA ---
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
         doc.text("Carga Horária: 2 horas", 148.5, 122, { align: "center" });
 
-        // --- CONTEÚDOS ESTUDADOS ---
         doc.setFont("helvetica", "bold");
         doc.setFontSize(10);
         doc.text("Conteúdos Estudados:", 20, 135);
@@ -276,25 +246,18 @@ document.addEventListener('DOMContentLoaded', () => {
             "Ferramentas Avançadas (Ultrassom, Boroscópio)", "Desgaste, Lubrificação e Vida Útil de Componentes",
             "Inspeção de Sistemas Pneumáticos e Hidráulicos", "Inspeção Estrutural e de Segurança", "Criação de Planos de Inspeção e Melhoria Contínua"
         ];
-        // Dividindo em duas colunas para melhor layout
+        
         const col1 = conteudos.slice(0, 6);
         const col2 = conteudos.slice(6);
         let yPos = 140;
-        col1.forEach(item => {
-            doc.text(`• ${item}`, 20, yPos);
-            yPos += 5;
-        });
+        col1.forEach(item => { doc.text(`• ${item}`, 20, yPos); yPos += 5; });
         yPos = 140;
-        col2.forEach(item => {
-            doc.text(`• ${item}`, 155, yPos);
-            yPos += 5;
-        });
+        col2.forEach(item => { doc.text(`• ${item}`, 155, yPos); yPos += 5; });
 
-        // --- ASSINATURA E DATA ---
         const hoje = new Date();
         const dataFormatada = hoje.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
         doc.setFontSize(12);
-        doc.line(110, 185, 185, 185); // Linha da assinatura
+        doc.line(110, 185, 185, 185);
         doc.text("Assinatura do Responsável", 147.5, 190, { align: "center" });
         doc.text(`Emitido em: ${dataFormatada}`, 147.5, 197, { align: "center" });
         
