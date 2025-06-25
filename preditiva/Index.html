@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso de Manutenção Preditiva - ARQUIVOS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Curso de Manutenção Preditiva</h1>
+        <p>Técnicas e Ferramentas para Análise de Ativos</p>
+    </header>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <h3>Navegação do Curso</h3>
+            <ul>
+                <li><a href="#modulo1">Módulo 1: Introdução à Preditiva</a></li>
+                <li><a href="#modulo2">Módulo 2: Análise de Vibração</a></li>
+                <li><a href="#modulo3">Módulo 3: Termografia</a></li>
+                <li><a href="#modulo4">Módulo 4: Análise de Óleo</a></li>
+                <li><a href="#modulo_final">Módulo Final: Quiz e Certificado</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            
+            <section id="modulo1" class="module">
+                <h2>Módulo 1: Introdução à Manutenção Preditiva</h2>
+                <p>A Manutenção Preditiva é uma estratégia proativa que utiliza ferramentas e técnicas de monitoramento de condição para acompanhar o desempenho de equipamentos em tempo real. O objetivo é identificar sinais de deterioração e prever falhas antes que elas ocorram, permitindo que a manutenção seja agendada de forma planejada, evitando paradas não programadas e otimizando a vida útil dos ativos.</p>
+                <img src="https://images.unsplash.com/photo-1564022542842-3958a03510c4?q=80&w=1000&auto=format&fit=crop" alt="Engenheiro analisando dados em um tablet industrial">
+            </section>
+            
+            <section id="modulo2" class="module">
+                <h2>Módulo 2: Análise de Vibração</h2>
+                <p>Toda máquina em operação produz vibração. A análise de vibração é a técnica preditiva mais utilizada e consiste em medir os níveis de vibração de um equipamento e analisar o espectro de frequência para identificar problemas específicos como desbalanceamento, desalinhamento, folgas mecânicas e falhas em rolamentos. Cada falha gera uma "assinatura" de vibração característica.</p>
+            </section>
+
+            <section id="modulo3" class="module">
+                <h2>Módulo 3: Termografia</h2>
+                <p>A termografia utiliza câmeras infravermelhas para medir a distribuição de calor em superfícies. Em sistemas mecânicos e elétricos, pontos quentes anormais são indicativos de problemas como atrito excessivo, sobrecarga em circuitos, conexões elétricas frouxas ou problemas de refrigeração. É uma técnica não invasiva e muito eficaz para inspeções rápidas.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Termografia_-_motor_eletrico.jpg" alt="Imagem termográfica de um motor elétrico">
+            </section>
+
+            <section id="modulo4" class="module">
+                <h2>Módulo 4: Análise de Óleo</h2>
+                <p>O lubrificante é a "corrente sanguínea" de uma máquina. A análise de óleo avalia as propriedades físico-químicas do lubrificante e a presença de contaminantes (como água, poeira) e partículas de desgaste metálico. Essa análise revela a saúde tanto do óleo quanto do componente que ele lubrifica, permitindo a detecção de desgaste acelerado em engrenagens, rolamentos e outros componentes internos.</p>
+            </section>
+
+            <section id="modulo_final" class="module">
+                <h2>Módulo Final: Quiz e Emissão do Certificado</h2>
+                <p>Teste seus conhecimentos para validar a conclusão do curso e emitir seu certificado em PDF.</p>
+                
+                <div id="quiz-container" class="quiz-container-dinamico">
+                    <h3 id="pergunta-titulo"></h3>
+                    <div id="opcoes-quiz"></div>
+                    <div id="feedback"></div>
+                    <button id="proxima-pergunta-btn" style="display: none;">Próxima Pergunta</button>
+                </div>
+
+                <div id="certificado-form-container" class="form-certificado" style="display: none;">
+                     <h3>Parabéns! Você foi aprovado.</h3>
+                    <p>Preencha seus dados para gerar o certificado em PDF.</p>
+                    <label for="nome-aluno">Nome Completo:</label>
+                    <input type="text" id="nome-aluno" placeholder="Digite seu nome completo aqui">
+                    <div class="botoes-certificado">
+                        <button id="gerar-certificado-btn">Gerar PDF e Baixar</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button id="backToTopBtn" title="Voltar ao topo">^</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
