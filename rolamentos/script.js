@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Coloque o caminho para sua logo aqui. 
         // Pode ser um arquivo local (ex: 'logo.png') ou um link da internet.
         // Lembre-se: para arquivos locais, use o Live Server.
-        const logoUrl = '<a href="https://ibb.co/hFHgykrs"><img src="https://i.ibb.co/23PFywRq/Photoroom-20250526-155958.png" alt="Photoroom-20250526-155958" border="0"></a>'; 
+        const logoUrl = 'https://ibb.co/hFHgykrs'; 
 
         const criarPDF = (logoCarregada = null) => {
             const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
