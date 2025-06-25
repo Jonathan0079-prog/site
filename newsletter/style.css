@@ -1,42 +1,112 @@
-body {
-    font-family: 'Lato', sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f0f2f5; /* Fundo mais suave */
-    color: #333;
-    line-height: 1.6;
+/* GERAL E RESET */
+:root {
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
 }
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Lato', sans-serif; /* Mantive Lato para consistência */
+    line-height: 1.7;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    padding-bottom: 80px; /* Espaço para o navegador flutuante */
+}
+
+/* HEADER */
+header { /* Revertido para o seletor original 'header' conforme o CSS fornecido */
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 5px solid var(--cor-destaque);
+}
+
+header h1 {
+    font-family: 'Oswald', sans-serif;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 2.2rem; /* Alterado para rem para melhor escalabilidade */
+    letter-spacing: 1px;
+}
+
+header p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1rem; /* Alterado para rem */
+    opacity: 0.9;
+}
+
+/* CONTEÚDO PRINCIPAL E MÓDULOS */
+.main-container { /* Se você estiver usando .main-container ao invés de .newsletter-feed */
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.module { /* Se você estiver usando .module ao invés de .newsletter-item */
+    display: none;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.module.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.module h2 { /* Se você estiver usando .module ao invés de .newsletter-item */
+    font-size: 2rem;
+    color: var(--cor-primaria);
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid var(--cor-destaque);
+    padding-bottom: 0.75rem;
+}
+
+.module h3 { /* Se você estiver usando .module ao invés de .newsletter-item */
+    font-size: 1.5rem;
+    color: var(--cor-secundaria);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.module p, .module li { /* Estilos genéricos para parágrafos e listas dentro de módulos */
+    margin-bottom: 1rem;
+}
+
+.module ul, .module ol { /* Estilos genéricos para listas dentro de módulos */
+    padding-left: 2rem;
+}
+
+
+/* SEÇÕES newsletter-tab e newsletter-feed - DO CÓDIGO ANTERIOR */
 .newsletter-tab {
     max-width: 900px;
     margin: 30px auto;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Garante que o border-radius seja aplicado corretamente */
+    overflow: hidden;
 }
 
-.tab-header {
-    background-color: #2c3e50; /* Azul escuro para o cabeçalho */
-    color: #ffffff;
-    padding: 30px 20px;
-    text-align: center;
-    border-bottom: 5px solid #007bff; /* Linha de destaque */
-}
-
-.tab-header h1 {
-    font-family: 'Oswald', sans-serif;
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 2.5em;
-    letter-spacing: 1px;
-}
-
-.tab-header p {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1.1em;
-    opacity: 0.9;
-}
+/* O seletor .tab-header foi substituído pelo 'header' diretamente no novo CSS que você forneceu */
+/* O .tab-header h1 e p também foram substituídos por 'header h1' e 'header p' */
 
 .newsletter-feed {
     padding: 20px 30px;
@@ -49,11 +119,11 @@ body {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease; /* Efeito suave ao passar o mouse */
+    transition: transform 0.3s ease;
 }
 
 .newsletter-item:hover {
-    transform: translateY(-5px); /* Eleva ligeiramente o item no hover */
+    transform: translateY(-5px);
 }
 
 .newsletter-item h2 {
@@ -67,57 +137,77 @@ body {
 .newsletter-item p {
     color: #555;
     margin-bottom: 15px;
+    font-size: 1em; /* Garante que o parágrafo tenha um tamanho base */
 }
 
 /* Estilos para o botão interativo */
 .article-button {
-    background-color: #007bff; /* Azul brilhante */
+    background-color: #007bff;
     color: white;
     padding: 12px 25px;
     border: none;
-    border-radius: 7px; /* Bordas mais arredondadas */
+    border-radius: 7px;
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
     text-transform: uppercase;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3); /* Sombra mais destacada */
-    display: inline-block; /* Para o padding funcionar corretamente */
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    display: inline-block;
     letter-spacing: 0.5px;
 }
 
 .article-button:hover {
-    background-color: #0056b3; /* Azul mais escuro no hover */
-    transform: translateY(-2px); /* Pequeno efeito de "levantar" */
-    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4); /* Sombra mais intensa */
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
 }
 
 .article-button:active {
-    transform: translateY(0); /* Volta à posição original ao clicar */
-    background-color: #004085; /* Azul ainda mais escuro ao clicar */
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); /* Sombra mais sutil ao clicar */
+    transform: translateY(0);
+    background-color: #004085;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
 }
 
 /* Estilos para o container do artigo carregado */
 .article-container {
     margin-top: 25px;
     padding: 20px;
-    border: 1px solid #cce5ff; /* Borda azul clara */
+    border: 1px solid #cce5ff;
     border-radius: 8px;
-    background-color: #e6f3ff; /* Fundo azul bem claro */
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Sombra interna sutil */
-    color: #333; /* Cor do texto dentro do artigo */
-    line-height: 1.7; /* Espaçamento de linha para melhor leitura */
+    background-color: #e6f3ff;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    color: #333;
+    line-height: 1.7;
 }
 
-.article-container h1, .article-container h2, .article-container h3 {
-    color: #2c3e50; /* Títulos dentro do artigo */
+/* IMPORTANTE: ESTILOS PARA OS TEXTOS DENTRO DO ARTIGO CARREGADO */
+/* Estes são os textos que você quer que fiquem maiores no celular */
+.article-container h1 {
+    color: #2c3e50;
     margin-top: 15px;
     margin-bottom: 10px;
+    font-size: 2em; /* Tamanho base maior para títulos H1 dentro do artigo */
 }
 
-.article-container p {
+.article-container h2 {
+    color: #2c3e50;
+    margin-top: 15px;
     margin-bottom: 10px;
+    font-size: 1.6em; /* Tamanho base maior para títulos H2 dentro do artigo */
+}
+
+.article-container h3 {
+    color: #2c3e50;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1.3em; /* Tamanho base maior para títulos H3 dentro do artigo */
+}
+
+.article-container p,
+.article-container li { /* Seleciona parágrafos e itens de lista dentro do container do artigo */
+    margin-bottom: 10px;
+    font-size: 1.1em; /* Aumenta o tamanho da fonte para leitura geral do artigo */
 }
 
 /* Classe para ocultar elementos */
@@ -130,21 +220,52 @@ hr {
     border: 0;
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-    margin: 40px 0; /* Espaçamento maior para a linha */
+    margin: 40px 0;
 }
 
+/* MEDIA QUERY PARA RESPONSIVIDADE */
 @media (max-width: 768px) {
     .newsletter-tab {
         margin: 20px;
     }
-    .tab-header h1 {
+    .tab-header h1 { /* Este é o h1 do header principal da página */
         font-size: 2em;
     }
-    .newsletter-item h2 {
+    .newsletter-item h2 { /* Este é o h2 dos blocos de "newsletter-item" */
         font-size: 1.5em;
     }
     .article-button {
-        width: 100%; /* Botão ocupa a largura total em telas menores */
-        box-sizing: border-box; /* Inclui padding e border na largura */
+        width: 100%;
+        box-sizing: border-box;
     }
+
+    /* ******************************************************************* */
+    /* NOVAS REGRAS PARA AUMENTAR A FONTE DO CONTEÚDO DO ARTIGO NO CELULAR */
+    /* ******************************************************************* */
+    .article-container h1 {
+        font-size: 1.8em; /* Ajusta H1 dentro do artigo para celular */
+    }
+
+    .article-container h2 {
+        font-size: 1.5em; /* Ajusta H2 dentro do artigo para celular */
+    }
+
+    .article-container h3 {
+        font-size: 1.2em; /* Ajusta H3 dentro do artigo para celular */
+    }
+
+    .article-container p,
+    .article-container ul,
+    .article-container ol,
+    .article-container li {
+        font-size: 1em; /* Tamanho de texto base para parágrafos e listas no celular */
+        line-height: 1.6; /* Garante bom espaçamento */
+    }
+
+    /* Ajuste para o vídeo pequeno em mobile, se necessário */
+    .video-container-small {
+        max-width: 100%; /* Ocupa a largura total disponível no celular */
+        margin: 15px 0; /* Ajusta margem para mobile */
+    }
+    /* ******************************************************************* */
 }
