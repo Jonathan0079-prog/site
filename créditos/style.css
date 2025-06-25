@@ -1,169 +1,174 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Oswald:wght@500&display=swap');
 
 :root {
-    --primary-color: #1a237e; /* Azul industrial escuro */
-    --secondary-color: #ffb300; /* Amarelo/Ouro para destaque */
-    --background-color: #1a2b40; /* Fundo escuro */
-    --text-color: #e0e0e0; /* Texto claro */
-    --card-background: #2a2a2a; /* Fundo dos cards */
-    --border-color: #444;
+    --primary-color: #1a237e; /* Azul industrial escuro - Não será usado diretamente para o header/footer/background principal */
+    --secondary-color: #ffb300; /* Amarelo/Ouro para destaque - Não será usado diretamente para o header/footer/background principal */
+    --background-color: #1a2b40; /* Fundo escuro */
+    --text-color: #e0e0e0; /* Texto claro */
+    --card-background: #2a2a2a; /* Fundo dos cards */
+    --border-color: #444;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: 'Roboto Condensed', sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    line-height: 1.8;
-    overflow-x: hidden;
+    font-family: 'Roboto Condensed', sans-serif;
+    background-color: #f0f2f5; /* ALTERADO: Cor de fundo do body igual ao primeiro código */
+    color: #333; /* ALTERADO: Cor do texto do body igual ao primeiro código */
+    line-height: 1.8;
+    overflow-x: hidden;
 }
 
 #canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0.1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.1;
 }
 
 header {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://www.freevector.com/uploads/vector/preview/28842/Two_Gears.jpg') no-repeat center center/cover;
-    color: white;
-    border-bottom: 5px solid var(--secondary-color);
+    /* ALTERADO: Estilos do cabeçalho iguais ao primeiro código */
+    background-color: #1a2b40; /* Azul escuro industrial */
+    color: #ffffff;
+    padding: 1rem 0;
+    border-bottom: 4px solid #f39c12; /* Laranja/âmbar industrial */
+    text-align: center; /* Mantido do segundo código para centralizar o texto */
+    padding: 4rem 2rem; /* Mantido do segundo código para espaçamento interno */
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://www.freevector.com/uploads/vector/preview/28842/Two_Gears.jpg') no-repeat center center/cover; /* Mantido o background com imagem e overlay */
+    color: white; /* Mantido para garantir que o texto do header seja branco */
 }
 
 header h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 3.5rem;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    font-family: 'Oswald', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
 
 header .subtitle {
-    font-size: 1.5rem;
-    font-style: italic;
-    color: var(--secondary-color);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--secondary-color);
 }
 
 main {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 2rem;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 2rem;
 }
 
 section {
-    background-color: var(--card-background);
-    margin-bottom: 2.5rem;
-    padding: 2.5rem;
-    border-radius: 8px;
-    border-left: 5px solid var(--primary-color);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    background-color: var(--card-background);
+    margin-bottom: 2.5rem;
+    padding: 2.5rem;
+    border-radius: 8px;
+    border-left: 5px solid var(--primary-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
 }
 
 section h2 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 2.2rem;
-    color: var(--secondary-color);
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 0.5rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
 }
 
 section p {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
 }
 
 .global-community .flags {
-    text-align: center;
-    font-size: 3rem;
-    margin: 2rem 0;
+    text-align: center;
+    font-size: 3rem;
+    margin: 2rem 0;
 }
 
 .global-community .flags span {
-    margin: 0 0.5rem;
-    display: inline-block;
-    transition: transform 0.3s;
+    margin: 0 0.5rem;
+    display: inline-block;
+    transition: transform 0.3s;
 }
 
 .global-community .flags span:hover {
-    transform: scale(1.4);
+    transform: scale(1.4);
 }
 
 .icon-container {
-    position: absolute;
-    top: -30px;
-    right: -30px;
-    opacity: 0.1;
-    z-index: 0;
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    opacity: 0.1;
+    z-index: 0;
 }
 
 .gear-icon, .bearing-icon {
-    width: 150px;
-    height: 150px;
-    animation: rotate 20s linear infinite;
+    width: 150px;
+    height: 150px;
+    animation: rotate 20s linear infinite;
 }
 
 .bearing-icon {
-    animation-duration: 15s;
-    animation-direction: reverse;
+    animation-duration: 15s;
+    animation-direction: reverse;
 }
 
 @keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .conclusion .final-message {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: var(--secondary-color);
-    text-align: center;
-    margin-top: 2rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-top: 2rem;
 }
 
 footer {
-    text-align: center;
-    padding: 2rem;
-    margin-top: 3rem;
-    background-color: #111;
-    color: #888;
-    border-top: 3px solid var(--border-color);
+    /* ALTERADO: Estilos do rodapé iguais ao primeiro código */
+    background-color: #1a2b40;
+    color: #aeb9c7;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+    border-top: none; /* Removido para igualar o primeiro código */
 }
 
 @media (max-width: 768px) {
-    header h1 {
-        font-size: 2.5rem;
-    }
-    header .subtitle {
-        font-size: 1.2rem;
-    }
-    section {
-        padding: 1.5rem;
-    }
-    section h2 {
-        font-size: 1.8rem;
-    }
+    header h1 {
+        font-size: 2.5rem;
+    }
+    header .subtitle {
+        font-size: 1.2rem;
+    }
+    section {
+        padding: 1.5rem;
+    }
+    section h2 {
+        font-size: 1.8rem;
+    }
 }
