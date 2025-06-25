@@ -1,4 +1,4 @@
-dedocument.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
     const { jsPDF } = window.jspdf;
     const modules = document.querySelectorAll('.module');
