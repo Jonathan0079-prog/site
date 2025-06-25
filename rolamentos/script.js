@@ -179,11 +179,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('tentar-novamente-btn').addEventListener('click', iniciarQuiz);
     document.getElementById('gerar-certificado-btn').addEventListener('click', gerarCertificadoPDF);
 
-    // --- GERAÇÃO DE PDF ---
+    // --- FUNÇÃO PARA FORMATAR O CPF ---
+    function formatarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, ''); // Remove tudo que não é dígito
+        if (cpf.length !== 11) return cpf; // Retorna sem formatar se não for um CPF completo
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+
+    // --- GERAÇÃO DE PDF (ATUALIZADO COM CPF) ---
     function gerarCertificadoPDF() {
         const nome = document.getElementById('nome-aluno').value.trim();
-        if (nome === "") {
-            alert("Por favor, digite seu nome completo.");
+        const cpf = document.getElementById('cpf-aluno').value.trim();
+
+        if (nome === "" || cpf === "") {
+            alert("Por favor, preencha seu nome completo e CPF.");
             return;
         }
 
@@ -211,19 +220,22 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.text(nome.toUpperCase(), 148.5, 80, { align: "center" });
 
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(16);
+        doc.setFontSize(14);
         doc.setTextColor(50, 50, 50);
-        doc.text("concluiu com aproveitamento o curso de", 148.5, 95, { align: "center" });
+        // Linha do CPF adicionada
+        doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)},`, 148.5, 90, { align: "center" });
+        doc.setFontSize(16);
+        doc.text("concluiu com aproveitamento o curso de", 148.5, 100, { align: "center" });
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.setTextColor(0, 51, 102);
-        doc.text("MONTAGEM DE ROLAMENTOS", 148.5, 110, { align: "center" });
+        doc.text("MONTAGEM DE ROLAMENTOS", 148.5, 115, { align: "center" });
         
         const hoje = new Date();
         const dataFormatada = hoje.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
         doc.setFontSize(14);
-        doc.text(`Concluído em: ${dataFormatada}, às ${hoje.toLocaleTimeString('pt-BR')}`, 148.5, 125, { align: "center" });
+        doc.text(`Concluído em: ${dataFormatada}, às ${hoje.toLocaleTimeString('pt-BR')}`, 148.5, 130, { align: "center" });
 
         doc.setLineWidth(0.5);
         doc.line(100, 160, 200, 160);
