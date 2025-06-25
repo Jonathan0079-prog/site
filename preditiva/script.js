@@ -4,55 +4,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const modules = document.querySelectorAll('.module');
     let currentModuleIndex = 0;
 
-    // Elementos do novo navegador flutuante
     const prevModuleBtn = document.getElementById('prev-module-btn');
     const nextModuleBtn = document.getElementById('next-module-btn');
     const moduleIndicator = document.getElementById('module-indicator');
     const floatingNav = document.querySelector('.floating-nav');
 
-    // Adiciona eventos aos novos botões
-    prevModuleBtn.addEventListener('click', () => {
-        if (currentModuleIndex > 0) {
-            showModule(currentModuleIndex - 1);
-        }
-    });
-
-    nextModuleBtn.addEventListener('click', () => {
-        if (currentModuleIndex < modules.length - 1) {
-            showModule(currentModuleIndex + 1);
-        }
-    });
-
-
-    // --- FUNÇÃO PARA MOSTRAR MÓDULO E ATUALIZAR NAVEGADOR ---
     function showModule(index) {
-        if (index < 0 || index >= modules.length) return;
-        
+        if (index < 0 || index >= modules.length) {
+            return;
+        }
         currentModuleIndex = index;
 
-        // Oculta todos os módulos e mostra apenas o ativo
-        modules.forEach(m => m.classList.remove('active'));
+        // 1. Esconde TODOS os módulos
+        modules.forEach(m => {
+            m.classList.remove('active');
+        });
+
+        // 2. Mostra APENAS o módulo correto
         modules[currentModuleIndex].classList.add('active');
 
-        // Atualiza o indicador de progresso
+        // 3. Atualiza o navegador flutuante
         moduleIndicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
-
-        // Habilita/desabilita os botões de navegação
         prevModuleBtn.disabled = (currentModuleIndex === 0);
         nextModuleBtn.disabled = (currentModuleIndex === modules.length - 1);
-
-        // Esconde o navegador flutuante no último módulo (quiz)
-        if (currentModuleIndex === modules.length - 1) {
-            floatingNav.style.opacity = '0';
-        } else {
-            floatingNav.style.opacity = '1';
-        }
         
-        // Rola a página para o topo ao trocar de módulo
+        // Esconde o navegador no último módulo (quiz/certificado)
+        if (currentModuleIndex === modules.length - 1) {
+            floatingNav.classList.add('hidden');
+        } else {
+            floatingNav.classList.remove('hidden');
+        }
+
         window.scrollTo(0, 0);
     }
 
-    // --- LÓGICA DO QUIZ ---
+    prevModuleBtn.addEventListener('click', () => showModule(currentModuleIndex - 1));
+    nextModuleBtn.addEventListener('click', () => showModule(currentModuleIndex + 1));
+
     const perguntas = [
         {
             pergunta: "Para que serve a inspeção em ambientes industriais, mesmo quando os equipamentos aparentam estar funcionando normalmente?",
@@ -121,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             perguntas.sort(() => Math.random() - 0.5);
         }
         const p = perguntas[perguntaAtual];
-        perguntaTituloEl.textContent = `Pergunta ${perguntaAtual + 1}: ${p.pergunta}`;
+        perguntaTituloEl.textContent = `Pergunta ${perguntaAtual + 1} de ${perguntas.length}: ${p.pergunta}`;
         opcoesQuizEl.innerHTML = '';
         p.opcoes.forEach(opcao => {
             const btn = document.createElement('button');
@@ -135,19 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const botoes = opcoesQuizEl.querySelectorAll('button');
         let acertou = (opcaoSelecionada === respostaCorreta);
 
-        if (acertou) {
-            pontuacao++;
-        }
-
+        if (acertou) pontuacao++;
         feedbackEl.textContent = acertou ? '✅ Correto!' : '❌ Incorreto.';
         
         botoes.forEach(btn => {
             btn.disabled = true;
-            if (btn.textContent === respostaCorreta) {
-                btn.classList.add('correta');
-            } else if (btn.textContent === opcaoSelecionada) {
-                btn.classList.add('incorreta');
-            }
+            if (btn.textContent === respostaCorreta) btn.classList.add('correta');
+            else if (btn.textContent === opcaoSelecionada) btn.classList.add('incorreta');
         });
         
         setTimeout(() => {
@@ -182,14 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function gerarCertificadoPDF() {
         const nome = document.getElementById('nome-aluno').value.trim();
         const cpf = document.getElementById('cpf-aluno').value.trim();
-
         if (nome === "" || cpf === "") {
             alert("Por favor, preencha seu nome completo e CPF.");
             return;
         }
 
         const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-        const LOGO_BASE64 = ''; // Cole sua logo em Base64 aqui
+        const LOGO_BASE64 = ''; // Cole sua logo Base64 aqui
 
         doc.setFillColor(230, 240, 255);
         doc.rect(0, 0, 297, 210, 'F');
@@ -201,9 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const imgProps = doc.getImageProperties(LOGO_BASE64);
             const imgWidth = 80;
             const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-            const x = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
-            const y = 15;
-            doc.addImage(LOGO_BASE64, 'PNG', x, y, imgWidth, imgHeight);
+            doc.addImage(LOGO_BASE64, 'PNG', (doc.internal.pageSize.getWidth() - imgWidth) / 2, 15, imgWidth, imgHeight);
         }
 
         doc.setFont("helvetica", "bold");
