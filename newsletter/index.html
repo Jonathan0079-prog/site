@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo da Newsletter Industrial</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Roboto+Mono:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="newsletter-tab">
+
+        <header class="tab-header">
+            <h1>Arquivo da Newsletter</h1>
+            <p>Leia nossos artigos técnicos detalhados.</p>
+        </header>
+
+        <main class="newsletter-feed">
+            <div class="newsletter-item">
+                <h2>Artigo: Automação e Indústria 4.0</h2>
+                <p>Descubra as últimas tendências e inovações em automação industrial e o impacto da Indústria 4.0.</p>
+                <button class="article-button" onclick="carregarArtigo('artigos/automacao.html', 'article-container-automacao')">Ler Artigo Completo</button>
+                <div id="article-container-automacao" class="article-container hidden">
+                    </div>
+            </div>
+
+            <hr> <div class="newsletter-item">
+                <h2>Artigo: Eficiência Energética na Manufatura</h2>
+                <p>Explore as melhores práticas e tecnologias para otimizar o consumo de energia em processos de manufatura.</p>
+                <button class="article-button" onclick="carregarArtigo('artigos/eficiencia-energetica.html', 'article-container-eficiencia')">Ler Artigo Completo</button>
+                <div id="article-container-eficiencia" class="article-container hidden">
+                    </div>
+            </div>
+
+            <hr>
+
+            <div class="newsletter-item">
+                <h2>Artigo: Título do Seu Novo Artigo</h2>
+                <p>Uma breve descrição do que o leitor encontrará neste novo artigo.</p>
+                <button class="article-button" onclick="carregarArtigo('artigos/seu-novo-artigo.html', 'article-container-novo-artigo')">Ler Artigo Completo</button>
+                <div id="article-container-novo-artigo" class="article-container hidden">
+                    </div>
+            </div>
+            </main>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
