@@ -1,4 +1,4 @@
-/* --- Reset Básico e Configurações Gerais --- */
+/* --- Reset Básico e Configurações Gerais Estilo LinkedIn --- */
 * {
     margin: 0;
     padding: 0;
@@ -6,167 +6,164 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    line-height: 1.6;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;
+    background-color: #f3f2ef; /* Cinza claro de fundo do LinkedIn */
+    color: rgba(0, 0, 0, 0.9); /* Cor de texto primária do LinkedIn */
+    line-height: 1.5;
 }
 
 .container {
     width: 90%;
-    max-width: 1200px;
+    max-width: 1128px; /* Largura do container principal do LinkedIn */
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 24px 0;
 }
 
-/* --- Cabeçalho e Navegação --- */
+/* --- Cabeçalho e Navegação Estilo LinkedIn --- */
 header {
-    background-color: #1a2b40; /* Azul escuro industrial */
-    color: #ffffff;
-    padding: 1rem 0;
-    border-bottom: 4px solid #f39c12; /* Laranja/âmbar industrial */
+    background-color: #ffffff;
+    padding: 0 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
 }
 
 header h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-}
-
-header nav {
-    margin-top: 1rem;
+    font-size: 1.8rem;
+    color: #0a66c2; /* Azul do LinkedIn */
+    font-weight: 700;
 }
 
 header nav ul {
     list-style: none;
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
 }
 
 header nav a {
-    color: #ffffff;
+    color: rgba(0, 0, 0, 0.6);
     text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1rem;
-    padding: 10px 20px;
-    border-radius: 5px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    border-radius: 4px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 header nav a:hover {
-    background-color: #f39c12;
-    color: #1a2b40;
+    background-color: rgba(0, 0, 0, 0.04);
+    color: rgba(0, 0, 0, 0.9);
 }
 
-/* --- Seção de Banner --- */
-#banner {
-    background: linear-gradient(rgba(26, 43, 64, 0.8), rgba(26, 43, 64, 0.8)), url('https://via.placeholder.com/1920x500.png?text=Fundo+Industrial') no-repeat center center/cover;
-    color: #ffffff;
+
+/* --- Seção de Título (Substituindo o Banner) --- */
+#titulo-secao {
     text-align: center;
-    padding: 4rem 0;
+    padding: 2rem 0;
 }
 
-#banner h2 {
-    font-size: 2.8rem;
-    margin-bottom: 1rem;
-}
-
-#banner p {
-    font-size: 1.4rem;
-}
-
-/* --- Seção de Cursos --- */
-#cursos {
-    padding: 3rem 0;
-}
-
-#cursos h2 {
-    text-align: center;
+#titulo-secao h2 {
     font-size: 2.5rem;
-    margin-bottom: 2.5rem;
-    color: #1a2b40;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.9);
+    margin-bottom: 0.5rem;
+}
+
+#titulo-secao p {
+    font-size: 1.2rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+
+/* --- Seção de Cursos Estilo LinkedIn --- */
+#cursos {
+    padding-top: 0;
 }
 
 .cursos-container {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Layout responsivo */
+    gap: 24px;
 }
 
 .curso-card {
     background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    border-radius: 8px; /* Cantos arredondados padrão */
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-    /* Animação de entrada */
-    opacity: 0;
-    transform: translateY(30px);
+    transition: box-shadow 0.3s ease;
 }
 
 .curso-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-.curso-card.visible {
-    opacity: 1;
-    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .curso-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .curso-info {
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
 .curso-info h3 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #1a2b40;
+    color: rgba(0, 0, 0, 0.9);
 }
 
 .curso-info p {
-    flex-grow: 1; /* Faz o parágrafo ocupar o espaço disponível */
+    flex-grow: 1;
     margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .btn {
     display: inline-block;
-    background-color: #f39c12;
-    color: #1a2b40;
-    padding: 12px 25px;
+    background-color: #0a66c2; /* Azul do LinkedIn */
+    color: #ffffff;
+    padding: 10px 20px;
     text-align: center;
     text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 600;
+    border-radius: 20px; /* Botões arredondados (pílula) */
+    border: 1px solid #0a66c2;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    align-self: flex-start; /* Alinha o botão ao início no flex container */
 }
 
 .btn:hover {
-    background-color: #e67e22; /* Laranja mais escuro */
-    transform: scale(1.05);
+    background-color: #004182; /* Azul mais escuro para hover */
+    box-shadow: 0 0 0 1px #004182;
 }
 
-/* --- Rodapé --- */
+/* --- Rodapé Estilo LinkedIn --- */
 footer {
-    background-color: #1a2b40;
-    color: #aeb9c7;
+    background-color: #f3f2ef; /* Mesmo fundo do body */
+    color: rgba(0, 0, 0, 0.6);
     text-align: center;
-    padding: 1.5rem 0;
+    padding: 2rem 0;
     margin-top: 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
