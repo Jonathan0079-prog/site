@@ -15,20 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         currentModuleIndex = index;
 
-        // 1. Esconde TODOS os módulos
         modules.forEach(m => {
             m.classList.remove('active');
         });
 
-        // 2. Mostra APENAS o módulo correto
         modules[currentModuleIndex].classList.add('active');
 
-        // 3. Atualiza o navegador flutuante
         moduleIndicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
         prevModuleBtn.disabled = (currentModuleIndex === 0);
         nextModuleBtn.disabled = (currentModuleIndex === modules.length - 1);
         
-        // Esconde o navegador no último módulo (quiz/certificado)
         if (currentModuleIndex === modules.length - 1) {
             floatingNav.classList.add('hidden');
         } else {
@@ -172,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
         const LOGO_BASE64 = ''; // Cole sua logo Base64 aqui
 
+        // Design do certificado
         doc.setFillColor(230, 240, 255);
         doc.rect(0, 0, 297, 210, 'F');
         doc.setDrawColor(0, 51, 102);
@@ -180,44 +177,52 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (LOGO_BASE64) {
             const imgProps = doc.getImageProperties(LOGO_BASE64);
-            const imgWidth = 80;
+            const imgWidth = 50;
             const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-            doc.addImage(LOGO_BASE64, 'PNG', (doc.internal.pageSize.getWidth() - imgWidth) / 2, 15, imgWidth, imgHeight);
+            doc.addImage(LOGO_BASE64, 'PNG', 20, 15, imgWidth, imgHeight);
         }
 
+        // --- NOME DA ESCOLA ---
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(30);
+        doc.setFontSize(18);
         doc.setTextColor(0, 51, 102);
-        doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 60, { align: "center" });
+        doc.text("Manutenção Industrial ARQUIVOS", 148.5, 25, { align: "center" });
 
+        // --- TÍTULO PRINCIPAL ---
+        doc.setFontSize(30);
+        doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 45, { align: "center" });
+
+        // --- TEXTO DO CERTIFICADO ---
         doc.setFont("helvetica", "normal");
         doc.setFontSize(16);
         doc.setTextColor(50, 50, 50);
-        doc.text(`Certificamos que`, 148.5, 80, { align: "center" });
+        doc.text(`Certificamos que`, 148.5, 65, { align: "center" });
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(24);
         doc.setTextColor(0, 102, 204);
-        doc.text(nome.toUpperCase(), 148.5, 92, { align: "center" });
+        doc.text(nome.toUpperCase(), 148.5, 77, { align: "center" });
 
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
         doc.setTextColor(50, 50, 50);
-        doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 102, { align: "center" });
+        doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 87, { align: "center" });
         
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.setTextColor(0, 51, 102);
-        doc.text("INSPEÇÃO DE MÁQUINAS INDUSTRIAIS", 148.5, 112, { align: "center" });
+        doc.text("INSPEÇÃO DE MÁQUINAS INDUSTRIAIS", 148.5, 99, { align: "center" });
         
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
-        doc.text("Carga Horária: 2 horas", 148.5, 122, { align: "center" });
+        doc.text("Carga Horária: 2 horas", 148.5, 109, { align: "center" });
 
+        // --- CONTEÚDOS ESTUDADOS ---
         doc.setFont("helvetica", "bold");
         doc.setFontSize(10);
-        doc.text("Conteúdos Estudados:", 20, 135);
+        doc.text("Conteúdos Estudados:", 20, 125);
         doc.setFont("helvetica", "normal");
+        doc.setFontSize(9); // Reduzindo a fonte para caber melhor
         const conteudos = [
             "Introdução e Tipos de Inspeção (Preventiva, Preditiva)", "Inspeção Sensitiva e Instrumentada (Termografia, Vibração)",
             "Procedimentos Padrão e Checklists", "Registro e Análise de Dados de Inspeção",
@@ -228,17 +233,28 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const col1 = conteudos.slice(0, 6);
         const col2 = conteudos.slice(6);
-        let yPos = 140;
-        col1.forEach(item => { doc.text(`• ${item}`, 20, yPos); yPos += 5; });
-        yPos = 140;
-        col2.forEach(item => { doc.text(`• ${item}`, 155, yPos); yPos += 5; });
+        let yPos = 132;
+        col1.forEach(item => { doc.text(`• ${item}`, 20, yPos); yPos += 6; });
+        yPos = 132;
+        col2.forEach(item => { doc.text(`• ${item}`, 155, yPos); yPos += 6; });
 
-        const hoje = new Date();
-        const dataFormatada = hoje.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+        // --- DATA, HORA E ASSINATURA ---
+        const agora = new Date();
+        const dataHoraFormatada = agora.toLocaleString('pt-BR', { 
+            day: '2-digit', 
+            month: 'long', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
         doc.setFontSize(12);
-        doc.line(110, 185, 185, 185);
-        doc.text("Jonathan Oliveira - Instrutor", 147.5, 190, { align: "center" });
-        doc.text(`Emitido em: ${dataFormatada}`, 147.5, 197, { align: "center" });
+        doc.line(90, 185, 205, 185); // Linha da assinatura
+        doc.setFont("helvetica", "bold");
+        doc.text("Jonathan da Silva Oliveira - Instrutor", 147.5, 190, { align: "center" });
+        
+        doc.setFont("helvetica", "normal");
+        doc.text(`Emitido em: ${dataHoraFormatada}`, 147.5, 197, { align: "center" });
         
         doc.save(`Certificado - Inspeção Industrial - ${nome}.pdf`);
     }
