@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const perguntas = [
         {
             pergunta: "Ao montar um rolamento no eixo com interferência (montagem a frio), onde a força deve ser aplicada?",
-            opcoes: ["No anel externo", "Na gaiola", "No anel interno", "Nos corpos rolantes"],
+            opcoes: ["No anel externo", "Na gaiola", "Nos corpos rolantes", "No anel interno"],
             resposta: "No anel interno"
         },
         {
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             pergunta: "Qual método de limpeza é mais indicado para componentes sensíveis e de alta precisão, como rolamentos?",
-            opcoes: ["Limpeza com jateamento", "Limpeza manual com escova de aço", "Limpeza ultrassônica", "Limpeza com solventes fortes"],
+            opcoes: ["Limpeza com jateamento", "Limpeza ultrassônica", "Limpeza manual com escova de aço", "Limpeza com solventes fortes"],
             resposta: "Limpeza ultrassônica"
         },
         {
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             pergunta: "Qual ferramenta é a mais adequada e segura para montagem a quente de rolamentos de médio e grande porte?",
-            opcoes: ["Maçarico", "Banho de óleo quente", "Prensa hidráulica", "Aquecedor por indução"],
+            opcoes: ["Aquecedor por indução", "Maçarico", "Banho de óleo quente", "Prensa hidráulica"],
             resposta: "Aquecedor por indução"
         }
     ];
