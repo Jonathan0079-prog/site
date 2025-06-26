@@ -1,11 +1,10 @@
-// Apenas a função generateResponse precisa de ser atualizada. 
-// O resto do seu script (handleChat, createChatLi, etc.) pode continuar igual.
+// VERSÃO FINAL E ROBUSTA DA FUNÇÃO generateResponse
+// Substitua a sua função antiga por esta
 
 const generateResponse = async (chatElement) => {
     const messageElement = chatElement.querySelector("p");
     messageElement.textContent = ""; // Limpa a mensagem "Analisando..."
 
-    // O corpo do pedido continua igual
     const requestParts = [{ text: userMessage }];
     if (uploadedFileData) {
         requestParts.push({
@@ -25,15 +24,12 @@ const generateResponse = async (chatElement) => {
     };
 
     try {
-        // A chamada fetch continua a mesma
         const response = await fetch(API_URL, requestOptions);
-
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error || "O servidor respondeu com um erro.");
         }
 
-        // --- NOVA LÓGICA DE STREAMING ---
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let fullResponse = "";
@@ -43,7 +39,6 @@ const generateResponse = async (chatElement) => {
             if (done) break;
 
             const chunk = decoder.decode(value);
-            // Às vezes a API envia múltiplos pedaços de dados juntos
             const lines = chunk.split('\n');
             for (const line of lines) {
                 if (line.startsWith('data: ')) {
@@ -51,13 +46,19 @@ const generateResponse = async (chatElement) => {
                     if (jsonStr) {
                         try {
                             const jsonData = JSON.parse(jsonStr);
-                            const textPart = jsonData.candidates[0].content.parts[0].text;
-                            fullResponse += textPart;
-                            // Atualiza o balão de chat em tempo real, já formatado
-                            messageElement.innerHTML = fullResponse
-                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                .replace(/\n/g, '<br>');
-                            chatbox.scrollTo(0, chatbox.scrollHeight); // Mantém o scroll em baixo
+                            
+                            // --- AQUI ESTÁ A CORREÇÃO ---
+                            // Verifica se a resposta tem 'candidates' e se o primeiro item existe
+                            if (jsonData.candidates && jsonData.candidates[0]) {
+                                const textPart = jsonData.candidates[0].content.parts[0].text;
+                                fullResponse += textPart;
+                                messageElement.innerHTML = fullResponse
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                    .replace(/\n/g, '<br>');
+                                chatbox.scrollTo(0, chatbox.scrollHeight);
+                            }
+                            // Se não houver 'candidates', ele simplesmente ignora este "pedaço" e continua
+                            
                         } catch (e) {
                             // Ignora erros de parsing de JSON que podem acontecer entre os chunks
                         }
