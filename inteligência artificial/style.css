@@ -1,0 +1,193 @@
+/* Importar fonte do Google - Poppins */
+@ importar url ('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap') ; 
+* { 
+  margem : 0 ;
+  preenchimento : 0 ;
+  dimensionamento de caixa : caixa de borda;
+  família de fontes : "Poppins" , sem serifa;
+}
+corpo { 
+  fundo : #E3F2FD ;
+}
+.chatbot-toggler { 
+  posição : fixa;
+  inferior : 30px ;
+  direita : 35px ;
+  esboço : nenhum;
+  borda : nenhuma;
+  altura : 50px ;
+  largura : 50px ;
+  exibição : flexível;
+  cursor : ponteiro;
+  alinhar-itens : centro;
+  justificar-conteúdo : centro;
+  raio da borda : 50% ;
+  fundo : #724ae8 ;
+  transição : todos 0,2 s de facilidade;
+}
+corpo .show-chatbot .chatbot-toggler {  
+  transformar : girar ( 90 graus ) ;
+}
+.chatbot-toggler span {  
+  cor : #fff ;
+  posição : absoluta;
+}
+.chatbot-toggler span :último-filho , 
+corpo .show-chatbot .chatbot-toggler span :first-child {    
+  opacidade : 0 ;
+}
+corpo .show-chatbot .chatbot-toggler span :last-child {   
+  opacidade : 1 ;
+}
+.chatbot { 
+  posição : fixa;
+  direita : 35px ;
+  inferior : 90px ;
+  largura : 420px ;
+  fundo : #fff ;
+  raio da borda : 15px ;
+  estouro : oculto;
+  opacidade : 0 ;
+  eventos de ponteiro : nenhum;
+  transformar : escala ( 0,5 ) ;
+  transform-origin : canto inferior direito;
+  caixa-sombra : 0 0 128px 0 rgba ( 0 , 0 , 0 , 0.1 ) ,   
+              0 32px 64px -48px rgba ( 0 , 0 , 0 , 0,5 ) ;   
+  transição : todos 0,1 s de facilidade;
+}
+corpo .show-chatbot .chatbot {  
+  opacidade : 1 ;
+  eventos de ponteiro : automático;
+  transformar : escala ( 1 ) ;
+}
+.cabeçalho do chatbot {  
+  preenchimento : 16px 0 ; 
+  posição : relativa;
+  alinhamento de texto : centro;
+  cor : #fff ;
+  fundo : #724ae8 ;
+  caixa-sombra : 0 2px 10px rgba ( 0 , 0 , 0 , 0.1 ) ;  
+}
+.chatbot cabeçalho span {   
+  posição : absoluta;
+  direita : 15px ;
+  topo : 50% ;
+  exibição : nenhuma;
+  cursor : ponteiro;
+  transformar : traduzirY ( -50% ) ;
+}
+cabeçalho h2 {  
+  tamanho da fonte : 1,4rem ;
+}
+.chatbot .caixa de bate-papo {  
+  estouro-y : auto;
+  altura : 510px ;
+  preenchimento : 30px 20px 100px ;  
+}
+.chatbot : onde ( .chatbox , textarea ) ::-webkit-scrollbar { 
+  largura : 6px ;
+}
+.chatbot : onde ( .chatbox , textarea ) ::-webkit-scrollbar-track { 
+  fundo : #fff ;
+  raio da borda : 25px ;
+}
+.chatbot : onde ( .chatbox , textarea ) ::-webkit-scrollbar-thumb { 
+  fundo : #ccc ;
+  raio da borda : 25px ;
+}
+.caixa de bate-papo .bate-papo {  
+  exibição : flexível;
+  estilo de lista : nenhum;
+}
+.caixa de bate-papo .saída {  
+  margem : 20px 0 ; 
+  justificar-conteúdo : flex-end;
+}
+.chatbox .entrada span {   
+  largura : 32px ;
+  altura : 32px ;
+  cor : #fff ;
+  cursor : padrão;
+  alinhamento de texto : centro;
+  altura da linha : 32px ;
+  alinhar-self : flex-end;
+  fundo : #724ae8 ;
+  raio da borda : 4px ;
+  margem : 0 10px 7px 0 ;   
+}
+.caixa de bate -papo .chat p {   
+  espaço em branco : pré-encapsulamento;
+  preenchimento : 12px 16px ; 
+  raio da borda : 10px 10px 0 10px ;   
+  largura máxima : 75% ;
+  cor : #fff ;
+  tamanho da fonte : 0,95rem ;
+  fundo : #724ae8 ;
+}
+.chatbox .entrada p {   
+  raio da borda : 10px 10px 10px 0 ;   
+}
+.caixa de bate -papo .chat p .erro {   
+  cor : #721c24 ;
+  fundo : #f8d7da ;
+}
+.chatbox .entrada p {   
+  cor : #000 ;
+  fundo : #f2f2f2 ;
+}
+.chatbot .entrada de bate-papo {  
+  exibição : flexível;
+  lacuna : 5px ;
+  posição : absoluta;
+  fundo : 0 ;
+  largura : 100% ;
+  fundo : #fff ;
+  preenchimento : 3px 20px ; 
+  borda superior : 1px sólido #ddd ;
+}
+.área de texto de entrada de bate-papo {  
+  altura : 55px ;
+  largura : 100% ;
+  borda : nenhuma;
+  esboço : nenhum;
+  redimensionar : nenhum;
+  altura máxima : 180px ;
+  preenchimento : 15px 15px 15px 0 ;   
+  tamanho da fonte : 0,95rem ;
+}
+.intervalo de entrada de bate- papo {  
+  alinhar-self : flex-end;
+  cor : #724ae8 ;
+  cursor : ponteiro;
+  altura : 55px ;
+  exibição : flexível;
+  alinhar-itens : centro;
+  visibilidade : oculto;
+  tamanho da fonte : 1,35rem ;
+}
+.chat-input textarea :válido ~ span {  
+  visibilidade : visível;
+}
+@ media ( largura máxima : 490px ) { 
+  .chatbot-toggler { 
+    direita : 20px ;
+    inferior : 20px ;
+  }
+  .chatbot { 
+    direita : 0 ;
+    fundo : 0 ;
+    altura : 100% ;
+    raio da borda : 0 ;
+    largura : 100% ;
+  }
+  .chatbot .caixa de bate-papo {  
+    altura : 90% ;
+    preenchimento : 25px 15px 100px ;  
+  }
+  .chatbot .entrada de bate-papo {  
+    preenchimento : 5px 15px ; 
+  }
+  .chatbot cabeçalho span {   
+    exibição : bloco;
+  }
+}
