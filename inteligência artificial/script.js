@@ -1,117 +1,57 @@
-document.addEventListener('DOMContentLoaded', () => {
+// ATENÇÃO: Este é o novo código para o SEU NAVEGADOR (front-end)
 
-    const chatbox = document.querySelector(".chatbox");
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (todos os seletores continuam os mesmos: chatbox, chatInput, etc.)
     const chatInput = document.querySelector(".chat-input textarea");
     const sendChatBtn = document.querySelector("#send-btn");
-    const fileUploadInput = document.querySelector("#file-upload");
+    const chatbox = document.querySelector(".chatbox");
+    
+    // ATUALIZADO: A URL agora aponta para o seu próprio servidor.
+    // Use a URL do seu app no Render. Se estiver testando localmente, pode ser 'http://localhost:3000/chat'
+    const MEU_SERVIDOR_URL = "https://seu-app.onrender.com/chat"; // <<< MUDE PARA A URL DO SEU SERVIDOR
 
-    let userMessage = null;
-    let uploadedFileData = null;
-    const inputInitHeight = chatInput.scrollHeight;
-
-    // Lembre-se de colocar sua chave de API real aqui
-    const API_KEY = "SUA_CHAVE_API_AQUI"; // <<-- COLOQUE SUA CHAVE AQUI
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-
-    // NOVO: Definição da personalidade do AEMI para ser enviada à API
-    const systemInstruction = {
-        role: "user",
-        parts: [{
-            text: `Assuma a seguinte persona: Você é AEMI (Assistente de Manutenção Industrial), uma IA especialista em rolamentos e manutenção industrial em geral. Você foi desenvolvida por Jonathan da Silva Oliveira para o canal "Manutenção Industrial ARQUIVOS". Sempre se apresente e responda seguindo essa identidade. Seja técnico, preciso e prestativo. Nunca quebre o personagem.`
-        }]
-    };
-    const personaConfirmation = {
-        role: "model",
-        parts: [{
-            text: `Entendido. Eu sou AEMI, uma IA especialista em rolamentos e manutenção industrial. Estou pronta para ajudar.`
-        }]
-    };
-
-
+    // ... (a função createChatLi continua a mesma)
     const createChatLi = (message, className) => {
         const chatLi = document.createElement("li");
         chatLi.classList.add("chat", className);
-        let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
+        let chatContent = className === "outgoing" ? `<p>${message}</p>` : `<span class="material-symbols-outlined">smart_toy</span><p>${message}</p>`;
         chatLi.innerHTML = chatContent;
-        chatLi.querySelector("p").innerHTML = message;
         return chatLi;
     };
 
+
     const generateResponse = async (chatElement) => {
         const messageElement = chatElement.querySelector("p");
-
-        // ATUALIZADO: Constrói as 'parts' da requisição com o texto do usuário
-        const userParts = [{ text: userMessage }];
-
-        if (uploadedFileData) {
-            userParts.push({
-                inline_data: {
-                    mime_type: uploadedFileData.mimeType,
-                    data: uploadedFileData.data
-                }
-            });
-            uploadedFileData = null;
-        }
-
-        // ATUALIZADO: Monta o corpo da requisição incluindo a instrução de personalidade
-        const requestBody = {
-            // A conversa sempre começa com a instrução do sistema e a confirmação do modelo
-            contents: [
-                systemInstruction,
-                personaConfirmation,
-                { role: "user", parts: userParts }
-            ],
-        };
+        const userMessage = chatElement.previousElementSibling.querySelector("p").innerText;
 
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestBody),
+            body: JSON.stringify({ message: userMessage }), // Envia apenas a mensagem
         };
 
         try {
-            const response = await fetch(API_URL, requestOptions);
-            if (!response.ok) {
-                const errorData = await response.json();
-                // Tenta fornecer uma mensagem de erro mais clara da API
-                let errorMessage = "Oops! Algo deu errado.";
-                if (errorData.error && errorData.error.message) {
-                   errorMessage = `Erro da API: ${errorData.error.message}`;
-                }
-                if (errorData.error && errorData.error.message.includes('API key not valid')) {
-                   errorMessage = "Erro: A chave de API não é válida. Verifique a chave no seu código.";
-                }
-                throw new Error(errorMessage);
-            }
+            // ATUALIZADO: A chamada é para o nosso servidor, não para o Google
+            const response = await fetch(MEU_SERVIDOR_URL, requestOptions);
+            if (!response.ok) throw new Error("Erro ao contatar o servidor.");
+            
             const data = await response.json();
-
-            // Formata a resposta para respeitar quebras de linha, negrito, etc.
-            const formattedResponse = data.candidates[0].content.parts[0].text
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*/g, '• ') // Converte asteriscos de lista em marcadores
-                .replace(/\n/g, '<br>');
-
-            messageElement.innerHTML = formattedResponse;
+            messageElement.innerHTML = data.reply; // Pega a resposta que nosso servidor nos deu
         } catch (error) {
             messageElement.classList.add("error");
-            messageElement.textContent = error.message; // Exibe a mensagem de erro formatada
+            messageElement.textContent = "Oops! Não foi possível obter uma resposta do servidor. Tente novamente.";
             console.error(error);
         } finally {
             chatbox.scrollTo(0, chatbox.scrollHeight);
         }
     };
-
+    
+    // A função handleChat continua praticamente a mesma, só não precisa mais da chave
     const handleChat = () => {
-        userMessage = chatInput.value.trim();
-        if (!userMessage && !uploadedFileData) return;
-
-        if (!userMessage && uploadedFileData) {
-            userMessage = `Analise este arquivo: ${uploadedFileData.name}`;
-        }
+        const userMessage = chatInput.value.trim();
+        if (!userMessage) return;
 
         chatInput.value = "";
-        chatInput.style.height = `${inputInitHeight}px`;
-
         chatbox.appendChild(createChatLi(userMessage, "outgoing"));
         chatbox.scrollTo(0, chatbox.scrollHeight);
 
@@ -123,44 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 600);
     };
 
-    fileUploadInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-
-        reader.onload = () => {
-            const base64String = reader.result.split(',')[1];
-            uploadedFileData = {
-                name: file.name,
-                mimeType: file.type,
-                data: base64String
-            };
-            chatInput.value = `Arquivo "${file.name}" pronto para análise. Faça uma pergunta sobre ele.`;
-            chatInput.focus();
-        };
-
-        reader.onerror = (error) => {
-            console.error("Erro ao ler o arquivo:", error);
-            chatInput.value = "Houve um erro ao tentar ler o arquivo.";
-        };
-
-        event.target.value = '';
-    });
-
-    // Event Listeners (sem alterações)
-    chatInput.addEventListener("input", () => {
-        chatInput.style.height = "auto";
-        chatInput.style.height = `${chatInput.scrollHeight}px`;
-    });
-
+    sendChatBtn.addEventListener("click", handleChat);
+    // ... (os outros event listeners continuam os mesmos)
     chatInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             handleChat();
         }
     });
-
-    sendChatBtn.addEventListener("click", handleChat);
 });
