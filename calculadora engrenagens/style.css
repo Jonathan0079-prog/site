@@ -1,0 +1,168 @@
+/* Importando fontes e usando variáveis de cor do projeto anterior */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 5px solid var(--cor-destaque);
+}
+
+header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
+}
+
+.main-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* --- ESTILOS DA ANIMAÇÃO --- */
+.animation-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Alinha pela base */
+    gap: 0px; /* Sem espaço entre as engrenagens */
+    margin-bottom: 2rem;
+    height: 200px; /* Altura fixa para o container da animação */
+}
+
+.gear-wrapper {
+    text-align: center;
+}
+
+.gear-wrapper label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: var(--cor-secundaria);
+}
+
+.gear {
+    background-color: #6c757d;
+    border-radius: 50%;
+    position: relative;
+    border: 5px solid #495057;
+
+    /* SVG embutido para os dentes da engrenagem. É mais leve que uma imagem. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,2 a2,2 0 0,1 0,4 L50,22 a2,2 0 0,1 0,4 L50,2 z' fill='%23495057' transform='rotate(0 50 50)'/%3E%3Cpath d='M50,2 a2,2 0 0,1 0,4 L50,22 a2,2 0 0,1 0,4 L50,2 z' fill='%23495057' transform='rotate(20 50 50)'/%3E%3Cpath d='M50,2 a2,2 0 0,1 0,4 L50,22 a2,2 0 0,1 0,4 L50,2 z' fill='%23495057' transform='rotate(40 50 50)'/%3E%3Cpath d='M50,2 a2,2 0 0,1 0,4 L50,22 a2,2 0 0,1 0,4 L50,2 z' fill='%23495057' transform='rotate(60 50 50)'/%3E%3Cpath d='M50,2 a2,2 0 0,1 0,4 L50,22 a2,2 0 0,1 0,4 L50,2 z' fill='%23495057' transform='rotate(80 50 50)'/%3E%3Cpath d='M50,2 a2,2 0 0,1 0,4 L50,22 a2,2 0 0,1 0,4 L50,2 z' fill='%23495057' transform='rotate(100 50 50)'/%3E%3Cpath d='M50,2 a2,2 0 0,1 0,4 L50,22 a2,2 0 0,1 0,4 L50,2 z' fill='%23495057' transform='rotate(120 50 50)'/%3E%3Cpath d='M50,2 a2,2 0 0,1 0,4 L50,22 a2,2 0 0,1 0,4 L50,2 z' fill='%23495057' transform='rotate(140 50 50)'/%3E%3Cpath d='M50,2 a2,2 0 0,1 0,4 L50,22 a2,2 0 0,1 0,4 L50,2 z' fill='%23495057' transform='rotate(160 50 50)'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23f8f9fa'/%3E%3C/svg%3E");
+    
+    /* Animação de rotação */
+    animation-name: rotate;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: paused; /* A animação começa pausada */
+}
+
+/* Keyframes para a animação de rotação */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* --- ESTILOS DA CALCULADORA --- */
+.calculator-container, .resultado-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.input-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.1rem;
+}
+
+#calcular-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: bold;
+    background-color: var(--cor-sucesso);
+    transition: background-color 0.2s ease;
+    margin-top: 1.5rem;
+}
+
+#calcular-btn:hover {
+    opacity: 0.9;
+}
+
+.resultado-container {
+    margin-top: 2rem;
+    text-align: center;
+    border-top: 5px solid var(--cor-sucesso);
+}
+
+.resultado-grid {
+    display: flex;
+    justify-content: space-around;
+}
+
+.resultado-item h4 {
+    color: var(--cor-secundaria);
+    margin-bottom: 0.5rem;
+}
+
+.resultado-item p {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--cor-primaria);
+}
+
+.erro-container {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #f8d7da;
+    border: 1px solid var(--cor-erro);
+    color: var(--cor-erro);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
