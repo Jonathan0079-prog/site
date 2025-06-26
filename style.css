@@ -182,40 +182,171 @@ footer {
         font-size: 2rem;
     }
     #banner h2 {
-        font-size: 2.2rem;
-    }
-    #banner p {
-        font-size: 1.2rem;
-    }
-    #cursos h2 {
-        font-size: 2rem;
-    }
+/* --- Reset Básico e Configurações Gerais --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Para celulares em modo retrato */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* --- Cabeçalho e Navegação (MODIFICADO) --- */
+header {
+    background-color: #1a2b40;
+    color: #ffffff;
+    padding: 1rem 0;
+    border-bottom: 4px solid #f39c12;
+    position: relative; /* Adicionado para posicionar o botão */
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+}
+
+/* NOVO: Estilo para o botão do menu */
+.menu-toggler {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+}
+
+.menu-toggler .material-icons {
+    font-size: 36px;
+    transition: transform 0.3s ease;
+}
+
+/* MODIFICADO: Estilos da navegação para o menu lateral */
+header nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #1f3552;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.4);
+    z-index: 1000;
+    padding-top: 80px;
+    /* Esconde o menu fora da tela */
+    transform: translateX(-100%);
+    transition: transform 0.4s ease-in-out;
+}
+
+/* Classe que será adicionada via JS para mostrar o menu */
+header nav.visible {
+    transform: translateX(0);
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column; /* Links em coluna */
+    align-items: flex-start;
+    gap: 10px;
+    padding: 0 20px;
+}
+
+header nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 15px 10px;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+    transition: background-color 0.3s ease, padding-left 0.3s ease;
+}
+
+header nav a:hover {
+    background-color: #f39c12;
+    color: #1a2b40;
+    padding-left: 25px;
+}
+
+/* --- Seção de Banner --- */
+#banner {
+    background: linear-gradient(rgba(26, 43, 64, 0.8), rgba(26, 43, 64, 0.8)), url('https://via.placeholder.com/1920x500.png?text=Fundo+Industrial') no-repeat center center/cover;
+    color: #ffffff;
+    text-align: center;
+    padding: 4rem 1rem;
+}
+
+#banner h2 { font-size: 2.8rem; margin-bottom: 1rem; }
+#banner p { font-size: 1.4rem; }
+
+/* --- Seção de Cursos --- */
+#cursos { padding: 3rem 0; }
+#cursos h2 { text-align: center; font-size: 2.5rem; margin-bottom: 2.5rem; color: #1a2b40; }
+.cursos-container { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+
+.curso-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+.curso-card:hover { transform: translateY(-10px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
+.curso-card.visible { opacity: 1; transform: translateY(0); }
+.curso-card img { width: 100%; height: 200px; object-fit: cover; }
+.curso-info { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+.curso-info h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #1a2b40; }
+.curso-info p { flex-grow: 1; margin-bottom: 1.5rem; }
+
+.btn {
+    display: inline-block;
+    background-color: #f39c12;
+    color: #1a2b40;
+    padding: 12px 25px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.btn:hover { background-color: #e67e22; transform: scale(1.05); }
+
+/* --- Rodapé --- */
+footer { background-color: #1a2b40; color: #aeb9c7; text-align: center; padding: 1.5rem 0; margin-top: 2rem; }
+
+/* --- Media Queries (Responsividade) --- */
+@media (max-width: 992px) {
+    header h1 { font-size: 2rem; }
+    #banner h2 { font-size: 2.2rem; }
+    #banner p { font-size: 1.2rem; }
+    #cursos h2 { font-size: 2rem; }
+}
+
 @media (max-width: 768px) {
-    .container {
-        width: 95%; /* Aumenta o espaço útil */
-    }
-
-    header nav ul {
-        flex-direction: column; /* Menu vira uma coluna */
-        align-items: center; /* Centraliza os itens do menu */
-        gap: 10px;
-    }
-
-    header nav a {
-        display: block;
-        width: 100%;
-        text-align: center;
-    }
-
-    #banner {
-        padding: 3rem 1rem;
-    }
-
-    .curso-card {
-        width: 100%; /* Ocupa toda a largura disponível */
-        max-width: 400px; /* Mas não mais que 400px, para não ficar gigante */
-    }
+    header h1 { font-size: 1.5rem; text-align: right; padding-right: 20px; }
+    .container { width: 95%; }
+    .curso-card { width: 100%; max-width: 400px; }
 }
+
