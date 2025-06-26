@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { tamanho: 'M18', classe: '8.8', torque_nm_seco: 290, fator_lub: 0.8 },
             { tamanho: 'M20', classe: '8.8', torque_nm_seco: 410, fator_lub: 0.8 },
             { tamanho: 'M22', classe: '8.8', torque_nm_seco: 550, fator_lub: 0.8 },
-            { tamanho: 'M24', classe: '8.8', torque_nm_seco: 710, fator_lub: 0.8 },
+            { tamanho: 'M24', classe: '8.8', torque_nm_seco: 710, fator_lub: 0.8 }, // <-- VÍRGULA ADICIONADA AQUI
             { tamanho: 'M27', classe: '8.8', torque_nm_seco: 1150, fator_lub: 0.8 },
             { tamanho: 'M30', classe: '8.8', torque_nm_seco: 1550, fator_lub: 0.8 },
             { tamanho: 'M33', classe: '8.8', torque_nm_seco: 2100, fator_lub: 0.8 },
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { tamanho: '5/8"', classe: 'Grau 8', torque_nm_seco: 300, fator_lub: 0.75 },
             { tamanho: '3/4"', classe: 'Grau 8', torque_nm_seco: 520, fator_lub: 0.75 },
             { tamanho: '7/8"', classe: 'Grau 8', torque_nm_seco: 840, fator_lub: 0.75 },
-            { tamanho: '1"', classe: 'Grau 8', torque_nm_seco: 1250, fator_lub: 0.75 },
+            { tamanho: '1"', classe: 'Grau 8', torque_nm_seco: 1250, fator_lub: 0.75 }, // <-- VÍRGULA ADICIONADA AQUI
             { tamanho: '1 1/8"', classe: 'Grau 8', torque_nm_seco: 1800, fator_lub: 0.75 },
             { tamanho: '1 1/4"', classe: 'Grau 8', torque_nm_seco: 2500, fator_lub: 0.75 },
             { tamanho: '1 1/2"', classe: 'Grau 8', torque_nm_seco: 4300, fator_lub: 0.75 },
@@ -167,3 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- EVENT LISTENERS ---
     sistemaRadios.forEach(radio => radio.addEventListener('change', atualizarOpcoes));
     tamanhoSelect.addEventListener('change', atualizarClasses);
+    calcularBtn.addEventListener('click', calcularTorque);
+
+    // --- INICIALIZAÇÃO ---
+    // Preenche as opções do sistema métrico ao carregar a página
+    atualizarOpcoes();
+});
