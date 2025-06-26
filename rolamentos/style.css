@@ -344,6 +344,24 @@ header p {
 
 /* Adicionando alguns estilos básicos para a linha divisória (hr) que não estavam no novo CSS */
 hr {
+
+    .botao-download {
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white;             /* Cor do texto branca */
+    padding: 15px 25px;       /* Espaçamento interno */
+    text-align: center;       /* Centraliza o texto */
+    text-decoration: none;    /* Remove o sublinhado do link */
+    display: inline-block;    /* Permite definir padding e outras propriedades de bloco */
+    font-size: 16px;          /* Tamanho da fonte */
+    border-radius: 8px;       /* Bordas arredondadas */
+    cursor: pointer;          /* Muda o cursor para uma mãozinha */
+    transition: background-color 0.3s; /* Efeito suave na mudança de cor */
+}
+
+/* Efeito ao passar o mouse por cima */
+.botao-download:hover {
+    background-color: #45a049;
+}
     border: 0;
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
