@@ -19,197 +19,12 @@ body {
     padding: 20px 0;
 }
 
-/* --- Cabeçalho e Navegação --- */
-header {
-    background-color: #1a2b40; /* Azul escuro industrial */
-    color: #ffffff;
-    padding: 1rem 0;
-    border-bottom: 4px solid #f39c12; /* Laranja/âmbar industrial */
-}
-
-header h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-}
-
-header nav {
-    margin-top: 1rem;
-}
-
-header nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-header nav a {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1rem;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-header nav a:hover {
-    background-color: #f39c12;
-    color: #1a2b40;
-}
-
-/* --- Seção de Banner --- */
-#banner {
-    background: linear-gradient(rgba(26, 43, 64, 0.8), rgba(26, 43, 64, 0.8)), url('https://via.placeholder.com/1920x500.png?text=Fundo+Industrial') no-repeat center center/cover;
-    color: #ffffff;
-    text-align: center;
-    padding: 4rem 1rem; /* Adicionado padding lateral */
-}
-
-#banner h2 {
-    font-size: 2.8rem;
-    margin-bottom: 1rem;
-}
-
-#banner p {
-    font-size: 1.4rem;
-}
-
-/* --- Seção de Cursos --- */
-#cursos {
-    padding: 3rem 0;
-}
-
-#cursos h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 2.5rem;
-    color: #1a2b40;
-}
-
-.cursos-container {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.curso-card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-    /* Animação de entrada */
-    opacity: 0;
-    transform: translateY(30px);
-}
-
-.curso-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-.curso-card.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.curso-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.curso-info {
-    padding: 1.5rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.curso-info h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: #1a2b40;
-}
-
-.curso-info p {
-    flex-grow: 1; /* Faz o parágrafo ocupar o espaço disponível */
-    margin-bottom: 1.5rem;
-}
-
-.btn {
-    display: inline-block;
-    background-color: #f39c12;
-    color: #1a2b40;
-    padding: 12px 25px;
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn:hover {
-    background-color: #e67e22; /* Laranja mais escuro */
-    transform: scale(1.05);
-}
-
-/* --- Rodapé --- */
-footer {
-    background-color: #1a2b40;
-    color: #aeb9c7;
-    text-align: center;
-    padding: 1.5rem 0;
-    margin-top: 2rem;
-}
-
-
-/* ======================================================== */
-/* === INÍCIO DAS REGRAS ADAPTATIVAS PARA TELAS MENORES === */
-/* ======================================================== */
-
-/* Para tablets e celulares em modo paisagem */
-@media (max-width: 992px) {
-    header h1 {
-        font-size: 2rem;
-    }
-    #banner h2 {
-/* --- Reset Básico e Configurações Gerais --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    line-height: 1.6;
-}
-
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 0;
-}
-
-/* --- Cabeçalho e Navegação (MODIFICADO) --- */
+/* --- Cabeçalho (Simplificado) --- */
 header {
     background-color: #1a2b40;
     color: #ffffff;
     padding: 1rem 0;
     border-bottom: 4px solid #f39c12;
-    position: relative; /* Adicionado para posicionar o botão */
     text-align: center;
 }
 
@@ -218,18 +33,29 @@ header h1 {
     letter-spacing: 2px;
 }
 
-/* NOVO: Estilo para o botão do menu */
+/* --- NOVO: Botão de Menu Flutuante --- */
 .menu-toggler {
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%);
-    background: none;
+    position: fixed; /* Fixo na tela */
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: #f39c12; /* Cor de destaque */
+    color: #1a2b40;
     border: none;
-    color: white;
+    border-radius: 50%; /* Deixa o botão redondo */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     cursor: pointer;
-    padding: 10px;
-    z-index: 1001;
+    z-index: 1001; /* Garante que fique acima de tudo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.menu-toggler:hover {
+    transform: scale(1.1);
+    background-color: #e67e22;
 }
 
 .menu-toggler .material-icons {
@@ -237,103 +63,70 @@ header h1 {
     transition: transform 0.3s ease;
 }
 
-/* MODIFICADO: Estilos da navegação para o menu lateral */
-header nav {
+/* --- NOVO: Painel de Navegação Lateral Animado --- */
+nav#main-nav {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 300px;
+    right: 0; /* Posicionado à direita */
+    width: 320px; /* Um pouco mais largo */
     height: 100%;
     background-color: #1f3552;
-    box-shadow: 4px 0 10px rgba(0,0,0,0.4);
+    box-shadow: -4px 0 10px rgba(0,0,0,0.4);
     z-index: 1000;
-    padding-top: 80px;
-    /* Esconde o menu fora da tela */
-    transform: translateX(-100%);
+    padding-top: 60px;
+    /* Esconde o menu fora da tela à direita */
+    transform: translateX(100%);
     transition: transform 0.4s ease-in-out;
 }
 
 /* Classe que será adicionada via JS para mostrar o menu */
-header nav.visible {
+nav#main-nav.visible {
     transform: translateX(0);
 }
 
-header nav ul {
+nav#main-nav ul {
     list-style: none;
     display: flex;
-    flex-direction: column; /* Links em coluna */
-    align-items: flex-start;
+    flex-direction: column;
     gap: 10px;
     padding: 0 20px;
 }
 
-header nav a {
+nav#main-nav a {
     color: #ffffff;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.2rem;
-    padding: 15px 10px;
+    padding: 15px;
     border-radius: 5px;
     display: block;
     width: 100%;
     transition: background-color 0.3s ease, padding-left 0.3s ease;
 }
 
-header nav a:hover {
+nav#main-nav a:hover {
     background-color: #f39c12;
     color: #1a2b40;
-    padding-left: 25px;
+    padding-left: 30px;
 }
 
-/* --- Seção de Banner --- */
-#banner {
-    background: linear-gradient(rgba(26, 43, 64, 0.8), rgba(26, 43, 64, 0.8)), url('https://via.placeholder.com/1920x500.png?text=Fundo+Industrial') no-repeat center center/cover;
-    color: #ffffff;
-    text-align: center;
-    padding: 4rem 1rem;
-}
 
+/* --- Seções Banner, Cursos, Rodapé (sem alterações) --- */
+#banner { background: linear-gradient(rgba(26, 43, 64, 0.8), rgba(26, 43, 64, 0.8)), url('https://via.placeholder.com/1920x500.png?text=Fundo+Industrial') no-repeat center center/cover; color: #ffffff; text-align: center; padding: 4rem 1rem; }
 #banner h2 { font-size: 2.8rem; margin-bottom: 1rem; }
 #banner p { font-size: 1.4rem; }
-
-/* --- Seção de Cursos --- */
 #cursos { padding: 3rem 0; }
 #cursos h2 { text-align: center; font-size: 2.5rem; margin-bottom: 2.5rem; color: #1a2b40; }
 .cursos-container { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
-
-.curso-card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
-    opacity: 0;
-    transform: translateY(30px);
-}
+.curso-card { background-color: #ffffff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); width: 350px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease; opacity: 0; transform: translateY(30px); }
 .curso-card:hover { transform: translateY(-10px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
 .curso-card.visible { opacity: 1; transform: translateY(0); }
 .curso-card img { width: 100%; height: 200px; object-fit: cover; }
 .curso-info { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
 .curso-info h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #1a2b40; }
 .curso-info p { flex-grow: 1; margin-bottom: 1.5rem; }
-
-.btn {
-    display: inline-block;
-    background-color: #f39c12;
-    color: #1a2b40;
-    padding: 12px 25px;
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+.btn { display: inline-block; background-color: #f39c12; color: #1a2b40; padding: 12px 25px; text-align: center; text-decoration: none; font-weight: bold; border-radius: 5px; transition: background-color 0.3s ease, transform 0.2s ease; }
 .btn:hover { background-color: #e67e22; transform: scale(1.05); }
-
-/* --- Rodapé --- */
 footer { background-color: #1a2b40; color: #aeb9c7; text-align: center; padding: 1.5rem 0; margin-top: 2rem; }
 
 /* --- Media Queries (Responsividade) --- */
@@ -343,10 +136,9 @@ footer { background-color: #1a2b40; color: #aeb9c7; text-align: center; padding:
     #banner p { font-size: 1.2rem; }
     #cursos h2 { font-size: 2rem; }
 }
-
 @media (max-width: 768px) {
-    header h1 { font-size: 1.5rem; text-align: right; padding-right: 20px; }
+    header h1 { font-size: 1.5rem; padding: 0 10px; }
     .container { width: 95%; }
     .curso-card { width: 100%; max-width: 400px; }
+    nav#main-nav { width: 280px; } /* Menu um pouco mais estreito em celulares */
 }
-
