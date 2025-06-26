@@ -1,0 +1,142 @@
+/* Importando fontes e usando variáveis de cor do projeto anterior */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 5px solid var(--cor-destaque);
+}
+
+header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
+}
+
+.main-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* --- ESTILOS DE COMPONENTES DAS FERRAMENTAS (JÁ EXISTENTES) --- */
+
+.calculator-container, .resultado-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+h2, h3 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--cor-primaria);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.input-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.1rem;
+}
+
+/* --- NOVOS ESTILOS PARA A PÁGINA PRINCIPAL (index.html) --- */
+
+.tool-list ul {
+    list-style: none; /* Remove os pontos da lista */
+    padding: 0;
+}
+
+.tool-list li {
+    margin-bottom: 1rem;
+}
+
+.tool-list a {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--cor-texto);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-left: 5px solid var(--cor-secundaria);
+}
+
+.tool-list a:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    border-left-color: var(--cor-destaque);
+}
+
+.tool-list .tool-icon {
+    font-size: 2.5rem;
+    color: var(--cor-primaria);
+    flex-shrink: 0; /* Impede que o ícone encolha */
+}
+
+.tool-list .tool-info {
+    flex-grow: 1; /* Faz esta div ocupar o espaço restante */
+}
+
+.tool-list .tool-info h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem;
+    color: var(--cor-primaria);
+    margin: 0 0 0.25rem 0;
+    text-align: left;
+    border: none; /* Remove a borda do h2 padrão */
+    padding: 0;
+}
+
+.tool-list .tool-info p {
+    font-size: 1rem;
+    color: #6c757d;
+    margin: 0;
+}
+
+.tool-list .tool-arrow {
+    font-size: 1.5rem;
+    color: #ced4da;
+    transition: color 0.2s ease-in-out;
+}
+
+.tool-list a:hover .tool-arrow {
+    color: var(--cor-destaque);
+}
