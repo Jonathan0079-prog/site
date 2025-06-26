@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ATUALIZADO: A URL agora aponta para o seu próprio servidor.
     // Use a URL do seu app no Render. Se estiver testando localmente, pode ser 'http://localhost:3000/chat'
-    const MEU_SERVIDOR_URL = "https://seu-app.onrender.com/chat"; // <<< MUDE PARA A URL DO SEU SERVIDOR
+    const MEU_SERVIDOR_URL = "https://api-oqfw.onrender.com"; // <<< MUDE PARA A URL DO SEU SERVIDOR
 
     // ... (a função createChatLi continua a mesma)
     const createChatLi = (message, className) => {
