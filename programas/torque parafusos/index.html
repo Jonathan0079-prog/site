@@ -3,63 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Relação de Engrenagens</title>
+    <title>Calculadora de Torque de Aperto</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Calculadora de Relação de Engrenagens</h1>
-        <p>Veja a transmissão de movimento em tempo real</p>
+        <h1>Calculadora de Torque de Aperto para Parafusos</h1>
+        <p>Calcule o torque para sistemas Métricos e em Polegadas</p>
     </header>
 
     <main class="main-container">
-        
-        <section class="animation-container">
-            <div class="gear-wrapper">
-                <div class="gear" id="gear1"></div>
-                <label>Z1 (Motora)</label>
-            </div>
-            <div class="gear-wrapper">
-                <div class="gear" id="gear2"></div>
-                <label>Z2 (Movida)</label>
-            </div>
-        </section>
-
         <section class="calculator-container">
-            <h2>Parâmetros do Sistema</h2>
-            <div class="input-grid">
-                <div class="input-group">
-                    <label for="dentes-z1">Dentes da Eng. Motora (Z1):</label>
-                    <input type="number" id="dentes-z1" min="1" placeholder="Ex: 20">
-                </div>
-                <div class="input-group">
-                    <label for="dentes-z2">Dentes da Eng. Movida (Z2):</label>
-                    <input type="number" id="dentes-z2" min="1" placeholder="Ex: 60">
-                </div>
-                <div class="input-group">
-                    <label for="rpm-entrada">RPM de Entrada (Motor):</label>
-                    <input type="number" id="rpm-entrada" min="0" placeholder="Ex: 1200">
+            <h2>Parâmetros do Parafuso</h2>
+
+            <div class="input-group">
+                <label>Sistema de Medida:</label>
+                <div class="radio-group">
+                    <input type="radio" id="sistema-metrico" name="sistema" value="metrico" checked>
+                    <label for="sistema-metrico">Métrico (mm)</label>
+                    <input type="radio" id="sistema-polegadas" name="sistema" value="polegadas">
+                    <label for="sistema-polegadas">Polegadas (in)</label>
                 </div>
             </div>
-            <button id="calcular-btn">Calcular e Animar</button>
+
+            <div class="input-group">
+                <label for="tamanho-parafuso">Tamanho do Parafuso:</label>
+                <select id="tamanho-parafuso"></select>
+            </div>
+
+            <div class="input-group">
+                <label for="classe-parafuso">Classe / Grau de Resistência:</label>
+                <select id="classe-parafuso"></select>
+            </div>
+
+             <div class="input-group">
+                <label>Condição da Rosca:</label>
+                <div class="radio-group">
+                    <input type="radio" id="condicao-seca" name="condicao" value="seca" checked>
+                    <label for="condicao-seca">Seca</label>
+                    <input type="radio" id="condicao-lubrificada" name="condicao" value="lubrificada">
+                    <label for="condicao-lubrificada">Lubrificada</label>
+                </div>
+            </div>
+
+            <button id="calcular-btn">Calcular Torque</button>
         </section>
 
         <section id="resultado-container" class="resultado-container hidden">
-            <h3>Resultados</h3>
-            <div class="resultado-grid">
-                <div class="resultado-item">
-                    <h4>Relação de Transmissão:</h4>
-                    <p><span id="resultado-relacao">--</span></p>
-                </div>
-                <div class="resultado-item">
-                    <h4>RPM de Saída:</h4>
-                    <p><span id="resultado-rpm">--</span> RPM</p>
-                </div>
+            <h3>Torque de Aperto Recomendado</h3>
+            <div class="resultado-display">
+                <p class="torque-nm"><span id="torque-resultado-nm">--</span> N·m</p>
+                <p class="torque-lbf">(<span id="torque-resultado-lbf">--</span> lb·ft)</p>
             </div>
+             <p class="aviso-dados">Valores baseados em coeficientes de atrito padrão. Sempre consulte o manual técnico do seu equipamento.</p>
         </section>
-
+        
         <div id="erro-container" class="erro-container hidden">
-            <p>Por favor, insira valores válidos para o número de dentes (maiores que zero).</p>
+            <p>Não foi possível calcular. Verifique se todos os campos estão selecionados.</p>
         </div>
 
     </main>
