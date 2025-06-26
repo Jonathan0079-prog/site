@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Torque de Aperto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Calculadora de Torque de Aperto para Parafusos</h1>
+        <p>Calcule o torque para sistemas Métricos e em Polegadas</p>
+    </header>
+
+    <main class="main-container">
+        <section class="calculator-container">
+            <h2>Parâmetros do Parafuso</h2>
+
+            <div class="input-group">
+                <label>Sistema de Medida:</label>
+                <div class="radio-group">
+                    <input type="radio" id="sistema-metrico" name="sistema" value="metrico" checked>
+                    <label for="sistema-metrico">Métrico (mm)</label>
+                    <input type="radio" id="sistema-polegadas" name="sistema" value="polegadas">
+                    <label for="sistema-polegadas">Polegadas (in)</label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="tamanho-parafuso">Tamanho do Parafuso:</label>
+                <select id="tamanho-parafuso"></select>
+            </div>
+
+            <div class="input-group">
+                <label for="classe-parafuso">Classe / Grau de Resistência:</label>
+                <select id="classe-parafuso"></select>
+            </div>
+
+             <div class="input-group">
+                <label>Condição da Rosca:</label>
+                <div class="radio-group">
+                    <input type="radio" id="condicao-seca" name="condicao" value="seca" checked>
+                    <label for="condicao-seca">Seca</label>
+                    <input type="radio" id="condicao-lubrificada" name="condicao" value="lubrificada">
+                    <label for="condicao-lubrificada">Lubrificada</label>
+                </div>
+            </div>
+
+            <button id="calcular-btn">Calcular Torque</button>
+        </section>
+
+        <section id="resultado-container" class="resultado-container hidden">
+            <h3>Torque de Aperto Recomendado</h3>
+            <div class="resultado-display">
+                <p class="torque-nm"><span id="torque-resultado-nm">--</span> N·m</p>
+                <p class="torque-lbf">(<span id="torque-resultado-lbf">--</span> lb·ft)</p>
+            </div>
+             <p class="aviso-dados">Valores baseados em coeficientes de atrito padrão. Sempre consulte o manual técnico do seu equipamento.</p>
+        </section>
+        
+        <div id="erro-container" class="erro-container hidden">
+            <p>Não foi possível calcular. Verifique se todos os campos estão selecionados.</p>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
