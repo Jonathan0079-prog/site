@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const perguntas = [
         {
             pergunta: "Para que serve a inspeção em ambientes industriais, mesmo quando os equipamentos aparentam estar funcionando normalmente?",
-            opcoes: ["Para garantir que a máquina fique desligada por mais tempo.", "Para acelerar o processo de produção.", "Para detectar sinais de falhas antes que causem paradas inesperadas.", "Para aumentar o custo da manutenção corretiva."],
+            opcoes: ["Para garantir que a máquina fique desligada por mais tempo.", "Para acelerar o processo de produção.", "Para aumentar o custo da manutenção corretiva.", "Para detectar sinais de falhas antes que causem paradas inesperadas."],
             resposta: "Para detectar sinais de falhas antes que causem paradas inesperadas."
         },
         {
@@ -50,12 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             pergunta: "Qual ferramenta avançada é usada para detectar trincas internas e vazamentos que o ouvido humano não capta?",
-            opcoes: ["Analisador de Vibração", "Termografia", "Inspeção por Ultrassom", "Análise de óleo"],
+            opcoes: ["Analisador de Vibração", "Termografia", "Análise de óleo", "Inspeção por Ultrassom"],
             resposta: "Inspeção por Ultrassom"
         },
         {
             pergunta: "Qual é a principal defesa contra o desgaste de componentes mecânicos?",
-            opcoes: ["Aumento da velocidade de operação.", "Uso de materiais mais leves.", "Lubrificação correta.", "Diminuição da frequência de inspeção."],
+            opcoes: ["Aumento da velocidade de operação.", "Lubrificação correta.", "Uso de materiais mais leves.", "Diminuição da frequência de inspeção."],
             resposta: "Lubrificação correta."
         },
         {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             pergunta: "Qual é o principal objetivo de se criar um Plano de Inspeção?",
-            opcoes: ["Aumentar o tempo de parada não programada.", "Reduzir a frequência de calibração das ferramentas.", "Organizar e padronizar as inspeções, garantindo que nenhuma etapa seja esquecida.", "Realizar inspeções apenas quando a máquina já falhou."],
+            opcoes: ["Organizar e padronizar as inspeções, garantindo que nenhuma etapa seja esquecida.", "Aumentar o tempo de parada não programada.", "Reduzir a frequência de calibração das ferramentas.", "Realizar inspeções apenas quando a máquina já falhou."],
             resposta: "Organizar e padronizar as inspeções, garantindo que nenhuma etapa seja esquecida."
         },
     ];
