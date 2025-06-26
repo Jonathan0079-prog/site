@@ -1,15 +1,14 @@
-// Ficheiro: script.js (Versão Simples, SEM STREAMING)
+// Ficheiro: script.js (VERSÃO DE DEPURAÇÃO)
 
 const chatbox = document.querySelector(".chatbox");
 const chatInput = document.querySelector(".chat-input textarea");
-const sendChatBtn = document.querySelector("#send-btn"); // Selecionando o botão novamente
+const sendChatBtn = document.querySelector("#send-btn");
 const fileUploadInput = document.querySelector("#file-upload");
 
 let userMessage = null;
 let uploadedFileData = null;
 const inputInitHeight = chatInput.scrollHeight;
 
-// URL aponta para a rota do nosso servidor
 const API_URL = "https://api-oqfw.onrender.com/chat";
 
 const createChatLi = (message, className) => {
@@ -21,9 +20,16 @@ const createChatLi = (message, className) => {
     return chatLi;
 };
 
-// Função de resposta SIMPLES
+// Função de resposta COM MENSAGENS DE STATUS
 const generateResponse = async (chatElement) => {
     const messageElement = chatElement.querySelector("p");
+    
+    const updateStatus = (text) => {
+        console.log(text);
+        messageElement.textContent = text;
+    };
+
+    updateStatus("Iniciando processo...");
 
     const requestParts = [{ text: userMessage }];
     if (uploadedFileData) {
@@ -33,7 +39,6 @@ const generateResponse = async (chatElement) => {
         uploadedFileData = null;
     }
     const requestBody = { contents: [{ parts: requestParts }] };
-
     const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -41,13 +46,17 @@ const generateResponse = async (chatElement) => {
     };
 
     try {
+        updateStatus("Contactando o servidor...");
         const response = await fetch(API_URL, requestOptions);
+        updateStatus("Servidor contactado. A aguardar resposta...");
 
         if (!response.ok) {
+            updateStatus("O servidor respondeu, mas com um erro.");
             const errorData = await response.json();
-            throw new Error(errorData.error || "O servidor respondeu com um erro.");
+            throw new Error(errorData.error || `Erro ${response.status}`);
         }
         
+        updateStatus("Servidor respondeu com sucesso. A processar dados...");
         const data = await response.json();
         const formattedResponse = data.candidates[0].content.parts[0].text
                                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -55,8 +64,8 @@ const generateResponse = async (chatElement) => {
         messageElement.innerHTML = formattedResponse;
 
     } catch (error) {
+        updateStatus(`ERRO FINAL: ${error.message}`);
         messageElement.classList.add("error");
-        messageElement.textContent = `Oops! Ocorreu um erro: ${error.message}`;
         console.error(error);
     } finally {
         chatbox.scrollTo(0, chatbox.scrollHeight);
@@ -78,14 +87,14 @@ const handleChat = () => {
     chatbox.scrollTo(0, chatbox.scrollHeight);
 
     setTimeout(() => {
-        const incomingChatLi = createChatLi("Analisando...", "incoming");
+        const incomingChatLi = createChatLi("A iniciar...", "incoming");
         chatbox.appendChild(incomingChatLi);
         chatbox.scrollTo(0, chatbox.scrollHeight);
         generateResponse(incomingChatLi);
     }, 600);
 };
 
-// Adicionando os ouvintes de evento novamente para garantir
+// Adicionando os ouvintes de evento
 fileUploadInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -118,5 +127,3 @@ chatInput.addEventListener("keydown", (e) => {
 });
 
 sendChatBtn.addEventListener("click", handleChat);
-
-
