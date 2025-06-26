@@ -1,9 +1,9 @@
-// Ficheiro: script.js
+// Ficheiro: script.js - VERSÃO CORRIGIDA PARA O BOTÃO
 
 const chatbox = document.querySelector(".chatbox");
 const chatInput = document.querySelector(".chat-input textarea");
-const sendChatBtn = document.querySelector("#send-btn");
 const fileUploadInput = document.querySelector("#file-upload");
+// Já não precisamos de selecionar o botão aqui, pois a chamada é feita no HTML
 
 let userMessage = null;
 let uploadedFileData = null;
@@ -11,6 +11,7 @@ const inputInitHeight = chatInput.scrollHeight;
 
 const API_URL = "https://api-oqfw.onrender.com/chat";
 
+// Esta função continua igual
 const createChatLi = (message, className) => {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", className);
@@ -20,6 +21,7 @@ const createChatLi = (message, className) => {
     return chatLi;
 };
 
+// Esta função continua igual
 const generateResponse = async (chatElement) => {
     const messageElement = chatElement.querySelector("p");
     messageElement.textContent = "";
@@ -69,7 +71,7 @@ const generateResponse = async (chatElement) => {
                                 chatbox.scrollTo(0, chatbox.scrollHeight);
                             }
                         } catch (e) {
-                            // Ignora erros de parsing de JSON
+                            // Ignora erros
                         }
                     }
                 }
@@ -84,6 +86,7 @@ const generateResponse = async (chatElement) => {
     }
 };
 
+// A função handleChat está agora acessível globalmente para o 'onclick' do HTML
 const handleChat = () => {
     userMessage = chatInput.value.trim();
     if (!userMessage && !uploadedFileData) return;
@@ -105,6 +108,8 @@ const handleChat = () => {
         generateResponse(incomingChatLi);
     }, 600);
 };
+
+// --- OUVINTES DE EVENTOS RESTANTES ---
 
 fileUploadInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
@@ -137,4 +142,3 @@ chatInput.addEventListener("keydown", (e) => {
     }
 });
 
-sendChatBtn.addEventListener("click", handleChat);
