@@ -33,5 +33,57 @@
     </div>
 
     <script src="script.js"></script>
+
+    <script>
+        // Espera a página HTML estar completamente carregada
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // A URL completa da sua API no Render
+            const apiUrl = 'https://api-oqfw.onrender.com/minha-rota-especial';
+
+            const chatbox = document.querySelector(".chatbox");
+
+            // Função para "buscar" os dados da sua API e mostrar no chat
+            async function verificarStatusDaApi() {
+                try {
+                    // Faz o pedido para a sua API usando fetch
+                    const resposta = await fetch(apiUrl);
+
+                    // Se a resposta do servidor não for "ok", lança um erro
+                    if (!resposta.ok) {
+                        throw new Error(`O servidor respondeu com um erro: ${resposta.status}`);
+                    }
+                    
+                    // Converte a resposta para um objeto JavaScript (JSON)
+                    const dados = await resposta.json();
+                    
+                    // --- SUCESSO! ---
+                    // Cria uma nova mensagem de status no chat
+                    const statusMessage = document.createElement("li");
+                    statusMessage.classList.add("chat", "incoming");
+                    statusMessage.innerHTML = `
+                        <span class="material-symbols-outlined">cloud_done</span>
+                        <p><b>Status do Sistema:</b> Conexão com o servidor da API estabelecida com sucesso. ${dados.statusChave}</p>
+                    `;
+                    chatbox.appendChild(statusMessage);
+
+                } catch (erro) {
+                    // --- ERRO! ---
+                    // Se algo falhar, cria uma mensagem de erro no chat
+                    console.error('Falha ao buscar dados da API:', erro);
+                    const errorMessage = document.createElement("li");
+                    errorMessage.classList.add("chat", "incoming");
+                    errorMessage.innerHTML = `
+                        <span class="material-symbols-outlined">cloud_off</span>
+                        <p><b>Status do Sistema:</b> Erro ao conectar com o servidor da API. A funcionalidade pode estar limitada. Verifique o CORS no servidor.</p>
+                    `;
+                    chatbox.appendChild(errorMessage);
+                }
+            }
+
+            // Executa a verificação da API assim que a página é carregada
+            verificarStatusDaApi();
+        });
+    </script>
 </body>
 </html>
