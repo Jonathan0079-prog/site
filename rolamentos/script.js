@@ -151,8 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-        const LOGO_BASE64 = ''; // Cole sua logo Base64 aqui
+        const LOGO_BASE64 = ''; // Se tiver uma logo, cole o Base64 aqui
 
+        // Design do certificado
         doc.setFillColor(230, 240, 255);
         doc.rect(0, 0, 297, 210, 'F');
         doc.setDrawColor(0, 51, 102);
@@ -161,65 +162,84 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (LOGO_BASE64) {
             const imgProps = doc.getImageProperties(LOGO_BASE64);
-            const imgWidth = 80;
+            const imgWidth = 50;
             const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-            doc.addImage(LOGO_BASE64, 'PNG', (doc.internal.pageSize.getWidth() - imgWidth) / 2, 15, imgWidth, imgHeight);
+            doc.addImage(LOGO_BASE64, 'PNG', 20, 15, imgWidth, imgHeight);
         }
 
+        // --- NOME DA ESCOLA ---
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(30);
+        doc.setFontSize(18);
         doc.setTextColor(0, 51, 102);
-        doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 60, { align: "center" });
+        doc.text("Manutenção Industrial ARQUIVOS", 148.5, 25, { align: "center" });
 
+        // --- TÍTULO PRINCIPAL ---
+        doc.setFontSize(30);
+        doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 45, { align: "center" });
+
+        // --- TEXTO DO CERTIFICADO ---
         doc.setFont("helvetica", "normal");
         doc.setFontSize(16);
         doc.setTextColor(50, 50, 50);
-        doc.text(`Certificamos que`, 148.5, 80, { align: "center" });
+        doc.text(`Certificamos que`, 148.5, 65, { align: "center" });
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(24);
         doc.setTextColor(0, 102, 204);
-        doc.text(nome.toUpperCase(), 148.5, 92, { align: "center" });
+        doc.text(nome.toUpperCase(), 148.5, 77, { align: "center" });
 
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
         doc.setTextColor(50, 50, 50);
-        doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 102, { align: "center" });
+        doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 87, { align: "center" });
         
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.setTextColor(0, 51, 102);
-        doc.text("MONTAGEM DE ROLAMENTOS", 148.5, 112, { align: "center" });
+        doc.text("TÉCNICAS DE MONTAGEM DE ROLAMENTOS", 148.5, 99, { align: "center" });
         
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
-        doc.text("Carga Horária: 2 horas", 148.5, 122, { align: "center" });
+        doc.text("Carga Horária: 2 horas", 148.5, 109, { align: "center" });
 
+        // --- CONTEÚDO PROGRAMÁTICO (NOVO) ---
         doc.setFont("helvetica", "bold");
         doc.setFontSize(10);
-        doc.text("Conteúdos Estudados:", 20, 135);
+        doc.text("Conteúdo Programático:", 20, 125);
         doc.setFont("helvetica", "normal");
         const conteudos = [
-            "Inspeção Visual e Dimensional de Peças",
-            "Limpeza e Preparação de Componentes",
-            "Ferramentas Básicas para Montagem",
-            "Técnicas de Montagem a Frio e a Quente",
-            "Cuidados Essenciais Durante a Montagem",
-            "Erros Comuns e Como Evitá-los"
+            "Módulo 1: O Olhar Clínico: Inspeção Visual e Dimensional",
+            "Módulo 2: Preparando o Terreno: Limpeza Impecável dos Componentes",
+            "Módulo 3: O Arsenal do Montador: As Ferramentas Certas para o Trabalho",
+            "Módulo 4: Frio ou Quente? A Decisão Estratégica da Montagem",
+            "Módulo 5: Mãos à Obra: O Cuidado em Cada Etapa da Montagem",
+            "Módulo 6: As \"Pegadinhas\" da Montagem e Como Fugir Delas",
+            "Módulo Final: Quiz e Certificação"
         ];
         
-        let yPos = 140;
+        let yPos = 132;
         conteudos.forEach(item => {
             doc.text(`• ${item}`, 20, yPos);
             yPos += 7;
         });
 
-        const hoje = new Date();
-        const dataFormatada = hoje.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+        // --- DATA, HORA E ASSINATURA ---
+        const agora = new Date();
+        const dataHoraFormatada = agora.toLocaleString('pt-BR', { 
+            day: '2-digit', 
+            month: 'long', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
         doc.setFontSize(12);
-        doc.line(110, 185, 185, 185);
-        doc.text("Assinatura do Responsável", 147.5, 190, { align: "center" });
-        doc.text(`Emitido em: ${dataFormatada}`, 147.5, 197, { align: "center" });
+        doc.line(90, 185, 205, 185); // Linha da assinatura
+        doc.setFont("helvetica", "bold");
+        doc.text("Jonathan da Silva Oliveira - Instrutor", 147.5, 190, { align: "center" });
+        
+        doc.setFont("helvetica", "normal");
+        doc.text(`Emitido em: ${dataHoraFormatada}`, 147.5, 197, { align: "center" });
         
         doc.save(`Certificado - Montagem de Rolamentos - ${nome}.pdf`);
     }
