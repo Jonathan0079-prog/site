@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
-        doc.text("Carga Horária: 2 horas", 148.5, 109, { align: "center" });
+        doc.text("Carga Horária: 1 hora", 148.5, 109, { align: "center" });
 
         // --- CONTEÚDO PROGRAMÁTICO (NOVO) ---
         doc.setFont("helvetica", "bold");
