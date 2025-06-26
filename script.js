@@ -1,40 +1,53 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Efeito de "Fade-in" para os cards dos cursos ao rolar a página
-    const cards = document.querySelectorAll('.curso-card');
+    // --- NOVA LÓGICA PARA O MENU HAMBURGER ---
+    const menuToggler = document.querySelector('.menu-toggler');
+    const mainNav = document.querySelector('#main-nav');
 
-    const observerOptions = {
-        root: null, // Observa em relação à viewport
-        rootMargin: '0px',
-        threshold: 0.1 // O gatilho é acionado quando 10% do card está visível
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            // Se o card está entrando na viewport
-            if (entry.isIntersecting) {
-                // Adiciona a classe 'visible' para ativar a animação do CSS
-                entry.target.classList.add('visible');
-                // Para de observar o card para a animação não repetir
-                observer.unobserve(entry.target);
+    if (menuToggler && mainNav) {
+        menuToggler.addEventListener('click', () => {
+            // Adiciona ou remove a classe 'visible' da navegação
+            mainNav.classList.toggle('visible');
+            
+            // Bônus: Troca o ícone de 'menu' para 'fechar'
+            const icon = menuToggler.querySelector('.material-icons');
+            if (mainNav.classList.contains('visible')) {
+                icon.textContent = 'close';
+            } else {
+                icon.textContent = 'menu';
             }
         });
-    }, observerOptions);
+    }
 
-    // Inicia a observação para cada card
-    cards.forEach(card => {
-        observer.observe(card);
-    });
+    // --- SEU CÓDIGO EXISTENTE PARA ANIMAR OS CARDS ---
+    const cards = document.querySelectorAll('.curso-card');
+    if (cards.length > 0) {
+        const observerOptions = {
+            root: null, // Observa em relação à viewport
+            rootMargin: '0px',
+            threshold: 0.1 // O gatilho é acionado quando 10% do card está visível
+        };
 
-    // Bônus: Alerta para o usuário sobre os links dos cursos (opcional)
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+    }
+    
+    // Seu código bônus para os botões foi mantido
     const courseButtons = document.querySelectorAll('.btn');
     courseButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            // Pega o destino do link
             const targetPage = event.target.getAttribute('href');
-            // Verifica se a página de destino ainda é um exemplo
             if (targetPage.includes('curso-')) {
-                // Previne o link de abrir imediatamente
                 event.preventDefault(); 
                 window.location.href = targetPage;
             }
