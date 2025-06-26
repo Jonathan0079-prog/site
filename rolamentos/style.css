@@ -343,25 +343,34 @@ header p {
 }
 
 /* Adicionando alguns estilos básicos para a linha divisória (hr) que não estavam no novo CSS */
-hr {
+/* Adicione este código ao final do seu arquivo CSS */
 
-    .botao-download {
-    background-color: #4CAF50; /* Cor de fundo verde */
-    color: white;             /* Cor do texto branca */
-    padding: 15px 25px;       /* Espaçamento interno */
-    text-align: center;       /* Centraliza o texto */
-    text-decoration: none;    /* Remove o sublinhado do link */
-    display: inline-block;    /* Permite definir padding e outras propriedades de bloco */
-    font-size: 16px;          /* Tamanho da fonte */
-    border-radius: 8px;       /* Bordas arredondadas */
-    cursor: pointer;          /* Muda o cursor para uma mãozinha */
-    transition: background-color 0.3s; /* Efeito suave na mudança de cor */
+/* Botão de Download com o estilo do seu site */
+.botao-download {
+    display: inline-block; /* Essencial para aplicar padding e margem */
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: var(--cor-secundaria); /* Usa a cor secundária do seu projeto */
+    border: none;
+    border-radius: 5px;
+    text-decoration: none; /* Remove o sublinhado do link <a> */
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    margin: 1rem 0; /* Adiciona um espaço acima e abaixo */
 }
 
-/* Efeito ao passar o mouse por cima */
 .botao-download:hover {
-    background-color: #45a049;
+    background-color: var(--cor-primaria); /* Escurece um pouco no hover */
+    transform: scale(1.05); /* Efeito de crescimento igual aos outros botões */
+    opacity: 0.9;
 }
+
+
+/* Estilos para a linha divisória (hr) corrigido */
+hr {
     border: 0;
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
