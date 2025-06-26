@@ -65,7 +65,7 @@ header nav a:hover {
     background: linear-gradient(rgba(26, 43, 64, 0.8), rgba(26, 43, 64, 0.8)), url('https://via.placeholder.com/1920x500.png?text=Fundo+Industrial') no-repeat center center/cover;
     color: #ffffff;
     text-align: center;
-    padding: 4rem 0;
+    padding: 4rem 1rem; /* Adicionado padding lateral */
 }
 
 #banner h2 {
@@ -169,4 +169,53 @@ footer {
     text-align: center;
     padding: 1.5rem 0;
     margin-top: 2rem;
+}
+
+
+/* ======================================================== */
+/* === INÍCIO DAS REGRAS ADAPTATIVAS PARA TELAS MENORES === */
+/* ======================================================== */
+
+/* Para tablets e celulares em modo paisagem */
+@media (max-width: 992px) {
+    header h1 {
+        font-size: 2rem;
+    }
+    #banner h2 {
+        font-size: 2.2rem;
+    }
+    #banner p {
+        font-size: 1.2rem;
+    }
+    #cursos h2 {
+        font-size: 2rem;
+    }
+}
+
+/* Para celulares em modo retrato */
+@media (max-width: 768px) {
+    .container {
+        width: 95%; /* Aumenta o espaço útil */
+    }
+
+    header nav ul {
+        flex-direction: column; /* Menu vira uma coluna */
+        align-items: center; /* Centraliza os itens do menu */
+        gap: 10px;
+    }
+
+    header nav a {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    #banner {
+        padding: 3rem 1rem;
+    }
+
+    .curso-card {
+        width: 100%; /* Ocupa toda a largura disponível */
+        max-width: 400px; /* Mas não mais que 400px, para não ficar gigante */
+    }
 }
