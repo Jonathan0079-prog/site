@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resultadoContainer.classList.remove('hidden');
         } else {
             // Mostra o container de erro
-            erroContainer.querySelector('p').textContent = `Diâmetro de ${diametro} mm não encontrado na tabela. Verifique o valor (a tabela atual cobre de 30 a 140 mm).`;Add commentMore actions
+            erroContainer.querySelector('p').textContent = `Diâmetro de ${diametro} mm não encontrado na tabela. Verifique o valor (a tabela atual cobre de 30 a 140 mm).`;
             erroContainer.classList.remove('hidden');
         }
     });
