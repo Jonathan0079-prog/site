@@ -1,4 +1,3 @@
-@@ -0,0 +1,70 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // Dados extraídos da tabela FAG do documento (página 9)
