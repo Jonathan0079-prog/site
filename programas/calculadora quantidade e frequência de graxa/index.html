@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Graxa</title>
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <h1>Calculadora de Graxa</h1>
+        <h1>Calculadora de Graxa para Rolamentos</h1>
     </header>
 
     <div class="main-container">
         <div class="calculator-container">
-            <p>Calcule a quantidade de graxa e a frequência de relubrificação para seus rolamentos.</p>
+            <p>Calcule a quantidade e a frequência de relubrificação para seus rolamentos.</p>
 
             <div class="input-group">
                 <label for="outer-diameter">Diâmetro Externo (D) - mm:</label>
@@ -77,33 +77,36 @@
                 </select>
             </div>
 
+            <div id="error-message" class="error-message"></div>
+
             <button id="calculate-btn">Calcular</button>
             <button id="reset-btn">Zerar Campos</button>
         </div>
 
         <div class="results" id="results">
             <h2>Resultados:</h2>
-            
             <div class="result-grid">
-
                 <div class="result-item">
                     <strong>Fator de Preenchimento Inicial</strong>
                     <span id="initial-fill-factor">-</span>
                 </div>
                 <div class="result-item">
-                    <strong>Graxa Inicial (Primeira Aplicação)</strong>
+                    <strong>Graxa Inicial (g)</strong>
                     <span id="initial-grease">-</span>
                 </div>
                 <div class="result-item">
-                    <strong>Graxa para Relubrificação (Recarga)</strong>
+                    <strong>Graxa de Recarga (g)</strong>
                     <span id="grease-quantity">-</span>
                 </div>
                 <div class="result-item">
-                    <strong>Frequência de Relubrificação</strong>
+                    <strong>Frequência (horas)</strong>
                     <span id="grease-frequency">-</span>
                 </div>
+                <div class="result-item">
+                    <strong>Densidade da Graxa (Ref.)</strong>
+                    <span id="grease-density">-</span>
+                </div>
             </div>
-
             <p class="disclaimer"><strong>Observação:</strong> Estes cálculos são estimativas. Sempre consulte as recomendações do fabricante do rolamento e do lubrificante.</p>
         </div>
     </div>
