@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const vibrationSelect = document.getElementById('vibration');
     const shaftPositionSelect = document.getElementById('shaft-position');
     const calculateBtn = document.getElementById('calculate-btn');
-    const generatePdfBtn = document.getElementById('generate-pdf-btn');
+    const resetButton = document.getElementById('reset-btn'); // Novo botão de reset
     const resultsDiv = document.getElementById('results');
     
-    // Novas referências aos elementos de resultado
+    // Referências aos elementos de resultado
     const greaseDensitySpan = document.getElementById('grease-density');
     const initialGreaseSpan = document.getElementById('initial-grease');
     const greaseQuantitySpan = document.getElementById('grease-quantity');
@@ -71,20 +71,27 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsDiv.style.display = 'block';
     });
 
-    generatePdfBtn.addEventListener('click', () => {
-        // Seleciona o elemento que você quer transformar em PDF (o container da calculadora)
-        const element = document.querySelector('.calculator-container');
+    // Adiciona o evento de clique para o botão de zerar
+    resetButton.addEventListener('click', () => {
+        // Zera os campos de input
+        outerDiameterInput.value = '';
+        innerDiameterInput.value = '';
+        widthInput.value = '';
+        rpmInput.value = '';
+        tempInput.value = '';
+        
+        // Reseta os dropdowns para a opção padrão (Fator 1.0)
+        contaminationSelect.value = '1.0';
+        vibrationSelect.value = '1.0';
+        shaftPositionSelect.value = '1.0';
 
-        // Opcional: Configurações para o PDF (margem, formato, etc.)
-        const options = {
-            margin: 10,
-            filename: 'relatorio_graxa.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
+        // Oculta a seção de resultados
+        resultsDiv.style.display = 'none';
 
-        // Usa a biblioteca para gerar o PDF
-        html2pdf().from(element).set(options).save();
+        // Opcional: Zera o conteúdo dos spans de resultado
+        greaseDensitySpan.textContent = '-';
+        initialGreaseSpan.textContent = '-';
+        greaseQuantitySpan.textContent = '-';
+        greaseFrequencySpan.textContent = '-';
     });
 });
