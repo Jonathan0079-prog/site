@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Dados extraídos das tabelas para Rolamentos Autocompensadores de Rolos
+    // Dados extraídos da tabela para Rolamentos Autocompensadores de Rolos
     const tabelaDadosAutocompensadores = [
         { d_max: 30, folga_c2: '0.02 - 0.03', folga_normal: '0.03 - 0.04', folga_c3: '0.04 - 0.055', folga_c4: '0.055 - 0.075', folga_c5: '0 - 0', reducao_min: 0.01, reducao_max: 0.015, desloc_eixo: '0.25 - 0.29', desloc_bucha_12: '0 - 0', desloc_bucha_30: '0 - 0' },
         { d_max: 40, folga_c2: '0.025 - 0.035', folga_normal: '0.035 - 0.05', folga_c3: '0.05 - 0.065', folga_c4: '0.065 - 0.085', folga_c5: '0.085 - 0.105', reducao_min: 0.015, reducao_max: 0.02, desloc_eixo: '0.3 - 0.35', desloc_bucha_12: '0 - 0', desloc_bucha_30: '0 - 0' },
@@ -32,9 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
         { d_max: 1400, folga_c2: '0.62 - 0.91', folga_normal: '0.91 - 1.23', folga_c3: '1.23 - 1.56', folga_c4: '1.56 - 2', folga_c5: '2 - 2.45', reducao_min: 0.61, reducao_max: 0.75, desloc_eixo: '8 - 9.7', desloc_bucha_12: '19.9 - 24.3', desloc_bucha_30: '0 - 0' },
         { d_max: 1600, folga_c2: '0.68 - 1', folga_normal: '1 - 1.35', folga_c3: '1.35 - 1.72', folga_c4: '1.72 - 2.2', folga_c5: '2.2 - 2.7', reducao_min: 0.7, reducao_max: 0.85, desloc_eixo: '9.1 - 11.1', desloc_bucha_12: '22.7 - 27.7', desloc_bucha_30: '0 - 0' },
         { d_max: 1800, folga_c2: '0.75 - 1.11', folga_normal: '1.11 - 1.5', folga_c3: '1.5 - 1.92', folga_c4: '1.92 - 2.4', folga_c5: '2.4 - 2.95', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
+        { d_max: 2000, folga_c2: '0.87 - 1.2', folga_normal: '1.2 - 1.55', folga_c3: '1.55 - 1.99', folga_c4: '1.99 - 2.5', folga_c5: '2.5 - 3.05', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
+        { d_max: 2240, folga_c2: '0.87 - 1.2', folga_normal: '1.2 - 1.55', folga_c3: '1.55 - 1.99', folga_c4: '1.99 - 2.5', folga_c5: '2.5 - 3.05', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
+        { d_max: 2500, folga_c2: '0.87 - 1.2', folga_normal: '1.2 - 1.55', folga_c3: '1.55 - 1.99', folga_c4: '1.99 - 2.5', folga_c5: '2.5 - 3.05', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
+        { d_max: 2800, folga_c2: '0.87 - 1.2', folga_normal: '1.2 - 1.55', folga_c3: '1.55 - 1.99', folga_c4: '1.99 - 2.5', folga_c5: '2.5 - 3.05', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
+        { d_max: 3150, folga_c2: '0.87 - 1.2', folga_normal: '1.2 - 1.55', folga_c3: '1.55 - 1.99', folga_c4: '1.99 - 2.5', folga_c5: '2.5 - 3.05', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
+        { d_max: 3550, folga_c2: '0.87 - 1.2', folga_normal: '1.2 - 1.55', folga_c3: '1.55 - 1.99', folga_c4: '1.99 - 2.5', folga_c5: '2.5 - 3.05', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
+        { d_max: 4000, folga_c2: '0.87 - 1.2', folga_normal: '1.2 - 1.55', folga_c3: '1.55 - 1.99', folga_c4: '1.99 - 2.5', folga_c5: '2.5 - 3.05', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
+        { d_max: 4500, folga_c2: '0.87 - 1.2', folga_normal: '1.2 - 1.55', folga_c3: '1.55 - 1.99', folga_c4: '1.99 - 2.5', folga_c5: '2.5 - 3.05', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
+        { d_max: 5000, folga_c2: '0.87 - 1.2', folga_normal: '1.2 - 1.55', folga_c3: '1.55 - 1.99', folga_c4: '1.99 - 2.5', folga_c5: '2.5 - 3.05', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '0 - 0' },
     ];
 
-    // Dados extraídos das tabelas para Rolamentos de Rolos Toroidais CARB
+    // Dados extraídos da tabela para Rolamentos de Rolos Toroidais CARB
     const tabelaDadosCARB = [
         { d_max: 30, folga_c2: '0.02 - 0.04', folga_normal: '0.035 - 0.055', folga_c3: '0.05 - 0.065', folga_c4: '0.065 - 0.085', folga_c5: '0.08 - 0.1', reducao_min: 0.01, reducao_max: 0.015, desloc_eixo: '0.25 - 0.29', desloc_bucha_12: '0 - 0', desloc_bucha_30: '0 - 0' },
         { d_max: 40, folga_c2: '0.025 - 0.05', folga_normal: '0.045 - 0.065', folga_c3: '0.06 - 0.08', folga_c4: '0.08 - 0.1', folga_c5: '0.1 - 0.125', reducao_min: 0.015, reducao_max: 0.02, desloc_eixo: '0.3 - 0.35', desloc_bucha_12: '0.75 - 0.9', desloc_bucha_30: '0.44 - 0.54' },
@@ -68,13 +77,17 @@ document.addEventListener('DOMContentLoaded', () => {
         { d_max: 1800, folga_c2: '0.95 - 1.32', folga_normal: '1.32 - 1.69', folga_c3: '1.69 - 2.18', folga_c4: '2.18 - 2.73', folga_c5: '2.73 - 3.31', reducao_min: 0.79, reducao_max: 0.96, desloc_eixo: '10.2 - 12.5', desloc_bucha_12: '25.6 - 31.2', desloc_bucha_30: '14.8 - 18' },
     ];
 
+    // Mapeamento dos elementos de resultado
     const calcularBtn = document.getElementById('calcular-btn');
     const diametroInput = document.getElementById('diametro-rolamento');
     const tipoRolamentoSelect = document.getElementById('tipo-rolamento');
     const resultadoContainer = document.getElementById('resultado-container');
     const erroContainer = document.getElementById('erro-container');
+    const chartSection = document.getElementById('chart-section');
+    const guideSection = document.getElementById('guide-section');
+    const stepContainer = document.querySelector('.step-by-step-guide');
+    let folgaChart = null; // Variável para armazenar a instância do gráfico
 
-    // Mapeamento dos elementos de resultado
     const resultadoDiametro = document.getElementById('resultado-diametro');
     const folgaC2 = document.getElementById('folga-c2');
     const folgaNormal = document.getElementById('folga-normal');
@@ -92,9 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const diametro = parseFloat(diametroInput.value);
         const tipoRolamento = tipoRolamentoSelect.value;
         
-        // Esconde resultados anteriores
+        // Esconde seções
         resultadoContainer.classList.add('hidden');
         erroContainer.classList.add('hidden');
+        chartSection.classList.add('hidden');
+        guideSection.classList.add('hidden');
 
         if (isNaN(diametro) || diametro <= 0) {
             erroContainer.querySelector('p').textContent = "Por favor, insira um valor de diâmetro válido.";
@@ -109,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
             tabelaParaBuscar = tabelaDadosCARB;
         }
         
-        // Procura pelos dados correspondentes ao diâmetro na tabela
         let dadosEncontrados = null;
         for (const dados of tabelaParaBuscar) {
             if (diametro <= dados.d_max) {
@@ -128,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             folgaC5.textContent = dadosEncontrados.folga_c5 ? dadosEncontrados.folga_c5 + ' mm' : '--';
 
             reducaoFolga.textContent = `${dadosEncontrados.reducao_min.toFixed(3)} - ${dadosEncontrados.reducao_max.toFixed(3)} mm`;
-            deslocBucha12.textContent = dadosEncontrados.desloc_eixo ? dadosEncontrados.desloc_eixo + ' mm' : '--'; // Use 'desloc_eixo' da tabela
+            deslocBucha12.textContent = dadosEncontrados.desloc_eixo ? dadosEncontrados.desloc_eixo + ' mm' : '--';
             deslocBucha30.textContent = dadosEncontrados.desloc_bucha_30 ? dadosEncontrados.desloc_bucha_30 + ' mm' : '--';
 
             // Calcula e exibe a folga final
@@ -144,11 +158,132 @@ document.addEventListener('DOMContentLoaded', () => {
             folgaFinalC3.textContent = calcularFolgaFinal(dadosEncontrados.folga_c3, dadosEncontrados.reducao_min, dadosEncontrados.reducao_max);
             folgaFinalC4.textContent = calcularFolgaFinal(dadosEncontrados.folga_c4, dadosEncontrados.reducao_min, dadosEncontrados.reducao_max);
 
-            // Mostra o container de resultados
+            // 1. Gerar o Gráfico
+            gerarGraficoFolga(dadosEncontrados);
+
+            // 2. Gerar o Guia Passo a Passo
+            gerarGuiaMontagem(dadosEncontrados);
+
+            // Mostra as seções de resultado, gráfico e guia
             resultadoContainer.classList.remove('hidden');
+            chartSection.classList.remove('hidden');
+            guideSection.classList.remove('hidden');
+
         } else {
             // Mostra o container de erro
+            erroContainer.querySelector('p').textContent = `Diâmetro de ${diametro} mm não encontrado na tabela para este tipo de rolamento. A tabela cobre de 24 a 1800 mm.`;
             erroContainer.classList.remove('hidden');
         }
     });
+
+
+    // --- Funções para gerar o conteúdo dinâmico ---
+
+    function gerarGraficoFolga(dados) {
+        // Extrai os valores min/max da folga para os gráficos
+        const folgaNormal = dados.folga_normal.split(' - ').map(Number);
+        const folgaC3 = dados.folga_c3.split(' - ').map(Number);
+        const folgaC4 = dados.folga_c4.split(' - ').map(Number);
+        const reducao = [dados.reducao_min, dados.reducao_max];
+
+        const ctx = document.getElementById('folgaChart').getContext('2d');
+
+        // Destrói a instância anterior do gráfico, se existir
+        if (folgaChart) {
+            folgaChart.destroy();
+        }
+
+        folgaChart = new Chart(ctx, {
+            type: 'bar', // Tipo de gráfico: barras
+            data: {
+                labels: ['Folga Normal', 'Folga C3', 'Folga C4'],
+                datasets: [{
+                    label: 'Folga Inicial (Min)',
+                    data: [folgaNormal[0], folgaC3[0], folgaC4[0]],
+                    backgroundColor: 'rgba(0, 51, 102, 0.6)', // Cor primária
+                    borderColor: 'rgba(0, 51, 102, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Folga Inicial (Max)',
+                    data: [folgaNormal[1], folgaC3[1], folgaC4[1]],
+                    backgroundColor: 'rgba(0, 90, 156, 0.6)', // Cor secundária
+                    borderColor: 'rgba(0, 90, 156, 1)',
+                    borderWidth: 1
+                }, {
+                    label: `Redução da Folga (${reducao[0]} - ${reducao[1]})`,
+                    data: [reducao[1], reducao[1], reducao[1]], // Exibe a redução máxima como referência
+                    backgroundColor: 'rgba(255, 193, 7, 0.6)', // Cor de destaque
+                    borderColor: 'rgba(255, 193, 7, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Folga (mm)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `Folga Radial para diâmetro ${diametro} mm`
+                    },
+                    tooltip: {
+                        callbacks: {
+                            // Customiza o tooltip para exibir a faixa de folga
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.raw;
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function gerarGuiaMontagem(dados) {
+        stepContainer.innerHTML = ''; // Limpa o conteúdo anterior
+
+        const passos = [
+            `<h3>Passo 1: Verificação da Folga Inicial</h3>
+             <p>Antes da montagem, verifique a folga radial interna do rolamento com um calibrador de lâminas. Para o seu rolamento de Ø${dados.d_max} mm, a folga recomendada para o <strong>grupo Normal</strong> é de <strong>${dados.folga_normal} mm</strong>.</p>`,
+             
+            `<h3>Passo 2: Aquecimento do Rolamento (Opcional, para rolamentos maiores)</h3>
+             <p>Se o rolamento for grande, pode ser aquecido em um forno ou banho de óleo para facilitar a montagem no eixo cônico.</p>`,
+
+            `<h3>Passo 3: Montagem no Eixo ou Bucha</h3>
+             <p>Deslize o rolamento no eixo cônico ou bucha de fixação/desmontagem. O deslocamento axial para a montagem é crucial para alcançar a redução de folga desejada.</p>
+             <p>Para a sua aplicação, o deslocamento axial recomendado é de <strong>${dados.desloc_bucha_12} mm</strong> (para conicidade 1:12) ou <strong>${dados.desloc_bucha_30} mm</strong> (para conicidade 1:30).</p>`,
+
+            `<h3>Passo 4: Acompanhamento da Redução de Folga</h3>
+             <p>Durante a montagem, meça continuamente a folga radial com o calibrador de lâminas. Continue a montagem até que a folga seja reduzida para a faixa de <strong>${dados.reducao_min.toFixed(3)} - ${dados.reducao_max.toFixed(3)} mm</strong>.</p>
+             <p>Este valor garante que a folga residual (folga final) esteja dentro dos limites recomendados para o bom funcionamento do rolamento.</p>`,
+
+            `<h3>Passo 5: Verificação da Folga Final</h3>
+             <p>Após a montagem, a folga radial remanescente deve estar na seguinte faixa:</p>
+             <ul>
+                 <li><strong>Grupo Normal:</strong> ${folgaFinalNormal.textContent}</li>
+                 <li><strong>Grupo C3:</strong> ${folgaFinalC3.textContent}</li>
+                 <li><strong>Grupo C4:</strong> ${folgaFinalC4.textContent}</li>
+             </ul>
+             <p>Se a folga final estiver dentro dessa faixa, a montagem foi realizada com sucesso!</p>`
+        ];
+
+        passos.forEach(passoHtml => {
+            const stepDiv = document.createElement('div');
+            stepDiv.classList.add('step');
+            stepDiv.innerHTML = passoHtml;
+            stepContainer.appendChild(stepDiv);
+        });
+    }
 });
