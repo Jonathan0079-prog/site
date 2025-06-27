@@ -1,67 +1,144 @@
+/* Importando fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: sans-serif;
-    margin: 20px;
-    background-color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
 }
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
+header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
     text-align: center;
-    color: #333;
-    margin-bottom: 20px;
+    border-bottom: 5px solid var(--cor-destaque);
+}
+
+header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
+}
+
+header p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+.main-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.calculator-container, .resultado-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+h2, h3 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--cor-primaria);
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
+.input-group label {
     font-weight: bold;
-    color: #555;
-}
-
-input[type="number"],
-select {
-    width: calc(100% - 12px);
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-button {
+    color: var(--cor-texto);
     display: block;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input[type="number"],
+.input-group select {
     width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    background-color: #fff;
+    box-sizing: border-box; /* Adicionado para garantir que a borda não aumente o tamanho do input */
+}
+
+#calcular-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+    border: none;
+    color: white;
+    font-weight: bold;
+    background-color: var(--cor-sucesso);
+    transition: transform 0.2s ease;
+    margin-top: 1rem;
 }
 
-button:hover {
-    background-color: #0056b3;
+#calcular-btn:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
 }
 
-.resultado {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #e9ecef;
-    border-radius: 4px;
-    font-size: 18px;
-    color: #495057;
+.resultado-container {
     text-align: center;
+    border-top: 5px solid var(--cor-sucesso);
+}
+
+.resultado-display p { /* Alterado de .resultado-display .torque-nm para apenas .resultado-display p */
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--cor-primaria);
+    line-height: 1.2;
+    margin-bottom: 0.5rem; /* Adicionado um pouco de espaço abaixo do resultado principal */
+}
+.resultado-display .torque-lbf { /* Mantenho esta classe caso queira adicionar mais informações no futuro */
+    font-size: 1.2rem;
+    color: var(--cor-texto);
+    opacity: 0.8;
+}
+
+.aviso-dados {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.erro-container {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #f8d7da;
+    border: 1px solid var(--cor-erro);
+    color: var(--cor-erro);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
 }
