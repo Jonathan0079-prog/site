@@ -1,48 +1,27 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Calculadora de Redução de Folga Radial</title>
-  <link rel="stylesheet" href="estilos.css" />
+  <title>Calculadora de Deslocamento</title>
+  <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-  <header>
-    <h1>Calculadora de Redução de Folga Radial</h1>
-  </header>
+  <div class="container">
+    <h1>Calculadora de Deslocamento</h1>
+    <label for="diametro">Diâmetro (mm):</label>
+    <input type="number" id="diametro" />
 
-  <main class="main-container calculator-container">
-    <div class="input-grid">
-      <div class="input-group">
-        <label for="diametro">Diâmetro Interno (mm)</label>
-        <input type="number" id="diametro" placeholder="Ex: 55" required />
-      </div>
+    <label for="grupo">Grupo de folga:</label>
+    <select id="grupo">
+      <option value="NORMAL">NORMAL</option>
+      <option value="C3">C3</option>
+      <option value="C4">C4</option>
+      <option value="C5">C5</option>
+    </select>
 
-      <div class="input-group">
-        <label for="grupoFolga">Grupo de Folga</label>
-        <select id="grupoFolga">
-          <option value="normal">Normal</option>
-          <option value="C3">C3</option>
-          <option value="C4">C4</option>
-          <option value="C5">C5</option>
-        </select>
-      </div>
-    </div>
-
-    <button id="calcular-btn">Calcular</button>
-
-    <div id="resultado" class="resultado-container hidden">
-      <div class="resultado-grid">
-        <div class="resultado-item">
-          <h4>Deslocamento Axial Estimado</h4>
-          <p id="valorDeslocamento">--</p>
-        </div>
-      </div>
-    </div>
-
-    <div id="erro" class="erro-container hidden"></div>
-  </main>
-
+    <button onclick="executarCalculo()">Calcular</button>
+    <p id="resultado"></p>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
