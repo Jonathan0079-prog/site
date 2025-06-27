@@ -9,11 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const vibrationSelect = document.getElementById('vibration');
     const shaftPositionSelect = document.getElementById('shaft-position');
 
-    const calculateBtn = document.getElementById('calculate-btn');
-    const generatePdfBtn = document.getElementById('generate-pdf-btn');
-    const clearBtn = document.getElementById('clear-btn'); // Novo botão Limpar
+    // Botões
+    const calculateBtn = document.getElementById('calcular-btn');
+    const clearBtn = document.getElementById('limpar-btn');
 
-    const resultsDiv = document.getElementById('results');
+    // Contêiner e campos de resultado
+    const resultsContainer = document.getElementById('resultado-container');
     const initialGreaseSpan = document.getElementById('initial-grease');
     const greaseQuantitySpan = document.getElementById('grease-quantity');
     const greaseFrequencySpan = document.getElementById('grease-frequency');
@@ -29,34 +30,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const vibrationFactor = parseFloat(vibrationSelect.value);
         const shaftPositionFactor = parseFloat(shaftPositionSelect.value);
 
+        // Validação dos campos
         if (isNaN(outerDiameter) || isNaN(innerDiameter) || isNaN(width) || isNaN(rpm) || isNaN(temp) || outerDiameter <= 0 || innerDiameter <= 0 || width <= 0 || rpm <= 0) {
             alert('Por favor, preencha todos os campos com valores numéricos válidos e positivos.');
-            resultsDiv.style.display = 'none';
+            resultsContainer.classList.add('hidden'); // Esconde resultados se houver erro
             return;
         }
         
+        // --- Cálculos ---
         const relubricationQuantity = 0.005 * outerDiameter * width;
         const initialGreaseQuantity = relubricationQuantity * 2.5; 
-        
         const baseFrequency = Math.pow((1000000 / (rpm * innerDiameter)), 0.5);
-
         const tempReference = 70;
         let tempFactor = 1;
         if (temp > tempReference) {
             const tempDifference = temp - tempReference;
             tempFactor = Math.pow(0.5, tempDifference / 15);
         }
-
         const adjustedFrequency = baseFrequency * tempFactor * contaminationFactor * vibrationFactor * shaftPositionFactor;
         
+        // --- Exibição dos resultados ---
         initialGreaseSpan.textContent = initialGreaseQuantity.toFixed(2);
         greaseQuantitySpan.textContent = relubricationQuantity.toFixed(2);
-        greaseFrequencySpan.textContent = adjustedFrequency.toFixed(2);
+        greaseFrequencySpan.textContent = adjustedFrequency.toFixed(0); // Frequência em horas inteiras
         
-        resultsDiv.style.display = 'block';
+        // Mostra o contêiner de resultados
+        resultsContainer.classList.remove('hidden');
     });
 
-    // --- NOVA FUNÇÃO PARA LIMPAR OS DADOS ---
+    // Função para limpar os dados
     clearBtn.addEventListener('click', () => {
         // Limpa todos os campos de input
         outerDiameterInput.value = '';
@@ -65,28 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
         rpmInput.value = '';
         tempInput.value = '';
 
-        // Reseta os campos de seleção para a primeira opção
+        // Reseta os campos de seleção
         contaminationSelect.selectedIndex = 0;
         vibrationSelect.selectedIndex = 0;
         shaftPositionSelect.selectedIndex = 0;
 
         // Esconde e reseta a área de resultados
-        resultsDiv.style.display = 'none';
-        initialGreaseSpan.textContent = '-';
-        greaseQuantitySpan.textContent = '-';
-        greaseFrequencySpan.textContent = '-';
-    });
-
-    // Função para gerar o PDF
-    generatePdfBtn.addEventListener('click', () => {
-        const element = document.querySelector('.calculator-container');
-        const options = {
-            margin: 10,
-            filename: 'relatorio_lubrificacao.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().from(element).set(options).save();
+        resultsContainer.classList.add('hidden');
     });
 });
