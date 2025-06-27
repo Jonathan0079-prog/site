@@ -1,43 +1,67 @@
+@@ -0,0 +1,67 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabela de Redução de Folga Radial</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Calculadora de Montagem de Rolamentos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>Ferramenta de Montagem de Rolamentos</h1>
+        <p>Baseada na tabela de ajuste de folga radial FAG</p>
+    </header>
 
-    <div id="calculator-container">
-        <div class="header-section">
-            <div id="main-title">Tabela para Cálculo de Redução de Folga Radial</div>
-            <div id="sub-title"></div>
-        </div>
-
-        <div class="input-group">
-            <label for="bearing-type">Tipo de Rolamento:</label>
-            <select id="bearing-type">
-                <option value="standard">Rolamentos Autocompensadores de Rolos</option>
-                <option value="carb">Rolamentos de Rolos Toroidais CARB</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label for="diameter-range">Medida Nominal do Diâmetro Interno (d) em mm:</label>
-            <select id="diameter-range">
-                <option value="">Selecione um diâmetro</option>
-            </select>
-        </div>
-
-        <div id="results-container">
+    <main class="main-container">
+        <section class="calculator-container">
+            <h2>Calculadora de Folga e Montagem</h2>
+            <div class="input-group">
+                <label for="diametro-rolamento">Insira o diâmetro do furo do rolamento (mm):</label>
+                <input type="number" id="diametro-rolamento" placeholder="Ex: 65">
+                <button id="calcular-btn">Calcular Parâmetros</button>
             </div>
 
-        <div id="chart-container">
-            <h2>Gráfico Industrial de Montagem</h2>
-            <img src="https://i.imgur.com/gK9J2Uj.png" alt="Exemplo de Gráfico Industrial de Montagem de Rolamento" class="chart-image">
-            <p>A imagem acima é um exemplo representativo de um gráfico industrial de montagem de rolamento. Em um ambiente real, este gráfico seria gerado dinamicamente com base nos valores da folga radial e do deslocamento axial para a seleção do rolamento, fornecendo uma visualização clara da montagem.</p>
-        </div>
-    </div>
+            <div id="resultado-container" class="resultado-container hidden">
+                <h3>Parâmetros para Rolamento de Ø<span id="resultado-diametro"></span> mm:</h3>
+                
+                <div class="resultado-grid">
+                    <div class="resultado-item">
+                        <h4>Folga Radial Inicial</h4>
+                        <p><strong>Normal:</strong> <span id="folga-normal">--</span> mm</p>
+                        <p><strong>C3:</strong> <span id="folga-c3">--</span> mm</p>
+                        <p><strong>C4:</strong> <span id="folga-c4">--</span> mm</p>
+                    </div>
+
+                    <div class="resultado-item">
+                        <h4>Redução da Folga Radial</h4>
+                        <p><strong>Faixa:</strong> <span id="reducao-folga">--</span> mm</p>
+                    </div>
+
+                    <div class="resultado-item">
+                        <h4>Deslocamento Axial (Cone 1:12)</h4>
+                        <p><strong>Montagem em Eixo:</strong> <span id="desloc-eixo">--</span> mm</p>
+                        <p><strong>Montagem em Bucha:</strong> <span id="desloc-bucha">--</span> mm</p>
+                    </div>
+
+                     <div class="resultado-item">
+                        <h4>Folga Mínima Pós-Montagem</h4>
+                        <p><strong>Normal:</strong> <span id="folga-final-normal">--</span> mm</p>
+                        <p><strong>C3:</strong> <span id="folga-final-c3">--</span> mm</p>
+                        <p><strong>C4:</strong> <span id="folga-final-c4">--</span> mm</p>
+                    </div>
+                </div>
+            </div>
+             <div id="erro-container" class="erro-container hidden">
+                <p>Diâmetro não encontrado na tabela. Verifique o valor inserido (a tabela cobre de 30 a 1250 mm).</p>
+            </div>
+        </section>
+
+        <section class="info-container">
+            <h3>Tolerância do Eixo Recomendada</h3>
+            <p>Para a montagem de rolamentos autocompensadores, a tolerância geral recomendada para o assento no eixo é <strong>h9 / h8 / h7</strong>. A escolha exata depende da aplicação e das condições de carga.</p>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
