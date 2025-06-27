@@ -1,206 +1,100 @@
-/* Importando fontes do Google Fonts para um design moderno e legível */
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
-
-/* Definição de variáveis CSS para cores e consistência no tema */
-:root {
-    --cor-primaria: #003366; /* Azul escuro para títulos e elementos chave */
-    --cor-secundaria: #005a9c; /* Azul médio para subtítulos e destaques */
-    --cor-destaque: #ffc107; /* Amarelo vibrante para linhas e botões de ação */
-    --cor-fundo: #f8f9fa; /* Fundo claro para a página */
-    --cor-texto: #212529; /* Cor principal do texto */
-    --cor-sucesso: #28a745; /* Verde para botões de sucesso */
-    --cor-erro: #dc3545; /* Vermelho para mensagens de erro */
-}
-
-/* Reset básico de estilos para todos os elementos */
-* {
-    box-sizing: border-box; /* Garante que padding e border não aumentem o tamanho do elemento */
-    margin: 0; /* Remove margem padrão */
-    padding: 0; /* Remove padding padrão */
-}
-
-/* Estilos para o corpo da página */
 body {
-    font-family: 'Roboto', sans-serif; /* Fonte principal para o corpo do texto */
-    line-height: 1.6; /* Espaçamento entre linhas para melhor legibilidade */
-    background-color: var(--cor-fundo); /* Aplica a cor de fundo definida */
-    color: var(--cor-texto); /* Aplica a cor do texto principal */
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 20px;
 }
-
-/* Estilos para o cabeçalho da página */
-header {
-    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria)); /* Gradiente de cor para o cabeçalho */
-    color: #ffffff; /* Cor do texto no cabeçalho */
-    padding: 1.5rem 1rem; /* Preenchimento interno do cabeçalho */
-    text-align: center; /* Centraliza o texto */
-    border-bottom: 5px solid var(--cor-destaque); /* Borda inferior de destaque */
+#calculator-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
-header h1 {
-    font-family: 'Oswald', sans-serif; /* Fonte específica para o título principal */
-    font-size: 2.2rem; /* Tamanho da fonte do título */
+.header-section {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #D0D0D0;
+    margin-bottom: 20px;
+    border-radius: 5px;
 }
-
-header p {
-    font-family: 'Roboto Mono', monospace; /* Fonte monoespaçada para o subtítulo */
-    font-size: 1.1em; /* Tamanho da fonte do subtítulo */
-    opacity: 0.9; /* Leve transparência para o subtítulo */
+.header-section div {
+    font-weight: bold;
+    color: #585858;
+    font-size: 16px;
 }
-
-/* Contêiner principal para centralizar o conteúdo da página */
-.main-container {
-    max-width: 900px; /* Largura máxima do contêiner */
-    margin: 2rem auto; /* Centraliza o contêiner horizontalmente e adiciona margem superior/inferior */
-    padding: 0 1rem; /* Preenchimento nas laterais */
-}
-
-/* Estilos para as seções principais do aplicativo (calculadora, informações, gráficos, guia) */
-.calculator-container, .info-container, .chart-container, .guide-container {
-    background: #ffffff; /* Fundo branco */
-    padding: 2rem; /* Preenchimento interno */
-    border-radius: 8px; /* Cantos arredondados */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra suave para profundidade */
-    margin-bottom: 2rem; /* Margem inferior entre as seções */
-}
-
-/* Estilos para títulos de seção (h2 e h3) */
-h2, h3 {
-    font-family: 'Oswald', sans-serif; /* Fonte específica */
-    color: var(--cor-primaria); /* Cor do título */
-    margin-bottom: 1.5rem; /* Margem inferior */
-    border-bottom: 3px solid var(--cor-destaque); /* Borda inferior de destaque */
-    padding-bottom: 0.75rem; /* Preenchimento abaixo da borda */
-}
-
-/* Grupo de elementos de entrada (label, input, select, button) */
 .input-group {
-    display: flex; /* Flexbox para layout em coluna */
-    flex-direction: column; /* Organiza itens em coluna */
-    gap: 1rem; /* Espaçamento entre os itens */
-    margin-bottom: 1.5rem; /* Margem inferior */
+    margin-bottom: 15px;
 }
-
 .input-group label {
-    font-weight: bold; /* Texto em negrito para labels */
-    color: var(--cor-texto); /* Cor do texto da label */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
-
-/* Estilos para inputs e selects */
-.input-group input, .input-group select {
-    padding: 0.8rem; /* Preenchimento interno */
-    border: 1px solid #ccc; /* Borda cinza */
-    border-radius: 5px; /* Cantos arredondados */
-    font-size: 1.2rem; /* Tamanho da fonte */
+.input-group select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    font-size: 14px;
 }
-
-/* Estilos para o botão de calcular */
-.input-group button {
-    padding: 0.8rem 1.8rem; /* Preenchimento interno */
-    font-size: 1rem; /* Tamanho da fonte */
-    border-radius: 5px; /* Cantos arredondados */
-    cursor: pointer; /* Ícone de ponteiro ao passar o mouse */
-    border: none; /* Sem borda */
-    color: white; /* Cor do texto */
-    font-weight: bold; /* Texto em negrito */
-    background-color: var(--cor-sucesso); /* Cor de fundo de sucesso */
-    transition: transform 0.2s ease; /* Transição suave ao interagir */
+#results-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Para tabelas grandes em telas pequenas */
 }
-
-.input-group button:hover {
-    transform: scale(1.02); /* Aumenta ligeiramente o botão ao passar o mouse */
-    opacity: 0.9; /* Leve transparência */
+#results-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 11px;
+    border: 2px solid #000000;
 }
-
-/* Contêiner para exibir os resultados */
-.resultado-container {
-    margin-top: 2rem; /* Margem superior */
-    padding: 1.5rem; /* Preenchimento interno */
-    background-color: #eef5ff; /* Fundo azul claro */
-    border-left: 5px solid var(--cor-secundaria); /* Borda lateral de destaque */
-    border-radius: 8px; /* Cantos arredondados */
+#results-container th, #results-container td {
+    border: 1px solid #000000;
+    padding: 8px;
+    text-align: center;
 }
-
-/* Grid para organizar os itens de resultado */
-.resultado-grid {
-    display: grid; /* Layout de grid */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Colunas responsivas */
-    gap: 1.5rem; /* Espaçamento entre os itens do grid */
+#results-container thead th {
+    background-color: #283d84;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
 }
-
-/* Itens individuais dentro do grid de resultados */
-.resultado-item h4 {
-    color: var(--cor-secundaria); /* Cor do título do item */
-    margin-bottom: 0.75rem; /* Margem inferior */
-    font-family: 'Roboto', sans-serif; /* Fonte específica */
+#results-container tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
-
-.resultado-item p {
-    margin-bottom: 0.25rem; /* Margem inferior pequena */
-    font-size: 0.95rem; /* Tamanho da fonte */
+#results-container tr:hover {
+    background-color: #e9e9e9;
 }
-.resultado-item span {
-    font-weight: bold; /* Texto em negrito */
-    color: var(--cor-primaria); /* Cor do texto */
+.table-header {
+    background-color: #283d84;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 5px;
 }
-
-/* Contêiner para mensagens de erro */
-.erro-container {
-    margin-top: 1.5rem; /* Margem superior */
-    padding: 1rem; /* Preenchimento interno */
-    background-color: #f8d7da; /* Fundo vermelho claro */
-    border: 1px solid var(--cor-erro); /* Borda de erro */
-    color: var(--cor-erro); /* Cor do texto de erro */
-    border-radius: 5px; /* Cantos arredondados */
-    text-align: center; /* Centraliza o texto */
+.obs {
+    background-color: silver;
+    text-align: left !important;
+    font-size: 12px;
+    padding: 10px;
 }
-
-/* Estilos para parágrafos e listas na seção de informações */
-.info-container p {
-    font-size: 1rem; /* Tamanho da fonte */
-    margin-bottom: 0.75rem; /* Margem inferior */
+#chart-container {
+    margin-top: 30px;
+    text-align: center;
 }
-.info-container ul {
-    margin-left: 20px; /* Margem esquerda para lista */
-    font-size: 1rem; /* Tamanho da fonte */
+.chart-image {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
-
-/* Classe para esconder elementos */
-.hidden {
-    display: none; /* Oculta o elemento */
-}
-
-/* Estilos para a seção de gráficos */
-.chart-container {
-    text-align: center; /* Centraliza o conteúdo */
-}
-
-#folgaChart {
-    max-width: 800px; /* Largura máxima do gráfico */
-    height: 400px; /* Altura do gráfico */
-    margin: 0 auto; /* Centraliza o gráfico */
-}
-
-/* Estilos para a seção do guia passo a passo */
-.guide-container {
-    background: #ffffff; /* Fundo branco */
-}
-
-.step-by-step-guide .step {
-    border: 1px solid #e0e0e0; /* Borda leve */
-    border-radius: 8px; /* Cantos arredondados */
-    padding: 1.5rem; /* Preenchimento interno */
-    margin-bottom: 1.5rem; /* Margem inferior */
-    background-color: #fcfcfc; /* Fundo ligeiramente off-white */
-}
-
-.step-by-step-guide .step h3 {
-    font-family: 'Oswald', sans-serif; /* Fonte específica */
-    color: var(--cor-secundaria); /* Cor do título do passo */
-    border-bottom: 2px solid var(--cor-destaque); /* Borda inferior de destaque */
-    padding-bottom: 0.5rem; /* Preenchimento abaixo da borda */
-    margin-bottom: 1rem; /* Margem inferior */
-}
-
-.step-by-step-guide .step p {
-    margin-bottom: 0.5rem; /* Margem inferior pequena */
+h2 {
+    color: #283d84;
+    border-bottom: 2px solid #283d84;
+    padding-bottom: 5px;
+    text-align: center;
 }
