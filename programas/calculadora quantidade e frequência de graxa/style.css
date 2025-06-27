@@ -207,3 +207,15 @@ button:active {
     }
 }
 
+/* Adicione este código ao final do seu arquivo style.css */
+
+#reset-btn {
+    background-color: var(--cor-secundaria); /* Usa o azul secundário */
+    margin-top: 1rem; /* Adiciona um espaço menor acima */
+}
+
+#reset-btn:hover {
+    background-color: var(--cor-primaria); /* Escurece para o azul primário */
+    opacity: 1; /* Garante que não fique transparente como o botão principal */
+}
+
