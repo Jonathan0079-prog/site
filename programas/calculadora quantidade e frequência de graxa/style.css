@@ -71,7 +71,8 @@ h1 {
     letter-spacing: 0.5px;
 }
 
-.input-group input {
+.input-group input,
+.input-group select {
     width: 100%;
     padding: 14px 18px;
     border: 2px solid var(--border-color);
@@ -81,9 +82,18 @@ h1 {
     transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
     background-color: var(--secondary-color);
     color: var(--text-color);
+    appearance: none; /* Remove a seta padrão do select */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="%236c7a89" d="M4.516 7.548c.436-.446 1.043-.481 1.576 0L10 11.233l3.908-3.685c.533-.481 1.14-.446 1.576 0 .436.446.408 1.191 0 1.615l-4.707 4.444c-.2.2-.457.3-.728.3s-.528-.1-.728-.3l-4.707-4.444c-.408-.424-.436-1.169 0-1.615z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+    cursor: pointer;
 }
 
-.input-group input:focus {
+.input-group input:focus,
+.input-group select:focus {
     border-color: var(--primary-color);
     outline: none;
     background-color: #ffffff;
@@ -194,7 +204,8 @@ button:active {
         font-size: 1.1em;
     }
 
-    .input-group input {
+    .input-group input,
+    .input-group select {
         padding: 12px 15px;
         font-size: 1em;
     }
@@ -207,4 +218,3 @@ button:active {
         font-size: 1.6em;
     }
 }
-
