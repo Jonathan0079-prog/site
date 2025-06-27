@@ -35,6 +35,11 @@
             <label for="temp">Temperatura de Operação (°C):</label>
             <input type="number" id="temp" placeholder="Ex: 70" required>
         </div>
+        
+        <div class="input-group">
+            <label for="grease-density">Densidade da Graxa (g/cm³):</label>
+            <input type="number" step="0.01" id="grease-density" placeholder="Ex: 0.9" value="0.9" required>
+        </div>
 
         <div class="input-group">
             <label for="contamination">Ambiente de Contaminação:</label>
@@ -69,10 +74,16 @@
         <div class="results" id="results">
             <h2>Resultados:</h2>
             <div class="result-item">
-                <p><strong>Graxa Inicial (Primeira Aplicação):</strong> <span id="initial-grease">-</span> gramas</p>
+                <p><strong>Graxa Inicial (Massa):</strong> <span id="initial-grease-mass">-</span> g</p>
             </div>
             <div class="result-item">
-                <p><strong>Graxa para Relubrificação (Recarga):</strong> <span id="grease-quantity">-</span> gramas</p>
+                <p><strong>Graxa Inicial (Volume):</strong> <span id="initial-grease-volume">-</span> cm³</p>
+            </div>
+            <div class="result-item">
+                <p><strong>Graxa para Relubrificação (Massa):</strong> <span id="grease-quantity-mass">-</span> g</p>
+            </div>
+            <div class="result-item">
+                <p><strong>Graxa para Relubrificação (Volume):</strong> <span id="grease-quantity-volume">-</span> cm³</p>
             </div>
             <div class="result-item">
                 <p><strong>Frequência de Relubrificação:</strong> <span id="grease-frequency">-</span> horas</p>
