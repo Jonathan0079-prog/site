@@ -3,82 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Graxa</title>
+    <title>Calculadora de Graxa Industrial</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-    <div class="calculator-container">
-        <h1>Calculadora de Graxa</h1>
-        <p>Calcule a quantidade de graxa e a frequência de relubrificação para seus rolamentos.</p>
 
-        <div class="input-group">
-            <label for="outer-diameter">Diâmetro Externo (D) - mm:</label>
-            <input type="number" id="outer-diameter" placeholder="Ex: 100" required>
-        </div>
-        <div class="input-group">
-            <label for="inner-diameter">Diâmetro Interno (d) - mm:</label>
-            <input type="number" id="inner-diameter" placeholder="Ex: 50" required>
-        </div>
-        <div class="input-group">
-            <label for="width">Largura (B) - mm:</label>
-            <input type="number" id="width" placeholder="Ex: 25" required>
-        </div>
-        <div class="input-group">
-            <label for="rpm">RPM (n):</label>
-            <input type="number" id="rpm" placeholder="Ex: 1500" required>
-        </div>
-        <div class="input-group">
-            <label for="temp">Temperatura de Operação (°C):</label>
-            <input type="number" id="temp" placeholder="Ex: 70" required>
-        </div>
+    <header>
+        <h1>Calculadora de Graxa Industrial</h1>
+        <p>Precisão na lubrificação de rolamentos</p>
+    </header>
 
-        <div class="input-group">
-            <label for="contamination">Ambiente de Contaminação:</label>
-            <select id="contamination">
-                <option value="1.0">Limpo (Fator 1.0)</option>
-                <option value="0.8">Poeira Leve / Umidade Moderada (Fator 0.8)</option>
-                <option value="0.5">Contaminado / Úmido (Fator 0.5)</option>
-                <option value="0.3">Abrasivo / Água (Fator 0.3)</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label for="vibration">Vibração:</label>
-            <select id="vibration">
-                <option value="1.0">Normal (Fator 1.0)</option>
-                <option value="0.9">Moderada (Fator 0.9)</option>
-                <option value="0.7">Alta (Fator 0.7)</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label for="shaft-position">Posição do Eixo:</label>
-            <select id="shaft-position">
-                <option value="1.0">Horizontal (Fator 1.0)</option>
-                <option value="0.7">Inclinado (Fator 0.7)</option>
-                <option value="0.5">Vertical (Fator 0.5)</option>
-            </select>
-        </div>
-
-        <div class="button-group">
-            <button id="calculate-btn">Calcular</button>
-            <button id="clear-btn" class="secondary-btn">Limpar</button>
-            <button id="generate-pdf-btn">Gerar PDF</button>
-        </div>
-
-        <div class="results" id="results">
-            <h2>Resultados:</h2>
-            <div class="result-item">
-                <p><strong>Graxa Inicial (Primeira Aplicação):</strong> <span id="initial-grease">-</span> gramas</p>
+    <main class="main-container">
+        <div class="calculator-container">
+            <h2>Dados do Rolamento e Operação</h2>
+            <div class="input-group">
+                <label for="outer-diameter">Diâmetro Externo (D) - mm:</label>
+                <input type="number" id="outer-diameter" placeholder="Ex: 100" required>
             </div>
-            <div class="result-item">
-                <p><strong>Graxa para Relubrificação (Recarga):</strong> <span id="grease-quantity">-</span> gramas</p>
+            <div class="input-group">
+                <label for="inner-diameter">Diâmetro Interno (d) - mm:</label>
+                <input type="number" id="inner-diameter" placeholder="Ex: 50" required>
             </div>
-            <div class="result-item">
-                <p><strong>Frequência de Relubrificação:</strong> <span id="grease-frequency">-</span> horas</p>
+            <div class="input-group">
+                <label for="width">Largura (B) - mm:</label>
+                <input type="number" id="width" placeholder="Ex: 25" required>
             </div>
-            <p class="disclaimer"><strong>Observação:</strong> Estes cálculos são estimativas. Sempre consulte as recomendações do fabricante do rolamento e do lubrificante.</p>
+            <div class="input-group">
+                <label for="rpm">RPM (n):</label>
+                <input type="number" id="rpm" placeholder="Ex: 1500" required>
+            </div>
+            <div class="input-group">
+                <label for="temp">Temperatura de Operação (°C):</label>
+                <input type="number" id="temp" placeholder="Ex: 70" required>
+            </div>
+            <div class="input-group">
+                <label for="contamination">Ambiente de Contaminação:</label>
+                <select id="contamination">
+                    <option value="1.0">Limpo</option>
+                    <option value="0.8">Poeira Leve / Umidade</option>
+                    <option value="0.5">Contaminado / Úmido</option>
+                    <option value="0.3">Abrasivo / Água</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="vibration">Nível de Vibração:</label>
+                <select id="vibration">
+                    <option value="1.0">Normal</option>
+                    <option value="0.9">Moderada</option>
+                    <option value="0.7">Alta</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="shaft-position">Posição do Eixo:</label>
+                <select id="shaft-position">
+                    <option value="1.0">Horizontal</option>
+                    <option value="0.7">Inclinado</option>
+                    <option value="0.5">Vertical</option>
+                </select>
+            </div>
+            <button id="calcular-btn">Calcular</button>
+            <button id="limpar-btn">Limpar</button> </div>
+
+        <div id="resultado-container" class="resultado-container hidden">
+            <h3>Resultados da Lubrificação</h3>
+            <div class="resultado-item">
+                <span class="resultado-label">Graxa Inicial:</span>
+                <div class="resultado-display">
+                    <p id="initial-grease">-</p>
+                    <span class="unidade">gramas</span>
+                </div>
+            </div>
+            <div class="resultado-item">
+                <span class="resultado-label">Recarga de Graxa:</span>
+                <div class="resultado-display">
+                    <p id="grease-quantity">-</p>
+                    <span class="unidade">gramas</span>
+                </div>
+            </div>
+             <div class="resultado-item">
+                <span class="resultado-label">Frequência de Relubrificação:</span>
+                <div class="resultado-display">
+                    <p id="grease-frequency">-</p>
+                    <span class="unidade">horas</span>
+                </div>
+            </div>
+            <p class="aviso-dados">Estes cálculos são estimativas. Consulte sempre o manual do fabricante.</p>
         </div>
-    </div>
+    </main>
 
     <script src="script.js"></script>
 </body>
