@@ -21,113 +21,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const tempSlider = document.getElementById('tempSlider');
     if (tempSlider) {
         tempSlider.addEventListener('input', function() {
-            const baseLife = 10000;
+            const baseLife = 8000; // Valor base para o exemplo
             const temp = parseInt(this.value);
             document.getElementById('tempValue').textContent = temp;
+            document.getElementById('baseLife').textContent = baseLife;
 
             let adjustedLife = baseLife;
             if (temp > 70) {
                 const tempDiff = temp - 70;
+                // Para cada 15 graus, a vida é dividida por 2.
                 adjustedLife = baseLife / Math.pow(2, tempDiff / 15);
             }
             document.getElementById('adjustedLife').textContent = Math.round(adjustedLife);
         });
+        // Trigger a a anipulação inicial
+        tempSlider.dispatchEvent(new Event('input'));
     }
-
-    // --- INTERAÇÃO 3: JOGO DE COMPATIBILIDADE ---
-    const gameContainer = document.querySelector('.compatibility-game-container');
-    if (gameContainer) {
-        const greases = [
-            { id: 'g1', name: 'Graxa de Poliureia', target: 't1' },
-            { id: 'g2', name: 'Graxa de Sulf. de Cálcio', target: 't2' },
-            { id: 'g3', name: 'Graxa com MoS2', target: 't3' }
-        ];
-        const applications = [
-            { id: 't1', name: 'Motor elétrico (alta rotação, longa vida)' },
-            { id: 't2', name: 'Mancal em ambiente com muita água' },
-            { id: 't3', name: 'Equipamento de mineração (baixa vel., alta carga)' }
-        ];
-
-        const greaseOptionsContainer = document.getElementById('grease-options');
-        const appTargetsContainer = document.getElementById('application-targets');
-
-        // Populate game
-        greases.forEach(g => {
-            greaseOptionsContainer.innerHTML += `<div class="draggable" draggable="true" id="${g.id}" data-target="${g.target}">${g.name}</div>`;
-        });
-        applications.forEach(a => {
-            appTargetsContainer.innerHTML += `<div class="droptarget" id="${a.id}"></div><p class="target-label">${a.name}</p>`;
-        });
-        
-        const draggables = document.querySelectorAll('.draggable');
-        const droptargets = document.querySelectorAll('.droptarget');
-
-        draggables.forEach(draggable => {
-            draggable.addEventListener('dragstart', () => {
-                draggable.style.opacity = '0.5';
-            });
-            draggable.addEventListener('dragend', () => {
-                draggable.style.opacity = '1';
-            });
-        });
-
-        droptargets.forEach(target => {
-            target.addEventListener('dragover', e => {
-                e.preventDefault();
-                target.classList.add('drag-over');
-            });
-            target.addEventListener('dragleave', () => {
-                target.classList.remove('drag-over');
-            });
-            target.addEventListener('drop', e => {
-                e.preventDefault();
-                target.classList.remove('drag-over');
-                if (target.children.length === 0) { // Allow drop only if empty
-                    const id = e.dataTransfer.getData('text');
-                    const draggableElement = document.getElementById(id);
-                    target.appendChild(draggableElement);
-                }
-            });
-             // Allow dropping back to the start
-            greaseOptionsContainer.addEventListener('dragover', e => e.preventDefault());
-            greaseOptionsContainer.addEventListener('drop', e => {
-                const id = e.dataTransfer.getData('text');
-                const draggableElement = document.getElementById(id);
-                greaseOptionsContainer.appendChild(draggableElement);
-            });
-        });
-        
-        // Transfer the ID on drag
-        document.addEventListener('dragstart', e => {
-            if (e.target.classList.contains('draggable')) {
-                e.dataTransfer.setData('text/plain', e.target.id);
-            }
-        });
-
-        document.getElementById('check-game-answers').addEventListener('click', () => {
-            let correctCount = 0;
-            droptargets.forEach(target => {
-                target.classList.remove('correct-drop');
-                const dropped = target.querySelector('.draggable');
-                if (dropped) {
-                    if (dropped.dataset.target === target.id) {
-                        target.classList.add('correct-drop');
-                        correctCount++;
-                    }
-                }
-            });
-            const feedbackEl = document.getElementById('game-feedback');
-            feedbackEl.textContent = `Você acertou ${correctCount} de 3!`;
-        });
-    }
-
-
-    // --- QUIZ FINAL ---
+    
+    // --- QUIZ FINAL ATUALIZADO ---
     const submitButton = document.getElementById('submit-quiz');
     if (!submitButton) return;
 
     const resultsContainer = document.getElementById('quiz-results');
-    const correctAnswers = { q1: 'b', q2: 'c', q3: 'b', q4: 'b' };
+    // Respostas corretas para o novo quiz
+    const correctAnswers = { 
+        q1: 'b', // EHL
+        q2: 'b', // Sulfonato de Cálcio
+        q3: 'b', // Limpeza completa
+        q4: 'c'  // Ineficiência da TBM
+    };
 
     submitButton.addEventListener('click', () => {
         let score = 0;
@@ -152,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (score === totalQuestions) {
-            resultsContainer.textContent = `Excelente! Você acertou todas as ${totalQuestions} perguntas!`;
+            resultsContainer.textContent = `Excelente! Você acertou todas as ${totalQuestions} perguntas! Conhecimento consolidado.`;
             resultsContainer.style.backgroundColor = 'var(--success-color)';
             resultsContainer.style.color = 'var(--success-border)';
         } else {
