@@ -7,18 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const contaminationSelect = document.getElementById('contamination');
     const vibrationSelect = document.getElementById('vibration');
     const shaftPositionSelect = document.getElementById('shaft-position');
+    const lubricationPointSelect = document.getElementById('lubrication-point'); // NOVO CAMPO
     const calculateBtn = document.getElementById('calculate-btn');
-    const resetButton = document.getElementById('reset-btn'); // Novo botão de reset
+    const resetButton = document.getElementById('reset-btn');
     const resultsDiv = document.getElementById('results');
     
     // Referências aos elementos de resultado
-    const greaseDensitySpan = document.getElementById('grease-density');
+    const initialFillFactorSpan = document.getElementById('initial-fill-factor'); // NOVO SPAN
     const initialGreaseSpan = document.getElementById('initial-grease');
     const greaseQuantitySpan = document.getElementById('grease-quantity');
     const greaseFrequencySpan = document.getElementById('grease-frequency');
-
-    // Define a densidade de referência que a fórmula utiliza
-    const assumedGreaseDensity = 0.93; // g/cm³ (Valor médio comum)
 
     calculateBtn.addEventListener('click', () => {
         // Obter os valores dos inputs e converter para números
@@ -30,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const contaminationFactor = parseFloat(contaminationSelect.value);
         const vibrationFactor = parseFloat(vibrationSelect.value);
         const shaftPositionFactor = parseFloat(shaftPositionSelect.value);
+        const initialFillFactor = parseFloat(lubricationPointSelect.value); // Fator de preenchimento inicial
 
         // Validar se os inputs são números válidos e positivos
         if (isNaN(outerDiameter) || isNaN(innerDiameter) || isNaN(width) || isNaN(rpm) || isNaN(temp) || outerDiameter <= 0 || innerDiameter <= 0 || width <= 0 || rpm <= 0 || temp < 0) {
@@ -39,11 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // --- Cálculo da Quantidade de Graxa ---
-        // Fórmula para relubrificação (recarga): G = 0.005 * D * B
+        // Fórmula de recarga (sempre 0.005)
         const relubricationQuantity = 0.005 * outerDiameter * width;
 
-        // Fórmula para a graxa inicial: Baseado no volume interno do rolamento (~30-50%)
-        const initialGreaseQuantity = relubricationQuantity * 2.5; 
+        // Fórmula da graxa inicial usando o fator selecionado (0.03 ou 0.05)
+        const initialGreaseQuantity = initialFillFactor * outerDiameter * width; 
         
         // --- Cálculo da Frequência de Relubrificação ---
         // 1. Frequência base sem fatores de correção
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const adjustedFrequency = baseFrequency * tempFactor * contaminationFactor * vibrationFactor * shaftPositionFactor;
         
         // --- Exibir os resultados ---
-        greaseDensitySpan.textContent = `${assumedGreaseDensity.toFixed(2)} g/cm³ (valor de referência)`;
+        initialFillFactorSpan.textContent = `${initialFillFactor.toFixed(2)}`;
         initialGreaseSpan.textContent = initialGreaseQuantity.toFixed(2);
         greaseQuantitySpan.textContent = relubricationQuantity.toFixed(2);
         greaseFrequencySpan.textContent = adjustedFrequency.toFixed(2);
@@ -80,16 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
         rpmInput.value = '';
         tempInput.value = '';
         
-        // Reseta os dropdowns para a opção padrão (Fator 1.0)
+        // Reseta os dropdowns para a opção padrão
         contaminationSelect.value = '1.0';
         vibrationSelect.value = '1.0';
         shaftPositionSelect.value = '1.0';
+        lubricationPointSelect.value = '0.03';
 
-        // Oculta a seção de resultados
+        // Oculta a seção de resultados e zera os spans
         resultsDiv.style.display = 'none';
-
-        // Opcional: Zera o conteúdo dos spans de resultado
-        greaseDensitySpan.textContent = '-';
+        initialFillFactorSpan.textContent = '-';
         initialGreaseSpan.textContent = '-';
         greaseQuantitySpan.textContent = '-';
         greaseFrequencySpan.textContent = '-';
