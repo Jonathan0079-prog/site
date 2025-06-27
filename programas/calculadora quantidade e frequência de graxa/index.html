@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Graxa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>Calculadora de Graxa</h1>
+        <p>Use esta ferramenta como um guia geral para determinar a quantidade de graxa e a frequência de relubrificação para rolamentos.</p>
+
+        <div class="input-group">
+            <label for="outer-diameter">Diâmetro Externo (D) - mm:</label>
+            <input type="number" id="outer-diameter" placeholder="Ex: 100" required>
+        </div>
+
+        <div class="input-group">
+            <label for="inner-diameter">Diâmetro Interno (d) - mm:</label>
+            <input type="number" id="inner-diameter" placeholder="Ex: 50" required>
+        </div>
+
+        <div class="input-group">
+            <label for="width">Largura (B) - mm:</label>
+            <input type="number" id="width" placeholder="Ex: 25" required>
+        </div>
+
+        <div class="input-group">
+            <label for="rpm">RPM (n):</label>
+            <input type="number" id="rpm" placeholder="Ex: 1500" required>
+        </div>
+
+        <div class="input-group">
+            <label for="temp">Temperatura de Operação (°C):</label>
+            <input type="number" id="temp" placeholder="Ex: 70" required>
+        </div>
+
+        <button id="calculate-btn">Calcular</button>
+
+        <div class="results" id="results">
+            <h2>Resultados:</h2>
+            <div class="result-item">
+                <p><strong>Quantidade de Graxa:</strong> <span id="grease-quantity">-</span> gramas</p>
+            </div>
+            <div class="result-item">
+                <p><strong>Frequência de Relubrificação:</strong> <span id="grease-frequency">-</span> horas</p>
+            </div>
+            <p class="disclaimer"><strong>Observação:</strong> Estes cálculos são estimativas. Sempre consulte as recomendações do fabricante do rolamento e do lubrificante.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
