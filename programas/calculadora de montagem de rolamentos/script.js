@@ -1,70 +1,218 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Tabela baseada nos dados da BGL para rolamentos tipo: Autocompensador
+function calcularDeslocamento(d, grupo) {
+  let deslocamento = '';
+  grupo = grupo.toUpperCase();
+  if (isNaN(d) || d < 24 || d > 1800) return 'Diâmetro fora da faixa.';
 
-    // Dados extraídos da tabela FAG do documento (página 9)
-    const dadosRolamentos = [
-        { d_min: 30, d_max: 40, folga_normal: "0,035 - 0,050", folga_c3: "0,050 - 0,065", folga_c4: "0,065 - 0,085", reducao: "0,020 - 0,025", desloc_eixo: "0,35 - 0,40", desloc_bucha: "0,35 - 0,45", folga_final_normal: "0,015", folga_final_c3: "0,025", folga_final_c4: "0,040" },
-        { d_min: 40, d_max: 50, folga_normal: "0,045 - 0,060", folga_c3: "0,060 - 0,080", folga_c4: "0,080 - 0,100", reducao: "0,025 - 0,030", desloc_eixo: "0,40 - 0,45", desloc_bucha: "0,45 - 0,50", folga_final_normal: "0,020", folga_final_c3: "0,030", folga_final_c4: "0,050" },
-        { d_min: 50, d_max: 65, folga_normal: "0,055 - 0,075", folga_c3: "0,075 - 0,095", folga_c4: "0,095 - 0,120", reducao: "0,030 - 0,040", desloc_eixo: "0,45 - 0,60", desloc_bucha: "0,50 - 0,70", folga_final_normal: "0,025", folga_final_c3: "0,035", folga_final_c4: "0,055" },
-        { d_min: 65, d_max: 80, folga_normal: "0,070 - 0,095", folga_c3: "0,095 - 0,120", folga_c4: "0,120 - 0,150", reducao: "0,040 - 0,050", desloc_eixo: "0,60 - 0,75", desloc_bucha: "0,70 - 0,85", folga_final_normal: "0,025", folga_final_c3: "0,040", folga_final_c4: "0,070" },
-        { d_min: 80, d_max: 100, folga_normal: "0,080 - 0,110", folga_c3: "0,110 - 0,140", folga_c4: "0,140 - 0,180", reducao: "0,045 - 0,060", desloc_eixo: "0,70 - 0,90", desloc_bucha: "0,75 - 1,00", folga_final_normal: "0,035", folga_final_c3: "0,050", folga_final_c4: "0,080" },
-        { d_min: 100, d_max: 120, folga_normal: "0,100 - 0,135", folga_c3: "0,135 - 0,170", folga_c4: "0,170 - 0,220", reducao: "0,050 - 0,070", desloc_eixo: "0,70 - 1,10", desloc_bucha: "0,80 - 1,20", folga_final_normal: "0,050", folga_final_c3: "0,065", folga_final_c4: "0,100" },
-        { d_min: 120, d_max: 140, folga_normal: "0,120 - 0,160", folga_c3: "0,160 - 0,200", folga_c4: "0,200 - 0,260", reducao: "0,065 - 0,090", desloc_eixo: "1,10 - 1,40", desloc_bucha: "1,20 - 1,50", folga_final_normal: "0,055", folga_final_c3: "0,080", folga_final_c4: "0,110" },
-        // ... adicione mais dados da tabela aqui se necessário
-    ];
-
-    const calcularBtn = document.getElementById('calcular-btn');
-    const diametroInput = document.getElementById('diametro-rolamento');
-    const resultadoContainer = document.getElementById('resultado-container');
-    const erroContainer = document.getElementById('erro-container');
-
-    calcularBtn.addEventListener('click', () => {
-        const diametro = parseFloat(diametroInput.value);
-
-        // Esconde resultados anteriores
-        resultadoContainer.classList.add('hidden');
-        erroContainer.classList.add('hidden');
-
-        if (isNaN(diametro) || diametro <= 0) {
-            erroContainer.querySelector('p').textContent = "Por favor, insira um valor de diâmetro válido.";
-            erroContainer.classList.remove('hidden');
-            return;
-        }
-
-        // Procura pelos dados correspondentes ao diâmetro
-        let dadosEncontrados = null;
-        for (const dados of dadosRolamentos) {
-            // A lógica de busca é: maior que d_min e menor ou igual a d_max
-            if (diametro > dados.d_min && diametro <= dados.d_max) {
-                dadosEncontrados = dados;
-                break;
-            }
-        }
-        
-        // Trata o primeiro valor da tabela (30mm)
-        if (diametro === 30) {
-            dadosEncontrados = dadosRolamentos[0];
-        }
-
-
-        if (dadosEncontrados) {
-            // Preenche os resultados na tela
-            document.getElementById('resultado-diametro').textContent = diametro;
-            document.getElementById('folga-normal').textContent = dadosEncontrados.folga_normal;
-            document.getElementById('folga-c3').textContent = dadosEncontrados.folga_c3;
-            document.getElementById('folga-c4').textContent = dadosEncontrados.folga_c4;
-            document.getElementById('reducao-folga').textContent = dadosEncontrados.reducao;
-            document.getElementById('desloc-eixo').textContent = dadosEncontrados.desloc_eixo;
-            document.getElementById('desloc-bucha').textContent = dadosEncontrados.desloc_bucha;
-            document.getElementById('folga-final-normal').textContent = dadosEncontrados.folga_final_normal;
-            document.getElementById('folga-final-c3').textContent = dadosEncontrados.folga_final_c3;
-            document.getElementById('folga-final-c4').textContent = dadosEncontrados.folga_final_c4;
-
-            // Mostra o container de resultados
-            resultadoContainer.classList.remove('hidden');
-        } else {
-            // Mostra o container de erro
-            erroContainer.querySelector('p').textContent = `Diâmetro de ${diametro} mm não encontrado na tabela. Verifique o valor (a tabela atual cobre de 30 a 140 mm).`;
-            erroContainer.classList.remove('hidden');
-        }
-    });
-});
+  if (d >= 24.0 && d <= 30.0) {
+    if (grupo === 'NORMAL') return '0.030 a 0.040 mm';
+    if (grupo === 'C3') return '0.040 a 0.055 mm';
+    if (grupo === 'C4') return '0.055 a 0.075 mm';
+    if (grupo === 'C5') return 'Não aplicável';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 30.0 && d <= 40.0) {
+    if (grupo === 'NORMAL') return '0.035 a 0.050 mm';
+    if (grupo === 'C3') return '0.050 a 0.065 mm';
+    if (grupo === 'C4') return '0.065 a 0.085 mm';
+    if (grupo === 'C5') return '0.085 a 0.105 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 40.0 && d <= 50.0) {
+    if (grupo === 'NORMAL') return '0.045 a 0.060 mm';
+    if (grupo === 'C3') return '0.060 a 0.080 mm';
+    if (grupo === 'C4') return '0.080 a 0.100 mm';
+    if (grupo === 'C5') return '0.100 a 0.130 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 50.0 && d <= 65.0) {
+    if (grupo === 'NORMAL') return '0.055 a 0.075 mm';
+    if (grupo === 'C3') return '0.075 a 0.095 mm';
+    if (grupo === 'C4') return '0.095 a 0.120 mm';
+    if (grupo === 'C5') return '0.120 a 0.160 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 65.0 && d <= 80.0) {
+    if (grupo === 'NORMAL') return '0.070 a 0.095 mm';
+    if (grupo === 'C3') return '0.095 a 0.120 mm';
+    if (grupo === 'C4') return '0.120 a 0.150 mm';
+    if (grupo === 'C5') return '0.150 a 0.200 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 80.0 && d <= 100.0) {
+    if (grupo === 'NORMAL') return '0.080 a 0.110 mm';
+    if (grupo === 'C3') return '0.110 a 0.140 mm';
+    if (grupo === 'C4') return '0.140 a 0.180 mm';
+    if (grupo === 'C5') return '0.180 a 0.230 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 100.0 && d <= 120.0) {
+    if (grupo === 'NORMAL') return '0.100 a 0.135 mm';
+    if (grupo === 'C3') return '0.135 a 0.170 mm';
+    if (grupo === 'C4') return '0.170 a 0.220 mm';
+    if (grupo === 'C5') return '0.220 a 0.280 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 120.0 && d <= 140.0) {
+    if (grupo === 'NORMAL') return '0.120 a 0.160 mm';
+    if (grupo === 'C3') return '0.160 a 0.200 mm';
+    if (grupo === 'C4') return '0.200 a 0.260 mm';
+    if (grupo === 'C5') return '0.260 a 0.330 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 140.0 && d <= 160.0) {
+    if (grupo === 'NORMAL') return '0.130 a 0.180 mm';
+    if (grupo === 'C3') return '0.180 a 0.230 mm';
+    if (grupo === 'C4') return '0.230 a 0.300 mm';
+    if (grupo === 'C5') return '0.300 a 0.380 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 160.0 && d <= 180.0) {
+    if (grupo === 'NORMAL') return '0.140 a 0.200 mm';
+    if (grupo === 'C3') return '0.200 a 0.260 mm';
+    if (grupo === 'C4') return '0.260 a 0.340 mm';
+    if (grupo === 'C5') return '0.340 a 0.430 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 180.0 && d <= 200.0) {
+    if (grupo === 'NORMAL') return '0.160 a 0.220 mm';
+    if (grupo === 'C3') return '0.220 a 0.290 mm';
+    if (grupo === 'C4') return '0.290 a 0.370 mm';
+    if (grupo === 'C5') return '0.370 a 0.470 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 200.0 && d <= 225.0) {
+    if (grupo === 'NORMAL') return '0.180 a 0.250 mm';
+    if (grupo === 'C3') return '0.250 a 0.320 mm';
+    if (grupo === 'C4') return '0.320 a 0.410 mm';
+    if (grupo === 'C5') return '0.410 a 0.520 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 225.0 && d <= 250.0) {
+    if (grupo === 'NORMAL') return '0.200 a 0.270 mm';
+    if (grupo === 'C3') return '0.270 a 0.350 mm';
+    if (grupo === 'C4') return '0.350 a 0.450 mm';
+    if (grupo === 'C5') return '0.450 a 0.570 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 250.0 && d <= 280.0) {
+    if (grupo === 'NORMAL') return '0.220 a 0.300 mm';
+    if (grupo === 'C3') return '0.300 a 0.390 mm';
+    if (grupo === 'C4') return '0.390 a 0.490 mm';
+    if (grupo === 'C5') return '0.490 a 0.620 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 280.0 && d <= 315.0) {
+    if (grupo === 'NORMAL') return '0.240 a 0.330 mm';
+    if (grupo === 'C3') return '0.330 a 0.430 mm';
+    if (grupo === 'C4') return '0.430 a 0.540 mm';
+    if (grupo === 'C5') return '0.540 a 0.680 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 315.0 && d <= 355.0) {
+    if (grupo === 'NORMAL') return '0.270 a 0.360 mm';
+    if (grupo === 'C3') return '0.360 a 0.470 mm';
+    if (grupo === 'C4') return '0.470 a 0.590 mm';
+    if (grupo === 'C5') return '0.590 a 0.740 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 355.0 && d <= 400.0) {
+    if (grupo === 'NORMAL') return '0.300 a 0.400 mm';
+    if (grupo === 'C3') return '0.400 a 0.520 mm';
+    if (grupo === 'C4') return '0.520 a 0.650 mm';
+    if (grupo === 'C5') return '0.650 a 0.820 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 400.0 && d <= 450.0) {
+    if (grupo === 'NORMAL') return '0.330 a 0.440 mm';
+    if (grupo === 'C3') return '0.440 a 0.570 mm';
+    if (grupo === 'C4') return '0.570 a 0.720 mm';
+    if (grupo === 'C5') return '0.720 a 0.910 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 450.0 && d <= 500.0) {
+    if (grupo === 'NORMAL') return '0.370 a 0.490 mm';
+    if (grupo === 'C3') return '0.490 a 0.630 mm';
+    if (grupo === 'C4') return '0.630 a 0.790 mm';
+    if (grupo === 'C5') return '0.790 a 1.000 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 500.0 && d <= 560.0) {
+    if (grupo === 'NORMAL') return '0.410 a 0.540 mm';
+    if (grupo === 'C3') return '0.540 a 0.680 mm';
+    if (grupo === 'C4') return '0.680 a 0.870 mm';
+    if (grupo === 'C5') return '0.870 a 1.100 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 560.0 && d <= 630.0) {
+    if (grupo === 'NORMAL') return '0.460 a 0.600 mm';
+    if (grupo === 'C3') return '0.600 a 0.760 mm';
+    if (grupo === 'C4') return '0.760 a 0.980 mm';
+    if (grupo === 'C5') return '0.980 a 1.230 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 630.0 && d <= 710.0) {
+    if (grupo === 'NORMAL') return '0.510 a 0.670 mm';
+    if (grupo === 'C3') return '0.670 a 0.850 mm';
+    if (grupo === 'C4') return '0.850 a 1.090 mm';
+    if (grupo === 'C5') return '1.090 a 1.360 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 710.0 && d <= 800.0) {
+    if (grupo === 'NORMAL') return '0.570 a 0.750 mm';
+    if (grupo === 'C3') return '0.750 a 0.960 mm';
+    if (grupo === 'C4') return '0.960 a 1.220 mm';
+    if (grupo === 'C5') return '1.220 a 1.500 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 800.0 && d <= 900.0) {
+    if (grupo === 'NORMAL') return '0.640 a 0.840 mm';
+    if (grupo === 'C3') return '0.840 a 1.070 mm';
+    if (grupo === 'C4') return '1.070 a 1.370 mm';
+    if (grupo === 'C5') return '1.370 a 1.690 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 900.0 && d <= 1000.0) {
+    if (grupo === 'NORMAL') return '0.710 a 0.930 mm';
+    if (grupo === 'C3') return '0.930 a 1.190 mm';
+    if (grupo === 'C4') return '1.190 a 1.520 mm';
+    if (grupo === 'C5') return '1.520 a 1.860 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 1000.0 && d <= 1120.0) {
+    if (grupo === 'NORMAL') return '0.770 a 1.030 mm';
+    if (grupo === 'C3') return '1.030 a 1.300 mm';
+    if (grupo === 'C4') return '1.300 a 1.670 mm';
+    if (grupo === 'C5') return '1.670 a 2.050 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 1120.0 && d <= 1250.0) {
+    if (grupo === 'NORMAL') return '0.830 a 1.120 mm';
+    if (grupo === 'C3') return '1.120 a 1.420 mm';
+    if (grupo === 'C4') return '1.420 a 1.830 mm';
+    if (grupo === 'C5') return '1.830 a 2.250 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 1250.0 && d <= 1400.0) {
+    if (grupo === 'NORMAL') return '0.910 a 1.230 mm';
+    if (grupo === 'C3') return '1.230 a 1.560 mm';
+    if (grupo === 'C4') return '1.560 a 2.000 mm';
+    if (grupo === 'C5') return '2.000 a 2.450 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 1400.0 && d <= 1600.0) {
+    if (grupo === 'NORMAL') return '1.000 a 1.350 mm';
+    if (grupo === 'C3') return '1.350 a 1.720 mm';
+    if (grupo === 'C4') return '1.720 a 2.200 mm';
+    if (grupo === 'C5') return '2.200 a 2.700 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  if (d >= 1600.0 && d <= 1800.0) {
+    if (grupo === 'NORMAL') return '1.110 a 1.500 mm';
+    if (grupo === 'C3') return '1.500 a 1.920 mm';
+    if (grupo === 'C4') return '1.920 a 2.400 mm';
+    if (grupo === 'C5') return '2.400 a 2.950 mm';
+    return 'Grupo de folga não encontrado';
+  }
+  return 'Intervalo de diâmetro ainda não implementado';
+}
