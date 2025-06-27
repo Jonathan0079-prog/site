@@ -4,15 +4,15 @@ const sendChatBtn = document.querySelector("#send-btn");
 const fileUploadInput = document.querySelector("#file-upload");
 
 let userMessage = null;
+// NOVO: Variável para armazenar o contexto do último arquivo lido.
+let fileContext = null; 
 const inputInitHeight = chatInput.scrollHeight;
 
 // --- URLs DAS APIS ---
-// Esta é a API principal do seu chatbot (Gemini)
 const CHAT_API_URL = "https://api-oqfw.onrender.com/chat";
-// Esta é a URL da sua API de RECONHECIMENTO DE ARQUIVOS (Docker no Render)
 const RECOGNITION_API_URL = "https://dockerfile-u20q.onrender.com/reconhecer";
 
-// Função para criar o elemento de chat
+// Função para criar o elemento de chat (sem alterações)
 const createChatLi = (message, className) => {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", className);
@@ -22,13 +22,27 @@ const createChatLi = (message, className) => {
     return chatLi;
 };
 
-// Função de resposta do Chat (envia texto para o Gemini)
+// Função de resposta do Chat (ATUALIZADA)
 const generateChatResponse = async (chatElement) => {
     const messageElement = chatElement.querySelector("p");
 
+    // ATUALIZADO: Verifica se há um contexto de arquivo para enviar junto com a mensagem.
+    // Isso faz com que o bot saiba sobre o conteúdo do arquivo ao responder sua pergunta.
+    let finalMessage = userMessage;
+    if (fileContext) {
+        finalMessage = `Com base no seguinte CONTEÚDO que foi extraído de um arquivo:
+---
+${fileContext}
+---
+Responda à seguinte pergunta do usuário: "${userMessage}"`;
+        
+        // Limpa o contexto após usá-lo uma vez para não interferir nas próximas perguntas.
+        fileContext = null; 
+    }
+
     const requestBody = {
         contents: [{
-            parts: [{ text: userMessage }]
+            parts: [{ text: finalMessage }]
         }]
     };
 
@@ -60,7 +74,7 @@ const generateChatResponse = async (chatElement) => {
     }
 };
 
-// Função principal de Chat
+// Função principal de Chat (sem alterações)
 const handleChat = () => {
     userMessage = chatInput.value.trim();
     if (!userMessage) return;
@@ -79,11 +93,12 @@ const handleChat = () => {
     }, 600);
 };
 
-// Lógica de Upload de Arquivo
+// --- Lógica de Upload de Arquivo (PRINCIPAL MUDANÇA) ---
 fileUploadInput.addEventListener('change', async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
+    // Cria a mensagem de status "Analisando..." que será atualizada com o resultado.
     const statusChatLi = createChatLi(`Analisando o arquivo "${file.name}"...`, "incoming");
     chatbox.appendChild(statusChatLi);
     chatbox.scrollTo(0, chatbox.scrollHeight);
@@ -105,23 +120,36 @@ fileUploadInput.addEventListener('change', async (event) => {
         }
 
         const extractedText = data.conteudo_extraido;
-        statusMessageElement.textContent = `Arquivo lido com sucesso!`;
+        
+        // ATUALIZADO: Armazena o texto extraído na variável de contexto.
+        fileContext = extractedText;
 
-        chatInput.value = `Com base no seguinte conteúdo que extraí do arquivo "${file.name}", responda às minhas próximas perguntas. Se eu não perguntar nada específico, faça um resumo.\n\nCONTEÚDO:\n"""\n${extractedText}\n"""`;
-
-        chatInput.style.height = "auto";
-        chatInput.style.height = `${chatInput.scrollHeight}px`;
-        chatInput.focus();
+        // ATUALIZADO: Cria uma resposta rica em HTML para a AEMI mostrar no chat.
+        // O conteúdo do arquivo é colocado dentro de uma tag <pre> para manter a formatação.
+        const botResponseHTML = `
+            Consegui ler o arquivo <strong>"${file.name}"</strong>. Aqui está o conteúdo que extraí:
+            <blockquote class="file-content">
+                <pre>${extractedText}</pre>
+            </blockquote>
+            Agora você pode me fazer perguntas sobre este documento ou pedir um resumo.`;
+        
+        // Atualiza a mensagem de "Analisando..." com o resultado final.
+        statusMessageElement.innerHTML = botResponseHTML;
 
     } catch (error) {
         statusMessageElement.innerHTML = `Erro ao analisar: ${error.message}`;
         console.error("Erro ao chamar a API de reconhecimento:", error);
+        fileContext = null; // Garante que o contexto seja nulo em caso de erro.
     } finally {
+        // Limpa o input de arquivo para permitir o upload do mesmo arquivo novamente.
         event.target.value = '';
+        // Garante que o chat role até o final para ver a mensagem completa.
+        chatbox.scrollTo(0, chatbox.scrollHeight);
     }
 });
 
-// Ouvintes de eventos
+
+// Ouvintes de eventos (sem alterações)
 chatInput.addEventListener("input", () => {
     chatInput.style.height = "auto";
     chatInput.style.height = `${chatInput.scrollHeight}px`;
@@ -135,4 +163,3 @@ chatInput.addEventListener("keydown", (e) => {
 });
 
 sendChatBtn.addEventListener("click", handleChat);
-
