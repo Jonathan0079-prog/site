@@ -216,3 +216,10 @@ function calcularDeslocamento(d, grupo) {
   }
   return 'Intervalo de diâmetro ainda não implementado';
 }
+
+function executarCalculo() {
+  const d = parseFloat(document.getElementById("diametro").value);
+  const grupo = document.getElementById("grupo").value;
+  const resultado = calcularDeslocamento(d, grupo);
+  document.getElementById("resultado").innerText = `Deslocamento: ${resultado}`;
+}
