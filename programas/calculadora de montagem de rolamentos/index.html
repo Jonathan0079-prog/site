@@ -1,75 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Montagem de Rolamentos</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Montagem de Rolamentos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Ferramenta de Montagem de Rolamentos</h1>
-        <p>Baseada nas tabelas de ajuste de folga radial FAG para rolamentos com furo cônico</p>
-    </header>
+    <header>
+        <h1>Ferramenta de Montagem de Rolamentos</h1>
+        <p>Baseada nas tabelas de ajuste de folga radial para rolamentos com furo cônico</p>
+    </header>
 
-    <main class="main-container">
-        <section class="calculator-container">
-            <h2>Calculadora de Folga e Montagem</h2>
+    <main class="main-container">
+        <section class="calculator-container">
+            <h2>Calculadora de Folga e Montagem</h2>
+            <div class="input-group">
+                <label for="diametro-rolamento">Insira o diâmetro do furo do rolamento (mm):</label>
+                <input type="number" id="diametro-rolamento" placeholder="Ex: 65">
+                <button id="calcular-btn">Calcular Parâmetros</button>
+            </div>
             <div class="input-group">
-                <label for="diametro-rolamento">Insira o diâmetro do furo do rolamento (mm):</label>
-                <input type="number" id="diametro-rolamento" placeholder="Ex: 65">
-                <button id="calcular-btn">Calcular Parâmetros</button>
+                <label for="tipo-rolamento">Selecione o tipo de rolamento:</label>
+                <select id="tipo-rolamento">
+                    <option value="autocompensadores">Rolamentos Autocompensadores de Rolos</option>
+                    <option value="carb">Rolamentos de Rolos Toroidais CARB</option>
+                </select>
             </div>
 
-            <div id="resultado-container" class="resultado-container hidden">
-                <h3>Parâmetros para Rolamento de Ø<span id="resultado-diametro"></span> mm:</h3>
-                
-                <div class="resultado-grid">
-                    <div class="resultado-item">
-                        <h4>Folga Radial Inicial</h4>
+            <div id="resultado-container" class="resultado-container hidden">
+                <h3>Parâmetros para Rolamento de Ø<span id="resultado-diametro"></span> mm:</h3>
+                
+                <div class="resultado-grid">
+                    <div class="resultado-item">
+                        <h4>Folga Radial Inicial</h4>
                         <p><strong>C2:</strong> <span id="folga-c2">--</span> mm</p>
-                        <p><strong>Normal:</strong> <span id="folga-normal">--</span> mm</p>
-                        <p><strong>C3:</strong> <span id="folga-c3">--</span> mm</p>
-                        <p><strong>C4:</strong> <span id="folga-c4">--</span> mm</p>
+                        <p><strong>Normal:</strong> <span id="folga-normal">--</span> mm</p>
+                        <p><strong>C3:</strong> <span id="folga-c3">--</span> mm</p>
+                        <p><strong>C4:</strong> <span id="folga-c4">--</span> mm</p>
                         <p><strong>C5:</strong> <span id="folga-c5">--</span> mm</p>
-                    </div>
+                    </div>
 
-                    <div class="resultado-item">
-                        <h4>Redução da Folga Radial</h4>
-                        <p><strong>Faixa:</strong> <span id="reducao-folga">--</span> mm</p>
-                    </div>
+                    <div class="resultado-item">
+                        <h4>Redução da Folga Radial</h4>
+                        <p><strong>Faixa:</strong> <span id="reducao-folga">--</span> mm</p>
+                    </div>
 
-                    <div class="resultado-item">
-                        <h4>Deslocamento Axial (mm)</h4>
-                        <p><strong>Cone 1:12 - Eixo:</strong> <span id="desloc-eixo-12">--</span></p>
-                        <p><strong>Cone 1:12 - Bucha:</strong> <span id="desloc-bucha-12">--</span></p>
-                        <p><strong>Cone 1:30 - Bucha:</strong> <span id="desloc-bucha-30">--</span></p>
-                    </div>
-                    
-                    <div class="resultado-item">
-                        <h4>Folga Mínima Pós-Montagem</h4>
-                        <p><strong>Normal:</strong> <span id="folga-final-normal">--</span> mm</p>
-                        <p><strong>C3:</strong> <span id="folga-final-c3">--</span> mm</p>
-                        <p><strong>C4:</strong> <span id="folga-final-c4">--</span> mm</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="erro-container" class="erro-container hidden">
-                <p>Diâmetro não encontrado na tabela. Verifique o valor inserido (a tabela cobre de 24 a 5000 mm).</p>
-            </div>
-        </section>
+                    <div class="resultado-item">
+                        <h4>Deslocamento Axial (mm)</h4>
+                        <p><strong>Cone 1:12:</strong> <span id="desloc-bucha-12">--</span></p>
+                        <p><strong>Cone 1:30:</strong> <span id="desloc-bucha-30">--</span></p>
+                    </div>
 
-        <section class="info-container">
-            <h3>Notas Importantes</h3>
-            <ul>
-                <li>Os valores listados devem ser usados apenas como referência. A conferência final deve ser feita com o calibrador de lâminas.</li>
-                <li>O deslocamento axial difere ligeiramente entre as séries dos rolamentos.</li>
-                <li>Tolerância do Eixo Recomendada: Para a montagem de rolamentos autocompensadores, a tolerância geral recomendada para o assento no eixo é <strong>h9 / h8 / h7</strong>. A escolha exata depende da aplicação e das condições de carga.</li>
-            </ul>
-        </section>
-    </main>
+                     <div class="resultado-item">
+                        <h4>Folga Mínima Pós-Montagem</h4>
+                        <p><strong>Normal:</strong> <span id="folga-final-normal">--</span> mm</p>
+                        <p><strong>C3:</strong> <span id="folga-final-c3">--</span> mm</p>
+                        <p><strong>C4:</strong> <span id="folga-final-c4">--</span> mm</p>
+                    </div>
+                </div>
+            </div>
+             <div id="erro-container" class="erro-container hidden">
+                <p>Diâmetro não encontrado na tabela. Verifique o valor inserido (a tabela cobre de 24 a 1800 mm).</p>
+            </div>
+        </section>
 
-    <script src="script.js"></script>
+        <section class="info-container">
+            <h3>Tolerância do Eixo Recomendada</h3>
+            <p>Para a montagem de rolamentos autocompensadores, a tolerância geral recomendada para o assento no eixo é <strong>h9 / h8 / h7</strong>. A escolha exata depende da aplicação e das condições de carga.</p>
+            <p><strong>Atenção:</strong> Os valores de deslocamento axial para a conicidade 1:30 são referentes apenas à montagem com bucha de fixação.</p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
