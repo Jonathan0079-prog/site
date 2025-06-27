@@ -9,7 +9,7 @@
 <body>
     <div class="calculator-container">
         <h1>Calculadora de Graxa</h1>
-        <p>Use esta ferramenta como um guia geral para determinar a quantidade de graxa e a frequência de relubrificação para rolamentos.</p>
+        <p>Calcule a quantidade de graxa e a frequência de relubrificação para seus rolamentos.</p>
 
         <div class="input-group">
             <label for="outer-diameter">Diâmetro Externo (D) - mm:</label>
@@ -36,12 +36,43 @@
             <input type="number" id="temp" placeholder="Ex: 70" required>
         </div>
 
+        <div class="input-group">
+            <label for="contamination">Ambiente de Contaminação:</label>
+            <select id="contamination">
+                <option value="1.0">Limpo (Fator 1.0)</option>
+                <option value="0.8">Poeira Leve / Umidade Moderada (Fator 0.8)</option>
+                <option value="0.5">Contaminado / Úmido (Fator 0.5)</option>
+                <option value="0.3">Abrasivo / Água (Fator 0.3)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="vibration">Vibração:</label>
+            <select id="vibration">
+                <option value="1.0">Normal (Fator 1.0)</option>
+                <option value="0.9">Moderada (Fator 0.9)</option>
+                <option value="0.7">Alta (Fator 0.7)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="shaft-position">Posição do Eixo:</label>
+            <select id="shaft-position">
+                <option value="1.0">Horizontal (Fator 1.0)</option>
+                <option value="0.7">Inclinado (Fator 0.7)</option>
+                <option value="0.5">Vertical (Fator 0.5)</option>
+            </select>
+        </div>
+
         <button id="calculate-btn">Calcular</button>
 
         <div class="results" id="results">
             <h2>Resultados:</h2>
             <div class="result-item">
-                <p><strong>Quantidade de Graxa:</strong> <span id="grease-quantity">-</span> gramas</p>
+                <p><strong>Graxa Inicial (Primeira Aplicação):</strong> <span id="initial-grease">-</span> gramas</p>
+            </div>
+            <div class="result-item">
+                <p><strong>Graxa para Relubrificação (Recarga):</strong> <span id="grease-quantity">-</span> gramas</p>
             </div>
             <div class="result-item">
                 <p><strong>Frequência de Relubrificação:</strong> <span id="grease-frequency">-</span> horas</p>
