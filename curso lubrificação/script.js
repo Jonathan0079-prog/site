@@ -39,6 +39,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // --- LÓGICA DO SIMULADOR DE TEMPERATURA (CORRIGIDO) ---
+    const tempSlider = document.getElementById('tempSlider');
+    if (tempSlider) {
+        tempSlider.addEventListener('input', function() {
+            const baseLife = 8000;
+            const temp = parseInt(this.value);
+            document.getElementById('tempValue').textContent = temp;
+            document.getElementById('baseLife').textContent = baseLife;
+
+            let adjustedLife = baseLife;
+            if (temp > 70) {
+                const tempDiff = temp - 70;
+                // Para cada 15 graus, a vida é dividida por 2.
+                adjustedLife = baseLife / Math.pow(2, tempDiff / 15);
+            }
+            document.getElementById('adjustedLife').textContent = Math.round(adjustedLife);
+        });
+        // Dispara o evento 'input' para garantir que o valor inicial seja calculado ao carregar a página
+        tempSlider.dispatchEvent(new Event('input'));
+    }
+
     // --- LÓGICA DO QUIZ INTERATIVO ---
     const quizContainer = document.getElementById('quiz-container');
     const perguntaTitulo = document.getElementById('pergunta-titulo');
