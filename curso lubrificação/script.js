@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateNav() {
         indicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
         prevBtn.disabled = currentModuleIndex === 0;
-        nextBtn.disabled = (currentModuleIndex === modules.length - 1) && !isQuizFinished;
+        nextBtn.disabled = (currentModuleIndex === modules.length - 1);
 
         const currentModuleTitle = modules[currentModuleIndex].querySelector('h2').innerText;
         headerSubtitle.textContent = `Módulo ${currentModuleTitle}`;
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // --- LÓGICA DO SIMULADOR DE TEMPERATURA (CORRIGIDO) ---
+    // --- LÓGICA DO SIMULADOR DE TEMPERATURA ---
     const tempSlider = document.getElementById('tempSlider');
     if (tempSlider) {
         tempSlider.addEventListener('input', function() {
@@ -51,12 +51,10 @@ document.addEventListener('DOMContentLoaded', function() {
             let adjustedLife = baseLife;
             if (temp > 70) {
                 const tempDiff = temp - 70;
-                // Para cada 15 graus, a vida é dividida por 2.
                 adjustedLife = baseLife / Math.pow(2, tempDiff / 15);
             }
             document.getElementById('adjustedLife').textContent = Math.round(adjustedLife);
         });
-        // Dispara o evento 'input' para garantir que o valor inicial seja calculado ao carregar a página
         tempSlider.dispatchEvent(new Event('input'));
     }
 
@@ -72,42 +70,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const tentarNovamenteBtn = document.getElementById('tentar-novamente-btn');
     
     let currentQuestionIndex = 0;
-    let isQuizFinished = false;
+    let isQuizFinished = false; // Controle para o estado do quiz
     
     const quizQuestions = [
         {
-            question: "1. Qual o principal objetivo da lubrificação elasto-hidrodinâmica (EHL)?",
+            question: "1. O que acontece com o intervalo de relubrificação se a temperatura de um mancal sobe de 70°C para 100°C?",
             options: [
-                "Aumentar o atrito para frear o rolamento.",
-                "Formar uma película de lubrificante completa que separa as superfícies sob altas pressões.",
-                "Depender apenas de aditivos EP para proteção."
+                "Permanece o mesmo.",
+                "Dobra (aumenta 2x).",
+                "É reduzido para um quarto (dividido por 4)."
+            ],
+            correctAnswer: 2
+        },
+        {
+            question: "2. Qual método de aplicação de lubrificante é mais adequado para um sistema com múltiplos pontos e que exige alta confiabilidade?",
+            options: [
+                "Lubrificação manual com pistola graxeira.",
+                "Sistema de lubrificação por circulação.",
+                "Copo conta-gotas."
             ],
             correctAnswer: 1
         },
         {
-            question: "2. Para um ambiente com lavagem por água constante, qual espessante oferece a melhor performance?",
+            question: "3. Qual é a principal função de um aditivo de Extrema Pressão (EP) em uma graxa?",
             options: [
-                "Argila (Bentone).",
-                "Sulfonato de Cálcio.",
-                "Complexo de Lítio."
+                "Aumentar o índice de viscosidade.",
+                "Evitar a microssoldagem das superfícies sob altas cargas.",
+                "Melhorar a resistência à oxidação."
             ],
             correctAnswer: 1
         },
         {
-            question: "3. Se for necessário trocar uma graxa de Complexo de Lítio por uma de Poliureia (compatibilidade marginal), qual a ação correta?",
+            question: "4. A mistura de uma graxa de espessante de Lítio com uma de Poliureia é uma prática recomendada?",
             options: [
-                "Apenas misturá-las, pois a compatibilidade é marginal.",
-                "O rolamento e o mancal devem ser completamente limpos para remover toda a graxa antiga.",
-                "Aumentar a quantidade de graxa nova para purgar a antiga."
-            ],
-            correctAnswer: 1
-        },
-        {
-            question: "4. Qual é a principal desvantagem de uma estratégia de Manutenção Baseada no Tempo (TBM)?",
-            options: [
-                "O alto custo de investimento em sensores e software.",
-                "Sua ineficiência, pois pode levar a manutenção excessiva ou insuficiente.",
-                "A dificuldade de planejar o cronograma."
+                "Sim, são totalmente compatíveis.",
+                "Não, a mistura pode destruir a estrutura do espessante.",
+                "Sim, desde que a quantidade de graxa de Poliureia seja menor."
             ],
             correctAnswer: 1
         }
@@ -129,7 +127,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function checkAnswer(selectedIndex, correctIndex, buttonElement) {
-        // Desabilita todos os botões após a escolha
         opcoesQuiz.querySelectorAll('button').forEach(btn => btn.disabled = true);
         
         if (selectedIndex === correctIndex) {
@@ -163,13 +160,13 @@ document.addEventListener('DOMContentLoaded', function() {
         isQuizFinished = true;
         quizContainer.style.display = 'none';
         
-        // Exige 100% de acerto para aprovação
-        if (score === quizQuestions.length) {
+        // Critério de aprovação: 75% (3 de 4)
+        if (score >= 3) {
             certificadoContainer.style.display = 'block';
         } else {
             reprovadoContainer.style.display = 'block';
         }
-        updateNav();
+        nextBtn.disabled = true; // Desabilita o botão de avançar ao final do quiz
     }
 
     function resetQuiz() {
@@ -184,9 +181,14 @@ document.addEventListener('DOMContentLoaded', function() {
         updateNav();
     }
 
-    tentarNovamenteBtn.addEventListener('click', resetQuiz);
+    tentarNovamenteBtn.addEventListener('click', () => {
+        showModule(0); // Volta para o primeiro módulo
+        resetQuiz();
+    });
 
     // --- INICIALIZAÇÃO ---
-    showModule(0); // Mostra o primeiro módulo
-    loadQuestion(0); // Carrega a primeira pergunta do quiz (que está escondido)
+    showModule(0); 
+    if(quizContainer) {
+        loadQuestion(0);
+    }
 });
