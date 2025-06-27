@@ -1,190 +1,206 @@
-/* Importando fontes do Google Fonts */
+/* Importando fontes do Google Fonts para um design moderno e legível */
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
 
+/* Definição de variáveis CSS para cores e consistência no tema */
 :root {
-    --cor-primaria: #003366;
-    --cor-secundaria: #005a9c;
-    --cor-destaque: #ffc107;
-    --cor-fundo: #f8f9fa;
-    --cor-texto: #212529;
-    --cor-sucesso: #28a745;
-    --cor-erro: #dc3545;
+    --cor-primaria: #003366; /* Azul escuro para títulos e elementos chave */
+    --cor-secundaria: #005a9c; /* Azul médio para subtítulos e destaques */
+    --cor-destaque: #ffc107; /* Amarelo vibrante para linhas e botões de ação */
+    --cor-fundo: #f8f9fa; /* Fundo claro para a página */
+    --cor-texto: #212529; /* Cor principal do texto */
+    --cor-sucesso: #28a745; /* Verde para botões de sucesso */
+    --cor-erro: #dc3545; /* Vermelho para mensagens de erro */
 }
 
+/* Reset básico de estilos para todos os elementos */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    box-sizing: border-box; /* Garante que padding e border não aumentem o tamanho do elemento */
+    margin: 0; /* Remove margem padrão */
+    padding: 0; /* Remove padding padrão */
 }
 
+/* Estilos para o corpo da página */
 body {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
+    font-family: 'Roboto', sans-serif; /* Fonte principal para o corpo do texto */
+    line-height: 1.6; /* Espaçamento entre linhas para melhor legibilidade */
+    background-color: var(--cor-fundo); /* Aplica a cor de fundo definida */
+    color: var(--cor-texto); /* Aplica a cor do texto principal */
 }
 
+/* Estilos para o cabeçalho da página */
 header {
-    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
-    color: #ffffff;
-    padding: 1.5rem 1rem;
-    text-align: center;
-    border-bottom: 5px solid var(--cor-destaque);
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria)); /* Gradiente de cor para o cabeçalho */
+    color: #ffffff; /* Cor do texto no cabeçalho */
+    padding: 1.5rem 1rem; /* Preenchimento interno do cabeçalho */
+    text-align: center; /* Centraliza o texto */
+    border-bottom: 5px solid var(--cor-destaque); /* Borda inferior de destaque */
 }
 
 header h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 2.2rem;
+    font-family: 'Oswald', sans-serif; /* Fonte específica para o título principal */
+    font-size: 2.2rem; /* Tamanho da fonte do título */
 }
 
 header p {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1.1em;
-    opacity: 0.9;
+    font-family: 'Roboto Mono', monospace; /* Fonte monoespaçada para o subtítulo */
+    font-size: 1.1em; /* Tamanho da fonte do subtítulo */
+    opacity: 0.9; /* Leve transparência para o subtítulo */
 }
 
+/* Contêiner principal para centralizar o conteúdo da página */
 .main-container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    max-width: 900px; /* Largura máxima do contêiner */
+    margin: 2rem auto; /* Centraliza o contêiner horizontalmente e adiciona margem superior/inferior */
+    padding: 0 1rem; /* Preenchimento nas laterais */
 }
 
+/* Estilos para as seções principais do aplicativo (calculadora, informações, gráficos, guia) */
 .calculator-container, .info-container, .chart-container, .guide-container {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    margin-bottom: 2rem;
+    background: #ffffff; /* Fundo branco */
+    padding: 2rem; /* Preenchimento interno */
+    border-radius: 8px; /* Cantos arredondados */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra suave para profundidade */
+    margin-bottom: 2rem; /* Margem inferior entre as seções */
 }
 
+/* Estilos para títulos de seção (h2 e h3) */
 h2, h3 {
-    font-family: 'Oswald', sans-serif;
-    color: var(--cor-primaria);
-    margin-bottom: 1.5rem;
-    border-bottom: 3px solid var(--cor-destaque);
-    padding-bottom: 0.75rem;
+    font-family: 'Oswald', sans-serif; /* Fonte específica */
+    color: var(--cor-primaria); /* Cor do título */
+    margin-bottom: 1.5rem; /* Margem inferior */
+    border-bottom: 3px solid var(--cor-destaque); /* Borda inferior de destaque */
+    padding-bottom: 0.75rem; /* Preenchimento abaixo da borda */
 }
 
+/* Grupo de elementos de entrada (label, input, select, button) */
 .input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    display: flex; /* Flexbox para layout em coluna */
+    flex-direction: column; /* Organiza itens em coluna */
+    gap: 1rem; /* Espaçamento entre os itens */
+    margin-bottom: 1.5rem; /* Margem inferior */
 }
 
 .input-group label {
-    font-weight: bold;
-    color: var(--cor-texto);
+    font-weight: bold; /* Texto em negrito para labels */
+    color: var(--cor-texto); /* Cor do texto da label */
 }
 
+/* Estilos para inputs e selects */
 .input-group input, .input-group select {
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1.2rem;
+    padding: 0.8rem; /* Preenchimento interno */
+    border: 1px solid #ccc; /* Borda cinza */
+    border-radius: 5px; /* Cantos arredondados */
+    font-size: 1.2rem; /* Tamanho da fonte */
 }
 
+/* Estilos para o botão de calcular */
 .input-group button {
-    padding: 0.8rem 1.8rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: white;
-    font-weight: bold;
-    background-color: var(--cor-sucesso);
-    transition: transform 0.2s ease;
+    padding: 0.8rem 1.8rem; /* Preenchimento interno */
+    font-size: 1rem; /* Tamanho da fonte */
+    border-radius: 5px; /* Cantos arredondados */
+    cursor: pointer; /* Ícone de ponteiro ao passar o mouse */
+    border: none; /* Sem borda */
+    color: white; /* Cor do texto */
+    font-weight: bold; /* Texto em negrito */
+    background-color: var(--cor-sucesso); /* Cor de fundo de sucesso */
+    transition: transform 0.2s ease; /* Transição suave ao interagir */
 }
 
 .input-group button:hover {
-    transform: scale(1.02);
-    opacity: 0.9;
+    transform: scale(1.02); /* Aumenta ligeiramente o botão ao passar o mouse */
+    opacity: 0.9; /* Leve transparência */
 }
 
+/* Contêiner para exibir os resultados */
 .resultado-container {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background-color: #eef5ff;
-    border-left: 5px solid var(--cor-secundaria);
-    border-radius: 8px;
+    margin-top: 2rem; /* Margem superior */
+    padding: 1.5rem; /* Preenchimento interno */
+    background-color: #eef5ff; /* Fundo azul claro */
+    border-left: 5px solid var(--cor-secundaria); /* Borda lateral de destaque */
+    border-radius: 8px; /* Cantos arredondados */
 }
 
+/* Grid para organizar os itens de resultado */
 .resultado-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    display: grid; /* Layout de grid */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Colunas responsivas */
+    gap: 1.5rem; /* Espaçamento entre os itens do grid */
 }
 
+/* Itens individuais dentro do grid de resultados */
 .resultado-item h4 {
-    color: var(--cor-secundaria);
-    margin-bottom: 0.75rem;
-    font-family: 'Roboto', sans-serif;
+    color: var(--cor-secundaria); /* Cor do título do item */
+    margin-bottom: 0.75rem; /* Margem inferior */
+    font-family: 'Roboto', sans-serif; /* Fonte específica */
 }
 
 .resultado-item p {
-    margin-bottom: 0.25rem;
-    font-size: 0.95rem;
+    margin-bottom: 0.25rem; /* Margem inferior pequena */
+    font-size: 0.95rem; /* Tamanho da fonte */
 }
 .resultado-item span {
-    font-weight: bold;
-    color: var(--cor-primaria);
+    font-weight: bold; /* Texto em negrito */
+    color: var(--cor-primaria); /* Cor do texto */
 }
 
+/* Contêiner para mensagens de erro */
 .erro-container {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background-color: #f8d7da;
-    border: 1px solid var(--cor-erro);
-    color: var(--cor-erro);
-    border-radius: 5px;
-    text-align: center;
+    margin-top: 1.5rem; /* Margem superior */
+    padding: 1rem; /* Preenchimento interno */
+    background-color: #f8d7da; /* Fundo vermelho claro */
+    border: 1px solid var(--cor-erro); /* Borda de erro */
+    color: var(--cor-erro); /* Cor do texto de erro */
+    border-radius: 5px; /* Cantos arredondados */
+    text-align: center; /* Centraliza o texto */
 }
 
+/* Estilos para parágrafos e listas na seção de informações */
 .info-container p {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
+    font-size: 1rem; /* Tamanho da fonte */
+    margin-bottom: 0.75rem; /* Margem inferior */
 }
 .info-container ul {
-    margin-left: 20px;
-    font-size: 1rem;
+    margin-left: 20px; /* Margem esquerda para lista */
+    font-size: 1rem; /* Tamanho da fonte */
 }
 
+/* Classe para esconder elementos */
 .hidden {
-    display: none;
+    display: none; /* Oculta o elemento */
 }
 
-/* Seção de Gráficos */
+/* Estilos para a seção de gráficos */
 .chart-container {
-    text-align: center;
+    text-align: center; /* Centraliza o conteúdo */
 }
 
 #folgaChart {
-    max-width: 800px;
-    height: 400px;
-    margin: 0 auto;
+    max-width: 800px; /* Largura máxima do gráfico */
+    height: 400px; /* Altura do gráfico */
+    margin: 0 auto; /* Centraliza o gráfico */
 }
 
-/* Seção do Guia Passo a Passo */
+/* Estilos para a seção do guia passo a passo */
 .guide-container {
-    background: #ffffff;
+    background: #ffffff; /* Fundo branco */
 }
 
 .step-by-step-guide .step {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    background-color: #fcfcfc;
+    border: 1px solid #e0e0e0; /* Borda leve */
+    border-radius: 8px; /* Cantos arredondados */
+    padding: 1.5rem; /* Preenchimento interno */
+    margin-bottom: 1.5rem; /* Margem inferior */
+    background-color: #fcfcfc; /* Fundo ligeiramente off-white */
 }
 
 .step-by-step-guide .step h3 {
-    font-family: 'Oswald', sans-serif;
-    color: var(--cor-secundaria);
-    border-bottom: 2px solid var(--cor-destaque);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+    font-family: 'Oswald', sans-serif; /* Fonte específica */
+    color: var(--cor-secundaria); /* Cor do título do passo */
+    border-bottom: 2px solid var(--cor-destaque); /* Borda inferior de destaque */
+    padding-bottom: 0.5rem; /* Preenchimento abaixo da borda */
+    margin-bottom: 1rem; /* Margem inferior */
 }
 
 .step-by-step-guide .step p {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem; /* Margem inferior pequena */
 }
