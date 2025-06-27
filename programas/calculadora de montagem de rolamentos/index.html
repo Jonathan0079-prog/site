@@ -1,71 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Folga de Rolamento</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora de Redução de Folga Radial</title>
+  <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
+  <header>
+    <h1>Calculadora de Redução de Folga Radial</h1>
+  </header>
 
-    <div class="container">
-        <h1>Calculadora de Folga de Rolamento</h1>
-        <p>Informe o diâmetro do rolamento para encontrar as especificações de folga de acordo com a tabela FAG.</p>
+  <main class="main-container calculator-container">
+    <div class="input-grid">
+      <div class="input-group">
+        <label for="diametro">Diâmetro Interno (mm)</label>
+        <input type="number" id="diametro" placeholder="Ex: 55" required />
+      </div>
 
-        <div class="input-group">
-            <label for="diametro-rolamento">Diâmetro do Rolamento (mm):</label>
-            <input type="number" id="diametro-rolamento" placeholder="Ex: 50">
-            <button id="calcular-btn">Calcular</button>
-        </div>
-
-        <div id="resultado-container" class="hidden">
-            <h2>Resultados para Diâmetro de <span id="resultado-diametro"></span> mm</h2>
-            <div class="resultado-grid">
-                <div>
-                    <strong>Folga Normal:</strong>
-                    <span id="folga-normal"></span>
-                </div>
-                <div>
-                    <strong>Folga C3:</strong>
-                    <span id="folga-c3"></span>
-                </div>
-                <div>
-                    <strong>Folga C4:</strong>
-                    <span id="folga-c4"></span>
-                </div>
-                <div>
-                    <strong>Redução de Folga:</strong>
-                    <span id="reducao-folga"></span>
-                </div>
-                <div>
-                    <strong>Deslocamento do Eixo:</strong>
-                    <span id="desloc-eixo"></span>
-                </div>
-                <div>
-                    <strong>Deslocamento da Bucha:</strong>
-                    <span id="desloc-bucha"></span>
-                </div>
-                <div>
-                    <strong>Folga Final (Normal):</strong>
-                    <span id="folga-final-normal"></span>
-                </div>
-                <div>
-                    <strong>Folga Final (C3):</strong>
-                    <span id="folga-final-c3"></span>
-                </div>
-                <div>
-                    <strong>Folga Final (C4):</strong>
-                    <span id="folga-final-c4"></span>
-                </div>
-            </div>
-        </div>
-
-        <div id="erro-container" class="hidden">
-            <p></p>
-        </div>
+      <div class="input-group">
+        <label for="grupoFolga">Grupo de Folga</label>
+        <select id="grupoFolga">
+          <option value="normal">Normal</option>
+          <option value="C3">C3</option>
+          <option value="C4">C4</option>
+          <option value="C5">C5</option>
+        </select>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <button id="calcular-btn">Calcular</button>
 
+    <div id="resultado" class="resultado-container hidden">
+      <div class="resultado-grid">
+        <div class="resultado-item">
+          <h4>Deslocamento Axial Estimado</h4>
+          <p id="valorDeslocamento">--</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="erro" class="erro-container hidden"></div>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
