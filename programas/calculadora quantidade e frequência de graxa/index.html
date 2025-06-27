@@ -4,91 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Graxa</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-    <div class="calculator-container">
+
+    <header>
         <h1>Calculadora de Graxa</h1>
-        <p>Calcule a quantidade de graxa e a frequência de relubrificação para seus rolamentos.</p>
+    </header>
 
-        <div class="input-group">
-            <label for="outer-diameter">Diâmetro Externo (D) - mm:</label>
-            <input type="number" id="outer-diameter" placeholder="Ex: 100" required>
+    <div class="main-container">
+        <div class="calculator-container">
+            <p>Calcule a quantidade de graxa e a frequência de relubrificação para seus rolamentos.</p>
+
+            <div class="input-group">
+                <label for="outer-diameter">Diâmetro Externo (D) - mm:</label>
+                <input type="number" id="outer-diameter" placeholder="Ex: 100" required>
+            </div>
+
+            <div class="input-group">
+                <label for="inner-diameter">Diâmetro Interno (d) - mm:</label>
+                <input type="number" id="inner-diameter" placeholder="Ex: 50" required>
+            </div>
+
+            <div class="input-group">
+                <label for="width">Largura (B) - mm:</label>
+                <input type="number" id="width" placeholder="Ex: 25" required>
+            </div>
+
+            <div class="input-group">
+                <label for="rpm">RPM (n):</label>
+                <input type="number" id="rpm" placeholder="Ex: 1500" required>
+            </div>
+
+            <div class="input-group">
+                <label for="temp">Temperatura de Operação (°C):</label>
+                <input type="number" id="temp" placeholder="Ex: 70" required>
+            </div>
+
+            <div class="input-group">
+                <label for="contamination">Ambiente de Contaminação:</label>
+                <select id="contamination">
+                    <option value="1.0">Limpo (Fator 1.0)</option>
+                    <option value="0.8">Poeira Leve / Umidade Moderada (Fator 0.8)</option>
+                    <option value="0.5">Contaminado / Úmido (Fator 0.5)</option>
+                    <option value="0.3">Abrasivo / Água (Fator 0.3)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="vibration">Vibração:</label>
+                <select id="vibration">
+                    <option value="1.0">Normal (Fator 1.0)</option>
+                    <option value="0.9">Moderada (Fator 0.9)</option>
+                    <option value="0.7">Alta (Fator 0.7)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="shaft-position">Posição do Eixo:</label>
+                <select id="shaft-position">
+                    <option value="1.0">Horizontal (Fator 1.0)</option>
+                    <option value="0.7">Inclinado (Fator 0.7)</option>
+                    <option value="0.5">Vertical (Fator 0.5)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="lubrication-point">Ponto de Lubrificação:</label>
+                <select id="lubrication-point">
+                    <option value="0.03">Ponto Central (Fator 0.03)</option>
+                    <option value="0.05">Ponto na Lateral (Fator 0.05)</option>
+                </select>
+            </div>
+
+            <button id="calculate-btn">Calcular</button>
+            <button id="reset-btn">Zerar Campos</button>
         </div>
-
-        <div class="input-group">
-            <label for="inner-diameter">Diâmetro Interno (d) - mm:</label>
-            <input type="number" id="inner-diameter" placeholder="Ex: 50" required>
-        </div>
-
-        <div class="input-group">
-            <label for="width">Largura (B) - mm:</label>
-            <input type="number" id="width" placeholder="Ex: 25" required>
-        </div>
-
-        <div class="input-group">
-            <label for="rpm">RPM (n):</label>
-            <input type="number" id="rpm" placeholder="Ex: 1500" required>
-        </div>
-
-        <div class="input-group">
-            <label for="temp">Temperatura de Operação (°C):</label>
-            <input type="number" id="temp" placeholder="Ex: 70" required>
-        </div>
-
-        <div class="input-group">
-            <label for="contamination">Ambiente de Contaminação:</label>
-            <select id="contamination">
-                <option value="1.0">Limpo (Fator 1.0)</option>
-                <option value="0.8">Poeira Leve / Umidade Moderada (Fator 0.8)</option>
-                <option value="0.5">Contaminado / Úmido (Fator 0.5)</option>
-                <option value="0.3">Abrasivo / Água (Fator 0.3)</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label for="vibration">Vibração:</label>
-            <select id="vibration">
-                <option value="1.0">Normal (Fator 1.0)</option>
-                <option value="0.9">Moderada (Fator 0.9)</option>
-                <option value="0.7">Alta (Fator 0.7)</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label for="shaft-position">Posição do Eixo:</label>
-            <select id="shaft-position">
-                <option value="1.0">Horizontal (Fator 1.0)</option>
-                <option value="0.7">Inclinado (Fator 0.7)</option>
-                <option value="0.5">Vertical (Fator 0.5)</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label for="lubrication-point">Ponto de Lubrificação:</label>
-            <select id="lubrication-point">
-                <option value="0.03">Ponto Central (Fator 0.03)</option>
-                <option value="0.05">Ponto na Lateral (Fator 0.05)</option>
-            </select>
-        </div>
-
-        <button id="calculate-btn">Calcular</button>
-        <button id="reset-btn">Zerar Campos</button>
 
         <div class="results" id="results">
             <h2>Resultados:</h2>
-            <div class="result-item">
-                <p><strong>Fator de Preenchimento Inicial:</strong> <span id="initial-fill-factor">-</span></p>
+            
+            <div class="result-grid">
+
+                <div class="result-item">
+                    <strong>Fator de Preenchimento Inicial</strong>
+                    <span id="initial-fill-factor">-</span>
+                </div>
+                <div class="result-item">
+                    <strong>Graxa Inicial (Primeira Aplicação)</strong>
+                    <span id="initial-grease">-</span>
+                </div>
+                <div class="result-item">
+                    <strong>Graxa para Relubrificação (Recarga)</strong>
+                    <span id="grease-quantity">-</span>
+                </div>
+                <div class="result-item">
+                    <strong>Frequência de Relubrificação</strong>
+                    <span id="grease-frequency">-</span>
+                </div>
             </div>
-            <div class="result-item">
-                <p><strong>Graxa Inicial (Primeira Aplicação):</strong> <span id="initial-grease">-</span> gramas</p>
-            </div>
-            <div class="result-item">
-                <p><strong>Graxa para Relubrificação (Recarga):</strong> <span id="grease-quantity">-</span> gramas</p>
-            </div>
-            <div class="result-item">
-                <p><strong>Frequência de Relubrificação:</strong> <span id="grease-frequency">-</span> horas</p>
-            </div>
+
             <p class="disclaimer"><strong>Observação:</strong> Estes cálculos são estimativas. Sempre consulte as recomendações do fabricante do rolamento e do lubrificante.</p>
         </div>
     </div>
