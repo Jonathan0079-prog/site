@@ -1,13 +1,15 @@
-/* Importando fontes e usando variáveis de cor do primeiro estilo */
+/* Importando fontes e usando variáveis de cor */
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
 
 :root {
-    --cor-primaria: #003366;       /* Azul escuro */
-    --cor-secundaria: #005a9c;      /* Azul médio */
-    --cor-destaque: #ffc107;      /* Amarelo/Dourado */
-    --cor-fundo: #f8f9fa;          /* Cinza bem claro */
-    --cor-texto: #212529;          /* Preto suave */
-    --cor-sucesso: #28a745;        /* Verde */
+    --cor-primaria: #003366;
+    --cor-secundaria: #005a9c;
+    --cor-destaque: #ffc107;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #212529;
+    --cor-sucesso: #28a745;
+    --cor-erro-fundo: #f8d7da;
+    --cor-erro-texto: #721c24;
     --cor-borda-input: #ccc;
     --cor-fundo-container: #ffffff;
     --cor-sombra: rgba(0,0,0,0.08);
@@ -26,7 +28,6 @@ body {
     color: var(--cor-texto);
 }
 
-/* --- CABEÇALHO (Adicionado para replicar o estilo original) --- */
 header {
     background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
     color: #ffffff;
@@ -38,23 +39,19 @@ header {
 header h1 {
     font-family: 'Oswald', sans-serif;
     font-size: 2.2rem;
-    /* Remove estilos do segundo arquivo, como text-shadow */
 }
 
-/* --- CONTAINER PRINCIPAL (Adicionado para replicar o layout original) --- */
 .main-container {
     max-width: 800px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
-/* --- ESTILOS DA CALCULADORA --- */
 .calculator-container {
     background: var(--cor-fundo-container);
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 12px var(--cor-sombra);
-    /* Remove estilos do tema escuro: borda, transições, hover complexo */
 }
 
 .calculator-container > p {
@@ -72,8 +69,6 @@ header h1 {
     font-weight: bold;
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--cor-texto);
-    /* Remove text-transform e letter-spacing */
 }
 
 .input-group input,
@@ -82,21 +77,7 @@ header h1 {
     padding: 0.8rem;
     border: 1px solid var(--cor-borda-input);
     border-radius: 5px;
-    font-size: 1.1rem;
-    background-color: #fff; /* Fundo branco para inputs */
-    color: var(--cor-texto);
-    /* Remove aparência customizada e setas de select */
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: none;
-}
-
-.input-group input:focus,
-.input-group select:focus {
-    outline: 2px solid var(--cor-secundaria);
-    border-color: var(--cor-secundaria);
-    box-shadow: none; /* Remove o box-shadow do foco */
+    font-size: 1rem;
 }
 
 button {
@@ -108,43 +89,31 @@ button {
     border: none;
     color: white;
     font-weight: bold;
-    background-color: var(--cor-sucesso);
-    transition: background-color 0.2s ease;
-    margin-top: 1.5rem;
-    text-transform: none; /* Remove uppercase */
+    transition: opacity 0.2s ease;
 }
 
 button:hover {
     opacity: 0.9;
-    /* Remove transform e box-shadow do hover */
-    transform: none;
-    box-shadow: none;
 }
 
-button:active {
-    transform: none; /* Remove efeito de clique */
+#calculate-btn {
+    background-color: var(--cor-sucesso);
+    margin-top: 1rem;
 }
 
-/* Estilo para o botão secundário, caso exista */
-#generate-pdf-btn {
+#reset-btn {
     background-color: var(--cor-secundaria);
-}
-#generate-pdf-btn:hover {
-    background-color: var(--cor-primaria);
-    opacity: 1;
+    margin-top: 1rem;
 }
 
-/* --- CONTAINER DE RESULTADOS --- */
 .results {
+    display: none; /* Começa escondido */
     margin-top: 2rem;
     padding: 2rem;
     background: var(--cor-fundo-container);
     border-radius: 8px;
     box-shadow: 0 4px 12px var(--cor-sombra);
     border-top: 5px solid var(--cor-sucesso);
-    text-align: center;
-    display: none; /* Mantido para ser ativado via JS */
-    /* Remove animação de fade-in */
 }
 
 .results h2 {
@@ -154,32 +123,26 @@ button:active {
     font-size: 1.8rem;
     border-bottom: 1px solid #eee;
     padding-bottom: 1rem;
-}
-
-/* Adaptando o .result-item para um layout de grid similar ao original */
-.result-grid {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.result-item {
     text-align: center;
-    border: none; /* Remove a borda inferior */
-    padding: 0;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    text-align: center;
 }
 
 .result-item strong {
     color: var(--cor-secundaria);
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1rem;
     display: block;
     margin-bottom: 0.5rem;
 }
 
 .result-item span {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
     color: var(--cor-primaria);
 }
@@ -190,32 +153,17 @@ button:active {
     margin-top: 2rem;
     border-top: 1px solid #eee;
     padding-top: 1.5rem;
+    text-align: center;
 }
 
-/* Remove a responsividade específica do tema escuro, pois o novo layout já é fluido */
-@media (max-width: 600px) {
-    .calculator-container, .results {
-        padding: 1.5rem;
-    }
-
-    header h1 {
-        font-size: 1.8rem;
-    }
-
-    .result-grid {
-        flex-direction: column;
-    }
+.error-message {
+    display: none; /* Começa escondido */
+    color: var(--cor-erro-texto);
+    background-color: var(--cor-erro-fundo);
+    border: 1px solid var(--cor-erro-texto);
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: bold;
 }
-
-/* Adicione este código ao final do seu arquivo style.css */
-
-#reset-btn {
-    background-color: var(--cor-secundaria); /* Usa o azul secundário */
-    margin-top: 1rem; /* Adiciona um espaço menor acima */
-}
-
-#reset-btn:hover {
-    background-color: var(--cor-primaria); /* Escurece para o azul primário */
-    opacity: 1; /* Garante que não fique transparente como o botão principal */
-}
-
