@@ -3,25 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <title>Calculadora de Deslocamento</title>
-  <link rel="stylesheet" href="estilo.css">
+  <link rel="stylesheet" href="estilo.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Calculadora de Deslocamento</h1>
-    <label for="diametro">Diâmetro (mm):</label>
-    <input type="number" id="diametro" />
+  <header>
+    <h1>Calculadora de Deslocamento Radial</h1>
+  </header>
 
-    <label for="grupo">Grupo de folga:</label>
-    <select id="grupo">
-      <option value="NORMAL">NORMAL</option>
-      <option value="C3">C3</option>
-      <option value="C4">C4</option>
-      <option value="C5">C5</option>
-    </select>
+  <main class="main-container">
+    <div class="calculator-container">
+      <div class="input-grid">
+        <div class="input-group">
+          <label for="diametro">Diâmetro Interno (mm):</label>
+          <input type="number" id="diametro" placeholder="Ex: 50">
+        </div>
+        <div class="input-group">
+          <label for="grupo">Grupo de Folga:</label>
+          <select id="grupo">
+            <option value="NORMAL">NORMAL</option>
+            <option value="C3">C3</option>
+            <option value="C4">C4</option>
+            <option value="C5">C5</option>
+          </select>
+        </div>
+      </div>
+      <button id="calcular-btn" onclick="executarCalculo()">Calcular</button>
+      <div class="erro-container hidden" id="erro-msg">Preencha todos os campos corretamente.</div>
+    </div>
 
-    <button onclick="executarCalculo()">Calcular</button>
-    <p id="resultado"></p>
-  </div>
+    <div class="resultado-container hidden" id="resultado-container">
+      <div class="resultado-grid">
+        <div class="resultado-item">
+          <h4>Deslocamento Mínimo</h4>
+          <p id="min-deslocamento"></p>
+        </div>
+        <div class="resultado-item">
+          <h4>Deslocamento Máximo</h4>
+          <p id="max-deslocamento"></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>
