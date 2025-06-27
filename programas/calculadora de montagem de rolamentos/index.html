@@ -7,23 +7,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Calculadora de Folga de Rolamentos Autocompensadores</h1>
-        <div class="input-group">
-            <label for="diametro">Diâmetro Interno do Rolamento (mm):</label>
-            <input type="number" id="diametro" placeholder="Ex: 50">
+    <header>
+        <h1>Calculadora de Folga de Rolamentos</h1>
+        <p>Autocompensadores - Tabela BGL</p>
+    </header>
+    <div class="main-container">
+        <div class="calculator-container">
+            <h2>Insira os Dados</h2>
+            <div class="input-group">
+                <label for="diametro">Diâmetro Interno do Rolamento (mm):</label>
+                <input type="number" id="diametro" placeholder="Ex: 50">
+            </div>
+            <div class="input-group">
+                <label for="grupo">Grupo de Folga:</label>
+                <select id="grupo">
+                    <option value="NORMAL">Normal</option>
+                    <option value="C3">C3</option>
+                    <option value="C4">C4</option>
+                    <option value="C5">C5</option>
+                </select>
+            </div>
+            <button id="calcular-btn" onclick="executarCalculo()">Calcular Deslocamento</button>
         </div>
-        <div class="input-group">
-            <label for="grupo">Grupo de Folga:</label>
-            <select id="grupo">
-                <option value="NORMAL">Normal</option>
-                <option value="C3">C3</option>
-                <option value="C4">C4</option>
-                <option value="C5">C5</option>
-            </select>
+        <div id="resultado-container" class="resultado-container hidden">
+            <h3>Resultado</h3>
+            <div class="resultado-display">
+                <p id="resultado"></p>
+            </div>
         </div>
-        <button onclick="executarCalculo()">Calcular Deslocamento</button>
-        <div id="resultado" class="resultado"></div>
     </div>
 
     <script>
@@ -251,6 +262,7 @@
             const grupo = document.getElementById("grupo").value;
             const resultado = calcularDeslocamento(d, grupo);
             document.getElementById("resultado").innerText = `Deslocamento: ${resultado}`;
+            document.getElementById("resultado-container").classList.remove("hidden");
         }
     </script>
 </body>
