@@ -1,178 +1,234 @@
-/* Importando fontes do Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
-
 :root {
-    --cor-primaria: #003366;
-    --cor-secundaria: #005a9c;
-    --cor-destaque: #ffc107;
-    --cor-fundo: #f0f4f8; /* Tom de fundo levemente azulado */
-    --cor-texto: #212529;
-    --cor-sucesso: #28a745;
-    --cor-aviso: #6c757d; /* Cor para o botão Limpar */
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    /* Cores do novo estilo */
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --background-color: #1a1a2e;
+    --card-background: #27293d;
+    --text-color: #f0f0f0;
+    --label-color: #a0a8b4;
+    --border-color: #3e445b;
+    --shadow-color: rgba(0, 0, 0, 0.4);
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: var(--text-color);
     line-height: 1.6;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-header {
-    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
-    color: #ffffff;
-    padding: 1.5rem 1rem;
+.calculator-container {
+    background-color: var(--card-background);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px var(--shadow-color);
+    max-width: 550px;
+    width: 100%;
+    box-sizing: border-box;
     text-align: center;
-    border-bottom: 5px solid var(--cor-destaque);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    border: 1px solid var(--border-color);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-header h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 2.2rem;
-    text-transform: uppercase;
+.calculator-container:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
-header p {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1.1em;
-    opacity: 0.9;
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 800;
+    text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-.main-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
-
-.calculator-container, .resultado-container {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin-bottom: 2rem;
-    border-top: 5px solid var(--cor-secundaria);
-}
-
-h2, h3 {
-    font-family: 'Oswald', sans-serif;
-    color: var(--cor-primaria);
-    margin-bottom: 1.5rem;
-    text-align: center;
-    font-size: 1.8rem;
+.calculator-container > p {
+    font-size: 1em;
+    color: var(--label-color);
+    margin-bottom: 35px;
 }
 
 .input-group {
-    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 25px;
 }
 
 .input-group label {
-    font-weight: bold;
-    color: var(--cor-texto);
-    display: block;
-    margin-bottom: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--label-color);
+    font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.input-group input[type="number"],
+.input-group input,
 .input-group select {
     width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    font-family: 'Roboto Mono', monospace;
-    background-color: #fff;
+    padding: 14px 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1.1em;
+    box-sizing: border-box;
+    background-color: var(--background-color);
+    color: var(--text-color);
     transition: border-color 0.3s, box-shadow 0.3s;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="%23a0a8b4" d="M4.516 7.548c.436-.446 1.043-.481 1.576 0L10 11.233l3.908-3.685c.533-.481 1.14-.446 1.576 0 .436.446.408 1.191 0 1.615l-4.707 4.444c-.2.2-.457.3-.728.3s-.528-.1-.728-.3l-4.707-4.444c-.408-.424-.436-1.169 0-1.615z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+    cursor: pointer;
 }
 
-.input-group input[type="number"]:focus,
+.input-group input:focus,
 .input-group select:focus {
+    border-color: var(--primary-color);
     outline: none;
-    border-color: var(--cor-secundaria);
-    box-shadow: 0 0 5px rgba(0, 90, 156, 0.3);
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.3);
+    background-color: #2e3146;
 }
 
 button {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.1rem;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: var(--primary-color);
+    color: #fff;
     border: none;
-    color: white;
-    font-weight: bold;
-    font-family: 'Oswald', sans-serif;
+    padding: 16px 32px;
+    font-size: 1.2em;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 15px;
     text-transform: uppercase;
-    transition: transform 0.2s ease, opacity 0.2s;
-    margin-top: 1rem;
+    letter-spacing: 1px;
 }
 
 button:hover {
-    transform: translateY(-2px);
-    opacity: 0.95;
+    background-color: var(--primary-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.35);
 }
 
-#calcular-btn {
-    background-color: var(--cor-sucesso);
+button:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
-#limpar-btn {
-    background-color: var(--cor-aviso);
+#generate-pdf-btn {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
 }
 
-.resultado-container {
-    border-top: 5px solid var(--cor-sucesso);
+#generate-pdf-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.35);
 }
 
-.resultado-item {
+.results {
+    margin-top: 40px;
+    padding: 30px;
+    background-color: var(--background-color);
+    border-radius: 16px;
+    text-align: left;
+    border: 1px solid var(--border-color);
+    display: none;
+    opacity: 0;
+    animation: fadeIn 0.6s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.results h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    font-size: 1.8em;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 15px;
+    font-weight: 600;
+}
+
+.result-item {
+    margin: 20px 0;
+    font-size: 1.1em;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed var(--border-color);
 }
-.resultado-item:last-of-type {
+
+.result-item:last-of-type {
     border-bottom: none;
 }
 
-.resultado-label {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: var(--cor-texto);
+.result-item strong {
+    color: var(--text-color);
+    font-weight: 700;
 }
 
-.resultado-display {
-    text-align: right;
+.result-item span {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1.2em;
 }
 
-.resultado-display p {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--cor-primaria);
-    line-height: 1.2;
-}
-
-.resultado-display .unidade {
-    font-size: 1rem;
-    color: var(--cor-texto);
-    opacity: 0.8;
-}
-
-.aviso-dados {
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-    color: #6c757d;
-    text-align: center;
+.disclaimer {
+    font-size: 0.85em;
+    color: var(--label-color);
+    margin-top: 30px;
     font-style: italic;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
 }
 
-.hidden {
-    display: none;
+@media (max-width: 600px) {
+    .calculator-container {
+        padding: 30px 20px;
+        border-radius: 12px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    button {
+        padding: 14px 25px;
+        font-size: 1.1em;
+    }
+
+    .input-group input,
+    .input-group select {
+        padding: 12px 15px;
+        font-size: 1em;
+    }
+    
+    .results {
+        padding: 25px;
+    }
+
+    .results h2 {
+        font-size: 1.6em;
+    }
 }
