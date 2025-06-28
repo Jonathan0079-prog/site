@@ -1,337 +1,144 @@
-/* GERAL E RESET */
-:root {
-    --cor-primaria: #003366;
-    --cor-secundaria: #005a9c;
-    --cor-destaque: #ffc107;
-    --cor-fundo: #f8f9fa;
-    --cor-texto: #212529;
-    --cor-sucesso: #28a745;
-    --cor-erro: #dc3545;
+/*
+====================================================================
+--- ESTILOS ADICIONAIS PARA OS MÓDULOS INTERATIVOS ---
+====================================================================
+*/
+
+/* --- Estilos da Calculadora de Relubrificação (Módulo 7) --- */
+#modulo7 .calculator-container {
+    background-color: #f8f9fa; /* Um fundo levemente diferente para destacar a calculadora */
+    border: 1px solid var(--cor-borda, #e0e0e0);
+    border-radius: 8px;
+    padding: 25px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaço entre os elementos internos */
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.7;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-    padding-bottom: 80px; /* Espaço para o navegador flutuante */
-}
-
-/* HEADER */
-header {
-    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
-    color: #ffffff;
-    padding: 1.5rem 1rem;
+#modulo7 .formula-box {
+    background-color: var(--cor-fundo, #fff);
+    border-left: 4px solid var(--cor-acento, #d4af37);
+    padding: 15px;
+    border-radius: 4px;
     text-align: center;
-    border-bottom: 5px solid var(--cor-destaque);
+    font-size: 1.2em;
 }
 
-header h1 {
-    font-size: 2.2rem;
+#modulo7 .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-/* CONTEÚDO PRINCIPAL E MÓDULOS */
-.main-container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+#modulo7 .input-group label,
+#certificado-form-container .input-group label {
+    font-weight: 600;
+    color: var(--cor-texto-secundario, #555);
 }
 
-.module {
-    display: none;
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.module.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.module h2 {
-    font-size: 2rem;
-    color: var(--cor-primaria);
-    margin-bottom: 1.5rem;
-    border-bottom: 3px solid var(--cor-destaque);
-    padding-bottom: 0.75rem;
-}
-
-.module h3 {
-    font-size: 1.5rem;
-    color: var(--cor-secundaria);
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-}
-
-.module p, .module li {
-    margin-bottom: 1rem;
-}
-
-.module ul, .module ol {
-    padding-left: 2rem;
-}
-
-.formula-box, .quote-box, .component-grid, .table-container, .interactive-slider-container {
-    margin: 25px 0;
-}
-
-.formula-box {
-    background-color: #f0f6fc;
-    border-left: 5px solid var(--cor-destaque);
-    padding: 1rem;
-    text-align: center;
-}
-
-.quote-box {
-    border-left: 5px solid var(--cor-secundaria);
-    padding: 1rem 1.5rem;
-    background-color: #f0f6fc;
-    font-style: italic;
-}
-
-.component-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-.component-card {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    border-left: 4px solid var(--cor-secundaria);
-}
-.component-card h4 {
-    color: var(--cor-primaria);
-    margin-bottom: 10px;
-}
-
-.table-container { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 12px 15px; text-align: left; border: 1px solid #ddd; }
-thead th { background-color: var(--cor-primaria); color: var(--white); }
-tbody tr:nth-of-type(even) { background-color: #f8f9fa; }
-td.C { background-color: var(--cor-sucesso); color: white; text-align: center; font-weight: bold;}
-td.M { background-color: #ffc107; text-align: center; font-weight: bold;}
-td.I { background-color: var(--cor-erro); color: white; text-align: center; font-weight: bold;}
-.table-caption { font-size: 0.9rem; text-align: center; margin-top: 5px; color: #6c757d; }
-
-.interactive-slider-container {
-    background: #f0f6fc;
-    padding: 20px;
-    border-radius: 8px;
-}
-.slider { width: 100%; cursor: pointer; }
-#adjustedLife { color: var(--cor-primaria); font-size: 1.5rem; }
-
-/* QUIZ */
-#quiz-container {
-    padding: 1.5rem;
-    background-color: #f0f6fc;
-    border-left: 5px solid var(--cor-secundaria);
-    border-radius: 0 8px 8px 0;
-}
-
-#pergunta-titulo {
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-}
-
-#opcoes-quiz button {
-    display: block;
+/* Estilo unificado para os campos de input */
+#modulo7 input[type="number"],
+#certificado-form-container input[type="text"] {
     width: 100%;
-    text-align: left;
-    padding: 1rem;
-    margin: 0.5rem 0;
+    padding: 12px 15px;
     font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
+    border: 1px solid var(--cor-borda, #ccc);
+    border-radius: 4px;
     background-color: #fff;
-    transition: all 0.2s ease;
+    box-sizing: border-box; /* Garante que o padding não aumente a largura total */
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-#opcoes-quiz button:hover:not(:disabled) {
-    background-color: #dfe9f5;
+/* Efeito de foco para os inputs, usando as cores do tema */
+#modulo7 input[type="number"]:focus,
+#certificado-form-container input[type="text"]:focus {
+    outline: none;
+    border-color: var(--cor-secundaria, #2ca5b5);
+    box-shadow: 0 0 0 3px rgba(44, 165, 181, 0.2);
 }
 
-#opcoes-quiz button:disabled {
-    cursor: not-allowed;
-    opacity: 0.7;
+/* Estilo para o botão da calculadora, herdando o estilo principal */
+#modulo7 #calcular-graxa-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    /* Ele já deve herdar o estilo do 'button' geral, mas podemos garantir */
+    background-color: var(--cor-primaria, #0a2342);
+    color: white;
 }
 
-#opcoes-quiz button.correta {
-    background-color: #d4edda;
-    border-color: var(--cor-sucesso);
-    font-weight: bold;
-}
-
-#opcoes-quiz button.incorreta {
-    background-color: #f8d7da;
-    border-color: var(--cor-erro);
-}
-
-#feedback {
-    margin-top: 1rem;
-    font-weight: bold;
+#modulo7 #resultado-calculo {
+    background-color: #e6f7ff; /* Um azul bem claro para o resultado */
+    border: 1px solid #91d5ff;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 10px;
+    text-align: center;
     font-size: 1.1rem;
 }
 
-#proxima-pergunta-btn {
-    display: block;
-    margin: 1.5rem auto 0 auto;
-    padding: 0.8rem 1.8rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    background-color: var(--cor-destaque);
-    color: var(--cor-primaria);
-    font-weight: bold;
+#modulo7 #resultado-calculo strong {
+    font-size: 1.3rem;
+    color: var(--cor-primaria, #0a2342);
 }
 
-/* CERTIFICADO E REPROVAÇÃO */
-.form-certificado, .reprovado-container {
-    margin-top: 2rem;
-    padding: 1.5rem;
+
+/* --- Estilos do Formulário de Certificado e Reprovação (Módulo 11) --- */
+
+/* Estilo unificado para os cards de resultado */
+#certificado-form-container,
+#reprovado-container {
+    max-width: 600px;
+    margin: 30px auto; /* Centraliza o card */
+    padding: 30px;
     border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
-.form-certificado {
-    background-color: #eaf5e9;
-    border: 2px solid var(--cor-sucesso);
+/* Card de SUCESSO (Aprovado) */
+#certificado-form-container {
+    background-color: #f6ffed;
+    border-top: 5px solid var(--cor-sucesso, #4CAF50);
 }
 
-.reprovado-container {
-    background-color: #fdeaea;
-    border: 2px solid var(--cor-erro);
+/* Card de ERRO (Reprovado) */
+#reprovado-container {
+    background-color: #fff1f0;
+    border-top: 5px solid var(--cor-erro, #f44336);
 }
 
-.form-certificado label {
-    font-weight: bold;
-    color: var(--cor-texto);
+#certificado-form-container h3,
+#reprovado-container h3 {
+    font-size: 1.8rem;
+    margin-top: 0;
 }
 
-.form-certificado input {
-    display: block;
-    width: 100%;
-    max-width: 400px;
-    margin: 0.5rem auto 1rem auto;
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
+#certificado-form-container h3 {
+    color: var(--cor-sucesso, #4CAF50);
 }
 
-.botoes-certificado button, #tentar-novamente-btn {
-    padding: 0.8rem 1.8rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: white;
-    font-weight: bold;
-    transition: transform 0.2s ease;
+#reprovado-container h3 {
+    color: var(--cor-erro, #f44336);
 }
 
+#certificado-form-container .input-group {
+    text-align: left; /* Alinha os labels e inputs à esquerda dentro do card */
+    margin-top: 20px;
+}
+
+/* Estilo para os botões de ação final */
 #gerar-certificado-btn {
-    background-color: var(--cor-sucesso);
+    background-color: var(--cor-sucesso, #4CAF50);
+    width: 100%;
+    margin-top: 20px;
 }
 
 #tentar-novamente-btn {
-    background-color: var(--cor-secundaria);
-}
-
-.botoes-certificado button:hover, #tentar-novamente-btn:hover {
-    transform: scale(1.05);
-}
-
-/* NAVEGADOR FLUTUANTE - CORRIGIDO */
-.floating-nav {
-    position: fixed;
-    bottom: 20px;
-    right: 20px; /* Alterado para o canto direito para evitar problemas de layout */
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: var(--cor-primaria);
-    padding: 8px;
-    border-radius: 50px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    z-index: 1001;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.floating-nav button {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: none;
-    background-color: var(--cor-secundaria);
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s ease;
-}
-
-.floating-nav button:hover:not(:disabled) {
-    background-color: #007bff;
-}
-
-.floating-nav button:disabled {
-    background-color: #999;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-#module-indicator {
-    color: white;
-    font-weight: bold;
-    font-size: 1rem;
-    min-width: 50px;
-    text-align: center;
-}
-
-/* MEDIA QUERY PARA RESPONSIVIDADE */
-@media (max-width: 768px) {
-    body {
-        line-height: 1.6;
-    }
-
-    header h1 {
-        font-size: 1.8rem;
-    }
-
-    .main-container {
-        margin: 1.5rem auto;
-    }
-
-    .module {
-        padding: 1.5rem;
-    }
-
-    .module h2 {
-        font-size: 1.7rem;
-    }
-
-    .module h3 {
-        font-size: 1.3rem;
-    }
+    background-color: var(--cor-acento, #d4af37);
+    color: var(--cor-primaria, #0a2342);
+    width: auto; /* Largura automática baseada no texto */
+    padding: 10px 30px;
 }
