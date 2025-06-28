@@ -1,32 +1,149 @@
 /*
 ====================================================================
---- ESTILOS ADICIONAIS PARA OS MÓDULOS INTERATIVOS ---
+--- TEMA BASE E ESTILOS GERAIS DO CURSO ---
 ====================================================================
 */
 
-/* --- Estilos da Calculadora de Relubrificação (Módulo 7) --- */
+:root {
+    --cor-primaria: #0a2342;
+    --cor-secundaria: #2ca5b5;
+    --cor-acento: #d4af37;
+    --cor-fundo: #f0f2f5;
+    --cor-fundo-modulo: #ffffff;
+    --cor-texto-primario: #333333;
+    --cor-texto-secundario: #555555;
+    --cor-borda: #e0e0e0;
+    --cor-sucesso: #4CAF50;
+    --cor-erro: #f44336;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto-primario);
+    margin: 0;
+}
+
+header {
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.main-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.module {
+    display: none; /* Esconde todos os módulos por padrão */
+    background-color: var(--cor-fundo-modulo);
+    border-radius: 8px;
+    padding: 25px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--cor-borda);
+}
+
+.module.active {
+    display: block; /* Mostra apenas o módulo ativo */
+}
+
+.module h2 {
+    font-size: 1.8rem;
+    color: var(--cor-primaria);
+    border-bottom: 2px solid var(--cor-secundaria);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+.module h3 {
+    font-size: 1.4rem;
+    color: var(--cor-primaria);
+    margin-top: 30px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+strong {
+    color: var(--cor-primaria);
+}
+
+button {
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/*
+====================================================================
+--- ESTILOS DOS MÓDULOS INTERATIVOS (CALCULADORA, QUIZ, ETC.) ---
+====================================================================
+*/
+
+/* --- Estilos da Calculadora (Módulo 7) --- */
 #modulo7 .calculator-container {
-    background-color: #f8f9fa; /* Um fundo levemente diferente para destacar a calculadora */
-    border: 1px solid var(--cor-borda, #e0e0e0);
+    background-color: #f8f9fa;
+    border: 1px solid var(--cor-borda);
     border-radius: 8px;
     padding: 25px;
     margin-top: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Espaço entre os elementos internos */
+    gap: 20px;
 }
 
 #modulo7 .formula-box {
-    background-color: var(--cor-fundo, #fff);
-    border-left: 4px solid var(--cor-acento, #d4af37);
+    background-color: var(--cor-fundo-modulo);
+    border-left: 4px solid var(--cor-acento);
     padding: 15px;
     border-radius: 4px;
     text-align: center;
     font-size: 1.2em;
 }
 
-#modulo7 .input-group {
+#modulo7 .input-group,
+#certificado-form-container .input-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -35,42 +152,36 @@
 #modulo7 .input-group label,
 #certificado-form-container .input-group label {
     font-weight: 600;
-    color: var(--cor-texto-secundario, #555);
+    color: var(--cor-texto-secundario);
 }
 
-/* Estilo unificado para os campos de input */
 #modulo7 input[type="number"],
 #certificado-form-container input[type="text"] {
     width: 100%;
     padding: 12px 15px;
     font-size: 1rem;
-    border: 1px solid var(--cor-borda, #ccc);
+    border: 1px solid var(--cor-borda);
     border-radius: 4px;
     background-color: #fff;
-    box-sizing: border-box; /* Garante que o padding não aumente a largura total */
+    box-sizing: border-box;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Efeito de foco para os inputs, usando as cores do tema */
 #modulo7 input[type="number"]:focus,
 #certificado-form-container input[type="text"]:focus {
     outline: none;
-    border-color: var(--cor-secundaria, #2ca5b5);
+    border-color: var(--cor-secundaria);
     box-shadow: 0 0 0 3px rgba(44, 165, 181, 0.2);
 }
 
-/* Estilo para o botão da calculadora, herdando o estilo principal */
 #modulo7 #calcular-graxa-btn {
     width: 100%;
     padding: 12px;
     font-size: 1.1rem;
-    /* Ele já deve herdar o estilo do 'button' geral, mas podemos garantir */
-    background-color: var(--cor-primaria, #0a2342);
-    color: white;
 }
 
 #modulo7 #resultado-calculo {
-    background-color: #e6f7ff; /* Um azul bem claro para o resultado */
+    background-color: #e6f7ff;
     border: 1px solid #91d5ff;
     border-radius: 4px;
     padding: 15px;
@@ -81,33 +192,67 @@
 
 #modulo7 #resultado-calculo strong {
     font-size: 1.3rem;
-    color: var(--cor-primaria, #0a2342);
+    color: var(--cor-primaria);
 }
 
+/* --- Estilos do Quiz (Módulo 11) --- */
+#opcoes-quiz {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
 
-/* --- Estilos do Formulário de Certificado e Reprovação (Módulo 11) --- */
+#opcoes-quiz button {
+    background-color: #fff;
+    color: var(--cor-primaria);
+    border: 2px solid var(--cor-borda);
+    text-align: left;
+}
 
-/* Estilo unificado para os cards de resultado */
+#opcoes-quiz button:hover {
+    border-color: var(--cor-secundaria);
+    background-color: #f0f8ff;
+}
+
+#opcoes-quiz button.correta {
+    background-color: var(--cor-sucesso);
+    border-color: var(--cor-sucesso);
+    color: white;
+    font-weight: bold;
+}
+
+#opcoes-quiz button.incorreta {
+    background-color: var(--cor-erro);
+    border-color: var(--cor-erro);
+    color: white;
+    font-weight: bold;
+}
+
+#feedback {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
 #certificado-form-container,
 #reprovado-container {
     max-width: 600px;
-    margin: 30px auto; /* Centraliza o card */
+    margin: 30px auto;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
-/* Card de SUCESSO (Aprovado) */
 #certificado-form-container {
     background-color: #f6ffed;
-    border-top: 5px solid var(--cor-sucesso, #4CAF50);
+    border-top: 5px solid var(--cor-sucesso);
 }
 
-/* Card de ERRO (Reprovado) */
 #reprovado-container {
     background-color: #fff1f0;
-    border-top: 5px solid var(--cor-erro, #f44336);
+    border-top: 5px solid var(--cor-erro);
 }
 
 #certificado-form-container h3,
@@ -116,29 +261,84 @@
     margin-top: 0;
 }
 
-#certificado-form-container h3 {
-    color: var(--cor-sucesso, #4CAF50);
-}
-
-#reprovado-container h3 {
-    color: var(--cor-erro, #f44336);
-}
+#certificado-form-container h3 { color: var(--cor-sucesso); }
+#reprovado-container h3 { color: var(--cor-erro); }
 
 #certificado-form-container .input-group {
-    text-align: left; /* Alinha os labels e inputs à esquerda dentro do card */
+    text-align: left;
     margin-top: 20px;
 }
 
-/* Estilo para os botões de ação final */
 #gerar-certificado-btn {
-    background-color: var(--cor-sucesso, #4CAF50);
+    background-color: var(--cor-sucesso);
     width: 100%;
     margin-top: 20px;
 }
 
 #tentar-novamente-btn {
-    background-color: var(--cor-acento, #d4af37);
-    color: var(--cor-primaria, #0a2342);
-    width: auto; /* Largura automática baseada no texto */
+    background-color: var(--cor-acento);
+    color: var(--cor-primaria);
+    width: auto;
     padding: 10px 30px;
+}
+
+/*
+====================================================================
+--- CSS DA NAVEGAÇÃO FLUTUANTE (FIX) ---
+====================================================================
+*/
+
+.floating-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--cor-primaria);
+    padding: 12px 20px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.25);
+    border-top: 1px solid var(--cor-secundaria);
+}
+
+.floating-nav button {
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    line-height: 45px;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.floating-nav button:hover {
+    background-color: var(--cor-secundaria);
+    transform: scale(1.05);
+}
+
+.floating-nav button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: none;
+    box-shadow: none;
+}
+
+.floating-nav #module-indicator {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* --- Correção para Ícones da FontAwesome --- */
+.fa-solid, .fas {
+    font-weight: 900;
 }
