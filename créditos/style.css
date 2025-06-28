@@ -131,7 +131,7 @@ footer {
     text-align: center;
     padding: 2.5rem 1rem;
     margin-top: 3rem;
-    background-color: #1e272e; /* Fundo cinza claro para o rodapé */
+    background-color: #1a2b40; /* Fundo cinza claro para o rodapé */
     color: var(--cor-texto-claro);
     border-top: 1px solid var(--cor-borda);
 }
