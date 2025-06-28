@@ -18,8 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         currentModuleIndex = index;
         updateNavControls();
+        
+        // *** LINHA ADICIONADA: Rola a página para o topo ***
+        window.scrollTo(0, 0);
     }
 
+    // Função única e centralizada para controlar os botões
     function updateNavControls() {
         const activeModule = modules[currentModuleIndex];
         if (activeModule) {
@@ -103,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.textContent = option;
                 button.addEventListener('click', () => checkAnswer(i, questionData.correctAnswer, button));
                 opcoesQuiz.appendChild(button);
-});
+            });
         }
 
         function checkAnswer(selectedIndex, correctIndex, buttonElement) {
@@ -161,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showModule(modules.length - 1); // Garante que permaneça no módulo do quiz
         });
 
+        // Inicializa a primeira pergunta do quiz
         loadQuestion(0);
     }
 
