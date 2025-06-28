@@ -410,3 +410,41 @@ footer {
         font-size: 10px;
     }
 }
+/* Adicione estas regras ao seu arquivo style.css */
+
+.reset-btn {
+    background-color: var(--secondary-color); /* Uma cor diferente para distinção */
+    color: var(--white);
+    font-size: 1.3rem; /* Mantém o tamanho do botão calcular */
+    font-weight: bold;
+    border: none;
+    padding: 18px 35px; /* Mantém o padding do botão calcular */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    display: block; /* Garante que ocupe a largura total */
+    width: 100%;
+    margin-top: 15px; /* Espaço entre os botões */
+}
+
+.reset-btn:hover {
+    transform: scale(1.02);
+    background-color: #004a7e; /* Um tom mais escuro no hover */
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 768px) {
+    .reset-btn {
+        font-size: 1.2rem;
+        padding: 15px 25px;
+        margin-top: 10px; /* Reduz o espaçamento para telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .reset-btn {
+        font-size: 1rem;
+        padding: 12px 20px;
+        margin-top: 8px;
+    }
+}
