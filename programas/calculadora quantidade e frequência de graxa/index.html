@@ -1,15 +1,25 @@
-<link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Regime de Lubrificação</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2e7B8EwL+r5Qp8vB9I+d6aP6Z6g2f/6G8fW7eW7E+N2f9B+G6I7O2eW9w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class=""> <div class="top-header-bar">
+        <h1 class="header-title">Simulador de Regime de Lubrificação</h1>
+    </div>
 
-
-
-    <div class="calculator-container">
-        <header>
-            <h1>Simulador de Regime de Lubrificação</h1>
-            <p>Uma ferramenta avançada para determinar o regime de lubrificação ideal para seus rolamentos.</p>
-        </header>
-
+    <div class="container calculator-container">
         <main>
-            <div id="calculator-form">
+            <div class="calculator-form" id="calculator-form">
+                <p class="form-description">
+                    Uma ferramenta avançada para determinar o regime de lubrificação ideal para seus rolamentos.
+                </p>
                 <form id="lubricationForm">
                     <div class="input-section">
                         <div class="form-group">
@@ -72,7 +82,6 @@
                             </div>
                             <input type="number" id="temperature" placeholder="ex: 70" required>
                         </div>
-                        
                         <div class="form-group">
                             <div class="label-group">
                                 <label for="loadCondition">Condição de Carga</label>
@@ -160,9 +169,11 @@
                             </select>
                         </div>
                     </div>
-                    <button class="calculate-btn" id="calculate" type="button">Simular Regime</button>
-                    <button class="reset-btn" id="reset" type="button">Limpar Campos e Resultados</button>
-                    </form>
+                    <div class="button-group">
+                        <button class="calculate-btn" id="calculate" type="button">Simular Regime</button>
+                        <button class="reset-btn" id="reset" type="button">Limpar Campos</button>
+                    </div>
+                </form>
             </div>
             
             <div class="results-section" id="results">
@@ -248,11 +259,16 @@
                     <strong>Atenção:</strong> Após relubrificar, monitore a temperatura nas primeiras horas. Um aumento inicial é normal, pois o excesso de graxa é purgado. Se a temperatura não estabilizar, pode indicar excesso de lubrificante. Não misture graxas com espessantes diferentes.
                 </div>
             </div>
-
         </main>
         <footer>
-            <strong>Disclaimer:</strong> Esta calculadora é uma ferramenta de auxílio baseada em dados consolidados de engenharia. Os resultados são estimativas e devem sempre ser validados com as recomendações do fabricante do equipamento e do rolamento.
+            <strong>Disclaimer:</strong> Esta calculadora é uma ferramenta de auxílio baseada em dados consolidados de engenharia. Os resultados são estimativas e devem sempre ser validadas com as recomendações do fabricante do equipamento e do rolamento.
         </footer>
     </div>
+    
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Voltar ao Topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script src="script.js"></script>
+</body>
+</html>
