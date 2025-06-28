@@ -1,0 +1,70 @@
+<div class="container">
+        <h1>Calculadora de Lubrificação de Rolamentos</h1>
+        <form id="lubricationForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="bearingType">Tipo de Rolamento:</label>
+                    <select id="bearingType" name="bearingType" required>
+                        <option value="ball">Rolamento de Esferas (Rígido)</option>
+                        <option value="cylindricalRoller">Rolamento de Rolos Cilíndricos</option>
+                        <option value="sphericalRoller">Rolamento de Rolos Esféricos</option>
+                        <option value="taperedRoller">Rolamento de Rolos Cônicos</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="outerDiameter">Diâmetro Externo (D) em mm:</label>
+                    <input type="number" id="outerDiameter" name="outerDiameter" placeholder="Ex: 120" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="boreDiameter">Diâmetro do Furo (d) em mm:</label>
+                    <input type="number" id="boreDiameter" name="boreDiameter" placeholder="Ex: 60" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="width">Largura (B) em mm:</label>
+                    <input type="number" id="width" name="width" placeholder="Ex: 22" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="rpm">Rotação (RPM):</label>
+                    <input type="number" id="rpm" name="rpm" placeholder="Ex: 1800" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="temperature">Temperatura de Operação (°C):</label>
+                    <input type="number" id="temperature" name="temperature" placeholder="Ex: 60" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loadCondition">Condição de Carga:</label>
+                    <select id="loadCondition" name="loadCondition" required>
+                        <option value="light">Leve (< 0.06 C)</option>
+                        <option value="normal" selected>Normal (0.06 - 0.12 C)</option>
+                        <option value="heavy">Pesada (> 0.12 C)</option>
+                        <option value="shock">Cargas de Choque / Vibração</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="environment">Ambiente de Operação:</label>
+                    <select id="environment" name="environment" required>
+                        <option value="clean" selected>Limpo e Seco</option>
+                        <option value="dusty">Com Poeira / Sujeira</option>
+                        <option value="humid">Úmido / Presença de Água</option>
+                        <option value="chemical">Ambiente Químico Agressivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" onclick="calculateLubrication()">Calcular Estimativa</button>
+        </form>
+
+        <div id="results">
+            <h2>Resultados da Estimativa</h2>
+            <p id="greaseQuantityResult"></p>
+            <p id="lubricationIntervalResult"></p>
+            <p id="notesResult"></p>
+        </div>
+    </div>
