@@ -202,45 +202,157 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-            
-            // --- CABEÇALHO ---
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(12);
-            doc.text("Manutenção Industrial ARQUIVOS", 148.5, 20, { align: "center" });
-            
-            doc.setFillColor(230, 240, 255);
-            doc.rect(0, 0, 297, 210, 'F');
-            doc.setDrawColor(0, 51, 102);
-            doc.setLineWidth(2);
-            doc.rect(5, 5, 287, 200);
+function gerarCertificado(nome, cpf) {
+    // --- INICIALIZAÇÃO DO DOCUMENTO PDF ---
+    // Define a orientação como paisagem (landscape), unidade em milímetros (mm) e formato A4.
+    const doc = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+    });
 
-            // --- TÍTULO PRINCIPAL ---
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(22);
-            doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 35, { align: "center" });
+    // --- LOGO (OPCIONAL) ---
+    // Cole a sua imagem de logo convertida para Base64 aqui. Se não tiver, deixe a string vazia.
+    // Você pode usar conversores online para transformar sua imagem PNG/JPG em Base64.
+    const LOGO_BASE64 = ''; // Ex: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA...'
 
-            // --- TEXTO DE CERTIFICAÇÃO ---
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(14);
-            doc.text("Certificamos que", 148.5, 55, { align: "center" });
+    // --- DESIGN DE FUNDO E MOLDURA ---
+    // Preenche o fundo com uma cor azul clara.
+    doc.setFillColor(230, 240, 255);
+    doc.rect(0, 0, 297, 210, 'F'); // Dimensões do A4 em paisagem (mm)
 
-            // --- NOME DO ALUNO ---
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(24);
-            doc.text(nome.toUpperCase(), 148.5, 68, { align: "center" });
+    // Desenha a moldura azul escura.
+    doc.setDrawColor(0, 51, 102);
+    doc.setLineWidth(2);
+    doc.rect(5, 5, 287, 200); // Retângulo interno com margem de 5mm.
 
-            // --- DADOS DO ALUNO E NOME DO CURSO ---
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(12);
-            const textoCurso = `portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`;
-            doc.text(textoCurso, 148.5, 80, { align: "center" });
-            
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(14);
-            doc.text("Curso Completo de Lubrificação Industrial", 148.5, 88, { align: "center" });
-            
-            // --- CARGA HORÁRIA ---
+    // --- ADICIONA A LOGO (SE EXISTIR) ---
+    if (LOGO_BASE64) {
+        const imgProps = doc.getImageProperties(LOGO_BASE64);
+        const imgWidth = 50; // Largura desejada para a logo
+        const imgHeight = (imgProps.height * imgWidth) / imgProps.width; // Calcula a altura proporcional
+        doc.addImage(LOGO_BASE64, 'PNG', 20, 15, imgWidth, imgHeight);
+    }
+
+    // --- NOME DA EMPRESA/ESCOLA ---
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.setTextColor(0, 51, 102); // Cor azul escura
+    doc.text("Manutenção Industrial ARQUIVOS", 148.5, 25, {
+        align: "center"
+    });
+
+    // --- TÍTULO PRINCIPAL ---
+    doc.setFontSize(30);
+    doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 45, {
+        align: "center"
+    });
+
+    // --- TEXTO DE CERTIFICAÇÃO ---
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(16);
+    doc.setTextColor(50, 50, 50); // Cor cinza escuro
+    doc.text(`Certificamos que`, 148.5, 65, {
+        align: "center"
+    });
+
+    // --- NOME DO ALUNO ---
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);
+    doc.setTextColor(0, 102, 204); // Cor azul intermediário
+    doc.text(nome.toUpperCase(), 148.5, 77, {
+        align: "center"
+    });
+
+    // --- DADOS DO ALUNO E INTRODUÇÃO AO CURSO ---
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(14);
+    doc.setTextColor(50, 50, 50); // Cor cinza escuro
+    const textoCurso = `portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`;
+    doc.text(textoCurso, 148.5, 87, {
+        align: "center"
+    });
+
+    // --- NOME DO CURSO ---
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.setTextColor(0, 51, 102); // Cor azul escura
+    doc.text("Curso Completo de Lubrificação Industrial", 148.5, 99, {
+        align: "center"
+    });
+
+    // --- CARGA HORÁRIA ---
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(14);
+    doc.text("Carga Horária: 2 horas", 148.5, 109, {
+        align: "center"
+    });
+
+    // --- CONTEÚDO PROGRAMÁTICO ---
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(50, 50, 50);
+    doc.text("Conteúdo Programático:", 20, 125);
+
+    doc.setFont("helvetica", "normal");
+    const conteudos = [
+        '• Teoria do Desgaste: Adesivo, Abrasivo e Fadiga',
+        '• Princípios da Tribologia e Atrito',
+        '• Tipos de Lubrificantes: Óleos Minerais e Sintéticos',
+        '• Aditivos: Funções e Tipos Principais',
+        '• Classificação de Viscosidade: SAE e ISO VG',
+        '• Métodos de Aplicação de Óleo: Banho, Salpico e Circulação',
+        '• Relação entre Temperatura e Vida Útil do Lubrificante',
+        '• Análise de Contaminação e Degradação do Óleo'
+    ];
+
+    let yPos = 132;
+    conteudos.forEach(item => {
+        doc.text(item, 20, yPos);
+        yPos += 7; // Incrementa a posição Y para a próxima linha
+    });
+
+    // --- DATA, HORA E ASSINATURA ---
+    const agora = new Date();
+    const dataHoraFormatada = agora.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    doc.setFontSize(12);
+    doc.setDrawColor(50, 50, 50);
+    doc.line(90, 185, 205, 185); // Linha da assinatura (mais longa)
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Jonathan da Silva Oliveira - Instrutor", 147.5, 190, {
+        align: "center"
+    });
+
+    doc.setFont("helvetica", "normal");
+    doc.text(`Emitido em: ${dataHoraFormatada}`, 147.5, 197, {
+        align: "center"
+    });
+
+    // --- SALVAR O ARQUIVO PDF ---
+    doc.save(`Certificado - Lubrificação Industrial - ${nome}.pdf`);
+}
+
+// Supondo que você tenha essas funções em algum lugar do seu código
+function formatarCPF(cpf) {
+    // Função para formatar o CPF (exemplo)
+    cpf = cpf.replace(/\D/g, ''); // Remove tudo o que não é dígito
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); // Coloca um ponto entre o terceiro e o quarto dígitos
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); // Coloca um ponto entre o terceiro e o quarto dígitos de novo (para o segundo bloco)
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Coloca um hífen entre o terceiro e o quarto dígitos
+    return cpf;
+}
+
+// Exemplo de como chamar a função
+// gerarCertificado("Nome Completo do Aluno", "12345678900");
+
             doc.setFont("helvetica", "normal");
             doc.setFontSize(12);
             doc.text("Carga Horária: 2 horas", 148.5, 96, { align: "center" });
