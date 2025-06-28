@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Avançado de Regime de Lubrificação de Rolamentos</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<link rel="stylesheet" href="style.css">
+
+
 
     <div class="calculator-container">
         <header>
@@ -16,155 +10,158 @@
 
         <main>
             <div id="calculator-form">
-                <div class="input-section">
-                    <div class="form-group">
-                        <div class="label-group">
-                            <label for="bearingType">Tipo de Rolamento</label>
-                            <span class="tooltip">?
-                                <span class="tooltiptext">O tipo de elemento rolante afeta diretamente a dinâmica da lubrificação.</span>
-                            </span>
+                <form id="lubricationForm">
+                    <div class="input-section">
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="bearingType">Tipo de Rolamento</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">O tipo de elemento rolante afeta diretamente a dinâmica da lubrificação.</span>
+                                </span>
+                            </div>
+                            <select id="bearingType" required>
+                                <option value="ball">Rígido de Esferas (DGBB)</option>
+                                <option value="cylindricalRoller">Rolos Cilíndricos (CRB)</option>
+                                <option value="sphericalRoller">Rolos Esféricos (SRB)</option>
+                                <option value="taperedRoller">Rolos Cônicos (TRB)</option>
+                                <option value="angular">Contato Angular (ACBB)</option>
+                            </select>
                         </div>
-                        <select id="bearingType">
-                            <option value="ball">Rígido de Esferas (DGBB)</option>
-                            <option value="cylindrical">Rolos Cilíndricos (CRB)</option>
-                            <option value="spherical">Rolos Esféricos (SRB)</option>
-                            <option value="tapered">Rolos Cônicos (TRB)</option>
-                            <option value="angular">Contato Angular (ACBB)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                         <div class="label-group">
-                            <label for="innerDiameter">Diâmetro Interno (d)</label>
-                             <span class="tooltip">?
-                                <span class="tooltiptext">Diâmetro do furo do rolamento, em milímetros.</span>
-                            </span>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="boreDiameter">Diâmetro do Furo (d) (mm)</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Diâmetro do furo do rolamento, em milímetros.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="boreDiameter" placeholder="ex: 50" required>
                         </div>
-                        <input type="number" id="innerDiameter" placeholder="ex: 50">
-                    </div>
-                    <div class="form-group">
-                         <div class="label-group">
-                            <label for="outerDiameter">Diâmetro Externo (D)</label>
-                             <span class="tooltip">?
-                                <span class="tooltiptext">Diâmetro externo total do rolamento, em milímetros.</span>
-                            </span>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="outerDiameter">Diâmetro Externo (D) (mm)</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Diâmetro externo total do rolamento, em milímetros.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="outerDiameter" placeholder="ex: 110" required>
                         </div>
-                        <input type="number" id="outerDiameter" placeholder="ex: 110">
-                    </div>
-                    <div class="form-group">
-                         <div class="label-group">
-                            <label for="width">Largura (B)</label>
-                            <span class="tooltip">?
-                                <span class="tooltiptext">Largura total do rolamento, em milímetros.</span>
-                            </span>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="width">Largura (B) (mm)</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Largura total do rolamento, em milímetros.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="width" placeholder="ex: 27" required>
                         </div>
-                        <input type="number" id="width" placeholder="ex: 27">
-                    </div>
-
-                    <div class="form-group">
-                        <div class="label-group">
-                            <label for="speed">Rotação (RPM)</label>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="rpm">Rotação (RPM)</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Velocidade de rotação do eixo em rotações por minuto.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="rpm" placeholder="ex: 2500" required>
                         </div>
-                        <input type="number" id="speed" placeholder="ex: 2500">
-                    </div>
-                    <div class="form-group">
-                        <div class="label-group">
-                            <label for="temperature">Temperatura (°C)</label>
-                            <span class="tooltip">?
-                                <span class="tooltiptext">Temperatura de trabalho no anel externo do rolamento.</span>
-                            </span>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="temperature">Temperatura (°C)</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Temperatura de trabalho no anel externo do rolamento.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="temperature" placeholder="ex: 70" required>
                         </div>
-                        <input type="number" id="temperature" placeholder="ex: 70">
-                    </div>
-                    <div class="form-group">
-                        <div class="label-group">
-                            <label for="workingHours">Tempo de Trabalho (h/semana)</label>
-                            <span class="tooltip">?
-                                <span class="tooltiptext">Horas que o equipamento opera por semana. Usado para calcular o intervalo em semanas.</span>
-                            </span>
+                        
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="loadCondition">Condição de Carga</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Influência da carga na vida útil da graxa.</span>
+                                </span>
+                            </div>
+                            <select id="loadCondition" required>
+                                <option value="normal">Normal</option>
+                                <option value="heavy">Pesada</option>
+                                <option value="shock">Com Carga de Choque</option>
+                            </select>
                         </div>
-                        <input type="number" id="workingHours" placeholder="ex: 40" value="40">
-                    </div>
-                     <div class="form-group">
-                        <div class="label-group">
-                            <label for="greaseDensity">Densidade da Graxa (kg/dm³)</label>
-                            <span class="tooltip">?
-                                <span class="tooltiptext">Densidade da graxa usada. Padrão é ~0.95. Usado para calcular o volume contínuo. 1 kg/dm³ = 1 g/cm³.</span>
-                            </span>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="environment">Ambiente</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Fatores de contaminação que afetam o desempenho da graxa.</span>
+                                </span>
+                            </div>
+                            <select id="environment" required>
+                                <option value="clean">Limpo e Seco</option>
+                                <option value="dusty">Empoeirado</option>
+                                <option value="humid">Úmido ou Molhado</option>
+                                <option value="chemical">Contaminado por Químicos</option>
+                            </select>
                         </div>
-                        <input type="number" id="greaseDensity" placeholder="ex: 0.95" value="0.95">
-                    </div>
-                    <div class="form-group">
-                        <div class="label-group">
-                            <label for="load">Fator de Carga (C/P)</label>
-                            <span class="tooltip">?
-                                <span class="tooltiptext">Relação entre a Capacidade de Carga Dinâmica (C) e a Carga Equivalente (P). Cargas pesadas (C/P baixo) exigem mais atenção.</span>
-                            </span>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="workingHours">Tempo de Trabalho (h/semana)</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Horas que o equipamento opera por semana. Usado para calcular o intervalo em semanas.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="workingHours" placeholder="ex: 40" value="40" required>
                         </div>
-                         <select id="load">
-                            <option value="1.0">Leve (> 15)</option>
-                            <option value="0.7">Normal (8 a 15)</option>
-                            <option value="0.4">Pesada (4 a 8)</option>
-                            <option value="0.1">Extrema (< 4)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <div class="label-group">
-                            <label for="contamination">Contaminação</label>
-                            <span class="tooltip">?
-                                <span class="tooltiptext">Nível de partículas sólidas no ambiente. Poeria abrasiva degrada a graxa rapidamente.</span>
-                            </span>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="greaseDensity">Densidade da Graxa (kg/dm³)</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Densidade da graxa usada. Padrão é ~0.95. Usado para calcular o volume contínuo. 1 kg/dm³ = 1 g/cm³.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="greaseDensity" placeholder="ex: 0.95" value="0.95" required>
                         </div>
-                         <select id="contamination">
-                            <option value="1.0">Limpo</option>
-                            <option value="0.7">Moderada (Poeira)</option>
-                            <option value="0.4">Severa (Partículas)</option>
-                            <option value="0.1">Extrema (Abrasivos)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="label-group">
-                            <label for="moisture">Umidade / Água</label>
-                            <span class="tooltip">?
-                                <span class="tooltiptext">A presença de água emulsiona e degrada a maioria das graxas.</span>
-                            </span>
+                        
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="moisture">Umidade / Água</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">A presença de água emulsiona e degrada a maioria das graxas.</span>
+                                                            </span>
+                            </div>
+                            <select id="moisture" required>
+                                <option value="1.0">Seco</option>
+                                <option value="0.7">Úmido</option>
+                                <option value="0.4">Jatos de Água</option>
+                                <option value="0.1">Submerso</option>
+                            </select>
                         </div>
-                         <select id="moisture">
-                            <option value="1.0">Seco</option>
-                            <option value="0.7">Úmido</option>
-                            <option value="0.4">Jatos de Água</option>
-                            <option value="0.1">Submerso</option>
-                        </select>
-                    </div>
-                     <div class="form-group">
-                        <div class="label-group">
-                            <label for="vibration">Vibração</label>
-                            <span class="tooltip">?
-                                <span class="tooltiptext">Vibração excessiva pode causar a separação do óleo e do espessante da graxa.</span>
-                            </span>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="vibration">Vibração</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Vibração excessiva pode causar a separação do óleo e do espessante da graxa.</span>
+                                </span>
+                            </div>
+                            <select id="vibration" required>
+                                <option value="1.0">Baixa</option>
+                                <option value="0.8">Moderada</option>
+                                <option value="0.5">Alta</option>
+                                <option value="0.2">Extrema (Peneiras)</option>
+                            </select>
                         </div>
-                         <select id="vibration">
-                            <option value="1.0">Baixa</option>
-                            <option value="0.8">Moderada</option>
-                            <option value="0.5">Alta</option>
-                            <option value="0.2">Extrema (Peneiras)</option>
-                        </select>
-                    </div>
-                     <div class="form-group">
-                        <div class="label-group">
-                            <label for="orientation">Orientação do Eixo</label>
-                             <span class="tooltip">?
-                                <span class="tooltiptext">Eixos verticais tendem a perder graxa mais rapidamente devido à gravidade.</span>
-                            </span>
+                        <div class="form-group">
+                            <div class="label-group">
+                                <label for="orientation">Orientação do Eixo</label>
+                                <span class="tooltip">?
+                                    <span class="tooltiptext">Eixos verticais tendem a perder graxa mais rapidamente devido à gravidade.</span>
+                                </span>
+                            </div>
+                            <select id="orientation" required>
+                                <option value="1.0">Horizontal</option>
+                                <option value="0.5">Vertical ou Inclinado</option>
+                            </select>
                         </div>
-                         <select id="orientation">
-                            <option value="1.0">Horizontal</option>
-                            <option value="0.5">Vertical ou Inclinado</option>
-                        </select>
                     </div>
-                </div>
-
-                <button class="calculate-btn" id="calculate">Simular Regime</button>
+                    <button class="calculate-btn" id="calculate" type="button">Simular Regime</button>
+                </form>
             </div>
             
             <div class="results-section" id="results">
@@ -172,61 +169,71 @@
                 <div class="results-grid">
                     <div class="result-card">
                         <h3>Carga de Graxa Inicial</h3>
-                        <p><span class="result-value" id="initialFill"></span><span class="result-unit">gramas</span></p>
+                        <p><span class="result-value" id="initialFill"></span><span class="result-unit"> gramas</span></p>
                         <small>Recomendação: Preencher 100% o rolamento e 30-50% do volume livre do mancal.</small>
                     </div>
                     <div class="result-card">
                         <h3>Quantidade de Relubrificação</h3>
-                        <p><span class="result-value" id="relubAmount"></span><span class="result-unit">gramas</span></p>
+                        <p><span class="result-value" id="relubAmount"></span><span class="result-unit"> gramas</span></p>
                         <small>Quantidade a ser aplicada a cada intervalo.</small>
                     </div>
                     <div class="result-card">
                         <h3>Intervalo (Horas)</h3>
-                        <p><span class="result-value" id="relubInterval"></span><span class="result-unit">horas</span></p>
-                         <small>Intervalo ajustado para as condições operacionais.</small>
+                        <p><span class="result-value" id="relubInterval"></span><span class="result-unit"> horas</span></p>
+                        <small>Intervalo ajustado para as condições operacionais.</small>
+                    </div>
+                    <div class="result-card">
+                        <h3>Intervalo (Dias)</h3>
+                        <p><span class="result-value" id="lubricationIntervalResult"></span><span class="result-unit"></span></p>
+                        <small>Aproximadamente.</small>
                     </div>
                     <div class="result-card">
                         <h3>Intervalo (Semanas)</h3>
-                        <p><span class="result-value" id="relubIntervalWeeks"></span><span class="result-unit">semanas</span></p>
-                         <small>Com base nas horas de trabalho semanais.</small>
+                        <p><span class="result-value" id="relubIntervalWeeks"></span><span class="result-unit"> semanas</span></p>
+                        <small>Com base nas horas de trabalho semanais.</small>
                     </div>
                     <div class="result-card">
                         <h3>Vida Estimada da Graxa (L10)</h3>
-                        <p><span class="result-value" id="greaseLife"></span><span class="result-unit">horas</span></p>
+                        <p><span class="result-value" id="greaseLife"></span><span class="result-unit"> horas</span></p>
                         <small>Para rolamentos vedados (sem relubrificação).</small>
                     </div>
-                     <div class="result-card">
+                    <div class="result-card">
                         <h3>Volume Contínuo</h3>
-                        <p><span class="result-value" id="continuousVolume"></span><span class="result-unit">cm³/h</span></p>
+                        <p><span class="result-value" id="continuousVolume"></span><span class="result-unit"> cm³/h</span></p>
                         <small>Taxa para sistemas de lubrificação automática.</small>
                     </div>
-                     <div class="result-card">
+                    <div class="result-card">
                         <h3>Massa do Rolamento (Aprox.)</h3>
-                        <p><span class="result-value" id="bearingMass"></span><span class="result-unit">kg</span></p>
+                        <p><span class="result-value" id="bearingMass"></span><span class="result-unit"> kg</span></p>
                         <small>Massa estimada com base nas dimensões.</small>
                     </div>
                 </div>
 
                 <div class="recommendation-card">
-                     <h3>Recomendação de Graxa (Beta)</h3>
-                     <div class="recommendation-grid">
-                         <div class="recommendation-item">
-                             <div class="label">Viscosidade do Óleo Base (ISO VG)</div>
-                             <div class="value" id="recViscosity"></div>
-                         </div>
-                         <div class="recommendation-item">
-                             <div class="label">Espessante</div>
-                             <div class="value" id="recThickener"></div>
-                         </div>
-                         <div class="recommendation-item">
-                             <div class="label">Grau NLGI</div>
-                             <div class="value" id="recNLGI"></div>
-                         </div>
-                          <div class="recommendation-item">
-                             <div class="label">Aditivos</div>
-                             <div class="value" id="recAdditives"></div>
-                         </div>
-                     </div>
+                    <h3>Recomendação de Graxa</h3>
+                    <div class="recommendation-grid">
+                        <div class="recommendation-item">
+                            <div class="label">Viscosidade do Óleo Base (ISO VG)</div>
+                            <div class="value" id="recViscosity"></div>
+                        </div>
+                        <div class="recommendation-item">
+                            <div class="label">Espessante</div>
+                            <div class="value" id="recThickener"></div>
+                        </div>
+                        <div class="recommendation-item">
+                            <div class="label">Grau NLGI</div>
+                            <div class="value" id="recNLGI"></div>
+                        </div>
+                        <div class="recommendation-item">
+                            <div class="label">Aditivos</div>
+                            <div class="value" id="recAdditives"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert-info" id="notesResult">
+                    <p><strong>Notas Adicionais:</strong></p>
+                    <p>As condições de operação parecem normais. Siga as recomendações de manutenção.</p>
                 </div>
                 
                 <div class="alert-info">
@@ -241,5 +248,3 @@
     </div>
 
     <script src="script.js"></script>
-</body>
-</html>
