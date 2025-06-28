@@ -22,8 +22,7 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
-    /* Adicionado para garantir que o html/body possam rolar se o conteúdo exceder */
-    /* overflow-x: hidden; Para evitar rolagem horizontal indesejada */
+    /* overflow-x: hidden; Para evitar rolagem horizontal indesejada em caso de conteúdo largo */
 }
 
 body {
@@ -35,20 +34,16 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    /* min-height: 100vh; Comentado. 'height: 100%' no html/body já garante a altura base. */
-    /* overflow-y: auto; Adicionado para permitir rolagem vertical no body se necessário */
+    /* overflow-y: auto; Permite rolagem vertical no body se necessário */
 }
 
-/* Garante que o container da calculadora possa se expandir e rolar */
 .calculator-container {
     width: 100%;
-    /* max-width: none; Mantido. Remove o limite de largura para preencher a tela. */
     background: var(--white);
     border-radius: 0;
     box-shadow: none;
     display: flex;
     flex-direction: column;
-    /* flex-grow: 1; Permite que o container cresça para ocupar o espaço disponível */
     min-height: 100vh; /* Garante que o container da calculadora ocupe pelo menos 100% da altura da viewport */
     overflow-y: auto; /* Importante para a rolagem dentro do container da calculadora */
 }
@@ -59,7 +54,7 @@ header {
     padding: 25px;
     text-align: center;
     border-bottom: 5px solid var(--accent-color);
-    flex-shrink: 0; /* Impede que o cabeçalho encolha */
+    flex-shrink: 0;
 }
 
 header h1 {
@@ -68,15 +63,14 @@ header h1 {
 }
 
 main {
-    flex: 1; /* Permite que o conteúdo principal ocupe o espaço restante */
+    flex: 1;
     padding: 25px;
-    /* overflow-y: auto; Movido para .calculator-container para rolagem centralizada */
 }
 
 .input-section {
     display: grid;
-    /* Ajuste o minmax para garantir que em telas menores ele se torne 1 coluna mais cedo */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Reduzido de 250px para 200px */
+    /* Para PC, mantenha o auto-fit com 250px para 3+ colunas */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     margin-bottom: 30px;
 }
@@ -188,7 +182,7 @@ input:focus, select:focus {
     background: var(--info-color);
     border-radius: 8px;
     padding: 20px;
-    display: none;
+    display: none; /* Mantenha como 'none' para ser controlado via JS */
 }
 
 .results-section h2 {
@@ -201,8 +195,8 @@ input:focus, select:focus {
 
 .results-grid {
     display: grid;
-    /* Ajuste o minmax para garantir que em telas menores ele se torne 1 coluna mais cedo */
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Reduzido de 200px para 180px */
+    /* Para PC, mantenha o auto-fit com 200px para 3+ colunas */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
 }
 
@@ -233,14 +227,14 @@ input:focus, select:focus {
 }
 
 .recommendation-card {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1; /* Ocupa todas as colunas disponíveis */
     border-left-color: var(--accent-color);
 }
 
 .recommendation-grid {
     display: grid;
-    /* Ajuste o minmax para garantir que em telas menores ele se torne 1 coluna mais cedo */
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Reduzido de 150px para 120px */
+    /* Para PC, mantenha o auto-fit com 150px para 3+ colunas */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
 }
 
@@ -279,35 +273,39 @@ footer {
     font-size: 0.8rem;
     color: #777;
     background-color: var(--light-gray);
-    flex-shrink: 0; /* Impede que o rodapé encolha */
+    flex-shrink: 0;
 }
 
-/* 📱 Responsividade para telas pequenas (smartphones até 6.7") */
-/* Use max-width: 768px para cobrir uma gama maior de smartphones e tablets menores */
+/* 📱 Responsividade para smartphones (até 768px, para cobrir 6.7" e tablets menores) */
 @media (max-width: 768px) {
     header {
-        padding: 20px; /* Reduz o padding do cabeçalho */
+        padding: 20px;
     }
 
     header h1 {
-        font-size: 1.8rem; /* Ajuste para caber melhor em telas menores */
+        font-size: 1.8rem;
     }
 
     main {
-        padding: 20px; /* Reduz o padding do conteúdo principal */
+        padding: 20px;
     }
 
+    /* Campos de entrada: 2 colunas em telas de smartphone */
     .input-section {
-        grid-template-columns: 1fr; /* Força uma coluna única em telas pequenas */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Agora minmax de 150px para permitir 2 colunas */
         gap: 15px;
     }
 
+    /* Cards de resultado: 2 colunas em telas de smartphone */
     .results-grid {
-        grid-template-columns: 1fr; /* Força uma coluna única para os resultados */
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* minmax de 140px para 2 colunas */
+        gap: 15px; /* Ajustado para 15px para melhor espaçamento */
     }
 
+    /* Recomendações: 2 colunas em telas de smartphone */
     .recommendation-grid {
-        grid-template-columns: 1fr; /* Força uma coluna única para as recomendações */
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* minmax de 100px para 2 colunas */
+        gap: 10px; /* Ajustado para 10px */
     }
 
     .calculate-btn {
@@ -316,7 +314,7 @@ footer {
     }
 
     .result-card, .recommendation-card {
-        padding: 12px; /* Reduz o padding dos cards */
+        padding: 12px;
     }
 
     .result-card h3,
@@ -331,9 +329,16 @@ footer {
     .recommendation-item .value {
         font-size: 1.1rem;
     }
+
+    .tooltip .tooltiptext {
+        width: 200px; /* Reduz a largura do tooltip para não exceder a tela */
+        margin-left: -100px;
+        font-size: 12px;
+        bottom: 110%; /* Ajuste a posição para não sair da tela */
+    }
 }
 
-/* Para garantir a adaptação em telas muito pequenas (como 320px de largura) */
+/* Para garantir a adaptação em telas muito pequenas (ex: 320px de largura), volta para 1 coluna */
 @media (max-width: 480px) {
     header h1 {
         font-size: 1.6rem;
@@ -341,6 +346,21 @@ footer {
 
     main {
         padding: 15px;
+    }
+
+    /* Campos de entrada: 1 coluna em telas muito pequenas */
+    .input-section {
+        grid-template-columns: 1fr;
+    }
+
+    /* Cards de resultado: 1 coluna em telas muito pequenas */
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Recomendações: 1 coluna em telas muito pequenas */
+    .recommendation-grid {
+        grid-template-columns: 1fr;
     }
 
     .calculate-btn {
@@ -357,8 +377,7 @@ footer {
     }
 
     .tooltip .tooltiptext {
-        width: 200px; /* Reduz a largura do tooltip para não exceder a tela */
-        margin-left: -100px;
-        font-size: 12px;
+        width: 180px; /* Mais redução para telas muito pequenas */
+        margin-left: -90px;
     }
 }
