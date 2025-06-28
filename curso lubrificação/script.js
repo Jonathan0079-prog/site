@@ -5,52 +5,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextBtn = document.getElementById('next-module-btn');
     const indicator = document.getElementById('module-indicator');
     const headerSubtitle = document.getElementById('header-subtitle');
-    const floatingNav = document.querySelector('.floating-nav');
     
     let currentModuleIndex = 0;
     let score = 0;
 
     // --- LÓGICA DE NAVEGAÇÃO DOS MÓDULOS ---
     function showModule(index) {
+        if (index < 0 || index >= modules.length) return; // Segurança
+
         modules.forEach((module, i) => {
             module.classList.toggle('active', i === index);
         });
         currentModuleIndex = index;
-        updateNav();
+        updateNavControls();
     }
 
-    function updateNav() {
-        if (!floatingNav) return; // Garante que o código não quebre se o nav não existir
-        
-        indicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
-        prevBtn.disabled = currentModuleIndex === 0;
-        nextBtn.disabled = currentModuleIndex === modules.length - 1;
-
+    function updateNavControls() {
         const activeModule = modules[currentModuleIndex];
         if (activeModule) {
             const currentModuleTitle = activeModule.querySelector('h2').innerText;
             headerSubtitle.textContent = `Módulo ${currentModuleTitle}`;
         }
+        
+        indicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
+        prevBtn.disabled = currentModuleIndex === 0;
+        nextBtn.disabled = currentModuleIndex === modules.length - 1;
     }
 
-    prevBtn.addEventListener('click', () => {
-        if (currentModuleIndex > 0) {
-            showModule(currentModuleIndex - 1);
-        }
-    });
-
-    nextBtn.addEventListener('click', () => {
-        if (currentModuleIndex < modules.length - 1) {
-            showModule(currentModuleIndex + 1);
-        }
-    });
+    prevBtn.addEventListener('click', () => showModule(currentModuleIndex - 1));
+    nextBtn.addEventListener('click', () => showModule(currentModuleIndex + 1));
 
     // --- LÓGICA DO SIMULADOR DE TEMPERATURA ---
     const tempSlider = document.getElementById('tempSlider');
     if (tempSlider) {
         tempSlider.addEventListener('input', function() {
             const baseLife = 8000;
-            const temp = parseInt(this.value);
+            const temp = parseInt(this.value, 10);
             document.getElementById('tempValue').textContent = temp;
             document.getElementById('baseLife').textContent = baseLife;
 
@@ -80,39 +70,23 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const quizQuestions = [
             {
-                question: "1. O que acontece com o intervalo de relubrificação se a temperatura de um mancal sobe de 70°C para 100°C?",
-                options: [
-                    "Permanece o mesmo.",
-                    "Dobra (aumenta 2x).",
-                    "É reduzido para um quarto (dividido por 4)."
-                ],
+                question: "1. De acordo com a teoria apresentada, qual o desgaste caracterizado pela transferência de material da superfície mais macia para a mais dura?",
+                options: ["Desgaste Abrasivo", "Desgaste Adesivo", "Fadiga Superficial"],
+                correctAnswer: 1
+            },
+            {
+                question: "2. Qual a principal vantagem de um óleo sintético sobre um mineral?",
+                options: ["Baixo custo", "Maior oleosidade natural", "Excelente performance em temperaturas extremas"],
                 correctAnswer: 2
             },
             {
-                question: "2. Qual método de aplicação de lubrificante é mais adequado para um sistema com múltiplos pontos e que exige alta confiabilidade?",
-                options: [
-                    "Lubrificação manual com pistola graxeira.",
-                    "Sistema de lubrificação por circulação.",
-                    "Copo conta-gotas."
-                ],
-                correctAnswer: 1
+                question: "3. Qual método de aplicação de óleo é o mais completo, permitindo filtragem e controle de temperatura?",
+                options: ["Por Salpico", "Por Banho de Óleo", "Por Circulação"],
+                correctAnswer: 2
             },
             {
-                question: "3. Qual é a principal função de um aditivo de Extrema Pressão (EP) em uma graxa?",
-                options: [
-                    "Aumentar o índice de viscosidade.",
-                    "Evitar a microssoldagem das superfícies sob altas cargas.",
-                    "Melhorar a resistência à oxidação."
-                ],
-                correctAnswer: 1
-            },
-            {
-                question: "4. A mistura de uma graxa de espessante de Lítio com uma de Poliureia é uma prática recomendada?",
-                options: [
-                    "Sim, são totalmente compatíveis.",
-                    "Não, a mistura pode destruir a estrutura do espessante.",
-                    "Sim, desde que a quantidade de graxa de Poliureia seja menor."
-                ],
+                question: "4. Qual classificação de óleo de motor é baseada exclusivamente na viscosidade?",
+                options: ["API", "SAE", "AGMA"],
                 correctAnswer: 1
             }
         ];
@@ -129,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.textContent = option;
                 button.addEventListener('click', () => checkAnswer(i, questionData.correctAnswer, button));
                 opcoesQuiz.appendChild(button);
-            });
+});
         }
 
         function checkAnswer(selectedIndex, correctIndex, buttonElement) {
@@ -170,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 reprovadoContainer.style.display = 'block';
             }
-            updateNav(); // Atualiza o estado dos botões da navegação principal
         }
 
         function resetQuiz() {
@@ -184,14 +157,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         tentarNovamenteBtn.addEventListener('click', () => {
-            showModule(0); // Volta para o primeiro módulo
             resetQuiz();
+            showModule(modules.length - 1); // Garante que permaneça no módulo do quiz
         });
 
-        // Carrega a primeira pergunta quando o script é iniciado
         loadQuestion(0);
     }
 
-    // --- INICIALIZAÇÃO GERAL ---
+    // --- INICIALIZAÇÃO GERAL DO CURSO ---
     showModule(0); 
 });
