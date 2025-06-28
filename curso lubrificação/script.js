@@ -19,8 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
         currentModuleIndex = index;
         updateNavControls();
         
-        // *** LINHA ADICIONADA: Rola a página para o topo ***
-        window.scrollTo(0, 0);
+        // *** COMANDO DE SCROLL CORRIGIDO E MAIS ROBUSTO ***
+        document.body.scrollTop = 0; // Para Safari
+        document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE e Opera
     }
 
     // Função única e centralizada para controlar os botões
