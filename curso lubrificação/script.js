@@ -208,6 +208,12 @@ document.addEventListener('DOMContentLoaded', () => {
             doc.setFont("helvetica", "normal");
             doc.setFontSize(12);
             doc.text("Manutenção Industrial ARQUIVOS", 148.5, 20, { align: "center" });
+            
+            doc.setFillColor(230, 240, 255);
+            doc.rect(0, 0, 297, 210, 'F');
+            doc.setDrawColor(0, 51, 102);
+            doc.setLineWidth(2);
+            doc.rect(5, 5, 287, 200);
 
             // --- TÍTULO PRINCIPAL ---
             doc.setFont("helvetica", "bold");
