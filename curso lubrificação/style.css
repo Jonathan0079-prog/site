@@ -259,12 +259,11 @@ td.I { background-color: var(--cor-erro); color: white; text-align: center; font
     transform: scale(1.05);
 }
 
-/* NAVEGADOR FLUTUANTE */
+/* NAVEGADOR FLUTUANTE - CORRIGIDO */
 .floating-nav {
     position: fixed;
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 20px; /* Alterado para o canto direito para evitar problemas de layout */
     display: flex;
     align-items: center;
     gap: 10px;
