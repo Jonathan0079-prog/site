@@ -1,75 +1,115 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- DEPENDÊNCIA PARA GERAR O PDF ---
-    // Certifique-se de que a biblioteca jsPDF está carregada no seu HTML
-    // <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    // Pré-requisito: A biblioteca jsPDF deve estar carregada no seu arquivo HTML.
+    // Exemplo: <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     const { jsPDF } = window.jspdf;
 
-    // --- VARIÁVEIS E CONTROLES GLOBAIS DOS MÓDULOS ---
-    const modules = document.querySelectorAll('.module');
-    let currentModuleIndex = 0;
+    // =================================================================================
+    // --- SEÇÃO 1: NAVEGAÇÃO ENTRE MÓDULOS ---
+    // =================================================================================
 
+    const modules = document.querySelectorAll('.module');
     const prevModuleBtn = document.getElementById('prev-module-btn');
     const nextModuleBtn = document.getElementById('next-module-btn');
     const moduleIndicator = document.getElementById('module-indicator');
-    const floatingNav = document.querySelector('.floating-nav'); // Assumindo que você tem uma nav flutuante com esta classe
+    
+    let currentModuleIndex = 0;
 
-    // --- LÓGICA DE NAVEGAÇÃO DOS MÓDULOS (ESTILO ATUALIZADO) ---
+    /**
+     * Função central que controla a exibição dos módulos do curso.
+     * @param {number} index - O índice do módulo a ser exibido.
+     */
     function showModule(index) {
+        // Validação para garantir que o índice está dentro dos limites existentes.
         if (index < 0 || index >= modules.length) {
-            return; // Segurança para não navegar para um módulo inexistente
+            console.warn(`Tentativa de navegar para um módulo inválido: ${index}`);
+            return;
         }
         currentModuleIndex = index;
 
-        // Remove a classe 'active' de todos os módulos
+        // Itera sobre todos os módulos, removendo a classe 'active' de todos.
         modules.forEach(m => {
             m.classList.remove('active');
         });
 
-        // Adiciona a classe 'active' apenas ao módulo atual
+        // Adiciona a classe 'active' apenas ao módulo que deve ser exibido.
         modules[currentModuleIndex].classList.add('active');
 
-        // Atualiza os controles de navegação
-        if (moduleIndicator) moduleIndicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
-        if (prevModuleBtn) prevModuleBtn.disabled = (currentModuleIndex === 0);
-        if (nextModuleBtn) nextModuleBtn.disabled = (currentModuleIndex === modules.length - 1);
+        // Atualiza a interface de navegação (número do módulo e estado dos botões).
+        updateNavigationControls();
         
-        // Esconde a navegação flutuante no último módulo (onde está o quiz)
-        if (floatingNav) {
-            if (currentModuleIndex === modules.length - 1) {
-                floatingNav.classList.add('hidden');
-            } else {
-                floatingNav.classList.remove('hidden');
-            }
-        }
-        
-        // Rola a página para o topo ao trocar de módulo
+        // Garante que o usuário comece no topo do novo módulo.
         window.scrollTo(0, 0);
     }
 
-    if (prevModuleBtn) prevModuleBtn.addEventListener('click', () => showModule(currentModuleIndex - 1));
-    if (nextModuleBtn) nextModuleBtn.addEventListener('click', () => showModule(currentModuleIndex + 1));
+    /**
+     * Atualiza os elementos visuais da navegação, como o indicador de página
+     * e o estado de ativação/desativação dos botões.
+     */
+    function updateNavigationControls() {
+        if (moduleIndicator) {
+            moduleIndicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
+        }
+        if (prevModuleBtn) {
+            prevModuleBtn.disabled = (currentModuleIndex === 0);
+        }
+        if (nextModuleBtn) {
+            // Desabilita o botão "Próximo" no último módulo.
+            nextModuleBtn.disabled = (currentModuleIndex === modules.length - 1);
+        }
+    }
+
+    // Adiciona os "escutadores de evento" aos botões de navegação.
+    // A verificação 'if (botao)' garante que o código não quebre se o botão não existir no HTML.
+    if (prevModuleBtn) {
+        prevModuleBtn.addEventListener('click', () => showModule(currentModuleIndex - 1));
+    } else {
+        console.warn("Elemento com id 'prev-module-btn' não foi encontrado no HTML.");
+    }
+
+    if (nextModuleBtn) {
+        nextModuleBtn.addEventListener('click', () => showModule(currentModuleIndex + 1));
+    } else {
+        console.warn("Elemento com id 'next-module-btn' não foi encontrado no HTML.");
+    }
+
+    // =================================================================================
+    // --- SEÇÃO 2: SIMULADOR DE TEMPERATURA E VIDA ÚTIL ---
+    // =================================================================================
     
-    // --- LÓGICA DO SIMULADOR DE TEMPERATURA (MANTIDA DO CÓDIGO ORIGINAL) ---
     const tempSlider = document.getElementById('tempSlider');
     if (tempSlider) {
         tempSlider.addEventListener('input', function() {
             const baseLife = 8000;
             const temp = parseInt(this.value, 10);
-            document.getElementById('tempValue').textContent = temp;
-            document.getElementById('baseLife').textContent = baseLife;
+            
+            // Busca os elementos de exibição dentro do evento para garantir que existam
+            const tempValueEl = document.getElementById('tempValue');
+            const baseLifeEl = document.getElementById('baseLife');
+            const adjustedLifeEl = document.getElementById('adjustedLife');
+
+            if (tempValueEl) tempValueEl.textContent = temp;
+            if (baseLifeEl) baseLifeEl.textContent = baseLife;
 
             let adjustedLife = baseLife;
+            // A fórmula só se aplica para temperaturas acima de 70.
             if (temp > 70) {
                 const tempDiff = temp - 70;
                 adjustedLife = baseLife / Math.pow(2, tempDiff / 15);
             }
-            document.getElementById('adjustedLife').textContent = Math.round(adjustedLife);
+            
+            if (adjustedLifeEl) adjustedLifeEl.textContent = Math.round(adjustedLife);
         });
+        
+        // Dispara o evento 'input' uma vez no carregamento para inicializar os valores.
         tempSlider.dispatchEvent(new Event('input'));
     }
 
-    // --- LÓGICA DO QUIZ INTERATIVO (ESTRUTURA ATUALIZADA) ---
+    // =================================================================================
+    // --- SEÇÃO 3: QUIZ INTERATIVO E GERAÇÃO DE CERTIFICADO ---
+    // =================================================================================
+
     const perguntas = [
         {
             pergunta: "De acordo com a teoria apresentada, qual o desgaste caracterizado pela transferência de material da superfície mais macia para a mais dura?",
@@ -83,12 +123,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             pergunta: "Qual método de aplicação de óleo é o mais completo, permitindo filtragem e controle de temperatura?",
-            opcoes: ["Por Salpico", "Por Circulação", "Por Banho de Óleo", "Manualmente"],
+            opcoes: ["Por Salpico", "Por Banho de Óleo", "Por Circulação", "Manualmente"],
             resposta: "Por Circulação"
         },
         {
             pergunta: "Qual classificação de óleo de motor é baseada exclusivamente na viscosidade?",
-            opcoes: ["API", "AGMA", "ISO VG", "SAE"],
+            opcoes: ["API", "SAE", "AGMA", "ISO VG"],
             resposta: "SAE"
         }
     ];
@@ -96,12 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let perguntaAtual = 0;
     let pontuacao = 0;
     
+    // Elementos da interface do Quiz
+    const quizContainerEl = document.getElementById('quiz-container');
     const perguntaTituloEl = document.getElementById('pergunta-titulo');
     const opcoesQuizEl = document.getElementById('opcoes-quiz');
     const feedbackEl = document.getElementById('feedback');
-    const quizContainerEl = document.getElementById('quiz-container');
-    const certificadoFormEl = document.getElementById('certificado-form-container'); // O container do formulário
-    const reprovadoEl = document.getElementById('reprovado-container'); // O container de reprovação
+    const certificadoFormEl = document.getElementById('certificado-form-container');
+    const reprovadoEl = document.getElementById('reprovado-container');
     
     function iniciarQuiz() {
         perguntaAtual = 0;
@@ -114,9 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function mostrarPergunta() {
-        // Embaralha as perguntas apenas na primeira vez
         if (perguntaAtual === 0) {
-            perguntas.sort(() => Math.random() - 0.5);
+            perguntas.sort(() => Math.random() - 0.5); // Embaralha as perguntas no início.
         }
         const p = perguntas[perguntaAtual];
         perguntaTituloEl.textContent = `Pergunta ${perguntaAtual + 1} de ${perguntas.length}: ${p.pergunta}`;
@@ -131,18 +171,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function verificarResposta(opcaoSelecionada, respostaCorreta) {
         const botoes = opcoesQuizEl.querySelectorAll('button');
-        let acertou = (opcaoSelecionada === respostaCorreta);
+        const acertou = (opcaoSelecionada === respostaCorreta);
 
         if (acertou) pontuacao++;
         feedbackEl.textContent = acertou ? '✅ Resposta Correta!' : '❌ Resposta Incorreta.';
         
         botoes.forEach(btn => {
-            btn.disabled = true;
-            if (btn.textContent === respostaCorreta) btn.classList.add('correta');
-            else if (btn.textContent === opcaoSelecionada) btn.classList.add('incorreta');
+            btn.disabled = true; // Desabilita todos os botões após a resposta.
+            if (btn.textContent === respostaCorreta) {
+                btn.classList.add('correta');
+            } else if (btn.textContent === opcaoSelecionada) {
+                btn.classList.add('incorreta');
+            }
         });
         
-        // Avança para a próxima pergunta automaticamente após 1.5 segundos
         setTimeout(() => {
             perguntaAtual++;
             if (perguntaAtual < perguntas.length) {
@@ -151,13 +193,17 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 finalizarQuiz();
             }
-        }, 1500);
+        }, 1500); // Espera 1.5s antes de avançar.
     }
 
     function finalizarQuiz() {
+        if (!quizContainerEl || !certificadoFormEl || !reprovadoEl) return;
+
         quizContainerEl.style.display = 'none';
-        // Critério de aprovação: 100% de acerto
-        if (pontuacao >= (perguntas.length * 0.75)) { // ou pontuacao === perguntas.length se quiser 100%
+        const aproveitamento = (pontuacao / perguntas.length);
+        
+        // Critério de aprovação: 75% ou mais (3 de 4, no caso).
+        if (aproveitamento >= 0.75) {
             certificadoFormEl.style.display = 'block';
         } else {
             reprovadoEl.style.display = 'block';
@@ -170,33 +216,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tentarNovamenteBtn) tentarNovamenteBtn.addEventListener('click', iniciarQuiz);
     if (gerarCertificadoBtn) gerarCertificadoBtn.addEventListener('click', gerarCertificadoPDF);
 
-    // --- LÓGICA DE GERAÇÃO DO CERTIFICADO PDF ---
     function formatarCPF(cpf) {
-        cpf = cpf.replace(/\D/g, ''); // Remove tudo que não é dígito
-        if (cpf.length !== 11) return cpf; // Retorna o valor se não for um CPF completo
+        cpf = cpf.replace(/\D/g, '');
+        if (cpf.length !== 11) return cpf;
         return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
     }
 
     function gerarCertificadoPDF() {
-        const nome = document.getElementById('nome-aluno').value.trim();
-        const cpf = document.getElementById('cpf-aluno').value.trim();
+        const nomeEl = document.getElementById('nome-aluno');
+        const cpfEl = document.getElementById('cpf-aluno');
+        
+        const nome = nomeEl ? nomeEl.value.trim() : '';
+        const cpf = cpfEl ? cpfEl.value.trim() : '';
+        
         if (nome === "" || cpf === "") {
             alert("Por favor, preencha seu nome completo e CPF para gerar o certificado.");
             return;
         }
 
         const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-        
-        // Insira sua logo em formato Base64 aqui. Deixe em branco se não tiver.
-        // Você pode converter uma imagem em Base64 em sites como 'base64-image.de'
-        const LOGO_BASE64 = ''; 
+        const LOGO_BASE64 = ''; // Cole sua logo Base64 aqui, se tiver.
 
-        // Design do certificado (cores, bordas)
-        doc.setFillColor(230, 240, 255); // Fundo azul claro
+        // Design do certificado
+        doc.setFillColor(230, 240, 255);
         doc.rect(0, 0, 297, 210, 'F');
-        doc.setDrawColor(0, 51, 102); // Borda azul escura
+        doc.setDrawColor(0, 51, 102);
         doc.setLineWidth(2);
-        doc.rect(5, 5, 287, 200); // Retângulo da borda interna
+        doc.rect(5, 5, 287, 200);
         
         if (LOGO_BASE64) {
             try {
@@ -209,42 +255,32 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // --- NOME DA EMPRESA/ESCOLA ---
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.setTextColor(0, 51, 102);
-        doc.text(MANUTENÇÃO INDUSTRIAL ARQUIVOS", 148.5, 25, { align: "center" });
-
-        // --- TÍTULO PRINCIPAL ---
+        doc.text("MANUTENÇÃO INDUSTRIAL ARQUIVOS", 148.5, 25, { align: "center" });
         doc.setFontSize(30);
         doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 45, { align: "center" });
-
-        // --- TEXTO DO CERTIFICADO ---
         doc.setFont("helvetica", "normal");
         doc.setFontSize(16);
         doc.setTextColor(50, 50, 50);
         doc.text(`Certificamos que`, 148.5, 65, { align: "center" });
-
         doc.setFont("helvetica", "bold");
         doc.setFontSize(24);
         doc.setTextColor(0, 102, 204);
         doc.text(nome.toUpperCase(), 148.5, 77, { align: "center" });
-
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
         doc.setTextColor(50, 50, 50);
         doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 87, { align: "center" });
-        
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.setTextColor(0, 51, 102);
         doc.text("Curso Completo de Lubrificação Industrial", 148.5, 99, { align: "center" });
-        
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
         doc.text("Carga Horária: 2 horas", 148.5, 109, { align: "center" });
 
-        // --- CONTEÚDOS ESTUDADOS (ADAPTADO PARA O CURSO DE LUBRIFICAÇÃO) ---
         doc.setFont("helvetica", "bold");
         doc.setFontSize(10);
         doc.text("Conteúdos Estudados:", 20, 125);
@@ -264,30 +300,28 @@ document.addEventListener('DOMContentLoaded', () => {
         yPos = 132;
         col2.forEach(item => { doc.text(`• ${item}`, 155, yPos); yPos += 6; });
 
-        // --- DATA, HORA E ASSINATURA ---
         const agora = new Date();
-        const dataHoraFormatada = agora.toLocaleString('pt-BR', { 
-            day: '2-digit', 
-            month: 'long', 
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+        const dataHoraFormatada = agora.toLocaleString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
         doc.setFontSize(12);
-        doc.line(90, 185, 205, 185); // Linha da assinatura
+        doc.line(90, 185, 205, 185);
         doc.setFont("helvetica", "bold");
         doc.text("Instrutor Responsável", 147.5, 190, { align: "center" });
-        
         doc.setFont("helvetica", "normal");
         doc.text(`Emitido em: ${dataHoraFormatada}`, 147.5, 197, { align: "center" });
         
         doc.save(`Certificado - Lubrificação - ${nome}.pdf`);
     }
 
-    // --- INICIALIZAÇÃO GERAL DO CURSO ---
+    // =================================================================================
+    // --- INICIALIZAÇÃO GERAL ---
+    // =================================================================================
+    
+    // Garante que o primeiro módulo seja exibido ao carregar a página.
     showModule(0);
-    if(quizContainerEl) {
+
+    // Inicia o quiz se os elementos do quiz existirem na página.
+    if (quizContainerEl) {
        iniciarQuiz();
     }
 });
