@@ -1,408 +1,283 @@
-document.getElementById('calculate').addEventListener('click', function() {
-    // --- 1. COLETA E VALIDAÇÃO DOS DADOS DE ENTRADA ---
-    const form = document.getElementById('lubricationForm');
-    if (!form.checkValidity()) {
-        alert("Por favor, preencha todos os campos antes de calcular.");
-        return;
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Referências para os elementos do HTML ---
+    const calculateBtn = document.getElementById('calculate');
+    const resetBtn = document.getElementById('reset');
+    const resultsSection = document.getElementById('results');
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    const tooltips = document.querySelectorAll('.tooltip');
 
-    const bearingType = document.getElementById('bearingType').value;
-    const D = parseFloat(document.getElementById('outerDiameter').value);
-    const d = parseFloat(document.getElementById('boreDiameter').value);
-    const B = parseFloat(document.getElementById('width').value);
-    const rpm = parseFloat(document.getElementById('rpm').value);
-    const temp = parseFloat(document.getElementById('temperature').value);
-    
-    const loadCondition = document.getElementById('loadCondition').value;
-    const environment = document.getElementById('environment').value;
-    const workingHoursPerWeek = parseFloat(document.getElementById('workingHours').value);
-    const greaseDensity = parseFloat(document.getElementById('greaseDensity').value);
-    
-    const f_moist = parseFloat(document.getElementById('moisture').value);
-    const f_vib = parseFloat(document.getElementById('vibration').value);
-    const f_orient = parseFloat(document.getElementById('orientation').value);
+    // --- Referências para os campos de entrada ---
+    const bearingTypeInput = document.getElementById('bearingType');
+    const boreDiameterInput = document.getElementById('boreDiameter');
+    const outerDiameterInput = document.getElementById('outerDiameter');
+    const widthInput = document.getElementById('width');
+    const rpmInput = document.getElementById('rpm');
+    const temperatureInput = document.getElementById('temperature');
+    const loadConditionInput = document.getElementById('loadCondition');
+    const environmentInput = document.getElementById('environment');
+    const workingHoursInput = document.getElementById('workingHours');
+    const greaseDensityInput = document.getElementById('greaseDensity');
+    const moistureInput = document.getElementById('moisture');
+    const vibrationInput = document.getElementById('vibration');
+    const orientationInput = document.getElementById('orientation');
 
-    // Validação completa (combinada e aprimorada)
-    if (isNaN(d) || isNaN(D) || isNaN(B) || isNaN(rpm) || isNaN(temp) || isNaN(workingHoursPerWeek) || isNaN(greaseDensity) || d <= 0 || D <= 0 || B <= 0 || workingHoursPerWeek <= 0 || greaseDensity <= 0) {
-        alert("Por favor, preencha todos os campos com valores numéricos positivos e válidos.");
-        return;
-    }
-    if (d >= D) {
-        alert("O diâmetro interno (d) deve ser menor que o diâmetro externo (D).");
-        return;
-    }
+    // --- Referências para os campos de resultado ---
+    const initialFillResult = document.getElementById('initialFill');
+    const initialFillCm3Result = document.getElementById('initialFillCm3');
+    const relubAmountResult = document.getElementById('relubAmount');
+    const relubIntervalResult = document.getElementById('relubInterval');
+    const lubricationIntervalDaysResult = document.getElementById('lubricationIntervalResult');
+    const relubIntervalWeeksResult = document.getElementById('relubIntervalWeeks');
+    const greaseLifeResult = document.getElementById('greaseLife');
+    const continuousVolumeResult = document.getElementById('continuousVolume');
+    const bearingMassResult = document.getElementById('bearingMass');
+    const recViscosityResult = document.getElementById('recViscosity');
+    const recThickenerResult = document.getElementById('recThickener');
+    const recNLGIResult = document.getElementById('recNLGI');
+    const recAdditivesResult = document.getElementById('recAdditives');
+    const notesResult = document.getElementById('notesResult');
 
-    // --- 2. CÁLCULOS PRINCIPAIS (LÓGICA COMBINADA) ---
 
-    // A. Quantidade de Relubrificação (gramas)
-    // A fórmula original está correta para um "charge factor"
-    const greaseQuantity = 0.005 * D * B;
-    const relubAmount = greaseQuantity;
+    // ----------------------------------------------------------------------------------------------------
+    // --- LÓGICA DE CÁLCULO DE LUBRIFICAÇÃO (PRINCIPAL FUNÇÃO) ---
+    // ----------------------------------------------------------------------------------------------------
+    function calculateLubrication() {
+        // 1. Pega os valores dos inputs e converte para números
+        const bearingType = bearingTypeInput.value;
+        const d = parseFloat(boreDiameterInput.value);      // Diâmetro do furo (mm)
+        const D = parseFloat(outerDiameterInput.value);     // Diâmetro externo (mm)
+        const B = parseFloat(widthInput.value);             // Largura (mm)
+        const n = parseFloat(rpmInput.value);               // Rotação (RPM)
+        const T = parseFloat(temperatureInput.value);       // Temperatura (°C)
+        const loadCondition = loadConditionInput.value;
+        const environment = environmentInput.value;
+        const workingHours = parseFloat(workingHoursInput.value);
+        const greaseDensity = parseFloat(greaseDensityInput.value);
+        const moistureFactor = parseFloat(moistureInput.value);     // Fator de umidade
+        const vibrationFactor = parseFloat(vibrationInput.value);   // Fator de vibração
+        const orientationFactor = parseFloat(orientationInput.value); // Fator de orientação
 
-    // B. Carga de Graxa Inicial (gramas)
-    // Geralmente é a quantidade total para preencher o rolamento e o espaço do mancal
-    // Você a definiu como 3x a quantidade de relubrificação, o que é um método comum.
-    const initialFill = relubAmount * 3;
+        // Verifica se os valores essenciais são válidos
+        if (isNaN(d) || isNaN(D) || isNaN(B) || isNaN(n) || isNaN(T) || isNaN(greaseDensity)) {
+            alert("Por favor, preencha todos os campos obrigatórios com valores numéricos válidos.");
+            return; // Interrompe a função se a validação falhar
+        }
 
-    // **NOVO CÁLCULO: Volume Inicial de Graxa em cm³**
-    // Usamos a mesma lógica de volume do rolamento, mas para o preenchimento inicial.
-    // A constante 0.005 já converte as dimensões de mm para cm³ e ajusta para o volume interno.
-    // Se initialFill (gramas) representa o total, e a densidade é em kg/dm³ (que é 1g/cm³),
-    // então initialFillCm3 = initialFill / greaseDensity;
-    // Se initialFill é 3x relubAmount e relubAmount já é 0.005 * D * B,
-    // então initialFillCm3 será 3x o volume calculado por 0.005 * D * B (se 0.005 * D * B já fosse em cm³).
-    // A forma mais direta para o volume inicial em cm³ é:
-    const initialGreaseVolumeCm3 = (initialFill / greaseDensity); // Como greaseDensity é kg/dm³, e 1 kg/dm³ = 1 g/cm³, isso está correto.
+        // 2. Cálculos de Parâmetros de Entrada
+        // dm: Diâmetro médio do rolamento (mm)
+        const dm = (d + D) / 2;
+        // Fator de Velocidade (n * dm)
+        const speedFactor = n * dm;
 
-    // C. CÁLCULO DO INTERVALO DE RELUBRIFICAÇÃO
-    
-    // C.1. Intervalo Base em Horas
-    let baseInterval = 2000;
-    if (bearingType === 'cylindricalRoller' || bearingType === 'taperedRoller') {
-        baseInterval = 1500;
-    } else if (bearingType === 'sphericalRoller') {
-        baseInterval = 1000;
-    }
+        // 3. Determina o Fator do Rolamento (k) com base no tipo
+        // Este fator é crucial para o cálculo do intervalo de relubrificação e é baseado em dados empíricos
+        let k;
+        let bearingFactorMultiplier = 1; // Fator adicional para alguns tipos de rolamento
+        switch (bearingType) {
+            case 'ball': // Rígido de Esferas (DGBB)
+            case 'angular': // Contato Angular (ACBB)
+                k = 1.0;
+                break;
+            case 'cylindricalRoller': // Rolos Cilíndricos (CRB)
+                k = 3.0; // Geralmente, rolos exigem mais lubrificação
+                break;
+            case 'sphericalRoller': // Rolos Esféricos (SRB)
+                k = 1.2;
+                break;
+            case 'taperedRoller': // Rolos Cônicos (TRB)
+                k = 2.0;
+                break;
+            default:
+                k = 1.0; // Padrão
+        }
 
-    // C.2. Fatores de Correção
-    
-    // Fator de Temperatura (kT)
-    let tempFactor = 1.0;
-    if (temp > 70) {
-        const tempDiff = temp - 70;
-        tempFactor = Math.pow(0.5, tempDiff / 15);
-    }
-    
-    // Fator de Carga (kL)
-    let loadFactor = 1.0;
-    if (loadCondition === 'heavy') {
-        loadFactor = 0.6;
-    } else if (loadCondition === 'shock') {
-        loadFactor = 0.3;
-    }
+        // 4. Calcula a Carga de Graxa Inicial (Gramas)
+        // Fórmula aproximada baseada na largura e diâmetro do rolamento
+        // Fonte: Dados de engenharia para lubrificação de rolamentos
+        const initialFillGrams = 0.005 * B * (D - d); // Fórmula simplificada
+        
+        // 5. Calcula o Volume Inicial de Graxa (cm³)
+        // Volume = Massa / Densidade
+        const initialFillCm3 = initialFillGrams / greaseDensity;
 
-    // Fator de Ambiente/Contaminação (kC)
-    let envFactor = 1.0;
-    if (environment === 'dusty') {
-        envFactor = 0.5;
-    } else if (environment === 'humid') {
-        envFactor = 0.25;
-    } else if (environment === 'chemical') {
-        envFactor = 0.1;
-    }
+        // 6. Calcula a Quantidade de Relubrificação (Gramas)
+        // Quantidade recomendada é aproximadamente 1/3 da carga inicial
+        const relubAmountGrams = initialFillGrams / 3;
 
-    // Fator de Velocidade (kS)
-    const dm = (D + d) / 2;
-    const nDm = rpm * dm;
-    let speedFactor = 1.0;
-    if (nDm > 200000) {
-        speedFactor = 200000 / nDm;
-    } else if (nDm < 10000) {
-        speedFactor = 0.8;
-    }
-    
-    // C.3. Cálculo Final do Intervalo em Horas
-    let finalIntervalHours = baseInterval * tempFactor * loadFactor * envFactor * speedFactor;
+        // 7. Calcula a Vida Útil Estimada da Graxa (L10 em horas)
+        // Fórmula baseada na temperatura (Fator de Correção de Temperatura, FT) e no Fator de Velocidade
+        // L10 = Base Life * FT. FT = 2^( (80 - T) / 15 )
+        // A vida útil de graxa (L10) é a vida onde 90% dos rolamentos ainda estão funcionando.
+        const baseGreaseLife = 100000; // Vida útil base em horas para rolamentos vedados sob condições ideais
+        const temperatureFactor_FT = Math.pow(2, (80 - T) / 15);
+        const greaseLifeHours = baseGreaseLife * temperatureFactor_FT;
+        
+        // 8. Calcula o Intervalo de Relubrificação Base (em horas)
+        // Fórmula de Intervalo Base (SKF)
+        // t_f = k * 10^5 * (1 / (n * dm))^0.5
+        const relubIntervalBaseHours = k * Math.pow(10, 5) * Math.pow(1 / speedFactor, 0.5);
 
-    // Arredondamento e ajuste de mínimo
-    finalIntervalHours = Math.round(finalIntervalHours / 10) * 10;
-    if(finalIntervalHours < 24) finalIntervalHours = 24;
+        // 9. Aplica os Fatores de Correção para o Intervalo
+        // Fatores de Carga, Ambiente, Umidade, Vibração e Orientação
+        let loadFactor_FL = 1.0;
+        if (loadCondition === 'heavy') loadFactor_FL = 0.8;
+        if (loadCondition === 'shock') loadFactor_FL = 0.6;
 
-    const finalIntervalDays = (finalIntervalHours / 24);
-    
-    // D. Vida da Graxa (L10) para rolamentos vedados
-    const greaseLife = finalIntervalHours * 2.7;
+        let environmentFactor_FE = 1.0;
+        if (environment === 'dusty') environmentFactor_FE = 0.8;
+        if (environment === 'humid') environmentFactor_FE = 0.6;
+        if (environment === 'chemical') environmentFactor_FE = 0.4;
+        
+        // Intervalo Ajustado = Intervalo Base * Fatores de Correção
+        const relubIntervalAdjustedHours = relubIntervalBaseHours * loadFactor_FL * environmentFactor_FE * moistureFactor * vibrationFactor * orientationFactor;
 
-    // --- NOVOS CÁLCULOS QUE JÁ TINHAMOS ---
-    
-    // E. Massa do Rolamento (Fórmula empírica)
-    const bearingMass = (D * D - d * d) * B * 6.2e-6;
+        // 10. Calcula o Intervalo em Dias e Semanas
+        const relubIntervalDays = relubIntervalAdjustedHours / 24;
+        const relubIntervalWeeks = relubIntervalAdjustedHours / workingHours;
 
-    // F. Período de Relubrificação em Semanas
-    const relubIntervalWeeks = finalIntervalHours / workingHoursPerWeek;
+        // 11. Calcula o Volume Contínuo para Sistemas de Lubrificação Automática (cm³/h)
+        // Massa de relubrificação (g) / Intervalo (h) = Taxa (g/h)
+        // Taxa (g/h) / Densidade (g/cm³) = Taxa (cm³/h)
+        const continuousVolumeCm3ph = (relubAmountGrams / greaseDensity) / relubIntervalAdjustedHours;
+        
+        // 12. Estima a Massa do Rolamento (kg) para referência
+        // Fórmula de massa volumétrica simplificada
+        const bearingVolume_cm3 = (Math.PI / 4) * (Math.pow(D, 2) - Math.pow(d, 2)) * B / 1000; // Volume em cm³
+        const estimatedMass_kg = bearingVolume_cm3 * 7.85 / 1000; // Densidade do aço ~7.85 g/cm³
 
-    // G. Volume de Relubrificação Contínua
-    const continuousVolume_cm3_hr = (relubAmount / greaseDensity) / finalIntervalHours;
-
-    // --- 3. RECOMENDAÇÃO DE GRAXA ---
-    let recViscosity, recThickener, recNLGI, recAdditives;
-
-    // Viscosidade
-    if (nDm < 10000) { recViscosity = "460+"; }
-    else if (nDm < 75000) { recViscosity = "220-460"; }
-    else if (nDm < 200000) { recViscosity = "100-220"; }
-    else if (nDm < 400000) { recViscosity = "46-100"; }
-    else { recViscosity = "15-46"; }
-    if(temp > 80) recViscosity = "Aumentar ↑";
-
-    // Espessante
-    if (f_moist < 0.5) { recThickener = "Sulf. de Cálcio"; }
-    else if (temp > 120) { recThickener = "Poliureia"; }
-    else { recThickener = "Compl. de Lítio"; }
-    if (f_vib < 0.6) {recThickener += " (Alta Estabilidade Mecânica)";}
-
-    // NLGI
-    if (f_orient < 1.0 || environment === 'dusty' || environment === 'chemical') { recNLGI = "3"; }
-    else if (temp < 0) { recNLGI = "1"; }
-    else { recNLGI = "2"; }
-
-    // Aditivos
-    if (loadCondition === 'heavy' || loadCondition === 'shock') { recAdditives = "EP (Extrema Pressão)"; }
-    else { recAdditives = "Padrão (AW/AO)"; }
-
-    // --- 4. GERAÇÃO DE NOTAS E AVISOS ---
-    let notes = "";
-    if (temp > 90) {
-        notes += `<span class="warning">AVISO: Temperaturas acima de 90°C podem exigir graxas especiais de alta performance.</span><br>`;
-    }
-    if (finalIntervalHours < 100) {
-        notes += `<span class="warning">AVISO: O intervalo de lubrificação é muito curto. Considere revisar as condições de operação ou utilizar lubrificação automatizada.</span><br>`;
-    }
-    if(notes === "") {
-        notes = "As condições de operação parecem normais. Siga as recomendações de manutenção."
-    }
-    
-    // --- 5. EXIBIÇÃO DOS RESULTADOS ---
-    const resultsDiv = document.getElementById('results');
-
-    // Mapeando os resultados para os IDs corretos do HTML
-    document.getElementById('initialFill').textContent = initialFill.toFixed(1);
-    // **NOVA LINHA: Exibir Volume Inicial de Graxa em cm³**
-    document.getElementById('initialFillCm3').textContent = initialGreaseVolumeCm3.toFixed(2);
-    
-    document.getElementById('relubAmount').textContent = relubAmount.toFixed(1);
-    document.getElementById('relubInterval').textContent = Math.round(finalIntervalHours);
-    document.getElementById('lubricationIntervalResult').textContent = finalIntervalDays.toFixed(1) + " dias";
-    document.getElementById('relubIntervalWeeks').textContent = relubIntervalWeeks.toFixed(1);
-    document.getElementById('greaseLife').textContent = Math.round(greaseLife);
-    document.getElementById('continuousVolume').textContent = continuousVolume_cm3_hr.toFixed(3);
-    document.getElementById('bearingMass').textContent = bearingMass.toFixed(2);
-    
-    // Exibindo as recomendações de graxa
-    document.getElementById('recViscosity').textContent = recViscosity;
-    document.getElementById('recThickener').textContent = recThickener;
-    document.getElementById('recNLGI').textContent = recNLGI;
-    document.getElementById('recAdditives').textContent = recAdditives;
-
-    // Atualizando as notas
-    document.getElementById('notesResult').innerHTML = `<p><strong>Notas Adicionais:</strong></p><p>${notes}</p>`;
-
-    // Torna os resultados visíveis
-    resultsDiv.style.display = 'block';
-});
-document.getElementById('calculate').addEventListener('click', function() {
-    // --- 1. COLETA E VALIDAÇÃO DOS DADOS DE ENTRADA ---
-    const form = document.getElementById('lubricationForm');
-    if (!form.checkValidity()) {
-        alert("Por favor, preencha todos os campos antes de calcular.");
-        return;
-    }
-
-    const bearingType = document.getElementById('bearingType').value;
-    const D = parseFloat(document.getElementById('outerDiameter').value);
-    const d = parseFloat(document.getElementById('boreDiameter').value);
-    const B = parseFloat(document.getElementById('width').value);
-    const rpm = parseFloat(document.getElementById('rpm').value);
-    const temp = parseFloat(document.getElementById('temperature').value);
-    
-    const loadCondition = document.getElementById('loadCondition').value;
-    const environment = document.getElementById('environment').value;
-    const workingHoursPerWeek = parseFloat(document.getElementById('workingHours').value);
-    const greaseDensity = parseFloat(document.getElementById('greaseDensity').value);
-    
-    const f_moist = parseFloat(document.getElementById('moisture').value);
-    const f_vib = parseFloat(document.getElementById('vibration').value);
-    const f_orient = parseFloat(document.getElementById('orientation').value);
-
-    // Validação completa (combinada e aprimorada)
-    if (isNaN(d) || isNaN(D) || isNaN(B) || isNaN(rpm) || isNaN(temp) || isNaN(workingHoursPerWeek) || isNaN(greaseDensity) || d <= 0 || D <= 0 || B <= 0 || workingHoursPerWeek <= 0 || greaseDensity <= 0) {
-        alert("Por favor, preencha todos os campos com valores numéricos positivos e válidos.");
-        return;
-    }
-    if (d >= D) {
-        alert("O diâmetro interno (d) deve ser menor que o diâmetro externo (D).");
-        return;
-    }
-
-    // --- 2. CÁLCULOS PRINCIPAIS (LÓGICA COMBINADA) ---
-
-    // A. Quantidade de Relubrificação (gramas)
-    const greaseQuantity = 0.005 * D * B;
-    const relubAmount = greaseQuantity;
-
-    // B. Carga de Graxa Inicial (gramas)
-    const initialFill = relubAmount * 3;
-
-    // **Cálculo: Volume Inicial de Graxa em cm³**
-    const initialGreaseVolumeCm3 = (initialFill / greaseDensity); 
-
-    // C. CÁLCULO DO INTERVALO DE RELUBRIFICAÇÃO
-    
-    // C.1. Intervalo Base em Horas
-    let baseInterval = 2000;
-    if (bearingType === 'cylindricalRoller' || bearingType === 'taperedRoller') {
-        baseInterval = 1500;
-    } else if (bearingType === 'sphericalRoller') {
-        baseInterval = 1000;
-    }
-
-    // C.2. Fatores de Correção
-    
-    // Fator de Temperatura (kT)
-    let tempFactor = 1.0;
-    if (temp > 70) {
-        const tempDiff = temp - 70;
-        tempFactor = Math.pow(0.5, tempDiff / 15);
-    }
-    
-    // Fator de Carga (kL)
-    let loadFactor = 1.0;
-    if (loadCondition === 'heavy') {
-        loadFactor = 0.6;
-    } else if (loadCondition === 'shock') {
-        loadFactor = 0.3;
-    }
-
-    // Fator de Ambiente/Contaminação (kC)
-    let envFactor = 1.0;
-    if (environment === 'dusty') {
-        envFactor = 0.5;
-    } else if (environment === 'humid') {
-        envFactor = 0.25;
-    } else if (environment === 'chemical') {
-        envFactor = 0.1;
-    }
-
-    // Fator de Velocidade (kS)
-    const dm = (D + d) / 2;
-    const nDm = rpm * dm;
-    let speedFactor = 1.0;
-    if (nDm > 200000) {
-        speedFactor = 200000 / nDm;
-    } else if (nDm < 10000) {
-        speedFactor = 0.8;
-    }
-    
-    // C.3. Cálculo Final do Intervalo em Horas
-    let finalIntervalHours = baseInterval * tempFactor * loadFactor * envFactor * speedFactor;
-
-    // Arredondamento e ajuste de mínimo
-    finalIntervalHours = Math.round(finalIntervalHours / 10) * 10;
-    if(finalIntervalHours < 24) finalIntervalHours = 24;
-
-    const finalIntervalDays = (finalIntervalHours / 24);
-    
-    // D. Vida da Graxa (L10) para rolamentos vedados
-    const greaseLife = finalIntervalHours * 2.7;
-
-    // --- NOVOS CÁLCULOS QUE JÁ TINHAMOS ---
-    
-    // E. Massa do Rolamento (Fórmula empírica)
-    const bearingMass = (D * D - d * d) * B * 6.2e-6;
-
-    // F. Período de Relubrificação em Semanas
-    const relubIntervalWeeks = finalIntervalHours / workingHoursPerWeek;
-
-    // G. Volume de Relubrificação Contínua
-    const continuousVolume_cm3_hr = (relubAmount / greaseDensity) / finalIntervalHours;
-
-    // --- 3. RECOMENDAÇÃO DE GRAXA ---
-    let recViscosity, recThickener, recNLGI, recAdditives;
-
-    // Viscosidade
-    if (nDm < 10000) { recViscosity = "460+"; }
-    else if (nDm < 75000) { recViscosity = "220-460"; }
-    else if (nDm < 200000) { recViscosity = "100-220"; }
-    else if (nDm < 400000) { recViscosity = "46-100"; }
-    else { recViscosity = "15-46"; }
-    if(temp > 80) recViscosity = "Aumentar ↑";
-
-    // Espessante
-    if (f_moist < 0.5) { recThickener = "Sulf. de Cálcio"; }
-    else if (temp > 120) { recThickener = "Poliureia"; }
-    else { recThickener = "Compl. de Lítio"; }
-    if (f_vib < 0.6) {recThickener += " (Alta Estabilidade Mecânica)";}
-
-    // NLGI
-    if (f_orient < 1.0 || environment === 'dusty' || environment === 'chemical') { recNLGI = "3"; }
-    else if (temp < 0) { recNLGI = "1"; }
-    else { recNLGI = "2"; }
-
-    // Aditivos
-    if (loadCondition === 'heavy' || loadCondition === 'shock') { recAdditives = "EP (Extrema Pressão)"; }
-    else { recAdditives = "Padrão (AW/AO)"; }
-
-    // --- 4. GERAÇÃO DE NOTAS E AVISOS ---
-    let notes = "";
-    if (temp > 90) {
-        notes += `<span class="warning">AVISO: Temperaturas acima de 90°C podem exigir graxas especiais de alta performance.</span><br>`;
-    }
-    if (finalIntervalHours < 100) {
-        notes += `<span class="warning">AVISO: O intervalo de lubrificação é muito curto. Considere revisar as condições de operação ou utilizar lubrificação automatizada.</span><br>`;
-    }
-    if(notes === "") {
-        notes = "As condições de operação parecem normais. Siga as recomendações de manutenção."
-    }
-    
-    // --- 5. EXIBIÇÃO DOS RESULTADOS ---
-    const resultsDiv = document.getElementById('results');
-
-    // Mapeando os resultados para os IDs corretos do HTML
-    document.getElementById('initialFill').textContent = initialFill.toFixed(1);
-    document.getElementById('initialFillCm3').textContent = initialGreaseVolumeCm3.toFixed(2);
-    
-    document.getElementById('relubAmount').textContent = relubAmount.toFixed(1);
-    document.getElementById('relubInterval').textContent = Math.round(finalIntervalHours);
-    document.getElementById('lubricationIntervalResult').textContent = finalIntervalDays.toFixed(1) + " dias";
-    document.getElementById('relubIntervalWeeks').textContent = relubIntervalWeeks.toFixed(1);
-    document.getElementById('greaseLife').textContent = Math.round(greaseLife);
-    document.getElementById('continuousVolume').textContent = continuousVolume_cm3_hr.toFixed(3);
-    document.getElementById('bearingMass').textContent = bearingMass.toFixed(2);
-    
-    // Exibindo as recomendações de graxa
-    document.getElementById('recViscosity').textContent = recViscosity;
-    document.getElementById('recThickener').textContent = recThickener;
-    document.getElementById('recNLGI').textContent = recNLGI;
-    document.getElementById('recAdditives').textContent = recAdditives;
-
-    // Atualizando as notas
-    document.getElementById('notesResult').innerHTML = `<p><strong>Notas Adicionais:</strong></p><p>${notes}</p>`;
-
-    // Torna os resultados visíveis
-    resultsDiv.style.display = 'block';
-});
-
-// --- NOVO EVENT LISTENER PARA O BOTÃO RESETAR ---
-document.getElementById('reset').addEventListener('click', function() {
-    // 1. Zera todos os campos de input de tipo 'number'
-    document.querySelectorAll('#lubricationForm input[type="number"]').forEach(input => {
-        // Redefine para o valor padrão se existir, caso contrário, limpa
-        if (input.id === 'workingHours') {
-            input.value = '40';
-        } else if (input.id === 'greaseDensity') {
-            input.value = '0.95';
+        // 13. Recomendações de Graxa
+        // Baseado na velocidade e temperatura
+        let recViscosity, recThickener, recNLGI, recAdditives, recNotes;
+        
+        if (speedFactor < 50000 && T < 80) {
+            recViscosity = "ISO VG 100 - 220";
+            recThickener = "Lítio ou Lítio Complexo";
+            recNLGI = "2 ou 3";
+            recAdditives = "EP (Extrema Pressão) se a carga for pesada";
+        } else if (speedFactor >= 50000 && speedFactor < 200000 && T < 100) {
+            recViscosity = "ISO VG 68 - 150";
+            recThickener = "Lítio Complexo";
+            recNLGI = "2";
+            recAdditives = "Antioxidantes e Inibidores de Corrosão";
+        } else if (speedFactor >= 200000 || T > 100) {
+            recViscosity = "ISO VG 32 - 100";
+            recThickener = "Poliureia ou Complexo de Lítio Sintético";
+            recNLGI = "1 ou 2";
+            recAdditives = "Sintéticos (PAO, Éster) para altas temperaturas";
         } else {
-            input.value = '';
+            recViscosity = "Verificar com o fabricante";
+            recThickener = "Verificar com o fabricante";
+            recNLGI = "Verificar com o fabricante";
+            recAdditives = "Verificar com o fabricante";
+        }
+
+        // Notas Adicionais baseadas nas condições
+        if (moistureInput.value < 1 || environment === 'humid' || environment === 'chemical') {
+            recNotes = "As condições operacionais são desafiadoras. Considere graxas com espessantes resistentes à água (Sulfonato de Cálcio) ou selagem extra para proteger o rolamento.";
+        } else if (vibrationInput.value < 1) {
+            recNotes = "A vibração pode causar a separação do óleo da graxa. Use graxas com boa estabilidade mecânica (Complexo de Lítio ou Poliureia) para evitar vazamentos.";
+        } else if (orientationInput.value < 1) {
+            recNotes = "Eixo vertical exige atenção especial para retenção da graxa. Certifique-se de que a selagem do mancal seja eficaz.";
+        } else {
+            recNotes = "As condições de operação parecem normais. Siga as recomendações de manutenção.";
+        }
+
+        // 14. Atualiza os elementos HTML com os resultados calculados
+        initialFillResult.textContent = initialFillGrams.toFixed(2);
+        initialFillCm3Result.textContent = initialFillCm3.toFixed(2);
+        relubAmountResult.textContent = relubAmountGrams.toFixed(2);
+        relubIntervalResult.textContent = relubIntervalAdjustedHours.toFixed(0);
+        lubricationIntervalDaysResult.textContent = `${relubIntervalDays.toFixed(0)} dias`;
+        relubIntervalWeeksResult.textContent = relubIntervalWeeks.toFixed(1);
+        greaseLifeResult.textContent = greaseLifeHours.toFixed(0);
+        continuousVolumeResult.textContent = continuousVolumeCm3ph.toPrecision(3);
+        bearingMassResult.textContent = estimatedMass_kg.toFixed(2);
+
+        // Atualiza as recomendações
+        recViscosityResult.textContent = recViscosity;
+        recThickenerResult.textContent = recThickener;
+        recNLGIResult.textContent = recNLGI;
+        recAdditivesResult.textContent = recAdditives;
+        notesResult.querySelector('p:last-child').textContent = recNotes;
+
+        // 15. Exibe a seção de resultados
+        resultsSection.style.display = 'block';
+    }
+
+
+    // ----------------------------------------------------------------------------------------------------
+    // --- LÓGICA DE INTERFACE (já discutida) ---
+    // ----------------------------------------------------------------------------------------------------
+
+    // Atribui a função de cálculo ao botão de simular
+    calculateBtn.addEventListener('click', calculateLubrication);
+
+    // Função para limpar campos e resultados
+    function resetFields() {
+        document.getElementById('lubricationForm').reset();
+        resultsSection.style.display = 'none'; // Esconde a seção de resultados
+        
+        // Limpa os valores dos resultados para evitar dados residuais
+        initialFillResult.textContent = '';
+        initialFillCm3Result.textContent = '';
+        relubAmountResult.textContent = '';
+        relubIntervalResult.textContent = '';
+        lubricationIntervalDaysResult.textContent = '';
+        relubIntervalWeeksResult.textContent = '';
+        greaseLifeResult.textContent = '';
+        continuousVolumeResult.textContent = '';
+        bearingMassResult.textContent = '';
+
+        recViscosityResult.textContent = '';
+        recThickenerResult.textContent = '';
+        recNLGIResult.textContent = '';
+        recAdditivesResult.textContent = '';
+        notesResult.querySelector('p:last-child').textContent = 'As condições de operação parecem normais. Siga as recomendações de manutenção.';
+
+        // Remove a classe 'active' de todos os tooltips
+        tooltips.forEach(tooltip => tooltip.classList.remove('active'));
+    }
+
+    // Atribui a função de reset ao botão de limpar
+    resetBtn.addEventListener('click', resetFields);
+
+    // --- Lógica para o botão de scroll-to-top ---
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 200) {
+            scrollTopBtn.style.display = 'block';
+        } else {
+            scrollTopBtn.style.display = 'none';
         }
     });
 
-    // 2. Redefine todos os campos de select para a primeira opção
-    document.querySelectorAll('#lubricationForm select').forEach(select => {
-        select.selectedIndex = 0;
+    scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
 
-    // 3. Oculta a seção de resultados
-    document.getElementById('results').style.display = 'none';
-
-    // Opcional: Limpar os textos dos resultados para que não apareçam números antigos caso a seção seja reexibida de outra forma
-    const resultSpans = document.querySelectorAll('#results .result-value');
-    resultSpans.forEach(span => {
-        span.textContent = '';
+    // --- Lógica para os tooltips em mobile ---
+    tooltips.forEach(tooltip => {
+        tooltip.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            tooltips.forEach(otherTooltip => {
+                if (otherTooltip !== tooltip) {
+                    otherTooltip.classList.remove('active');
+                }
+            });
+            
+            tooltip.classList.toggle('active');
+        });
     });
-    // Opcional: Resetar as recomendações
-    document.getElementById('recViscosity').textContent = '';
-    document.getElementById('recThickener').textContent = '';
-    document.getElementById('recNLGI').textContent = '';
-    document.getElementById('recAdditives').textContent = '';
-    document.getElementById('notesResult').innerHTML = `<p><strong>Notas Adicionais:</strong></p><p>As condições de operação parecem normais. Siga as recomendações de manutenção.</p>`;
+
+    document.addEventListener('click', (event) => {
+        tooltips.forEach(tooltip => {
+            if (!tooltip.contains(event.target)) {
+                tooltip.classList.remove('active');
+            }
+        });
+    });
 });
