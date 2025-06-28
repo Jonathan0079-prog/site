@@ -17,23 +17,34 @@
     padding: 0;
 }
 
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.6;
     background-color: var(--light-gray);
     color: var(--dark-gray);
     display: flex;
-    justify-content: center;
-    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
 }
 
 .calculator-container {
-    max-width: 900px;
     width: 100%;
+    height: 100%;
+    max-width: none;
     background: var(--white);
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    overflow: hidden;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -50,7 +61,9 @@ header h1 {
 }
 
 main {
+    flex: 1;
     padding: 25px;
+    overflow-y: auto;
 }
 
 .input-section {
@@ -260,16 +273,6 @@ footer {
 
 /* 📱 Responsividade para telas pequenas */
 @media (max-width: 600px) {
-    body {
-        padding: 10px;
-        flex-direction: column;
-    }
-
-    .calculator-container {
-        border-radius: 0;
-        box-shadow: none;
-    }
-
     header h1 {
         font-size: 1.5rem;
     }
