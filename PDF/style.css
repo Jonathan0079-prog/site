@@ -6,7 +6,8 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* CORRIGIDO: Usei a fonte 'Poppins' importada no HTML */
+    font-family: 'Poppins', sans-serif;
     background-color: #f0f2f5;
     color: #333;
     line-height: 1.6;
@@ -16,226 +17,139 @@ body {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 20px; /* CORRIGIDO: Adicionado padding horizontal */
 }
 
-/* --- Cabeçalho (Simplificado) --- */
+/* --- Cabeçalho --- */
+/* --- Cabeçalho (Estilo Azul com Faixa Dourada) --- */
 header {
-    background-color: #1a2b40;
-    color: #ffffff;
-    padding: 1rem 0;
-    border-bottom: 4px solid #f39c12;
+    background-color: #1a2b40;  /* FUNDO: Azul escuro */
+    color: #ffffff;             /* TEXTO: Branco (será herdado por h1 e p) */
+    padding: 2rem 1rem;         /* ESPAÇAMENTO: Adicionado preenchimento interno */
+    border-bottom: 4px solid #f39c12; /* FAIXA: Amarelo dourado na parte inferior */
     text-align: center;
+    margin-bottom: 50px;
 }
 
 header h1 {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-}
-
-/* --- Botão de Menu Flutuante --- */
-.menu-toggler {
-    position: fixed; /* Fixo na tela */
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background: #f39c12; /* Cor de destaque */
-    color: #1a2b40;
-    border: none;
-    border-radius: 50%; /* Deixa o botão redondo */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    cursor: pointer;
-    z-index: 1001; /* Garante que fique acima de tudo */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.menu-toggler:hover {
-    transform: scale(1.1);
-    background-color: #e67e22;
-}
-
-.menu-toggler .material-icons {
-    font-size: 36px;
-    transition: transform 0.3s ease;
-}
-
-/* --- Painel de Navegação Lateral Animado --- */
-nav#main-nav {
-    position: fixed;
-    top: 0;
-    right: 0; /* Posicionado à direita */
-    width: 320px; /* Um pouco mais largo */
-    height: 100%;
-    background-color: #1f3552;
-    box-shadow: -4px 0 10px rgba(0,0,0,0.4);
-    z-index: 1000;
-    padding-top: 60px;
-    /* Esconde o menu fora da tela à direita */
-    transform: translateX(100%);
-    transition: transform 0.4s ease-in-out;
-}
-
-/* Classe que será adicionada via JS para mostrar o menu */
-nav#main-nav.visible {
-    transform: translateX(0);
-}
-
-nav#main-nav ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 0 20px;
-}
-
-nav#main-nav a {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.2rem;
-    padding: 15px;
-    border-radius: 5px;
-    display: block;
-    width: 100%;
-    transition: background-color 0.3s ease, padding-left 0.3s ease;
-}
-
-nav#main-nav a:hover {
-    background-color: #f39c12;
-    color: #1a2b40;
-    padding-left: 30px;
-}
-
-
-/* --- Seções Banner, Cursos, Rodapé (com cards reduzidos) --- */
-#banner {
-    background: linear-gradient(rgba(26, 43, 64, 0.8), rgba(26, 43, 64, 0.8)), url('https://via.placeholder.com/1920x500.png?text=Fundo+Industrial') no-repeat center center/cover;
-    color: #ffffff;
-    text-align: center;
-    padding: 4rem 1rem;
-}
-
-#banner h2 {
     font-size: 2.8rem;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: 2px; /* EFEITO: Espaçamento entre as letras, como no original */
 }
 
-#banner p {
-    font-size: 1.4rem;
+header p {
+    font-size: 1.1rem;
+    color: #aeb9c7; /* TEXTO: Um cinza claro para diferenciar do título, mas legível no azul */
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-#cursos {
-    padding: 3rem 0;
+/* --- Seção da Lista de PDFs --- */
+/* CORRIGIDO: ID ajustado de #cursos para #lista-pdfs */
+main#lista-pdfs {
+    display: grid;
+    /* Define o número de colunas e o tamanho mínimo */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
 }
 
-#cursos h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 2.5rem;
-    color: #1a2b40;
-}
-
-.cursos-container {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem; /* ALTERADO: Espaçamento entre os cards reduzido */
-    flex-wrap: wrap;
-}
-
-.curso-card {
+/* CORRIGIDO: Classe ajustada de .curso-card para .card-pdf */
+.card-pdf {
     background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    width: 300px; /* ALTERADO: Largura do card reduzida de 350px para 300px */
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.07);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+    /* Animação que será ativada pelo JavaScript */
+    transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.5s ease;
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
 }
 
-.curso-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+/* CORRIGIDO: Classe ajustada de .curso-card:hover para .card-pdf:hover */
+.card-pdf:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.12);
 }
 
-.curso-card.visible {
+/* CORRIGIDO: Classe ajustada de .curso-card.visible para .card-pdf.visible */
+.card-pdf.visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-.curso-card img {
+/* CORRIGIDO: Seletor para a capa do card, conforme HTML */
+.card-capa {
     width: 100%;
-    height: 180px; /* ALTERADO: Altura da imagem reduzida de 200px para 180px */
-    object-fit: cover;
+    aspect-ratio: 1 / 1.414; /* Mantém a proporção de uma folha A4 */
+    background-color: #e9ecef;
 }
 
-.curso-info {
-    padding: 1.25rem; /* ALTERADO: Preenchimento interno reduzido de 1.5rem */
-    flex-grow: 1;
+/* CORRIGIDO: Seletor para a imagem dentro da capa */
+.card-capa img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+}
+
+/* CORRIGIDO: Seletor para a área de informações */
+.card-info {
+    padding: 25px;
     display: flex;
     flex-direction: column;
+    flex-grow: 1; /* Faz esta área crescer para ocupar o espaço */
 }
 
-.curso-info h3 {
-    font-size: 1.3rem; /* ALTERADO: Tamanho da fonte do título reduzido de 1.5rem */
-    margin-bottom: 0.5rem;
+/* CORRIGIDO: Seletor para o título do card */
+.card-titulo {
+    font-size: 1.4rem;
+    margin: 0 0 10px 0;
+    font-weight: 600;
     color: #1a2b40;
 }
 
-.curso-info p {
-    flex-grow: 1;
-    margin-bottom: 1.25rem; /* ALTERADO: Margem inferior do parágrafo reduzida */
-    font-size: 0.95rem; /* Opcional: Leve ajuste no tamanho da fonte da descrição */
+/* CORRIGIDO: Seletor para a descrição */
+.card-descricao {
+    font-size: 1rem;
+    color: #6c757d;
+    flex-grow: 1; /* Empurra o botão para baixo */
+    margin-bottom: 20px;
 }
 
-.btn {
-    display: inline-block;
-    background-color: #f39c12;
-    color: #1a2b40;
-    padding: 10px 20px; /* ALTERADO: Preenchimento do botão ajustado */
-    text-align: center;
+/* CORRIGIDO: Classe ajustada de .btn para .botao-download */
+.botao-download {
+    display: block;
+    background-color: #007bff; /* Cor primária azul para o botão */
+    color: #ffffff;
+    padding: 12px 20px;
     text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn:hover {
-    background-color: #e67e22;
-    transform: scale(1.05);
-}
-
-footer {
-    background-color: #1a2b40;
-    color: #aeb9c7;
+    border-radius: 8px;
+    font-weight: 600;
     text-align: center;
-    padding: 1.5rem 0;
-    margin-top: 2rem;
+    transition: background-color 0.3s ease;
+    margin-top: auto; /* Alinha o botão na parte inferior */
+}
+
+/* CORRIGIDO: Seletor de hover ajustado */
+.botao-download:hover, .botao-download:focus-visible {
+    background-color: #0056b3; /* Cor mais escura no hover/focus */
+}
+
+/* --- Rodapé --- */
+footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+    font-size: 0.9rem;
+    color: #6c757d;
 }
 
 /* --- Media Queries (Responsividade) --- */
-@media (max-width: 992px) {
-    header h1 { font-size: 2rem; }
-    #banner h2 { font-size: 2.2rem; }
-    #banner p { font-size: 1.2rem; }
-    #cursos h2 { font-size: 2rem; }
-}
-
 @media (max-width: 768px) {
-    header h1 { font-size: 1.5rem; padding: 0 10px; }
-    .container { width: 95%; }
-    /* No mobile, o card já ocupa 100% da largura, então a alteração principal será vista em telas maiores */
-    .curso-card {
-        width: 100%;
-        max-width: 380px; /* Levemente ajustado para telas de tablet/celular */
-    }
-    nav#main-nav {
-        width: 280px; /* Menu um pouco mais estreito em celulares */
+    header h1 {
+        font-size: 2.2rem;
     }
 }
