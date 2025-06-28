@@ -34,12 +34,25 @@ document.getElementById('calculate').addEventListener('click', function() {
 
     // --- 2. CÁLCULOS PRINCIPAIS (LÓGICA COMBINADA) ---
 
-    // A. Quantidade de Relubrificação
+    // A. Quantidade de Relubrificação (gramas)
+    // A fórmula original está correta para um "charge factor"
     const greaseQuantity = 0.005 * D * B;
     const relubAmount = greaseQuantity;
 
-    // B. Carga de Graxa Inicial (3x a quantidade de relubrificação)
+    // B. Carga de Graxa Inicial (gramas)
+    // Geralmente é a quantidade total para preencher o rolamento e o espaço do mancal
+    // Você a definiu como 3x a quantidade de relubrificação, o que é um método comum.
     const initialFill = relubAmount * 3;
+
+    // **NOVO CÁLCULO: Volume Inicial de Graxa em cm³**
+    // Usamos a mesma lógica de volume do rolamento, mas para o preenchimento inicial.
+    // A constante 0.005 já converte as dimensões de mm para cm³ e ajusta para o volume interno.
+    // Se initialFill (gramas) representa o total, e a densidade é em kg/dm³ (que é 1g/cm³),
+    // então initialFillCm3 = initialFill / greaseDensity;
+    // Se initialFill é 3x relubAmount e relubAmount já é 0.005 * D * B,
+    // então initialFillCm3 será 3x o volume calculado por 0.005 * D * B (se 0.005 * D * B já fosse em cm³).
+    // A forma mais direta para o volume inicial em cm³ é:
+    const initialGreaseVolumeCm3 = (initialFill / greaseDensity); // Como greaseDensity é kg/dm³, e 1 kg/dm³ = 1 g/cm³, isso está correto.
 
     // C. CÁLCULO DO INTERVALO DE RELUBRIFICAÇÃO
     
@@ -95,12 +108,12 @@ document.getElementById('calculate').addEventListener('click', function() {
     finalIntervalHours = Math.round(finalIntervalHours / 10) * 10;
     if(finalIntervalHours < 24) finalIntervalHours = 24;
 
-    const finalIntervalDays = (finalIntervalHours / 24); // Removido .toFixed(1) para uso em cálculo
+    const finalIntervalDays = (finalIntervalHours / 24);
     
     // D. Vida da Graxa (L10) para rolamentos vedados
     const greaseLife = finalIntervalHours * 2.7;
 
-    // --- NOVOS CÁLCULOS ---
+    // --- NOVOS CÁLCULOS QUE JÁ TINHAMOS ---
     
     // E. Massa do Rolamento (Fórmula empírica)
     const bearingMass = (D * D - d * d) * B * 6.2e-6;
@@ -154,9 +167,12 @@ document.getElementById('calculate').addEventListener('click', function() {
 
     // Mapeando os resultados para os IDs corretos do HTML
     document.getElementById('initialFill').textContent = initialFill.toFixed(1);
+    // **NOVA LINHA: Exibir Volume Inicial de Graxa em cm³**
+    document.getElementById('initialFillCm3').textContent = initialGreaseVolumeCm3.toFixed(2);
+    
     document.getElementById('relubAmount').textContent = relubAmount.toFixed(1);
     document.getElementById('relubInterval').textContent = Math.round(finalIntervalHours);
-    document.getElementById('lubricationIntervalResult').textContent = finalIntervalDays.toFixed(1) + " dias"; // Corrigido para exibir os dias
+    document.getElementById('lubricationIntervalResult').textContent = finalIntervalDays.toFixed(1) + " dias";
     document.getElementById('relubIntervalWeeks').textContent = relubIntervalWeeks.toFixed(1);
     document.getElementById('greaseLife').textContent = Math.round(greaseLife);
     document.getElementById('continuousVolume').textContent = continuousVolume_cm3_hr.toFixed(3);
