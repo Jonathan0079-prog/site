@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- SEÇÃO 3: QUIZ INTERATIVO E GERAÇÃO DE CERTIFICADO (MÓDULO 11) ---
     // =================================================================================
 
-    // Verifica se os elementos do quiz existem antes de prosseguir
     const quizContainerEl = document.getElementById('quiz-container');
     if (quizContainerEl) {
         const { jsPDF } = window.jspdf;
@@ -178,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function finalizarQuiz() {
             quizContainerEl.style.display = 'none';
-            // Critério de aprovação: 100%
             if (pontuacao === perguntas.length) {
                 certificadoFormEl.style.display = 'block';
             } else {
@@ -193,6 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return cpf.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
         }
 
+        /**
+         * FUNÇÃO MODIFICADA PARA GERAR O CERTIFICADO IGUAL AO PDF
+         */
         function gerarCertificadoPDF() {
             const nome = document.getElementById('nome-aluno').value.trim();
             const cpf = document.getElementById('cpf-aluno').value.trim();
@@ -202,68 +203,80 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-            // ... (A lógica de geração do PDF continua igual, está correta) ...
-             doc.setFillColor(230, 240, 255);
-             doc.rect(0, 0, 297, 210, 'F');
-             doc.setDrawColor(0, 51, 102);
-             doc.setLineWidth(2);
-             doc.rect(5, 5, 287, 200);
+            
+            // --- CABEÇALHO ---
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+            doc.text("Manutenção Industrial ARQUIVOS", 148.5, 20, { align: "center" });
 
-             doc.setFont("helvetica", "bold");
-             doc.setFontSize(22);
-             doc.setTextColor(0, 51, 102);
-             doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 35, { align: "center" });
+            // --- TÍTULO PRINCIPAL ---
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 35, { align: "center" });
 
-             doc.setFont("helvetica", "normal");
-             doc.setFontSize(16);
-             doc.setTextColor(50, 50, 50);
-             doc.text(`Certificamos que`, 148.5, 55, { align: "center" });
+            // --- TEXTO DE CERTIFICAÇÃO ---
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(14);
+            doc.text("Certificamos que", 148.5, 55, { align: "center" });
 
-             doc.setFont("helvetica", "bold");
-             doc.setFontSize(26);
-             doc.setTextColor(0, 102, 204);
-             doc.text(nome.toUpperCase(), 148.5, 68, { align: "center" });
+            // --- NOME DO ALUNO ---
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(24);
+            doc.text(nome.toUpperCase(), 148.5, 68, { align: "center" });
 
-             doc.setFont("helvetica", "normal");
-             doc.setFontSize(14);
-             doc.setTextColor(50, 50, 50);
-             doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 78, { align: "center" });
+            // --- DADOS DO ALUNO E NOME DO CURSO ---
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+            const textoCurso = `portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`;
+            doc.text(textoCurso, 148.5, 80, { align: "center" });
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text("Curso Completo de Lubrificação Industrial", 148.5, 88, { align: "center" });
+            
+            // --- CARGA HORÁRIA ---
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+            doc.text("Carga Horária: 2 horas", 148.5, 96, { align: "center" });
+
+            // --- CONTEÚDOS ESTUDADOS (ALINHADOS À ESQUERDA) ---
+            const conteudos = [
+                '• Teoria do Desgaste: Adesivo, Abrasivo e Fadiga',
+                '• Princípios da Tribologia e Atrito',
+                '• Tipos de Lubrificantes: Óleos Minerais e Sintéticos',
+                '• Aditivos: Funções e Tipos Principais',
+                '• Classificação de Viscosidade: SAE e ISO VG',
+                '• Métodos de Aplicação de Óleo: Banho, Salpico e Circulação',
+                '• Relação entre Temperatura e Vida Útil do Lubrificante',
+                '• Análise de Contaminação e Degradação do Óleo'
+            ];
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+            doc.text("Conteúdos Estudados:", 50, 115); // Posição X fixa para alinhar à esquerda
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            let yPos = 125;
+            conteudos.forEach(item => {
+                doc.text(item, 50, yPos); // Posição X fixa para alinhar à esquerda
+                yPos += 7;
+            });
              
-             doc.setFont("helvetica", "bold");
-             doc.setFontSize(18);
-             doc.setTextColor(0, 51, 102);
-             doc.text("MANUTENÇÃO INDUSTRIAL ARQUIVOS", 148.5, 90, { align: "center" });
-             
-             doc.setFont("helvetica", "normal");
-             doc.setFontSize(14);
-             doc.text("Carga Horária: 2 horas", 148.5, 100, { align: "center" });
+            // --- ASSINATURA E DATA ---
+            const agora = new Date();
+            const dataFormatada = agora.toLocaleString('pt-BR', {
+                day: '2-digit', month: 'long', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            }).replace(' ', ' às '); // Formata para "data às hora"
 
-             const conteudos = [
-                'Fundamentos da Tribologia (Atrito e Desgaste)', 'Tipos e Funções da Lubrificação',
-                'Classificação de Lubrificantes (Óleos e Graxas)', 'Propriedades e Ensaios Físico-Químicos',
-                'Refino de Petróleo e Origem dos Óleos Base', 'Cálculo e Métodos de Aplicação',
-                'Manuseio, Estocagem e Segurança', 'Classificação de Desempenho (SAE, API, AGMA)'
-             ];
-             doc.setFont("helvetica", "bold");
-             doc.setFontSize(11);
-             doc.text("Conteúdos Estudados:", 148.5, 115, { align: "center" });
-             doc.setFont("helvetica", "normal");
-             doc.setFontSize(10);
-             let yPos = 125;
-             conteudos.forEach(item => { doc.text(`• ${item}`, 148.5, yPos, { align: "center" }); yPos += 7; });
+            doc.line(110, 175, 185, 175); // Linha da assinatura
+            doc.setFontSize(12);
+            doc.text("Jonathan da Silva Oliveira - Instrutor", 147.5, 182, { align: "center" });
+            
+            doc.setFont("helvetica", "normal");
+            doc.text(`Emitido em: ${dataFormatada}`, 147.5, 192, { align: "center" });
              
-             const agora = new Date();
-             const dataFormatada = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
-
-             doc.setFontSize(12);
-             doc.line(100, 185, 195, 185);
-             doc.setFont("helvetica", "bold");
-             doc.text("Jonathan da Silva Oliveira - Instrutor", 147.5, 190, { align: "center" });
-             
-             doc.setFont("helvetica", "normal");
-             doc.text(`Emitido em: ${dataFormatada}`, 147.5, 197, { align: "center" });
-             
-             doc.save(`Certificado - Lubrificação Industrial - ${nome}.pdf`);
+            doc.save(`Certificado - ${nome}.pdf`);
         }
 
         // Inicia o quiz quando o script carrega
