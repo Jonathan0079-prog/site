@@ -139,7 +139,7 @@ header h1 {
     font-size: 1.1rem;
 }
 
-/* CERTIFICADO E REPROVAÇÃO */
+/* CERTIFICADO E REPROVAÇÃO - Ajustado para corresponder ao JS */
 .form-certificado, .reprovado-container {
     margin-top: 2rem;
     padding: 1.5rem;
@@ -147,22 +147,22 @@ header h1 {
     text-align: center;
 }
 
-.form-certificado {
+#certificado-form-container {
     background-color: #eaf5e9;
     border: 2px solid var(--cor-sucesso);
 }
 
-.reprovado-container {
+#reprovado-container {
     background-color: #fdeaea;
     border: 2px solid var(--cor-erro);
 }
 
-.form-certificado label {
+#certificado-form-container label {
     font-weight: bold;
     color: var(--cor-texto);
 }
 
-.form-certificado input {
+#certificado-form-container input {
     display: block;
     width: 100%;
     max-width: 400px;
@@ -173,7 +173,7 @@ header h1 {
     font-size: 1rem;
 }
 
-.botoes-certificado button, #tentar-novamente-btn {
+#gerar-certificado-btn, #tentar-novamente-btn {
     padding: 0.8rem 1.8rem;
     font-size: 1rem;
     border-radius: 5px;
@@ -192,7 +192,7 @@ header h1 {
     background-color: var(--cor-secundaria);
 }
 
-.botoes-certificado button:hover, #tentar-novamente-btn:hover {
+#gerar-certificado-btn:hover, #tentar-novamente-btn:hover {
     transform: scale(1.05);
 }
 
@@ -235,8 +235,8 @@ header h1 {
     transition: background-color 0.2s ease;
 }
 
-.floating-nav button:hover {
-    background-color: #007bff;
+.floating-nav button:hover:not(:disabled) {
+    background-color: #007bff; /* Um azul um pouco mais claro no hover */
 }
 
 .floating-nav button:disabled {
