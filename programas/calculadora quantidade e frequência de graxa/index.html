@@ -77,6 +77,24 @@
                     </div>
                     <div class="form-group">
                         <div class="label-group">
+                            <label for="workingHours">Tempo de Trabalho (h/semana)</label>
+                            <span class="tooltip">?
+                                <span class="tooltiptext">Horas que o equipamento opera por semana. Usado para calcular o intervalo em semanas.</span>
+                            </span>
+                        </div>
+                        <input type="number" id="workingHours" placeholder="ex: 40" value="40">
+                    </div>
+                     <div class="form-group">
+                        <div class="label-group">
+                            <label for="greaseDensity">Densidade da Graxa (kg/dm³)</label>
+                            <span class="tooltip">?
+                                <span class="tooltiptext">Densidade da graxa usada. Padrão é ~0.95. Usado para calcular o volume contínuo. 1 kg/dm³ = 1 g/cm³.</span>
+                            </span>
+                        </div>
+                        <input type="number" id="greaseDensity" placeholder="ex: 0.95" value="0.95">
+                    </div>
+                    <div class="form-group">
+                        <div class="label-group">
                             <label for="load">Fator de Carga (C/P)</label>
                             <span class="tooltip">?
                                 <span class="tooltiptext">Relação entre a Capacidade de Carga Dinâmica (C) e a Carga Equivalente (P). Cargas pesadas (C/P baixo) exigem mais atenção.</span>
@@ -163,14 +181,29 @@
                         <small>Quantidade a ser aplicada a cada intervalo.</small>
                     </div>
                     <div class="result-card">
-                        <h3>Intervalo de Relubrificação</h3>
+                        <h3>Intervalo (Horas)</h3>
                         <p><span class="result-value" id="relubInterval"></span><span class="result-unit">horas</span></p>
                          <small>Intervalo ajustado para as condições operacionais.</small>
+                    </div>
+                    <div class="result-card">
+                        <h3>Intervalo (Semanas)</h3>
+                        <p><span class="result-value" id="relubIntervalWeeks"></span><span class="result-unit">semanas</span></p>
+                         <small>Com base nas horas de trabalho semanais.</small>
                     </div>
                     <div class="result-card">
                         <h3>Vida Estimada da Graxa (L10)</h3>
                         <p><span class="result-value" id="greaseLife"></span><span class="result-unit">horas</span></p>
                         <small>Para rolamentos vedados (sem relubrificação).</small>
+                    </div>
+                     <div class="result-card">
+                        <h3>Volume Contínuo</h3>
+                        <p><span class="result-value" id="continuousVolume"></span><span class="result-unit">cm³/h</span></p>
+                        <small>Taxa para sistemas de lubrificação automática.</small>
+                    </div>
+                     <div class="result-card">
+                        <h3>Massa do Rolamento (Aprox.)</h3>
+                        <p><span class="result-value" id="bearingMass"></span><span class="result-unit">kg</span></p>
+                        <small>Massa estimada com base nas dimensões.</small>
                     </div>
                 </div>
 
