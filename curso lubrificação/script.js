@@ -83,12 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             pergunta: "Qual método de aplicação de óleo é o mais completo, permitindo filtragem e controle de temperatura?",
-            opcoes: ["Por Salpico", "Por Banho de Óleo", "Por Circulação", "Manualmente"],
+            opcoes: ["Por Salpico", "Por Circulação", "Por Banho de Óleo", "Manualmente"],
             resposta: "Por Circulação"
         },
         {
             pergunta: "Qual classificação de óleo de motor é baseada exclusivamente na viscosidade?",
-            opcoes: ["API", "SAE", "AGMA", "ISO VG"],
+            opcoes: ["API", "AGMA", "ISO VG", "SAE"],
             resposta: "SAE"
         }
     ];
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.setTextColor(0, 51, 102);
-        doc.text("ARQUIVOS DE TREINAMENTO INDUSTRIAL", 148.5, 25, { align: "center" });
+        doc.text(MANUTENÇÃO INDUSTRIAL ARQUIVOS", 148.5, 25, { align: "center" });
 
         // --- TÍTULO PRINCIPAL ---
         doc.setFontSize(30);
@@ -238,11 +238,11 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.setTextColor(0, 51, 102);
-        doc.text("FUNDAMENTOS DA LUBRIFICAÇÃO E TRIBOLOGIA", 148.5, 99, { align: "center" });
+        doc.text("Curso Completo de Lubrificação Industrial", 148.5, 99, { align: "center" });
         
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
-        doc.text("Carga Horária: 1 hora", 148.5, 109, { align: "center" });
+        doc.text("Carga Horária: 2 horas", 148.5, 109, { align: "center" });
 
         // --- CONTEÚDOS ESTUDADOS (ADAPTADO PARA O CURSO DE LUBRIFICAÇÃO) ---
         doc.setFont("helvetica", "bold");
