@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showModule(index) {
         if (index < 0 || index >= modules.length) {
-            return; // Impede a navegação para um módulo inválido
+            return; 
         }
         currentModuleIndex = index;
 
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modules[currentModuleIndex].classList.add('active');
 
         updateNavigationUI();
-        window.scrollTo(0, 0); // Rola para o topo ao trocar de módulo
+        window.scrollTo(0, 0); 
     }
 
     function updateNavigationUI() {
@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
             moduleIndicator.textContent = `${currentModuleIndex + 1} / ${modules.length}`;
         }
         if (floatingNav) {
-            // Esconde a navegação no último módulo (o do quiz) para não atrapalhar
             floatingNav.style.display = (currentModuleIndex === modules.length - 1) ? 'none' : 'flex';
         }
         if (prevModuleBtn) {
@@ -137,15 +136,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function mostrarPergunta() {
-            if (perguntaAtual === 0) perguntas.sort(() => Math.random() - 0.5);
+            // Embaralha as PERGUNTAS apenas na primeira vez que o quiz é iniciado.
+            if (perguntaAtual === 0) {
+                perguntas.sort(() => Math.random() - 0.5);
+            }
             
             const p = perguntas[perguntaAtual];
+            
+            // --- ALTERAÇÃO PRINCIPAL: EMBARALHAR AS OPÇÕES DE RESPOSTA ---
+            // Criamos uma cópia do array de opções e a embaralhamos usando o mesmo método.
+            // Isso garante que a ordem das respostas seja diferente a cada vez que a pergunta é exibida.
+            const opcoesEmbaralhadas = [...p.opcoes].sort(() => Math.random() - 0.5);
+            
             perguntaTituloEl.textContent = `Pergunta ${perguntaAtual + 1} de ${perguntas.length}: ${p.pergunta}`;
             opcoesQuizEl.innerHTML = '';
             
-            p.opcoes.forEach(opcao => {
+            // Agora, usamos o novo array de opções embaralhadas para criar os botões.
+            opcoesEmbaralhadas.forEach(opcao => {
                 const btn = document.createElement('button');
                 btn.textContent = opcao;
+                // A verificação continua sendo feita contra a resposta correta original.
                 btn.onclick = () => verificarResposta(opcao, p.resposta);
                 opcoesQuizEl.appendChild(btn);
             });
@@ -160,8 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             botoes.forEach(btn => {
                 btn.disabled = true;
-                if (btn.textContent === respostaCorreta) btn.classList.add('correta');
-                else if (btn.textContent === opcaoSelecionada) btn.classList.add('incorreta');
+                if (btn.textContent === respostaCorreta) {
+                    btn.classList.add('correta');
+                } else if (btn.textContent === opcaoSelecionada) {
+                    btn.classList.add('incorreta');
+                }
             });
             
             setTimeout(() => {
@@ -188,176 +201,78 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gerarCertificadoBtn) gerarCertificadoBtn.addEventListener('click', gerarCertificadoPDF);
         
         function formatarCPF(cpf) {
-            return cpf.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+            cpf = cpf.replace(/\D/g, ''); 
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            return cpf;
         }
 
-        /**
-         * FUNÇÃO MODIFICADA PARA GERAR O CERTIFICADO IGUAL AO PDF
-         */
         function gerarCertificadoPDF() {
-            const nome = document.getElementById('nome-aluno').value.trim();
-            const cpf = document.getElementById('cpf-aluno').value.trim();
+            const nomeInput = document.getElementById('nome-aluno');
+            const cpfInput = document.getElementById('cpf-aluno');
+            const nome = nomeInput.value.trim();
+            const cpf = cpfInput.value.trim();
+
             if (nome === "" || cpf.replace(/\D/g, '').length !== 11) {
                 alert("Por favor, preencha seu nome completo e um CPF válido (11 dígitos).");
                 return;
             }
 
-function gerarCertificado(nome, cpf) {
-    // --- INICIALIZAÇÃO DO DOCUMENTO PDF ---
-    // Define a orientação como paisagem (landscape), unidade em milímetros (mm) e formato A4.
-    const doc = new jsPDF({
-        orientation: 'landscape',
-        unit: 'mm',
-        format: 'a4'
-    });
+            const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+            const LOGO_BASE64 = '';
 
-    // --- LOGO (OPCIONAL) ---
-    // Cole a sua imagem de logo convertida para Base64 aqui. Se não tiver, deixe a string vazia.
-    // Você pode usar conversores online para transformar sua imagem PNG/JPG em Base64.
-    const LOGO_BASE64 = ''; // Ex: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA...'
+            doc.setFillColor(230, 240, 255);
+            doc.rect(0, 0, 297, 210, 'F');
+            doc.setDrawColor(0, 51, 102);
+            doc.setLineWidth(2);
+            doc.rect(5, 5, 287, 200);
 
-    // --- DESIGN DE FUNDO E MOLDURA ---
-    // Preenche o fundo com uma cor azul clara.
-    doc.setFillColor(230, 240, 255);
-    doc.rect(0, 0, 297, 210, 'F'); // Dimensões do A4 em paisagem (mm)
+            if (LOGO_BASE64) {
+                const imgProps = doc.getImageProperties(LOGO_BASE64);
+                const imgWidth = 50;
+                const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+                doc.addImage(LOGO_BASE64, 'PNG', 20, 15, imgWidth, imgHeight);
+            }
 
-    // Desenha a moldura azul escura.
-    doc.setDrawColor(0, 51, 102);
-    doc.setLineWidth(2);
-    doc.rect(5, 5, 287, 200); // Retângulo interno com margem de 5mm.
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+            doc.setTextColor(0, 51, 102);
+            doc.text("Manutenção Industrial ARQUIVOS", 148.5, 25, { align: "center" });
 
-    // --- ADICIONA A LOGO (SE EXISTIR) ---
-    if (LOGO_BASE64) {
-        const imgProps = doc.getImageProperties(LOGO_BASE64);
-        const imgWidth = 50; // Largura desejada para a logo
-        const imgHeight = (imgProps.height * imgWidth) / imgProps.width; // Calcula a altura proporcional
-        doc.addImage(LOGO_BASE64, 'PNG', 20, 15, imgWidth, imgHeight);
-    }
-
-    // --- NOME DA EMPRESA/ESCOLA ---
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
-    doc.setTextColor(0, 51, 102); // Cor azul escura
-    doc.text("Manutenção Industrial ARQUIVOS", 148.5, 25, {
-        align: "center"
-    });
-
-    // --- TÍTULO PRINCIPAL ---
-    doc.setFontSize(30);
-    doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 45, {
-        align: "center"
-    });
-
-    // --- TEXTO DE CERTIFICAÇÃO ---
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(16);
-    doc.setTextColor(50, 50, 50); // Cor cinza escuro
-    doc.text(`Certificamos que`, 148.5, 65, {
-        align: "center"
-    });
-
-    // --- NOME DO ALUNO ---
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(24);
-    doc.setTextColor(0, 102, 204); // Cor azul intermediário
-    doc.text(nome.toUpperCase(), 148.5, 77, {
-        align: "center"
-    });
-
-    // --- DADOS DO ALUNO E INTRODUÇÃO AO CURSO ---
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(14);
-    doc.setTextColor(50, 50, 50); // Cor cinza escuro
-    const textoCurso = `portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`;
-    doc.text(textoCurso, 148.5, 87, {
-        align: "center"
-    });
-
-    // --- NOME DO CURSO ---
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
-    doc.setTextColor(0, 51, 102); // Cor azul escura
-    doc.text("Curso Completo de Lubrificação Industrial", 148.5, 99, {
-        align: "center"
-    });
-
-    // --- CARGA HORÁRIA ---
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(14);
-    doc.text("Carga Horária: 2 horas", 148.5, 109, {
-        align: "center"
-    });
-
-    // --- CONTEÚDO PROGRAMÁTICO ---
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    doc.text("Conteúdo Programático:", 20, 125);
-
-    doc.setFont("helvetica", "normal");
-    const conteudos = [
-        '• Teoria do Desgaste: Adesivo, Abrasivo e Fadiga',
-        '• Princípios da Tribologia e Atrito',
-        '• Tipos de Lubrificantes: Óleos Minerais e Sintéticos',
-        '• Aditivos: Funções e Tipos Principais',
-        '• Classificação de Viscosidade: SAE e ISO VG',
-        '• Métodos de Aplicação de Óleo: Banho, Salpico e Circulação',
-        '• Relação entre Temperatura e Vida Útil do Lubrificante',
-        '• Análise de Contaminação e Degradação do Óleo'
-    ];
-
-    let yPos = 132;
-    conteudos.forEach(item => {
-        doc.text(item, 20, yPos);
-        yPos += 7; // Incrementa a posição Y para a próxima linha
-    });
-
-    // --- DATA, HORA E ASSINATURA ---
-    const agora = new Date();
-    const dataHoraFormatada = agora.toLocaleString('pt-BR', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-
-    doc.setFontSize(12);
-    doc.setDrawColor(50, 50, 50);
-    doc.line(90, 185, 205, 185); // Linha da assinatura (mais longa)
-
-    doc.setFont("helvetica", "bold");
-    doc.text("Jonathan da Silva Oliveira - Instrutor", 147.5, 190, {
-        align: "center"
-    });
-
-    doc.setFont("helvetica", "normal");
-    doc.text(`Emitido em: ${dataHoraFormatada}`, 147.5, 197, {
-        align: "center"
-    });
-
-    // --- SALVAR O ARQUIVO PDF ---
-    doc.save(`Certificado - Lubrificação Industrial - ${nome}.pdf`);
-}
-
-// Supondo que você tenha essas funções em algum lugar do seu código
-function formatarCPF(cpf) {
-    // Função para formatar o CPF (exemplo)
-    cpf = cpf.replace(/\D/g, ''); // Remove tudo o que não é dígito
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); // Coloca um ponto entre o terceiro e o quarto dígitos
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); // Coloca um ponto entre o terceiro e o quarto dígitos de novo (para o segundo bloco)
-    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Coloca um hífen entre o terceiro e o quarto dígitos
-    return cpf;
-}
-
-// Exemplo de como chamar a função
-// gerarCertificado("Nome Completo do Aluno", "12345678900");
+            doc.setFontSize(30);
+            doc.text("CERTIFICADO DE CONCLUSÃO", 148.5, 45, { align: "center" });
 
             doc.setFont("helvetica", "normal");
-            doc.setFontSize(12);
-            doc.text("Carga Horária: 2 horas", 148.5, 96, { align: "center" });
+            doc.setFontSize(16);
+            doc.setTextColor(50, 50, 50);
+            doc.text(`Certificamos que`, 148.5, 65, { align: "center" });
 
-            // --- CONTEÚDOS ESTUDADOS (ALINHADOS À ESQUERDA) ---
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(24);
+            doc.setTextColor(0, 102, 204);
+            doc.text(nome.toUpperCase(), 148.5, 77, { align: "center" });
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(14);
+            doc.setTextColor(50, 50, 50);
+            doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 87, { align: "center" });
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+            doc.setTextColor(0, 51, 102);
+            doc.text("Curso Completo de Lubrificação Industrial", 148.5, 99, { align: "center" });
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(14);
+            doc.text("Carga Horária: 2 horas", 148.5, 109, { align: "center" });
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(10);
+            doc.setTextColor(50, 50, 50);
+            doc.text("Conteúdo Programático:", 20, 125);
+
+            doc.setFont("helvetica", "normal");
             const conteudos = [
                 '• Teoria do Desgaste: Adesivo, Abrasivo e Fadiga',
                 '• Princípios da Tribologia e Atrito',
@@ -368,45 +283,39 @@ function formatarCPF(cpf) {
                 '• Relação entre Temperatura e Vida Útil do Lubrificante',
                 '• Análise de Contaminação e Degradação do Óleo'
             ];
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(12);
-            doc.text("Conteúdos Estudados:", 50, 115); // Posição X fixa para alinhar à esquerda
             
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(11);
-            let yPos = 125;
+            let yPos = 132;
             conteudos.forEach(item => {
-                doc.text(item, 50, yPos); // Posição X fixa para alinhar à esquerda
+                doc.text(item, 20, yPos);
                 yPos += 7;
             });
-             
-            // --- ASSINATURA E DATA ---
+
             const agora = new Date();
-            const dataFormatada = agora.toLocaleString('pt-BR', {
+            const dataHoraFormatada = agora.toLocaleString('pt-BR', {
                 day: '2-digit', month: 'long', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'
-            }).replace(' ', ' às '); // Formata para "data às hora"
+            });
 
-            doc.line(110, 175, 185, 175); // Linha da assinatura
             doc.setFontSize(12);
-            doc.text("Jonathan da Silva Oliveira - Instrutor", 147.5, 182, { align: "center" });
+            doc.setDrawColor(50, 50, 50);
+            doc.line(90, 185, 205, 185);
+            
+            doc.setFont("helvetica", "bold");
+            doc.text("Jonathan da Silva Oliveira - Instrutor", 147.5, 190, { align: "center" });
             
             doc.setFont("helvetica", "normal");
-            doc.text(`Emitido em: ${dataFormatada}`, 147.5, 192, { align: "center" });
-             
-            doc.save(`Certificado - ${nome}.pdf`);
+            doc.text(`Emitido em: ${dataHoraFormatada}`, 147.5, 197, { align: "center" });
+            
+            doc.save(`Certificado - Lubrificação Industrial - ${nome}.pdf`);
         }
 
-        // Inicia o quiz quando o script carrega
         iniciarQuiz();
     }
-
 
     // =================================================================================
     // --- INICIALIZAÇÃO GERAL DO CURSO ---
     // =================================================================================
     
-    // Mostra o primeiro módulo e define o estado inicial da navegação
     showModule(0);
 
 });
