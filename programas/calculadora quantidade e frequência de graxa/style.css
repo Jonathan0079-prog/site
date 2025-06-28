@@ -1,8 +1,7 @@
-/* Estilo CSS baseado no seu tema preferido */
 :root {
-    --primary-color: #003366; /* Azul Escuro */
-    --secondary-color: #005A9C; /* Azul Médio */
-    --accent-color: #FDB813; /* Amarelo/Dourado */
+    --primary-color: #003366;
+    --secondary-color: #005A9C;
+    --accent-color: #FDB813;
     --light-gray: #f4f4f4;
     --dark-gray: #333;
     --success-color: #d4edda;
@@ -168,7 +167,7 @@ input:focus, select:focus {
     background: var(--info-color);
     border-radius: 8px;
     padding: 20px;
-    display: none; /* Hidden by default */
+    display: none;
 }
 
 .results-section h2 {
@@ -181,7 +180,6 @@ input:focus, select:focus {
 
 .results-grid {
     display: grid;
-    /* ALTERAÇÃO PRINCIPAL AQUI para tornar o grid flexível */
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
 }
@@ -213,7 +211,7 @@ input:focus, select:focus {
 }
 
 .recommendation-card {
-    grid-column: 1 / -1; /* Span all columns */
+    grid-column: 1 / -1;
     border-left-color: var(--accent-color);
 }
 
@@ -258,4 +256,52 @@ footer {
     font-size: 0.8rem;
     color: #777;
     background-color: var(--light-gray);
+}
+
+/* 📱 Responsividade para telas pequenas */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+        flex-direction: column;
+    }
+
+    .calculator-container {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .input-section {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recommendation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calculate-btn {
+        font-size: 1rem;
+        padding: 12px 20px;
+    }
+
+    .result-card h3,
+    .recommendation-card h3 {
+        font-size: 1rem;
+    }
+
+    .result-value {
+        font-size: 1.5rem;
+    }
+
+    .recommendation-item .value {
+        font-size: 1rem;
+    }
 }
