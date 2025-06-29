@@ -73,7 +73,7 @@
 
                 <li>
                     <a href="#" id="poliasWakeUpBtn" class="wake-up-button" data-url="https://calculadora-polias.onrender.com/">
-                        <div class="tool-icon"><i class="fas fa-server"></i></div>
+                        <div class="tool-icon" style="color: #28a745;"><i class="fas fa-server"></i></div>
                         <div class="tool-info">
                             <h2>Calculadora de Relação de Polias (c/ Servidor)</h2>
                             <p>Visualize a relação de transmissão e RPM com uma animação interativa.</p>
@@ -86,7 +86,62 @@
 
     </main>
 
-    <script src="script.js"></script>
+    <script>
+        // O código só roda depois que toda a página HTML foi carregada.
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Seleciona TODOS os botões que precisam "acordar" um servidor.
+            const wakeUpButtons = document.querySelectorAll('.wake-up-button');
+
+            // Se nenhum botão for encontrado, não faz nada.
+            if (wakeUpButtons.length === 0) {
+                return;
+            }
+
+            // Para cada botão encontrado, adiciona a funcionalidade.
+            wakeUpButtons.forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    // Previne a ação padrão do link (que seria recarregar a página)
+                    event.preventDefault();
+
+                    // Pega a URL do servidor do atributo 'data-url' do botão que foi clicado
+                    const targetUrl = button.dataset.url;
+                    if (!targetUrl || targetUrl === "") {
+                        alert("Erro de configuração: o URL de destino para este botão não foi encontrado.");
+                        return;
+                    }
+
+                    // Seleciona os elementos internos do botão para dar feedback visual
+                    const infoParagraph = button.querySelector('.tool-info p');
+                    const arrowIcon = button.querySelector('.tool-arrow i');
+                    
+                    // Impede cliques múltiplos e dá feedback visual
+                    button.style.pointerEvents = 'none';
+                    button.style.opacity = '0.7';
+                    button.style.cursor = 'wait';
+
+                    if (infoParagraph) {
+                        infoParagraph.textContent = 'Inicializando o servidor, por favor aguarde...';
+                    }
+                    if (arrowIcon) {
+                        // Troca o ícone de seta por um ícone de "spinner" (usando Font Awesome)
+                        arrowIcon.className = 'fas fa-spinner fa-spin';
+                    }
+
+                    try {
+                        // Envia o "ping" para acordar o servidor específico daquele botão.
+                        await fetch(targetUrl, { method: 'GET', mode: 'no-cors' });
+                    
+                    } catch (error) {
+                        // Erros são esperados e normais ao usar 'no-cors', então nós os ignoramos e continuamos.
+                    } finally {
+                        // Após o ping, redireciona o utilizador para a calculadora.
+                        window.location.href = targetUrl;
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
