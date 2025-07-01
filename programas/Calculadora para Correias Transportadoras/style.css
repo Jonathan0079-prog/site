@@ -188,11 +188,11 @@ main {
     border-color: #aaa;
 }
 
-/* MODIFICADO: Botão ativo agora usa a cor de destaque (amarelo) */
+/* REVERTIDO: Estilo do botão ativo voltou ao original (azul), conforme solicitado. */
 .sub-nav-button.active {
-    background-color: var(--cor-destaque);
-    color: var(--cor-texto);
-    border-color: #fbc02d; /* Um tom de amarelo um pouco mais escuro para a borda */
+    background-color: var(--cor-secundaria);
+    color: var(--cor-texto-claro);
+    border-color: var(--cor-primaria);
     font-weight: bold;
 }
 
@@ -233,15 +233,12 @@ main {
     cursor: pointer;
 }
 
-/* MODIFICADO: Estilo do campo de resultado para se assemelhar ao campo de input */
+/* MANTIDO: Estilo do campo de resultado para se assemelhar ao campo de input. */
 .conversor-resultado {
-    /* Removemos os estilos antigos para aplicar os novos */
-    font-weight: normal; /* Retirado o negrito original */
-    text-align: left; /* Alinhado à esquerda como um input */
-    color: var(--cor-texto); /* Cor do texto padrão */
-    background-color: var(--cor-fundo); /* Fundo cinza para indicar que é um campo de resultado (não editável) */
-
-    /* Copiando as propriedades visuais do .conversor-input */
+    font-weight: normal;
+    text-align: left;
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
