@@ -40,20 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
         cards.forEach(card => card.classList.add('visible'));
     }
 
-    // --- NAVEGAÇÃO DOS BOTÕES DE CURSO ---
-    const courseButtons = document.querySelectorAll('.btn');
-    courseButtons.forEach(button => {
-        // Suporte a click e touch, sem navegação duplicada
-        function navigate(event) {
-            // Aceita tanto <a> quanto <button data-href="">
-            const targetPage = button.getAttribute('href') || button.dataset.href;
-            if (targetPage && (targetPage.includes('curso-') || targetPage.includes('curso '))) {
-                event.preventDefault();
-                window.location.href = targetPage;
+    // --- CARD INTEIRO CLICÁVEL PARA O CURSO ---
+    // Torna o card inteiro clicável caso tenha atributo data-href
+    document.querySelectorAll('.curso-card[data-href]').forEach(card => {
+        card.style.cursor = "pointer";
+        card.addEventListener('click', function (event) {
+            window.location.href = this.getAttribute('data-href');
+        });
+        // Acessibilidade: permite abrir com Enter/Espaço
+        card.setAttribute('tabindex', '0');
+        card.addEventListener('keydown', function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+                window.location.href = this.getAttribute('data-href');
             }
-        }
-        button.addEventListener('click', navigate, false);
-        button.addEventListener('touchend', navigate, false);
+        });
     });
 
 });
