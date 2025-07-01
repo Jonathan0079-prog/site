@@ -292,8 +292,14 @@
                     <label for="nome-aluno">Seu Nome Completo:</label>
                     <input type="text" id="nome-aluno" placeholder="Digite seu nome completo aqui">
                     
-                    <label for="cpf-aluno">Seu CPF:</label>
-                    <input type="text" id="cpf-aluno" placeholder="Digite seu CPF (apenas números)">
+                    <label for="pais-aluno">País:</label>
+<select id="pais-aluno">
+    <option value="brasil">Brasil</option>
+    <option value="angola">Angola</option>
+    </select>
+
+<label for="documento-aluno" id="documento-label">Seu CPF:</label>
+<input type="text" id="documento-aluno" placeholder="Digite seu CPF (apenas números)" maxlength="14">
 
                     <div class="botoes-certificado">
                         <button id="gerar-certificado-btn">Gerar e Baixar Certificado PDF</button>
