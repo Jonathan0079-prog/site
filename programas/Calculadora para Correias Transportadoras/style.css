@@ -1,3 +1,6 @@
+/* ================================================= */
+/* ===         ESTILOS GERAIS E BASE             === */
+/* ================================================= */
 :root {
     --cor-primaria: #0d47a1; /* Azul escuro */
     --cor-secundaria: #1976d2; /* Azul médio */
@@ -42,6 +45,10 @@ header h1 {
     font-size: 1.8em;
 }
 
+/* ================================================= */
+/* ===      ESTILOS DE NAVEGAÇÃO E ABAS          === */
+/* ================================================= */
+
 .navegacao {
     display: flex;
     background-color: var(--cor-secundaria);
@@ -67,6 +74,10 @@ header h1 {
     background-color: var(--cor-primaria);
     border-bottom: 4px solid var(--cor-destaque);
 }
+
+/* ================================================= */
+/* ===    ESTILOS DAS CALCULADORAS ORIGINAIS     === */
+/* ================================================= */
 
 .calculadora {
     padding: 25px;
@@ -132,7 +143,7 @@ header h1 {
     display: none; /* Começa escondido */
 }
 
-/* [MELHORIA 3: FEEDBACK VISUAL] Animação de fade-in para o resultado */
+/* Animação de fade-in para o resultado */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -164,24 +175,138 @@ header h1 {
     color: var(--cor-primaria);
 }
 
-/* Classe para esconder as calculadoras inativas */
+/* Classe para esconder painéis inativos */
 .hidden {
     display: none;
 }
 
-/* [MELHORIA 2: RESPONSIVIDADE] Ajustes para telas muito pequenas */
+
+/* ================================================= */
+/* ===   ESTILOS DO CONVERSOR DE UNIDADES        === */
+/* ================================================= */
+
+.sub-navegacao {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas menores */
+    gap: 5px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--cor-fundo);
+    padding-bottom: 15px;
+}
+
+.sub-nav-button {
+    flex-grow: 1; /* Faz os botões ocuparem o espaço disponível */
+    padding: 10px 12px;
+    background-color: #e0e0e0;
+    color: var(--cor-texto);
+    border: 1px solid #ccc;
+    border-radius: var(--borda-radius);
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s;
+}
+
+.sub-nav-button:hover {
+    background-color: #d1d1d1;
+    border-color: #aaa;
+}
+
+.sub-nav-button.active {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-texto-claro);
+    border-color: var(--cor-primaria);
+    font-weight: bold;
+}
+
+.painel-conversao {
+    padding: 10px 0;
+}
+
+.conversor-linha {
+    display: flex;
+    align-items: flex-end; /* Alinha os inputs e selects na base */
+    gap: 15px;
+}
+
+.grupo-unidade {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.grupo-unidade label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.conversor-input, .conversor-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: var(--borda-radius);
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.conversor-select {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.conversor-resultado {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: var(--borda-radius);
+    font-size: 1.1em;
+    font-weight: bold;
+    box-sizing: border-box;
+    background-color: var(--cor-fundo);
+    color: var(--cor-primaria);
+    text-align: center;
+}
+
+.igual {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--cor-secundaria);
+    padding-bottom: 10px; /* Alinha verticalmente com os inputs */
+}
+
+/* ================================================= */
+/* ===     AJUSTES DE RESPONSIVIDADE (MEDIA QUERIES) === */
+/* ================================================= */
+
+/* Para telas de celular e menores */
+@media (max-width: 600px) {
+    .conversor-linha {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+    .igual {
+        transform: rotate(90deg); /* Vira o sinal de igual */
+        margin: -5px auto;
+    }
+}
+
+/* Para telas muito pequenas */
 @media (max-width: 480px) {
     body {
         padding: 0;
     }
     .container {
         border-radius: 0;
+        min-height: 100vh;
     }
     .navegacao {
-        flex-direction: column; /* Empilha os botões */
+        flex-direction: column; /* Empilha os botões da navegação principal */
     }
     .nav-button {
         font-size: 0.9em;
+        text-align: center;
         border-bottom: 1px solid #1565c0;
     }
     .nav-button.active {
