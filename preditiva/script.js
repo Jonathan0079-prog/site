@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => { // "document" com 'd' minúsculo
 
     const { jsPDF } = window.jspdf;
     const modules = document.querySelectorAll('.module');
@@ -159,14 +159,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function gerarCertificadoPDF() {
         const nome = document.getElementById('nome-aluno').value.trim();
-        const cpf = document.getElementById('cpf-aluno').value.trim();
+        const cpf = document.getElementById('cpf-aluno').value.trim(); // Mudei para 'cpf-aluno' para ser consistente
         if (nome === "" || cpf === "") {
-            alert("Por favor, preencha seu nome completo e CPF.");
+            alert("Por favor, preencha seu nome completo e documento."); // Mensagem mais genérica
             return;
         }
 
         const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-        const LOGO_BASE64 = ''; // Cole sua logo Base64 aqui
+        // Lembre-se de colar sua logo Base64 aqui
+        const LOGO_BASE64 = ''; 
 
         // Design do certificado
         doc.setFillColor(230, 240, 255);
@@ -206,7 +207,17 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.setFont("helvetica", "normal");
         doc.setFontSize(14);
         doc.setTextColor(50, 50, 50);
-        doc.text(`portador(a) do CPF nº ${formatarCPF(cpf)}, concluiu com aproveitamento o curso de`, 148.5, 87, { align: "center" });
+        
+        // Determina o tipo de documento a ser exibido no certificado
+        const paisSelecionado = document.getElementById('pais-aluno').value;
+        let documentoTexto = '';
+        if (paisSelecionado === 'angola') {
+            documentoTexto = `portador(a) do BI nº ${cpf},`;
+        } else {
+            documentoTexto = `portador(a) do CPF nº ${formatarCPF(cpf)},`;
+        }
+        
+        doc.text(`${documentoTexto} concluiu com aproveitamento o curso de`, 148.5, 87, { align: "center" });
         
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
@@ -259,21 +270,14 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.save(`Certificado - Inspeção Industrial - ${nome}.pdf`);
     }
 
-    // --- INICIALIZAÇÃO ---
-    showModule(0);
-    iniciarQuiz();
-
-});
-
-// script.js
-
-window.addEventListener('DOMContentLoaded', function () {
+    // --- Lógica para o campo de documento (BI/CPF) ---
     const paisSelect = document.getElementById('pais-aluno');
     const documentoLabel = document.getElementById('documento-label');
     const documentoInput = document.getElementById('documento-aluno');
 
     if (paisSelect && documentoLabel && documentoInput) {
-        paisSelect.addEventListener('change', function const paisSelecionado = paisSelect.value;
+        paisSelect.addEventListener('change', function() { // Função anônima corrigida
+            const paisSelecionado = paisSelect.value;
 
             if (paisSelecionado === 'angola') {
                 documentoLabel.textContent = 'Seu BI:';
@@ -285,9 +289,36 @@ window.addEventListener('DOMContentLoaded', function () {
                 documentoInput.maxLength = 11;
             }
 
-            documentoInput.value = '';
+            documentoInput.value = ''; // Limpa o campo ao mudar o tipo de documento
         });
+
+        // Adiciona um evento para formatar o CPF/BI enquanto o usuário digita (opcional, mas bom para UX)
+        documentoInput.addEventListener('input', function() {
+            const paisSelecionado = paisSelect.value;
+            let valor = this.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+
+            if (paisSelecionado !== 'angola') { // Se for CPF, formata
+                if (valor.length > 3 && valor.length <= 6) {
+                    valor = `${valor.slice(0, 3)}.${valor.slice(3)}`;
+                } else if (valor.length > 6 && valor.length <= 9) {
+                    valor = `${valor.slice(0, 3)}.${valor.slice(3, 6)}.${valor.slice(6)}`;
+                } else if (valor.length > 9) {
+                    valor = `${valor.slice(0, 3)}.${valor.slice(3, 6)}.${valor.slice(6, 9)}-${valor.slice(9, 11)}`;
+                }
+            }
+            this.value = valor;
+        });
+
+        // Garante que o estado inicial do campo de documento esteja correto
+        // Isso é importante se o HTML já tiver um valor padrão para paisSelect ou se o usuário recarregar a página
+        paisSelect.dispatchEvent(new Event('change'));
+
     } else {
-        console.error('Algum elemento do formulário não foi encontrado.');
+        console.error('Algum elemento do formulário de documento (país, label ou input) não foi encontrado.');
     }
+
+    // --- INICIALIZAÇÃO ---
+    showModule(0);
+    iniciarQuiz();
+
 });
