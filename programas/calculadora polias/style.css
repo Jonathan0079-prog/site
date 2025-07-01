@@ -1,4 +1,3 @@
-/* Importando fontes do Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
 
 :root {
@@ -17,6 +16,11 @@
     --cor-cinza-escuro: #6c757d;
     --sombra: 0 4px 12px rgba(0,0,0,0.08);
     --raio-borda: 8px;
+}
+
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
 * {
@@ -52,15 +56,26 @@ header p {
     opacity: 0.9;
 }
 
-.main-container {
+.app-container {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.main-container,
+.app-main {
     max-width: 1600px;
     margin: 2rem auto;
     padding: 0 2rem;
     display: grid;
     gap: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
+
 @media (min-width: 1024px) {
-    .main-container {
+    .main-container,
+    .app-main {
         grid-template-columns: 450px 1fr;
     }
 }
@@ -71,6 +86,8 @@ header p {
     border-radius: var(--raio-borda);
     box-shadow: var(--sombra);
     margin-bottom: 2rem;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .card h2 {
@@ -119,6 +136,7 @@ header p {
     font-family: 'Roboto', sans-serif;
     background-color: var(--cor-cinza-claro);
 }
+
 .input-group input.invalid {
     border-color: var(--cor-erro);
     box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
@@ -137,6 +155,7 @@ header p {
     border-radius: var(--raio-borda);
     overflow: hidden;
 }
+
 .toggle-button {
     flex: 1;
     background: none;
@@ -207,7 +226,7 @@ header p {
 .result-item.danger { border-left: 5px solid var(--cor-erro); }
 
 .table-container { width: 100%; overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
+table { width: 100%; border-collapse: collapse; min-width: 520px; }
 th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--cor-cinza-medio); }
 th { background-color: var(--cor-cinza-claro); font-family: 'Oswald', sans-serif; }
 #comparisonTable td:nth-child(1) { font-weight: bold; }
@@ -232,9 +251,42 @@ th { background-color: var(--cor-cinza-claro); font-family: 'Oswald', sans-serif
 @media print {
     body * { visibility: hidden; }
     #outputs-column, #results-card, #tips-card, #results-card *, #tips-card * { visibility: visible; }
-    .main-container { display: block; }
+    .main-container, .app-main { display: block; }
     #outputs-column { position: absolute; left: 0; top: 0; width: 100%; }
     .card { box-shadow: none; border: 1px solid #ccc; }
     .card-header button { display: none; }
 }
 
+/* RESPONSIVO MOBILE */
+@media (max-width: 900px) {
+    .main-container,
+    .app-main {
+        grid-template-columns: 1fr;
+        padding: 0 0.5rem;
+    }
+    .card {
+        padding: 1rem;
+    }
+    .result-item .value {
+        font-size: 1.2rem;
+    }
+}
+
+/* Previne que qualquer elemento cause overflow no mobile */
+@media (max-width: 600px) {
+    .main-container,
+    .app-main {
+        padding: 0 0.25rem;
+    }
+    .card, .card > *, .table-container, table, th, td {
+        max-width: 100vw !important;
+        box-sizing: border-box;
+    }
+    table, th, td {
+        font-size: 0.85em;
+        word-break: break-word;
+    }
+    .results-grid-main, .results-grid-secondary {
+        grid-template-columns: 1fr;
+    }
+}
