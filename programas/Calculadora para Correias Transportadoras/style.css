@@ -159,7 +159,7 @@ main {
 }
 
 /* ================================================= */
-/* ===       ESTILOS DO CONVERSOR DE UNIDADES      === */
+/* ===     ESTILOS DO CONVERSOR DE UNIDADES      === */
 /* ================================================= */
 
 .sub-navegacao {
@@ -188,10 +188,11 @@ main {
     border-color: #aaa;
 }
 
+/* MODIFICADO: Botão ativo agora usa a cor de destaque (amarelo) */
 .sub-nav-button.active {
-    background-color: var(--cor-secundaria);
-    color: var(--cor-texto-claro);
-    border-color: var(--cor-primaria);
+    background-color: var(--cor-destaque);
+    color: var(--cor-texto);
+    border-color: #fbc02d; /* Um tom de amarelo um pouco mais escuro para a borda */
     font-weight: bold;
 }
 
@@ -232,11 +233,24 @@ main {
     cursor: pointer;
 }
 
+/* MODIFICADO: Estilo do campo de resultado para se assemelhar ao campo de input */
 .conversor-resultado {
-    font-weight: bold;
-    background-color: var(--cor-fundo);
-    color: var(--cor-primaria);
-    text-align: center;
+    /* Removemos os estilos antigos para aplicar os novos */
+    font-weight: normal; /* Retirado o negrito original */
+    text-align: left; /* Alinhado à esquerda como um input */
+    color: var(--cor-texto); /* Cor do texto padrão */
+    background-color: var(--cor-fundo); /* Fundo cinza para indicar que é um campo de resultado (não editável) */
+
+    /* Copiando as propriedades visuais do .conversor-input */
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: var(--borda-radius);
+    font-size: 1em;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    min-height: 48.8px; /* Garante que a altura seja consistente com os inputs */
 }
 
 .igual {
@@ -245,7 +259,6 @@ main {
     color: var(--cor-secundaria);
     padding-bottom: 10px;
 }
-
 /* ================================================= */
 /* ===  AJUSTES DE RESPONSIVIDADE (MEDIA QUERIES)  === */
 /* ================================================= */
