@@ -1,6 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-
-    // --- NOVA LÓGICA PARA O MENU HAMBURGER ---
+// --- NOVA LÓGICA PARA O MENU HAMBURGER ---
     const menuToggler = document.querySelector('.menu-toggler');
     const mainNav = document.querySelector('#main-nav');
 
