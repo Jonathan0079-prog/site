@@ -46,8 +46,11 @@ function mostrarCalculadora(idCalculadora) {
     });
     
     document.getElementById(idCalculadora).classList.remove('hidden');
-    // Encontra o botão que controla este painel pelo seu ID e o ativa
-    document.getElementById('btn-nav-' + idCalculadora.split('-')[1]).classList.add('active');
+    // Encontra o botão que controla este painel e o ativa
+    // Ex: idCalculadora = 'calc-inverso-direto' -> split = ['calc', 'inverso', 'direto']
+    // -> slice(1) = ['inverso', 'direto'] -> join('-') = 'inverso-direto'
+    const btnIdSuffix = idCalculadora.split('-').slice(1).join('-');
+    document.getElementById('btn-nav-' + btnIdSuffix).classList.add('active');
 }
 
 /**
@@ -156,6 +159,74 @@ function calcularComprimentoBobina() {
 
     const htmlResultado = `
         <p>Comprimento estimado da correia: <strong>${comprimento_metros.toFixed(2)} metros</strong></p>
+    `;
+    exibirResultado(resultadoEl, htmlResultado);
+}
+
+// ===================================================================
+// === LÓGICA DAS CALCULADORAS INVERSAS
+// ===================================================================
+
+function calcularRedutorDireto() {
+    const v_correia = parseFloat(document.getElementById('inv-direto-velocidade').value);
+    const n_motor = parseFloat(document.getElementById('inv-direto-n-motor').value);
+    const d_rolo = parseFloat(document.getElementById('inv-direto-d-rolo').value);
+    const resultadoEl = 'resultado-inverso-direto';
+
+    if (isNaN(v_correia) || isNaN(n_motor) || isNaN(d_rolo)) {
+        exibirResultado(resultadoEl, '<p><strong>Erro:</strong> Por favor, preencha todos os campos com valores numéricos.</p>', true);
+        return;
+    }
+    if (v_correia <= 0 || n_motor <= 0 || d_rolo <= 0) {
+        exibirResultado(resultadoEl, '<p><strong>Erro:</strong> Velocidade, rotação do motor e diâmetro do rolo devem ser maiores que zero.</p>', true);
+        return;
+    }
+
+    // Passo 1: Descobrir a rotação do rolo a partir da velocidade da correia
+    const rpm_rolo = (v_correia * 1000) / (Math.PI * d_rolo);
+
+    // Passo 2: Descobrir a relação de redução
+    const i_redutor = n_motor / rpm_rolo;
+
+    const htmlResultado = `
+        <p>Rotação Calculada do Rolo: <strong>${rpm_rolo.toFixed(2)} RPM</strong></p>
+        <p style="border-top: 1px solid #ccc; padding-top: 10px; margin-top: 10px;">Relação de Redução Teórica: <strong>${i_redutor.toFixed(2)} : 1</strong></p>
+        <p class="aviso-pratico"><strong>Nota:</strong> Este é o valor teórico. Procure por um redutor com a relação padrão de mercado mais próxima (ex: 15:1, 20:1, 30:1).</p>
+    `;
+    exibirResultado(resultadoEl, htmlResultado);
+}
+
+function calcularRedutorComPolias() {
+    const v_correia = parseFloat(document.getElementById('inv-polias-velocidade').value);
+    const n_motor = parseFloat(document.getElementById('inv-polias-n-motor').value);
+    const d_polia_motora = parseFloat(document.getElementById('inv-polias-d-polia-motora').value);
+    const d_polia_movida = parseFloat(document.getElementById('inv-polias-d-polia-movida').value);
+    const d_rolo = parseFloat(document.getElementById('inv-polias-d-rolo').value);
+    const resultadoEl = 'resultado-inverso-polias';
+
+    if (isNaN(v_correia) || isNaN(n_motor) || isNaN(d_polia_motora) || isNaN(d_polia_movida) || isNaN(d_rolo)) {
+        exibirResultado(resultadoEl, '<p><strong>Erro:</strong> Por favor, preencha todos os campos com valores numéricos.</p>', true);
+        return;
+    }
+    if (v_correia <= 0 || n_motor <= 0 || d_polia_motora <= 0 || d_polia_movida <= 0 || d_rolo <= 0) {
+        exibirResultado(resultadoEl, '<p><strong>Erro:</strong> Todos os valores devem ser maiores que zero.</p>', true);
+        return;
+    }
+
+    // Passo 1: Descobrir a rotação do rolo a partir da velocidade da correia
+    const rpm_rolo = (v_correia * 1000) / (Math.PI * d_rolo);
+
+    // Passo 2: Calcular a rotação que chega ao redutor (após a transmissão por polias)
+    const n_entrada_redutor = n_motor * (d_polia_motora / d_polia_movida);
+
+    // Passo 3: Descobrir a relação de redução
+    const i_redutor = n_entrada_redutor / rpm_rolo;
+
+    const htmlResultado = `
+        <p>Rotação Calculada do Rolo: <strong>${rpm_rolo.toFixed(2)} RPM</strong></p>
+        <p>Rotação na Entrada do Redutor: <strong>${n_entrada_redutor.toFixed(2)} RPM</strong></p>
+        <p style="border-top: 1px solid #ccc; padding-top: 10px; margin-top: 10px;">Relação de Redução Teórica: <strong>${i_redutor.toFixed(2)} : 1</strong></p>
+        <p class="aviso-pratico"><strong>Nota:</strong> Este é o valor teórico. Procure por um redutor com a relação padrão de mercado mais próxima (ex: 15:1, 20:1, 30:1).</p>
     `;
     exibirResultado(resultadoEl, htmlResultado);
 }
