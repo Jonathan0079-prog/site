@@ -46,12 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const courseButtons = document.querySelectorAll('.btn');
     courseButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            const targetPage = event.target.getAttribute('href');
+            const targetPage = button.getAttribute('href');
             if (targetPage && targetPage.includes('curso-')) {
                 event.preventDefault(); 
                 window.location.href = targetPage;
             }
         });
     });
-
-});
