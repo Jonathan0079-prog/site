@@ -10,14 +10,13 @@
 
     <div class="container">
         <header>
-            <h1>Calculadora e Conversor Industrial</h1>
+            <h1>Calculadora Industrial</h1>
         </header>
         
         <nav class="navegacao">
             <button id="btn-nav-direto" class="nav-button active" onclick="mostrarCalculadora('calc-direto')" aria-controls="calc-direto">Cálculo Direto</button>
             <button id="btn-nav-indireto" class="nav-button" onclick="mostrarCalculadora('calc-indireto')" aria-controls="calc-indireto">Cálculo c/ Polias</button>
             <button id="btn-nav-bobina" class="nav-button" onclick="mostrarCalculadora('calc-bobina')" aria-controls="calc-bobina">Bobina</button>
-            <button id="btn-nav-conversor" class="nav-button" onclick="mostrarCalculadora('calc-conversor')" aria-controls="calc-conversor">Conversor</button>
         </nav>
 
         <main>
@@ -89,165 +88,6 @@
                 </div>
                 <button class="btn-calcular" onclick="calcularComprimentoBobina()">Calcular</button>
                 <div id="resultado-bobina" class="resultado"></div>
-            </div>
-
-            <div id="calc-conversor" class="calculadora hidden" role="tabpanel">
-                <h2>Conversor de Unidades</h2>
-                
-                <nav class="sub-navegacao">
-                    <button class="sub-nav-button active" onclick="mostrarPainelConversao('painel-comprimento')">Comprimento</button>
-                    <button class="sub-nav-button" onclick="mostrarPainelConversao('painel-massa')">Massa</button>
-                    <button class="sub-nav-button" onclick="mostrarPainelConversao('painel-pressao')">Pressão</button>
-                    <button class="sub-nav-button" onclick="mostrarPainelConversao('painel-area')">Área</button>
-                    <button class="sub-nav-button" onclick="mostrarPainelConversao('painel-volume')">Volume</button>
-                </nav>
-
-                <div id="painel-comprimento" class="painel-conversao">
-                    <div class="conversor-linha">
-                        <div class="grupo-unidade">
-                            <label for="comp-valor">Valor</label>
-                            <input type="number" id="comp-valor" class="conversor-input" value="1">
-                            <select id="comp-de" class="conversor-select">
-                                <option value="m" selected>Metro (m)</option>
-                                <option value="km">Quilômetro (km)</option>
-                                <option value="cm">Centímetro (cm)</option>
-                                <option value="mm">Milímetro (mm)</option>
-                                <option value="in">Polegada (in)</option>
-                                <option value="ft">Pé (ft)</option>
-                                <option value="mi">Milha (mi)</option>
-                            </select>
-                        </div>
-                        <span class="igual">=</span>
-                        <div class="grupo-unidade">
-                            <label>Resultado</label>
-                            <input type="text" id="comp-resultado" class="conversor-resultado" readonly>
-                            <select id="comp-para" class="conversor-select">
-                                <option value="m">Metro (m)</option>
-                                <option value="km">Quilômetro (km)</option>
-                                <option value="cm">Centímetro (cm)</option>
-                                <option value="mm">Milímetro (mm)</option>
-                                <option value="in" selected>Polegada (in)</option>
-                                <option value="ft">Pé (ft)</option>
-                                <option value="mi">Milha (mi)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="painel-massa" class="painel-conversao hidden">
-                    <div class="conversor-linha">
-                         <div class="grupo-unidade">
-                            <label for="massa-valor">Valor</label>
-                            <input type="number" id="massa-valor" class="conversor-input" value="1">
-                            <select id="massa-de" class="conversor-select">
-                                <option value="kg" selected>Quilograma (kg)</option>
-                                <option value="g">Grama (g)</option>
-                                <option value="t">Tonelada (t)</option>
-                                <option value="lb">Libra (lb)</option>
-                                <option value="oz">Onça (oz)</option>
-                            </select>
-                        </div>
-                        <span class="igual">=</span>
-                        <div class="grupo-unidade">
-                            <label>Resultado</label>
-                            <input type="text" id="massa-resultado" class="conversor-resultado" readonly>
-                            <select id="massa-para" class="conversor-select">
-                                <option value="kg">Quilograma (kg)</option>
-                                <option value="g">Grama (g)</option>
-                                <option value="t">Tonelada (t)</option>
-                                <option value="lb" selected>Libra (lb)</option>
-                                <option value="oz">Onça (oz)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="painel-pressao" class="painel-conversao hidden">
-                     <div class="conversor-linha">
-                         <div class="grupo-unidade">
-                            <label for="pressao-valor">Valor</label>
-                            <input type="number" id="pressao-valor" class="conversor-input" value="1">
-                            <select id="pressao-de" class="conversor-select">
-                                <option value="bar" selected>Bar</option>
-                                <option value="pa">Pascal (Pa)</option>
-                                <option value="kpa">Quilopascal (kPa)</option>
-                                <option value="psi">PSI</option>
-                                <option value="atm">Atmosfera (atm)</option>
-                                <option value="kgfcm2">kgf/cm²</option>
-                            </select>
-                        </div>
-                        <span class="igual">=</span>
-                        <div class="grupo-unidade">
-                            <label>Resultado</label>
-                            <input type="text" id="pressao-resultado" class="conversor-resultado" readonly>
-                            <select id="pressao-para" class="conversor-select">
-                                <option value="bar">Bar</option>
-                                <option value="pa">Pascal (Pa)</option>
-                                <option value="kpa">Quilopascal (kPa)</option>
-                                <option value="psi" selected>PSI</option>
-                                <option value="atm">Atmosfera (atm)</option>
-                                <option value="kgfcm2">kgf/cm²</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="painel-area" class="painel-conversao hidden">
-                     <div class="conversor-linha">
-                         <div class="grupo-unidade">
-                            <label for="area-valor">Valor</label>
-                            <input type="number" id="area-valor" class="conversor-input" value="1">
-                            <select id="area-de" class="conversor-select">
-                                <option value="m2" selected>Metro² (m²)</option>
-                                <option value="km2">Quilômetro² (km²)</option>
-                                <option value="ha">Hectare (ha)</option>
-                                <option value="ft2">Pé² (ft²)</option>
-                                <option value="ac">Acre (ac)</option>
-                            </select>
-                        </div>
-                        <span class="igual">=</span>
-                        <div class="grupo-unidade">
-                            <label>Resultado</label>
-                            <input type="text" id="area-resultado" class="conversor-resultado" readonly>
-                            <select id="area-para" class="conversor-select">
-                                <option value="m2">Metro² (m²)</option>
-                                <option value="km2">Quilômetro² (km²)</option>
-                                <option value="ha" selected>Hectare (ha)</option>
-                                <option value="ft2">Pé² (ft²)</option>
-                                <option value="ac">Acre (ac)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="painel-volume" class="painel-conversao hidden">
-                     <div class="conversor-linha">
-                         <div class="grupo-unidade">
-                            <label for="volume-valor">Valor</label>
-                            <input type="number" id="volume-valor" class="conversor-input" value="1">
-                            <select id="volume-de" class="conversor-select">
-                                <option value="m3" selected>Metro³ (m³)</option>
-                                <option value="l">Litro (L)</option>
-                                <option value="ml">Mililitro (ml)</option>
-                                <option value="gal">Galão (US)</option>
-                                <option value="ft3">Pé³ (ft³)</option>
-                            </select>
-                        </div>
-                        <span class="igual">=</span>
-                        <div class="grupo-unidade">
-                            <label>Resultado</label>
-                            <input type="text" id="volume-resultado" class="conversor-resultado" readonly>
-                            <select id="volume-para" class="conversor-select">
-                                <option value="m3">Metro³ (m³)</option>
-                                <option value="l" selected>Litro (L)</option>
-                                <option value="ml">Mililitro (ml)</option>
-                                <option value="gal">Galão (US)</option>
-                                <option value="ft3">Pé³ (ft³)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </main>
     </div>
