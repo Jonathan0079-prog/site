@@ -264,3 +264,28 @@ document.addEventListener('DOMContentLoaded', () => {
     iniciarQuiz();
 
 });
+
+// script.js
+
+document.addEventListener('DOMContentLoaded', function () {
+    const paisSelect = document.getElementById('pais-aluno');
+    const documentoLabel = document.getElementById('documento-label');
+    const documentoInput = document.getElementById('documento-aluno');
+
+    paisSelect.addEventListener('change', function () {
+        const paisSelecionado = paisSelect.value;
+
+        if (paisSelecionado === 'angola') {
+            documentoLabel.textContent = 'Seu BI:';
+            documentoInput.placeholder = 'Digite seu BI (Bilhete de Identidade)';
+            documentoInput.maxLength = 14; // Exemplo de limite para BI
+        } else {
+            documentoLabel.textContent = 'Seu CPF:';
+            documentoInput.placeholder = 'Digite seu CPF (apenas números)';
+            documentoInput.maxLength = 11; // CPF tem 11 dígitos
+        }
+
+        // Limpa o campo ao trocar de país
+        documentoInput.value = '';
+    });
+});
