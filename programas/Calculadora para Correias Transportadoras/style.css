@@ -1,5 +1,5 @@
 /* ================================================= */
-/* ===         ESTILOS GERAIS E BASE             === */
+/* ===         ESTILOS GERAIS E BASE           === */
 /* ================================================= */
 :root {
     --cor-primaria: #0d47a1; /* Azul escuro */
@@ -17,20 +17,41 @@ body {
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
     margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    
+    /* MODIFICAÇÃO: O padding foi removido (era 20px). */
+    /* Isso elimina qualquer espaço em branco entre a borda da janela e o seu conteúdo. */
+    padding: 0;
+
+    /* MODIFICAÇÃO: As propriedades Flexbox foram removidas. */
+    /* 'display: flex', 'justify-content: center' e 'align-items: flex-start' */
+    /* serviam para centralizar o container quando ele era menor. */
+    /* Como agora ele vai ocupar toda a tela, essa centralização não é mais necessária. */
     min-height: 100vh;
 }
 
 .container {
     width: 100%;
-    max-width: 700px;
+    
+    /* MODIFICAÇÃO: A largura máxima foi removida (era max-width: 700px). */
+    /* Esta era a principal regra que limitava seu container a uma faixa central. */
+    /* Removê-la permite que o container se expanda por toda a largura. */
+    
+    /* MODIFICAÇÃO: Altura adicionada para preencher a tela verticalmente. */
+    /* Isso garante que o container tenha sempre a altura da janela do navegador. */
+    min-height: 100vh;
+
     background-color: var(--cor-texto-claro);
-    border-radius: var(--borda-radius);
-    box-shadow: var(--sombra);
-    overflow: hidden;
+    
+    /* MODIFICAÇÃO: border-radius e box-shadow foram removidos. */
+    /* Essas propriedades criam um efeito de "card", com cantos arredondados e sombra, */
+    /* que não fazem sentido em um layout de tela cheia. */
+    /* border-radius: var(--borda-radius); */
+    /* box-shadow: var(--sombra); */
+    
+    /* MODIFICAÇÃO: overflow alterado para permitir rolagem vertical. */
+    /* 'overflow-y: auto' garante que se o conteúdo dentro das calculadoras for muito grande, */
+    /* uma barra de rolagem aparecerá dentro do container, evitando que o layout quebre. */
+    overflow-y: auto;
 }
 
 header {
@@ -46,7 +67,7 @@ header h1 {
 }
 
 /* ================================================= */
-/* ===      ESTILOS DE NAVEGAÇÃO E ABAS          === */
+/* ===         ESTILOS DE NAVEGAÇÃO E ABAS         === */
 /* ================================================= */
 
 .navegacao {
@@ -76,7 +97,7 @@ header h1 {
 }
 
 /* ================================================= */
-/* ===    ESTILOS DAS CALCULADORAS ORIGINAIS     === */
+/* ===       ESTILOS DAS CALCULADORAS ORIGINAIS    === */
 /* ================================================= */
 
 .calculadora {
@@ -182,7 +203,7 @@ header h1 {
 
 
 /* ================================================= */
-/* ===   ESTILOS DO CONVERSOR DE UNIDADES        === */
+/* ===       ESTILOS DO CONVERSOR DE UNIDADES      === */
 /* ================================================= */
 
 .sub-navegacao {
@@ -276,8 +297,10 @@ header h1 {
 }
 
 /* ================================================= */
-/* ===     AJUSTES DE RESPONSIVIDADE (MEDIA QUERIES) === */
+/* ===  AJUSTES DE RESPONSIVIDADE (MEDIA QUERIES)  === */
 /* ================================================= */
+/* ATENÇÃO: Os ajustes de responsividade foram mantidos, */
+/* mas talvez precisem de revisão dependendo do design final da tela cheia. */
 
 /* Para telas de celular e menores */
 @media (max-width: 600px) {
@@ -298,8 +321,10 @@ header h1 {
         padding: 0;
     }
     .container {
-        border-radius: 0;
-        min-height: 100vh;
+        /* MODIFICAÇÃO: A altura mínima e o border-radius foram removidos aqui */
+        /* para evitar redundância e conflito com as regras principais. */
+        /* min-height: 100vh; */
+        /* border-radius: 0; */
     }
     .navegacao {
         flex-direction: column; /* Empilha os botões da navegação principal */
