@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora e Conversor Industrial</title>
+    <title>Calculadora Industrial Avançada</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>Calculadora Industrial</h1>
+            <h1>Calculadora Industrial Avançada</h1>
         </header>
         
         <nav class="navegacao">
             <button id="btn-nav-direto" class="nav-button active" onclick="mostrarCalculadora('calc-direto')" aria-controls="calc-direto">Cálculo Direto</button>
             <button id="btn-nav-indireto" class="nav-button" onclick="mostrarCalculadora('calc-indireto')" aria-controls="calc-indireto">Cálculo c/ Polias</button>
             <button id="btn-nav-bobina" class="nav-button" onclick="mostrarCalculadora('calc-bobina')" aria-controls="calc-bobina">Bobina</button>
+            <button id="btn-nav-inverso-direto" class="nav-button" onclick="mostrarCalculadora('calc-inverso-direto')" aria-controls="calc-inverso-direto">Descobrir Redutor (Direto)</button>
+            <button id="btn-nav-inverso-polias" class="nav-button" onclick="mostrarCalculadora('calc-inverso-polias')" aria-controls="calc-inverso-polias">Descobrir Redutor (c/ Polias)</button>
         </nav>
 
         <main>
@@ -43,7 +45,7 @@
             </div>
 
             <div id="calc-indireto" class="calculadora hidden" role="tabpanel">
-                <h2>Cálculo de Velocidade e Comprimento</h2>
+                <h2>Cálculo de Velocidade e Comprimento (com Polias)</h2>
                 <div class="input-group">
                     <label for="indireto-n-motor">Rotação do Motor (RPM)</label>
                     <input type="number" id="indireto-n-motor" placeholder="Ex: 1750" class="campo-calculo">
@@ -89,6 +91,51 @@
                 <button class="btn-calcular" onclick="calcularComprimentoBobina()">Calcular</button>
                 <div id="resultado-bobina" class="resultado"></div>
             </div>
+
+            <div id="calc-inverso-direto" class="calculadora hidden" role="tabpanel">
+                <h2>Descobrir Relação do Redutor (Acionamento Direto)</h2>
+                <div class="input-group">
+                    <label for="inv-direto-velocidade">Velocidade da Correia (m/min)</label>
+                    <input type="number" id="inv-direto-velocidade" placeholder="Ex: 22.9" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="inv-direto-n-motor">Rotação do Motor (RPM)</label>
+                    <input type="number" id="inv-direto-n-motor" placeholder="Ex: 1750" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="inv-direto-d-rolo">Diâmetro do Rolo de Tração (mm)</label>
+                    <input type="number" id="inv-direto-d-rolo" placeholder="Ex: 250" class="campo-calculo">
+                </div>
+                <button class="btn-calcular" onclick="calcularRedutorDireto()">Calcular Relação</button>
+                <div id="resultado-inverso-direto" class="resultado"></div>
+            </div>
+
+            <div id="calc-inverso-polias" class="calculadora hidden" role="tabpanel">
+                <h2>Descobrir Relação do Redutor (Acionamento com Polias)</h2>
+                <div class="input-group">
+                    <label for="inv-polias-velocidade">Velocidade da Correia (m/min)</label>
+                    <input type="number" id="inv-polias-velocidade" placeholder="Ex: 21.8" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="inv-polias-n-motor">Rotação do Motor (RPM)</label>
+                    <input type="number" id="inv-polias-n-motor" placeholder="Ex: 1750" class="campo-calculo">
+                </div>
+                 <div class="input-group">
+                    <label for="inv-polias-d-polia-motora">Diâmetro da Polia do Motor (mm)</label>
+                    <input type="number" id="inv-polias-d-polia-motora" placeholder="Ex: 150" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="inv-polias-d-polia-movida">Diâmetro da Polia no Redutor (mm)</label>
+                    <input type="number" id="inv-polias-d-polia-movida" placeholder="Ex: 300" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="inv-polias-d-rolo">Diâmetro do Rolo de Tração (mm)</label>
+                    <input type="number" id="inv-polias-d-rolo" placeholder="Ex: 250" class="campo-calculo">
+                </div>
+                <button class="btn-calcular" onclick="calcularRedutorComPolias()">Calcular Relação</button>
+                <div id="resultado-inverso-polias" class="resultado"></div>
+            </div>
+
         </main>
     </div>
 
