@@ -1,21 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Selecionando todos os elementos do DOM necessários
     const inputs = {
         inputLow: document.getElementById('inputLow'),
         inputHigh: document.getElementById('inputHigh'),
         outputLow: document.getElementById('outputLow'),
         outputHigh: document.getElementById('outputHigh'),
         calcInputPv: document.getElementById('calcInputPv'),
-        calcOutputSignal: document.getElementById('calcOutputSignal'),
         calcInputSignal: document.getElementById('calcInputSignal'),
-        calcOutputPv: document.getElementById('calcOutputPv'),
+        calcInputBits: document.getElementById('calcInputBits'),
     };
 
     const errorContainer = document.getElementById('erro-container');
     const errorMsg = document.getElementById('erro-msg');
 
-    // Função para mostrar ou esconder erros
+    const BITS_MAX = 65535;
+    const BITS_MIN = 0;
+
     const showError = (message) => {
         errorMsg.textContent = message;
         errorContainer.classList.remove('hidden');
@@ -24,49 +24,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const hideError = () => {
         errorContainer.classList.add('hidden');
     };
-
-    // Função principal de cálculo
-    const calculate = () => {
+    
+    // Função unificada de cálculo
+    const calculate = (source) => {
         hideError();
 
-        // Obtendo e convertendo os valores das faixas para números
         const iL = parseFloat(inputs.inputLow.value);
         const iH = parseFloat(inputs.inputHigh.value);
         const oL = parseFloat(inputs.outputLow.value);
         const oH = parseFloat(inputs.outputHigh.value);
         
-        // Verificação para evitar divisão por zero
         if (iL === iH || isNaN(iL) || isNaN(iH)) {
             showError('A faixa de entrada (Mínimo e Máximo) não pode ser igual ou vazia.');
             return;
         }
 
-        // --- Cálculo de Processo para Sinal ---
-        const pvValue = parseFloat(inputs.calcInputPv.value);
-        if (!isNaN(pvValue)) {
-            const signal = oL + (pvValue - iL) * (oH - oL) / (iH - iL);
-            inputs.calcOutputSignal.value = signal.toFixed(4); // Exibe com 4 casas decimais
+        let pv = NaN, signal = NaN, bits = NaN;
+
+        // Calcula os 3 valores baseado em qual campo foi alterado
+        if (source === 'pv' && inputs.calcInputPv.value !== '') {
+            pv = parseFloat(inputs.calcInputPv.value);
+            signal = oL + (pv - iL) * (oH - oL) / (iH - iL);
+            bits = BITS_MIN + (pv - iL) * (BITS_MAX - BITS_MIN) / (iH - iL);
+        } else if (source === 'signal' && inputs.calcInputSignal.value !== '') {
+            signal = parseFloat(inputs.calcInputSignal.value);
+            pv = iL + (signal - oL) * (iH - iL) / (oH - oL);
+            bits = BITS_MIN + (pv - iL) * (BITS_MAX - BITS_MIN) / (iH - iL);
+        } else if (source === 'bits' && inputs.calcInputBits.value !== '') {
+            bits = parseFloat(inputs.calcInputBits.value);
+            // Limita o valor de bits para o cálculo reverso
+            bits = Math.max(BITS_MIN, Math.min(BITS_MAX, bits)); 
+            pv = iL + (bits - BITS_MIN) * (iH - iL) / (BITS_MAX - BITS_MIN);
+            signal = oL + (pv - iL) * (oH - oL) / (iH - iL);
         }
 
-        // --- Cálculo de Sinal para Processo ---
-        const signalValue = parseFloat(inputs.calcInputSignal.value);
-         if (!isNaN(signalValue)) {
-            const pv = iL + (signalValue - oL) * (iH - iL) / (oH - oL);
-            inputs.calcOutputPv.value = pv.toFixed(4); // Exibe com 4 casas decimais
+        // Atualiza os campos que não foram a fonte da alteração
+        if (source !== 'pv') {
+            inputs.calcInputPv.value = isNaN(pv) ? '' : pv.toFixed(4);
+        }
+        if (source !== 'signal') {
+            inputs.calcInputSignal.value = isNaN(signal) ? '' : signal.toFixed(4);
+        }
+        if (source !== 'bits') {
+            // Limita e arredonda o valor de bits
+            let finalBits = Math.round(bits);
+            finalBits = Math.max(BITS_MIN, Math.min(BITS_MAX, finalBits));
+            inputs.calcInputBits.value = isNaN(finalBits) ? '' : finalBits;
         }
     };
     
-    // Adiciona o listener de evento 'input' para todos os campos
-    // Isso faz o cálculo ser refeito a cada alteração
-    for (const key in inputs) {
-        if (inputs.hasOwnProperty(key)) {
-            // Ignora os campos de resultado que são 'readonly'
-            if (!inputs[key].readOnly) {
-                 inputs[key].addEventListener('input', calculate);
+    // Adiciona listeners para os campos de faixa e de entrada
+    Object.values(inputs).forEach(input => {
+        input.addEventListener('input', (e) => {
+            const sourceId = e.target.id;
+            if (sourceId.includes('calcInputPv')) {
+                calculate('pv');
+            } else if (sourceId.includes('calcInputSignal')) {
+                calculate('signal');
+            } else if (sourceId.includes('calcInputBits')) {
+                calculate('bits');
+            } else {
+                // Se um campo de faixa for alterado, recalcula tudo baseado no processo
+                calculate('pv');
             }
-        }
-    }
-
-    // Executa um cálculo inicial ao carregar a página
-    calculate();
+        });
+    });
 });
