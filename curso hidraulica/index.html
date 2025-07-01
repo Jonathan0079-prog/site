@@ -442,9 +442,120 @@
 <p>Q = 60 l/min = 1000 cm³/s</p>
 <p><strong>a) Linha de pressão (v<sub>p</sub> ≈ 457,2 cm/s):</strong></p>
 <figure class="image-container"><img src="assets/Screenshot_31.png" alt="Cálculo da área de pressão para 60 l/min."></figure>
-            
-<div class="status-bloqueio"></div>
-        </p><div class="status-bloqueio"></div></div>
+            <p>
+    Adotamos o duto comercial de diâmetro superior mais próximo: <strong>D<sub>pressão</sub> = 19mm (3/4")</strong>.
+</p>
+<p><strong>b) Na sucção (v<sub>s</sub> ≈ 121,92 cm/s):</strong></p>
+<figure class="image-container">
+    <img src="assets/Screenshot_32.png" alt="Cálculo da área e diâmetro de sucção para 60 l/min.">
+</figure>
+<p>
+    Adotamos o duto comercial de diâmetro superior mais próximo: <strong>D<sub>sucção</sub> = 35mm (1 3/8")</strong>.
+</p>
+<p><strong>c) No retorno (v<sub>r</sub> ≈ 304,80 cm/s):</strong></p>
+<figure class="image-container">
+    <img src="assets/Screenshot_33.png" alt="Cálculo da área e diâmetro de retorno para 60 l/min.">
+</figure>
+<p>
+    Adotamos o duto comercial de diâmetro superior mais próximo: <strong>D<sub>retorno</sub> = 21mm (7/8")</strong>.
+</p>
+
+<h4>10.4. Determinação do Tipo de Escoamento</h4>
+
+<h5>10.4.1. Determinar o tipo de escoamento em uma linha de pressão de 15mm de diâmetro interno.</h5>
+<figure class="image-container">
+    <img src="assets/Screenshot_34.png" alt="Cálculo do Número de Reynolds para D=15mm.">
+</figure>
+<div class="answer-box">
+    <strong>Resposta:</strong> O escoamento é <strong>laminar</strong>, pois o Número de Reynolds (Re = 1371,6) está na faixa de 0 a 2.000.
+</div>
+
+<h5>10.4.2. Determinar o tipo de escoamento em uma linha de pressão de 22mm de diâmetro interno.</h5>
+<figure class="image-container">
+    <img src="assets/Screenshot_35.png" alt="Cálculo do Número de Reynolds para D=22mm.">
+</figure>
+<div class="answer-box">
+    <strong>Resposta:</strong> O escoamento é <strong>indeterminado (regime de transição)</strong>, pois o Número de Reynolds (Re = 2011,6) está na faixa de 2.000 a 3.000. Poderá ocorrer uma perda de carga mais acentuada do que no regime laminar.
+</div>
+
+<h5>10.4.3. Determinar o tipo de escoamento em uma linha de pressão de 55mm de diâmetro interno.</h5>
+<figure class="image-container">
+    <img src="assets/Screenshot_36.png" alt="Cálculo do Número de Reynolds para D=55mm.">
+</figure>
+<div class="answer-box">
+    <strong>Resposta:</strong> O escoamento é <strong>turbulento</strong>, pois o Número de Reynolds (Re = 5029,2) está acima de 3.000. Haverá uma perda de carga elevada no sistema.
+</div>
+
+<h4>10.5. Exemplo de Cálculo de Perda de Carga de um Sistema</h4>
+<h5>10.5.1. Calcular a perda de carga total de um sistema dadas as seguintes condições:</h5>
+<ol type="a" class="problem-list">
+    <li>Vazão máxima: Q = 18,925 l/min (5 GPM)</li>
+    <li>Velocidade de fluxo recomendada (linha de pressão): v = 457,20 cm/s (15 ft/s)</li>
+    <li>Condições: Tubos curvados, temperatura do fluido variável.</li>
+    <li>Comprimento da tubulação retilínea (L<sub>l</sub>): 1346 cm</li>
+    <li>Singularidades encontradas no sistema:
+        <ul>
+            <li>2 cotovelos de 90° (raio longo)</li>
+            <li>2 cotovelos de 90° (raio curto)</li>
+            <li>2 cotovelos de 45°</li>
+            <li>4 curvas de 90° (raio longo)</li>
+            <li>2 "tês" de saída bilateral</li>
+            <li>1 registro de globo</li>
+        </ul>
+    </li>
+    <li>Válvulas RACINE na linha de pressão (perdas localizadas a serem consideradas):
+        <ul>
+            <li>2 válvulas de controle direcional de 1/4"</li>
+            <li>2 válvulas de sequência de 3/8"</li>
+            <li>1 válvula de controle de vazão (vazão máx. 30 l/min)</li>
+            <li>1 válvula de retenção pilotada de 3/4" (montada em placa)</li>
+        </ul>
+    </li>
+    <li>Fluido utilizado: Óleo SAE-10.</li>
+</ol>
+<p><strong>Questão:</strong> Sabendo que o sistema necessita de uma pressão mínima de 160 bar no atuador e que a pressão máxima fornecida pela bomba é de 210 bar, qual a conclusão sobre a viabilidade do sistema?</p>
+<hr>
+<p><strong>Solução:</strong></p>
+<p><strong>- Determinação do diâmetro interno (D) da tubulação:</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_37.png" alt="Cálculo do diâmetro para o problema."></figure>
+<p>Adota-se o diâmetro comercial padrão: <strong>D = 0,9525 cm (3/8")</strong>.</p>
+
+<p><strong>- Verificação do regime de escoamento (cálculo de "f"):</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_38.png" alt="Cálculo do Número de Reynolds para o problema."></figure>
+<p>Como Re < 2.000, o escoamento é laminar. Para este regime, o fator de atrito 'f' pode ser calculado pela fórmula f = 64/Re. Adotando uma viscosidade cinemática de 0,5 Stokes (fator de segurança para obter um 'f' e ΔP maiores), temos:</p>
+<figure class="image-container"><img src="assets/Screenshot_39.png" alt="Cálculo do fator de atrito 'f'."></figure>
+
+<p><strong>- Determinação do comprimento equivalente das singularidades (L<sub>s</sub>):</strong></p>
+<p>Utilizando a tabela de comprimentos equivalentes (Figura II.12.A) para um diâmetro de 3/8":</p>
+<figure class="image-container"><img src="assets/Screenshot_40.png" alt="Tabela de cálculo do comprimento equivalente Ls."></figure>
+
+<p><strong>- Determinação da perda de carga localizada nas válvulas (ΔP<sub>válvulas</sub>):</strong></p>
+<p>Dados obtidos dos catálogos técnicos da RACINE para as condições de operação:</p>
+<figure class="image-container"><img src="assets/Screenshot_41.png" alt="Tabela de cálculo da perda de carga localizada nas válvulas."></figure>
+
+<p><strong>- Cálculo da perda de carga total no sistema (ΔP<sub>total</sub>):</strong></p>
+<p>Primeiro, a perda de carga distribuída e das singularidades geométricas:</p>
+<figure class="image-container"><img src="assets/Screenshot_42.png" alt="Cálculo da perda de carga distribuída e geométrica."></figure>
+<p>Agora, somamos a perda das válvulas:</p>
+<p class="formula-container">ΔP<sub>total</sub> = ΔP + ΔP<sub>válvulas</sub> = 21,125 + 17,04 = <strong>38,165 bar</strong></p>
+
+<p><strong>- Conclusão Final:</strong></p>
+<div class="conclusion-box">
+    <p>A pressão máxima fornecida pela bomba é de 210 bar. A perda de carga total calculada é de 38,165 bar. Portanto, a pressão útil disponível no atuador será:</p>
+    <p>P<sub>disp</sub> = P<sub>máx</sub> - ΔP<sub>total</sub> = 210 - 38,165 = <strong>171,835 bar</strong></p>
+    <p>Como a pressão disponível (171,835 bar) é superior à pressão mínima exigida pelo sistema (160 bar), concluímos que, sob estas condições e assumindo ausência de vazamentos significativos, <strong>o sistema funcionará satisfatoriamente</strong>.</p>
+</div>
+<p>
+    Na prática, este procedimento é realizado para cada ramificação do circuito que leva a um atuador diferente, garantindo que a pressão de trabalho seja adequada em todos os pontos.
+</p>
+<p>
+    A título de ilustração, a perda de carga total (ΔP<sub>total</sub>) representa a potência do sistema que é convertida em calor:
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_43.png" alt="Fórmula de cálculo da potência perdida em calor.">
+    <figcaption>A potência perdida (em CV ou kW) é dissipada na forma de calor, influenciando no dimensionamento de trocadores de calor.</figcaption>
+</figure><div class="status-bloqueio"></div>
+    
         <div id="aula3" class="module"><h2>Aula 3: Simbologia</h2><p>Conteúdo da Aula 3...</p><div class="status-bloqueio"></div></div>
         <div id="aula4" class="module"><h2>Aula 4: Fluidos</h2><p>Conteúdo da Aula 4...</p><div class="status-bloqueio"></div></div>
         <div id="aula5" class="module"><h2>Aula 5: Reservatórios</h2><p>Conteúdo da Aula 5...</p><div class="status-bloqueio"></div></div>
