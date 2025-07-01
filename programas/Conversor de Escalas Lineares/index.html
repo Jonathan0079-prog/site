@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Conversor Processo-Sinal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Processo ⇔ Sinal</h1>
+        <p>Conversor de Escalas Lineares</p>
+    </header>
+
+    <div class="main-container">
+        <div class="calculator-container">
+            
+            <h2>Configuração das Faixas</h2>
+            
+            <div class="range-container">
+                <div class="input-group">
+                    <label class="group-title">Faixa de Entrada (°C, Psi, ml)</label>
+                    <div class="field-pair">
+                        <input type="number" id="inputLow" value="0" placeholder="Mínimo">
+                        <input type="number" id="inputHigh" value="100" placeholder="Máximo">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="group-title">Faixa de Saída (mA, V)</label>
+                    <div class="field-pair">
+                        <input type="number" id="outputLow" value="4" placeholder="Mínimo">
+                        <input type="number" id="outputHigh" value="20" placeholder="Máximo">
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="calc-title">Cálculos de Conversão</h2>
+            
+            <div class="input-group">
+                <label for="calcInputPv">Processo para Sinal:</label>
+                <div class="conversion-row">
+                   <input type="number" id="calcInputPv" placeholder="Valor do Processo">
+                   <span>➡️</span>
+                   <input type="text" id="calcOutputSignal" placeholder="Resultado (Sinal)" readonly>
+                </div>
+           </div>
+
+           <div class="input-group">
+               <label for="calcInputSignal">Sinal para Processo:</label>
+                <div class="conversion-row">
+                   <input type="number" id="calcInputSignal" placeholder="Valor do Sinal">
+                   <span>➡️</span>
+                   <input type="text" id="calcOutputPv" placeholder="Resultado (Processo)" readonly>
+                </div>
+           </div>
+
+            <div id="erro-container" class="erro-container hidden">
+                <p id="erro-msg"></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
