@@ -1,36 +1,62 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // --- CONFIGURAÇÃO ---
-    const TEMPO_POR_MODULO_SEGUNDOS = 10; // Tempo mínimo de permanência ATIVA em cada módulo.
+//
+// COLE AQUI O MESMO OBJETO `firebaseConfig` QUE VOCÊ USOU NO `login.js`
+//
+const firebaseConfig = {
+    apiKey: "AIza...",
+    authDomain: "...",
+    projectId: "...",
+    storageBucket: "...",
+    messagingSenderId: "...",
+    appId: "...",
+    measurementId: "..."
+};
 
-    // --- ELEMENTOS DA INTERFACE ---
+// Inicializa o Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+/**
+ * PORTEIRO DE SEGURANÇA (Gatekeeper)
+ * Verifica se o usuário está logado ANTES de mostrar qualquer conteúdo.
+ */
+auth.onAuthStateChanged(function(user) {
+    if (user) {
+        // Usuário está logado. Mostra o conteúdo do curso.
+        document.querySelector('.main-container').style.display = 'block';
+        document.querySelector('.floating-nav').style.display = 'flex';
+        // Inicia a lógica do curso.
+        inicializarCurso();
+    } else {
+        // Usuário NÃO está logado. Redireciona para a página de login.
+        console.log('Acesso negado. Redirecionando...');
+        window.location.href = 'login.html';
+    }
+});
+
+
+/**
+ * Função principal que contém toda a lógica do curso.
+ * Ela só é chamada se o "porteiro" do Firebase permitir o acesso.
+ */
+function inicializarCurso() {
+    const TEMPO_POR_MODULO_SEGUNDOS = 10;
     const modules = document.querySelectorAll('.module');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     const moduleIndicator = document.getElementById('module-indicator');
     
-    // --- VARIÁVEIS DE ESTADO ---
     let currentModuleIndex = 0;
     let highestUnlockedModule = 0;
     const totalModules = modules.length;
-    let countdownInterval = null; // Variável para controlar o timer
+    let countdownInterval = null;
 
-    // --- FUNÇÕES PRINCIPAIS ---
+    // Carrega o progresso salvo do aluno
+    const savedHighest = parseInt(localStorage.getItem('highestUnlockedModule') || '0', 10);
+    highestUnlockedModule = savedHighest;
+    const savedCurrent = parseInt(localStorage.getItem('currentModuleIndex') || '0', 10);
+    currentModuleIndex = Math.min(savedCurrent, highestUnlockedModule);
+    showModule(currentModuleIndex);
 
-    /**
-     * Inicia o curso, carregando o progresso salvo do aluno.
-     */
-    function inicializarCurso() {
-        const savedHighest = parseInt(localStorage.getItem('highestUnlockedModule') || '0', 10);
-        highestUnlockedModule = savedHighest;
-        const savedCurrent = parseInt(localStorage.getItem('currentModuleIndex') || '0', 10);
-        currentModuleIndex = Math.min(savedCurrent, highestUnlockedModule);
-        showModule(currentModuleIndex);
-    }
-
-    /**
-     * Exibe um módulo específico e gerencia o estado da interface.
-     * @param {number} index - O índice do módulo a ser exibido.
-     */
     function showModule(index) {
         pausarTimerDePermanencia();
         modules.forEach(module => module.classList.remove('active'));
@@ -42,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const statusBloqueioDiv = currentModule.querySelector('.status-bloqueio');
         statusBloqueioDiv.style.display = 'none';
 
-        // Verifica se o módulo é o mais recente para iniciar o bloqueio por tempo
         if (index === highestUnlockedModule && index < totalModules - 1) {
             nextBtn.disabled = true;
             iniciarTimerDePermanencia(statusBloqueioDiv);
@@ -51,10 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    /**
-     * Inicia ou retoma o contador de tempo de permanência ativa na página.
-     * @param {HTMLElement} displayElement - Onde exibir a mensagem do timer.
-     */
     function iniciarTimerDePermanencia(displayElement) {
         pausarTimerDePermanencia();
         displayElement.style.display = 'block';
@@ -66,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let segundosGastos = progresso.segundosGastos;
 
         function tick() {
-            if (document.hidden) return; // Pausa a contagem se a aba não estiver visível
+            if (document.hidden) return;
             segundosGastos++;
             localStorage.setItem('timerProgress', JSON.stringify({ moduleIndex: currentModuleIndex, segundosGastos: segundosGastos }));
             let tempoRestante = TEMPO_POR_MODULO_SEGUNDOS - segundosGastos;
@@ -87,20 +108,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    /**
-     * Para o contador de tempo (usado ao mudar de módulo ou aba).
-     */
     function pausarTimerDePermanencia() {
         clearInterval(countdownInterval);
         countdownInterval = null;
     }
 
-    /**
-     * Executa as ações de desbloqueio de um módulo.
-     * @param {HTMLElement} displayElement - O elemento que mostra o status.
-     */
     function efetuarDesbloqueio(displayElement) {
-        // Garante que o desbloqueio só aconteça uma vez por módulo
         if (currentModuleIndex === highestUnlockedModule) {
             highestUnlockedModule++;
             localStorage.setItem('highestUnlockedModule', highestUnlockedModule);
@@ -111,16 +124,10 @@ document.addEventListener('DOMContentLoaded', function() {
         displayElement.textContent = 'Módulo desbloqueado! Você já pode avançar.';
     }
 
-    // --- EVENT LISTENERS ---
-
-    /**
-     * Gerencia o timer quando o usuário muda de aba ou minimiza o navegador.
-     */
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
             pausarTimerDePermanencia();
         } else {
-            // Apenas retoma o timer se estivermos no módulo mais recente e bloqueado
             if (currentModuleIndex === highestUnlockedModule && currentModuleIndex < totalModules - 1) {
                 const currentModule = modules[currentModuleIndex];
                 const statusBloqueioDiv = currentModule.querySelector('.status-bloqueio');
@@ -129,9 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    /**
-     * (CÓDIGO RESTAURADO) Adiciona a funcionalidade ao botão "Próximo".
-     */
     nextBtn.addEventListener('click', function() {
         if (currentModuleIndex < totalModules - 1) {
             currentModuleIndex++;
@@ -139,16 +143,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    /**
-     * (CÓDIGO RESTAURADO) Adiciona a funcionalidade ao botão "Anterior".
-     */
     prevBtn.addEventListener('click', function() {
         if (currentModuleIndex > 0) {
             currentModuleIndex--;
             showModule(currentModuleIndex);
         }
     });
-
-    // --- PONTO DE PARTIDA ---
-    inicializarCurso();
-});
+}
