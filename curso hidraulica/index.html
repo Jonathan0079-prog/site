@@ -280,7 +280,169 @@
     <li><strong>Re &gt; 3000:</strong> Regime de escoamento <strong>turbulento</strong>, caracterizado por vórtices, mistura intensa e maior perda de energia.</li>
     <li><strong>2000 &lt; Re &lt; 3000:</strong> Região de transição, onde o escoamento é instável e pode alternar entre os dois regimes.</li>
 </ul>
+<p>
+    O ideal para circuitos óleo-hidráulicos é que o regime de escoamento seja laminar (Re ≤ 2.000), pois em regimes turbulentos, as perdas de pressão (perdas de carga) são exponencialmente maiores. Sempre que possível, deve-se evitar na concepção dos circuitos o emprego de restrições ou curvas de raio curto, pois são indutores de turbulência.
+</p>
 
+<figure class="image-container">
+    <img src="assets/Screenshot_12.png" alt="Diagrama ilustrando a diferença de perda de carga entre escoamento laminar e turbulento.">
+    <figcaption>Figura II.9: Gráfico comparativo de perda de carga vs. vazão para regimes laminar e turbulento.</figcaption>
+</figure>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_13.png" alt="Exemplos de componentes que induzem turbulência, como curvas abruptas.">
+    <figcaption>Figura II.10: Elementos indutores de turbulência em um circuito.</figcaption>
+</figure>
+
+<h3>7. Vazão em Tubulações</h3>
+<p>
+    A vazão (Q) de um fluido, que representa o volume de fluido que atravessa uma determinada seção transversal por unidade de tempo, pode ser determinada de duas formas. Ela pode ser expressa como a razão entre o volume (V) e o tempo (t), ou como o produto da velocidade média do fluido (v) pela área da seção transversal (A) por onde ele escoa.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_14.png" alt="Fórmulas para o cálculo de vazão.">
+    <figcaption>Relações fundamentais para o cálculo de vazão (Q).</figcaption>
+</figure>
+<p>
+    É de suma importância observar as velocidades de escoamento recomendadas para diferentes partes do circuito hidráulico. A RACINE, por exemplo, recomenda as seguintes faixas de velocidade para óleo hidráulico, visando otimizar a eficiência e a vida útil do sistema:
+</p>
+<ul class="recommendation-list">
+    <li><strong>Para Linhas de Sucção e Preenchimento:</strong><br> v = 60,96 a 121,92 cm/s (2 a 4 ft/s)</li>
+    <li><strong>Para Linhas de Retorno:</strong><br> v = 304,80 a 457,20 cm/s (10 a 15 ft/s)</li>
+    <li><strong>Para Retorno (após válvula de alívio):</strong><br> v = 457,20 a 762,20 cm/s (15 a 25 ft/s)</li>
+    <li><strong>Para Linhas de Pressão (abaixo de 210 bar):</strong><br> v = 457,20 a 762,20 cm/s (15 a 25 ft/s)</li>
+    <li><strong>Para Linhas de Pressão (acima de 210 bar):</strong><br> v = 457,20 a 609,60 cm/s (15 a 20 ft/s)</li>
+</ul>
+<p>
+    A observância dessas velocidades contribui para manter o regime de escoamento laminar, minimizando as perdas de carga e assegurando que o dimensionamento da tubulação resulte em diâmetros comerciais padronizados.
+</p>
+
+<h3>8. Perda de Carga em Sistemas Hidráulicos</h3>
+<p>
+    Durante o escoamento do fluido através do sistema, ocorre uma queda de pressão, tecnicamente denominada <strong>perda de carga (ΔP)</strong>. Esta perda é atribuível ao atrito do fluido com as paredes da tubulação (perda de carga distribuída) e às perturbações no fluxo causadas por componentes como curvas, válvulas e conexões (perda de carga localizada). A fórmula geral de Darcy-Weisbach, aqui apresentada de forma simplificada para uso prático, permite o cálculo dessa perda:
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_15.png" alt="Fórmula simplificada para cálculo de perda de carga (Delta P).">
+    <figcaption>Fórmula simplificada para o cálculo da perda de carga.</figcaption>
+</figure>
+<ul>
+    <li><strong>ΔP:</strong> Perda de carga do sistema [bar]</li>
+    <li><strong>f:</strong> Fator de atrito de Darcy (adimensional)</li>
+    <li><strong>L:</strong> Comprimento total da tubulação [cm] (L = L<sub>l</sub> + L<sub>s</sub>)</li>
+    <li><strong>L<sub>l</sub>:</strong> Comprimento da tubulação retilínea [cm]</li>
+    <li><strong>L<sub>s</sub>:</strong> Comprimento equivalente das singularidades [cm]</li>
+    <li><strong>D:</strong> Diâmetro interno da tubulação [cm]</li>
+    <li><strong>v:</strong> Velocidade de escoamento do fluido [cm/s]</li>
+    <li><strong>γ:</strong> Massa específica do fluido [kg/m³] (para óleo SAE-10, γ ≈ 881,1 kg/m³)</li>
+</ul>
+
+<h3>9. Detalhamento dos Cálculos</h3>
+
+<h4>9.1. Determinação do Fator "f"</h4>
+<p>
+    O fator de atrito "f" é uma função do Número de Reynolds e da rugosidade relativa da parede interna do duto. Quanto maior a rugosidade, maior a resistência ao escoamento e, consequentemente, maior a perda de carga. A figura a seguir ilustra, em escala microscópica, a interação entre as moléculas do fluido (polímeros) e as irregularidades da superfície da tubulação, que geram o atrito responsável pela perda de energia.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_16.png" alt="Representação microscópica da parede interna de um duto e das moléculas de óleo (polímeros).">
+    <figcaption>Interação microscópica entre o fluido e a parede do duto.</figcaption>
+</figure>
+
+<h4>9.2. Determinação de Ls, Ll e L</h4>
+<p>
+    Como salientado, restrições, curvas e válvulas causam perdas de carga localizadas. Fabricantes como a RACINE fornecem em seus catálogos as quedas de pressão para cada componente sob condições específicas de vazão e pressão.
+</p>
+<p>
+    Para elementos geométricos como curvas e cotovelos, a prática comum é determinar um "comprimento equivalente" (L<sub>s</sub>) de tubulação retilínea que produziria a mesma perda de carga. Existem tabelas, como a apresentada a seguir, para estimar esses valores. O comprimento total (L) para o cálculo é então a soma do comprimento retilíneo real (L<sub>l</sub>) com a soma dos comprimentos equivalentes de todas as singularidades (L<sub>s</sub>).
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_17.jpg" alt="Tabela de transformação de singularidades em comprimentos equivalentes.">
+    <figcaption>Tabela para determinação de comprimentos equivalentes de singularidades comuns.</figcaption>
+</figure>
+
+<h4>9.3. Determinação de "D"</h4>
+<p>
+    O diâmetro interno (D) da tubulação é um parâmetro crítico, calculado a partir da área da seção transversal (A) necessária para acomodar a vazão (Q) do sistema à velocidade (v) recomendada.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_18.png" alt="Fórmula A = Q / v">
+    <figcaption>Cálculo da área da seção a partir da vazão e velocidade.</figcaption>
+</figure>
+<p>
+    Adotando a velocidade recomendada para linhas de pressão (v ≈ 457,20 cm/s ou 15 ft/s), a fórmula para a área se torna:
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_19.png" alt="Fórmula A = Q / 457.20">
+</figure>
+<p>
+    Uma vez determinada a área "A", o diâmetro "D" é obtido pela relação geométrica:
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_20.png" alt="Fórmula D = raiz quadrada de (4A / pi)">
+</figure>
+
+<h4>9.4. Determinação de "v" e "γ"</h4>
+<p>
+    A velocidade do fluido (v) deve ser a recomendada para cada seção do circuito, conforme item 7. A utilização dessas velocidades é uma heurística de projeto que visa manter o Número de Reynolds abaixo de 2.000, garantindo o escoamento laminar.
+</p>
+<p>
+    A massa específica (γ) para um óleo hidráulico padrão, como o SAE-10, é de aproximadamente 881,1 kg/m³.
+</p>
+
+<h4>9.6. Procedimento de Cálculo</h4>
+<ol type="a">
+    <li>Determine o fator de atrito "f".</li>
+    <li>Calcule o comprimento equivalente das singularidades "Ls" e some ao comprimento retilíneo "Ll" para obter o comprimento total "L". Some as perdas de carga localizadas específicas das válvulas (obtidas em catálogos).</li>
+    <li>Calcule a perda de carga distribuída (ΔP) usando a fórmula e some-a às perdas localizadas das válvulas para obter a perda de carga total do sistema.</li>
+    <li>Verifique se a pressão disponível na bomba é suficiente para vencer a perda de carga total e ainda realizar o trabalho necessário. Se P<sub>bomba</sub> - ΔP<sub>total</sub> < P<sub>trabalho</sub>, o sistema é inadequado.</li>
+</ol>
+
+<h4>9.7. Observação Final sobre Perdas e Aquecimento</h4>
+<p>
+    O cálculo de perda de carga é de importância crítica no projeto de sistemas hidráulicos. Restrições no percurso do fluxo, como reduções de diâmetro ou orifícios, são as maiores contribuintes para a perda de carga e, consequentemente, para o aquecimento do óleo.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_21.png" alt="Ilustração do escoamento de óleo através de restrições.">
+    <figcaption>Figura II.13: Efeito de restrições no fluxo e pressão.</figcaption>
+</figure>
+<p>
+    O atrito entre as moléculas do fluido (polímeros) ao passarem por uma restrição gera calor. Este fenômeno é análogo ao aquecimento das mãos ao esfregá-las com força. O aquecimento excessivo degrada o óleo, reduzindo sua viscosidade e vida útil.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_22.png" alt="Ilustração do atrito entre polímeros de óleo.">
+    <figcaption>Figura II.14: Aquecimento por atrito intermolecular.</figcaption>
+</figure>
+<p>
+    Na prática de montagem, é crucial que as curvas em tubulações tenham um raio de, no mínimo, 2.5 a 3 vezes o diâmetro externo do duto, para evitar o "enrugamento" interno, que cria uma restrição e um ponto de perda de carga.
+</p>
+
+<h3>10. Exemplos de Cálculos</h3>
+
+<h4>10.1. Cálculo da Área da Seção de um Duto</h4>
+<h5>10.1.1. Calcular a área da seção de um duto de 10 cm de diâmetro.</h5>
+<figure class="image-container"><img src="assets/Screenshot_25.png" alt="Cálculo da área para um duto de 10cm."></figure>
+
+<h5>10.1.2. Calcular a área da seção de um duto de 1 1/4" de diâmetro.</h5>
+<figure class="image-container"><img src="assets/Screenshot_26.png" alt="Cálculo da área para um duto de 1 1/4 polegadas."></figure>
+
+<h4>10.2. Cálculo do Diâmetro Interno a Partir da Área</h4>
+<h5>10.2.1. Calcular o diâmetro do duto cuja seção possui uma área de 1,267 cm².</h5>
+<figure class="image-container"><img src="assets/Screenshot_27.png" alt="Cálculo do diâmetro a partir de uma área de 1,267 cm²."></figure>
+
+<h4>10.3. Dimensionamento de Dutos a Partir da Vazão</h4>
+<h5>10.3.1. Calcular as áreas e diâmetros para as linhas de pressão, sucção e retorno de um sistema com vazão máxima de 6 litros/minuto.</h5>
+<p>Q = 6 l/min = 100 cm³/s</p>
+<p><strong>a) Linha de pressão (v<sub>p</sub> ≈ 457,2 cm/s):</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_28.png" alt="Cálculo da área de pressão para 6 l/min."></figure>
+<figure class="image-container"><img src="assets/Screenshot_29.png" alt="Cálculo do diâmetro de pressão para 6 l/min."></figure>
+<p>Adota-se D<sub>pressão</sub> = 0,524 cm (próximo a 3/16").</p>
+<p><strong>b) Linha de retorno (v<sub>r</sub> ≈ 304,8 cm/s):</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_30.png" alt="Cálculo da área e diâmetro de retorno para 6 l/min."></figure>
+<p>Adota-se D<sub>retorno</sub> = 0,635 cm (1/4").</p>
+
+<h5>10.3.2. Calcular as áreas e diâmetros para um sistema com vazão máxima de 60 litros/minuto.</h5>
+<p>Q = 60 l/min = 1000 cm³/s</p>
+<p><strong>a) Linha de pressão (v<sub>p</sub> ≈ 457,2 cm/s):</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_31.png" alt="Cálculo da área de pressão para 60 l/min."></figure>
+            
 <div class="status-bloqueio"></div>
         </p><div class="status-bloqueio"></div></div>
         <div id="aula3" class="module"><h2>Aula 3: Simbologia</h2><p>Conteúdo da Aula 3...</p><div class="status-bloqueio"></div></div>
