@@ -137,7 +137,152 @@
 
 <div class="status-bloqueio"></div>
     </p><div class="status-bloqueio"></div></div>
-        <div id="aula2" class="module"><h2>Aula 2: Fundamentos</h2><p>Conteúdo da Aula 2...</p><div class="status-bloqueio"></div></div>
+        <div id="aula2" class="module"><h2>Aula 2: Fundamentos</h2><p><h2><span style="font-size: 1.5em; vertical-align: middle;">⚙️</span> Aula 2: Fundamentos e Princípios Físicos</h2>
+
+<p>Assim como em qualquer disciplina da engenharia, a hidráulica industrial fundamenta-se em princípios físicos basilares. A proficiência em sua aplicação prática exige o domínio desses conceitos. Seria infrutífero, por exemplo, tentar dimensionar um circuito sem compreender as leis que governam a pressão e a energia. Este capítulo, portanto, abordará os princípios fundamentais da hidráulica e as formulações matemáticas mais empregadas na prática.</p>
+
+<h3>1. Lei de Pascal</h3>
+<p>
+    Blaise Pascal (1623-1662) foi um físico e matemático cujos trabalhos estabeleceram a base da hidrostática. Dentre seus postulados, destaca-se o "Princípio Fundamental da Hidráulica", que enuncia:
+</p>
+<blockquote class="principle-box">
+    "A pressão aplicada a um ponto de um fluido incompressível em repouso, confinado em um recipiente, é transmitida integralmente e com a mesma intensidade a todos os pontos do fluido e às paredes do recipiente que o contém."
+</blockquote>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_1.png" alt="Ilustração do Princípio de Pascal, com pressão aplicada em um ponto A sendo transmitida igualmente para um ponto B em um recipiente fechado.">
+    <figcaption>Figura II.1: Representação esquemática da Lei de Pascal.</figcaption>
+</figure>
+
+<p>
+    A Figura II.1 ilustra a aplicação deste princípio. Forças e movimentos podem ser transmitidos através do fluido, que atua como meio transmissor. Se uma pressão é aplicada no ponto "A", um manômetro posicionado no ponto "B" registrará um valor de pressão idêntico, desconsiderando efeitos gravitacionais.
+</p>
+
+<h3>2. Princípio da Conservação da Energia</h3>
+<p>
+    A Primeira Lei da Termodinâmica, o Princípio da Conservação da Energia, postula que a energia não pode ser criada nem destruída, apenas convertida ou transferida de uma forma para outra. A energia total de um sistema isolado permanece constante.
+</p>
+<p>
+    Toda energia que utilizamos é, em sua essência, uma conversão de uma forma de energia preexistente na natureza. A energia térmica de uma caldeira provém da energia química armazenada em um combustível; a energia elétrica é gerada pela conversão da energia potencial gravitacional da água (hidrelétricas) ou da energia nuclear (termonucleares). Lavoisier enunciou: "Na natureza nada se cria, nada se perde, tudo se transforma". Este princípio é diretamente aplicável à energia.
+</p>
+<p>
+    Em sistemas óleo-hidráulicos, observamos uma cadeia de conversões energéticas: a energia <strong>elétrica</strong> é convertida em energia <strong>mecânica</strong> (no motor elétrico), que por sua vez é convertida em energia <strong>hidráulica</strong> (pela bomba, que confere pressão e vazão ao óleo). Finalmente, esta energia hidráulica é reconvertida em <strong>mecânica</strong> no atuador.
+</p>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_3.png" alt="Diagrama de um multiplicador de força hidráulico, onde uma força menor em um pistão pequeno move um peso maior em um pistão grande.">
+    <figcaption>Figura II.2: Demonstração da multiplicação de força e o balanço de trabalho (Força x Deslocamento).</figcaption>
+</figure>
+
+<p>
+    A Figura II.2 ilustra um multiplicador de força hidráulico. Uma carga de 2.000 kg é deslocada por 1 centímetro pela aplicação de uma força equivalente a 1.000 kg, que atua ao longo de 2 centímetros. Isso é possível porque a área do pistão "B" é o dobro da área do pistão "A". Verifica-se que o trabalho realizado (Força × Deslocamento) é conservado em ambos os lados, demonstrando que um pequeno esforço com grande deslocamento pode gerar um grande esforço com pequeno deslocamento.
+</p>
+<p>
+    Este fenômeno é análogo ao <strong>Princípio da Alavanca</strong>, ilustrado na Figura II.3. Uma massa de 50 kg equilibra uma de 100 kg, pois a relação das distâncias ao ponto de apoio (fulcro) é de 2:1. Na hidráulica, a relação entre as áreas dos pistões cumpre o papel que as distâncias cumprem na alavanca. Este é o princípio que permite obter forças de grande magnitude a partir de fontes de potência relativamente pequenas.
+</p>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_4.png" alt="Ilustração do Princípio da Alavanca, com pesos diferentes em equilíbrio devido a diferentes distâncias do fulcro.">
+    <figcaption>Figura II.3: Paralelo entre o sistema hidráulico e o Princípio da Alavanca.</figcaption>
+</figure>
+
+
+<h3>3. Força e Pressão</h3>
+<p>
+    Em física, <strong>Força (F)</strong> é definida como uma grandeza vetorial capaz de alterar o estado de inércia de um corpo ou de lhe causar uma deformação.
+</p>
+<p>
+    Quando uma força F é aplicada perpendicularmente sobre uma superfície de área A, define-se a <strong>Pressão (P)</strong> como a razão entre a magnitude da força e a área sobre a qual ela atua. A pressão é uma medida da força distribuída por unidade de área.
+</p>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_5.png" alt="Fórmula da Pressão: P = F / A">
+    <figcaption>Relação fundamental entre Pressão, Força e Área.</figcaption>
+</figure>
+
+<p>
+    Em óleo-hidráulica, um conceito crucial deve ser compreendido: <strong>a bomba gera vazão (fluxo), não pressão</strong>. A pressão em um circuito hidráulico surge como uma reação a uma resistência imposta ao fluxo de óleo. Seja essa resistência uma carga externa em um atuador, uma restrição em uma válvula ou o atrito na tubulação. Sem resistência, não há pressão.
+</p>
+<p>
+    As unidades de pressão mais comuns na indústria são kg/cm², PSI (Pounds per Square Inch) e, de acordo com o Sistema Internacional (SI), o <strong>bar</strong>, onde 1 bar ≈ 1.02 kg/cm² ≈ 14.5 PSI.
+</p>
+
+<h3>4. Pressão Hidrostática</h3>
+<p>
+    A Terra é envolta por uma camada gasosa, a atmosfera, que exerce uma pressão sobre a superfície. Ao nível do mar, essa pressão é definida como 1 atmosfera (1 atm). Pelo princípio de Pascal, essa pressão atmosférica é transmitida a qualquer fluido em um recipiente aberto.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_6.png" alt="Reservatório aberto sofrendo a ação da pressão atmosférica.">
+    <figcaption>Figura II.4: Influência da pressão atmosférica.</figcaption>
+</figure>
+<p>
+    Adicionalmente, a própria coluna de fluido dentro de um reservatório exerce uma pressão devido ao seu peso. A pressão total em qualquer ponto submerso em um fluido é a soma da pressão na superfície (ex: atmosférica) com a pressão exercida pela coluna de fluido acima desse ponto. A esta última parcela, damos o nome de <strong>pressão hidrostática</strong>.
+</p>
+<p>
+    A pressão hidrostática depende exclusivamente da altura da coluna de fluido e de sua densidade, e não do formato ou volume do recipiente, como ilustra a "experiência do manômetro" na Figura II.5. Embora o reservatório maior contenha um volume e peso de água muito maiores, a pressão registrada pelos manômetros na mesma profundidade (10 metros) é idêntica (1 kg/cm²), pois a pressão é uma medida de força por unidade de área.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_7.png" alt="Dois reservatórios de diâmetros diferentes, mas com a mesma altura de fluido, mostrando a mesma leitura de pressão na base.">
+    <figcaption>Figura II.5: A pressão hidrostática independe do diâmetro do reservatório.</figcaption>
+</figure>
+<p>
+    A Figura II.6 demonstra experimentalmente a variação da pressão com a profundidade. O jato de líquido que emana do orifício mais baixo possui maior alcance, pois está submetido a uma maior pressão hidrostática.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_8.png" alt="Reservatório com três furos em diferentes alturas, mostrando que o jato inferior é o mais forte.">
+    <figcaption>Figura II.6: Evidência prática da pressão hidrostática.</figcaption>
+</figure>
+
+<h3>5. Princípio de Bernoulli</h3>
+<p>
+    Considere o sistema na Figura II.7, com duas câmaras interligadas por um duto de diâmetro reduzido (uma restrição). Se uma força no pistão "A" gera uma pressão de 100 bar, essa pressão é restabelecida na câmara "B". Contudo, um manômetro posicionado no duto "C" indicará uma pressão inferior a 100 bar.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_9.png" alt="Sistema mostrando a queda de pressão em uma restrição devido ao aumento de velocidade do fluido.">
+    <figcaption>Figura II.7: Ilustração do Princípio de Bernoulli.</figcaption>
+</figure>
+<p>
+    Daniel Bernoulli (1700-1782) formulou o princípio que explica este fenômeno, uma forma da lei de conservação de energia para fluidos em movimento:
+</p>
+<blockquote class="principle-box">
+    "Para um escoamento ideal (sem atrito), a soma das energias de pressão, cinética e potencial, por unidade de volume, é constante ao longo de uma linha de corrente."
+</blockquote>
+<p>
+    Em termos simplificados, para uma mesma altura, onde a velocidade do fluido aumenta, sua pressão estática diminui. No duto "C", a área é menor, então para manter a vazão constante, a velocidade do fluido deve aumentar. Esse aumento da energia cinética ocorre às custas de uma redução na energia de pressão, explicando a leitura menor no manômetro.
+</p>
+
+<h3>6. Escoamento de Fluido em Tubulações</h3>
+<p>
+    Um fluido em um sistema sempre seguirá o percurso de menor resistência. Se o fluxo de uma bomba se depara com três ramificações, cada uma com uma resistência diferente (exigindo 20 bar, 50 bar e 70 bar para serem transpostas), o fluido atuará sequencialmente: primeiro vencerá a resistência de 20 bar, depois a de 50 bar e, por último, a de 70 bar.
+</p>
+<p>
+    O escoamento em si pode ocorrer de duas formas distintas: <strong>laminar</strong> ou <strong>turbulento</strong>. O regime de escoamento depende de fatores como a viscosidade do fluido, sua velocidade, o diâmetro da tubulação e a rugosidade interna da mesma.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_11.png" alt="Ilustração mostrando a diferença entre escoamento laminar (camadas suaves) e turbulento (vórtices e mistura caótica).">
+    <figcaption>Figura II.8: Representação de escoamento laminar e turbulento.</figcaption>
+</figure>
+<p>
+    Para quantificar e prever o tipo de escoamento, utiliza-se o <strong>Número de Reynolds (Re)</strong>, um grupo adimensional que representa a razão entre as forças de inércia e as forças de viscosidade do fluido.
+</p>
+<div class="formula-container">
+    <p>Re = (v ⋅ D) / ν</p>
+    <small>Onde: v = velocidade do fluido, D = diâmetro do duto, ν = viscosidade cinemática</small>
+</div>
+<figure class="image-container" style="max-width: 300px; margin: 1rem auto;">
+    <img src="assets/Screenshot_10.png" alt="Fórmula do Número de Reynolds">
+</figure>
+<p>
+    Empiricamente, para escoamento em dutos, a seguinte classificação é adotada:
+</p>
+<ul>
+    <li><strong>Re &lt; 2000:</strong> Regime de escoamento <strong>laminar</strong>, caracterizado por um movimento suave e em camadas paralelas.</li>
+    <li><strong>Re &gt; 3000:</strong> Regime de escoamento <strong>turbulento</strong>, caracterizado por vórtices, mistura intensa e maior perda de energia.</li>
+    <li><strong>2000 &lt; Re &lt; 3000:</strong> Região de transição, onde o escoamento é instável e pode alternar entre os dois regimes.</li>
+</ul>
+
+<div class="status-bloqueio"></div>
+        </p><div class="status-bloqueio"></div></div>
         <div id="aula3" class="module"><h2>Aula 3: Simbologia</h2><p>Conteúdo da Aula 3...</p><div class="status-bloqueio"></div></div>
         <div id="aula4" class="module"><h2>Aula 4: Fluidos</h2><p>Conteúdo da Aula 4...</p><div class="status-bloqueio"></div></div>
         <div id="aula5" class="module"><h2>Aula 5: Reservatórios</h2><p>Conteúdo da Aula 5...</p><div class="status-bloqueio"></div></div>
