@@ -10,7 +10,133 @@
     <header>
         <h1>Curso de Hidráulica e Pneumática</h1>
     </header>
-    <main class="main-container" style="display: none;"> <div id="aula1" class="module active"><h2 >Aula 1: Introdução</h2><p>Conteúdo da Aula 1...</p><div class="status-bloqueio"></div></div>
+    <main class="main-container" style="display: none;"> <div id="aula1" class="module active"><h2 >Aula 1: Introdução</h2><p><h2><span style="font-size: 1.5em; vertical-align: middle;">📜</span> Aula 1: Introdução e Fundamentos</h2>
+
+<h3>1. PERSPECTIVA HISTÓRICA</h3>
+<p>
+    No domínio da engenharia, existem três vetores energéticos primários para a transmissão de potência: o <strong>mecânico</strong>, o <strong>elétrico</strong> e o <strong>fluídico</strong>.
+</p>
+<p>
+    A transmissão mecânica, por sua natureza, é a de maior antiguidade e, por conseguinte, a mais difundida no imaginário comum. Suas origens remontam à invenção da roda, evoluindo para um complexo arsenal de dispositivos que incluem engrenagens de alta precisão, cames, sistemas de correias e correntes, molas, polias e outros elementos de máquina.
+</p>
+<p>
+    A transmissão elétrica, um pilar da era moderna, emprega uma matriz de componentes como geradores, motores, transformadores e semicondutores. Constitui o único vetor viável para a transmissão de energia em larga escala e a grandes distâncias.
+</p>
+<p>
+    A potência fluida, por sua vez, possui uma gênese que antecede a era Cristã em milênios. O marco tecnológico inicial de que se tem registro é a roda d'água, um dispositivo que converte a energia potencial gravitacional da água em trabalho mecânico. Posteriormente, o Império Romano demonstrou notável proficiência em engenharia hidráulica com seus aquedutos, projetados para o transporte e distribuição de água em larga escala.
+</p>
+<p>
+    Não obstante, a aplicação de fluidos sob pressão como meio primário para transmissão de potência é um desenvolvimento tecnológico mais recente, cujo crescimento exponencial ocorreu no período pós-Primeira Guerra Mundial.
+</p>
+<p>
+    Os eventos mais significativos na cronologia da energia fluida incluem:
+</p>
+<ul>
+    <li><strong>1795:</strong> O engenheiro inglês Joseph Bramah patenteia e constrói a primeira prensa hidráulica, que aplicava o Princípio de Pascal utilizando água como fluido de trabalho.</li>
+    <li><strong>1850:</strong> William Armstrong desenvolve o primeiro guindaste hidráulico e, como necessidade intrínseca ao projeto, o primeiro acumulador de pistão com peso.</li>
+    <li><strong>1900:</strong> Ocorre nos Estados Unidos a construção da primeira bomba de pistões axiais de deslocamento variável. Este evento marca a transição da água para o óleo mineral como fluido de trabalho, o que representou um avanço significativo em termos de lubrificação, corrosão e range de temperatura operacional.</li>
+</ul>
+<p>
+    Atualmente, com os avanços da metalurgia e da química de polímeros (fluidos sintéticos), a ubiquidade e a criticidade da transmissão de potência óleo-hidráulica são manifestas, abrangendo desde sistemas de frenagem automotiva até complexos atuadores em aeronaves aeroespaciais e robótica industrial.
+</p>
+<p>
+    Na engenharia contemporânea, a tecnologia óleo-hidráulica é insubstituível. Qual outro vetor energético oferece a capacidade de gerar macro-esforços para erguer equipamentos de várias toneladas, e ao mesmo tempo, permitir micro-manipulações de alta precisão, como o manuseio de um objeto frágil sem danificá-lo?
+</p>
+
+<h3>2. CONCEITOS FUNDAMENTAIS</h3>
+<p>
+    A seguir, são estabelecidas definições de rigor técnico que fundamentarão nosso estudo:
+</p>
+<p><strong>Fluido:</strong><br>
+    Em mecânica dos fluidos, define-se como uma substância que se deforma continuamente sob a aplicação de uma tensão de cisalhamento, por menor que seja sua magnitude. Para os fins desta disciplina, nosso objeto de estudo é o fluido hidráulico, tipicamente um óleo mineral ou sintético.
+</p>
+<p><strong>Hidráulica:</strong><br>
+    Ramo da ciência, especificamente da mecânica dos fluidos, que estuda o comportamento de líquidos em repouso (hidrostática) e em movimento (hidrodinâmica). Nosso foco é a <strong>óleo-hidráulica</strong>, uma subdisciplina da hidráulica aplicada que emprega óleos como fluido de trabalho para transmitir energia.
+</p>
+<p><strong>Sistemas Óleo-Hidráulicos:</strong><br>
+    Configurações de componentes projetadas para transmitir e controlar potência através de um fluido hidráulico pressurizado. A funcionalidade destes sistemas baseia-se na idealização prática da incompressibilidade do óleo em pressões operacionais comuns. Classificam-se em duas categorias principais: estáticos (hidrostáticos) e cinéticos (hidrodinâmicos).
+</p>
+<p><strong>Sistemas Óleo-Hidráulicos Estáticos (Hidrostáticos):</strong><br>
+    Sistemas onde a transmissão de energia se dá predominantemente pela energia de pressão (energia potencial) do fluido, caracterizados por alta pressão e baixa velocidade de escoamento. Pressões operacionais podem exceder 1000 bar (100 MPa).
+</p>
+<p><strong>Sistemas Óleo-Hidráulicos Cinéticos (Hidrodinâmicos):</strong><br>
+    Sistemas que utilizam a energia cinética do fluido para a transmissão de potência, caracterizados por altas velocidades de escoamento (da ordem de 50 m/s) e pressões relativamente baixas.
+</p>
+<p>
+    Este curso se concentrará nos sistemas hidrostáticos, que constituem a vasta maioria das aplicações industriais e móbeis, como prensas, máquinas operatrizes, equipamentos de construção civil e injetoras de plásticos.
+</p>
+
+<h3>3. TAXONOMIA DOS SISTEMAS HIDRÁULICOS</h3>
+<p>A taxonomia dos sistemas hidráulicos pode ser estabelecida segundo múltiplos critérios técnicos.</p>
+
+<h4>3.1. De acordo com a Pressão de Operação:</h4>
+<p>Conforme as normas da extinta J.I.C. (Joint Industry Conference) e da vigente NFPA (National Fluid Power Association), a classificação por pressão é:</p>
+<ul>
+    <li>0 a 14 bar - Baixa pressão</li>
+    <li>14 a 35 bar - Média pressão</li>
+    <li>35 a 84 bar - Média-alta pressão</li>
+    <li>84 a 210 bar - Alta pressão</li>
+    <li>Acima de 210 bar - Extra-alta pressão</li>
+</ul>
+
+<h4>3.2. De acordo com a Aplicação:</h4>
+<p>Classificados como sistemas de pressão contínua ou de pressão intermitente.</p>
+
+<h4>3.3. De acordo com o Tipo de Bomba:</h4>
+<p>Sistemas de vazão constante (deslocamento fixo) ou de vazão variável (deslocamento variável).</p>
+
+<h4>3.4. De acordo com o Controle Direcional:</h4>
+<p>Sistemas de uma via (unidirecionais, controlados por válvulas) ou de duas vias (bidirecionais, com bombas reversíveis).</p>
+
+<h3>4. ARQUITETURA FUNCIONAL DE UM SISTEMA HIDRÁULICO</h3>
+<p>Apesar da vasta diversidade de circuitos, a arquitetura funcional de qualquer sistema hidráulico pode ser segmentada em três subsistemas principais:</p>
+<ul>
+    <li><strong>4.1. Unidade de Geração de Potência (HPU - Hydraulic Power Unit):</strong><br>
+        Constituída pelo reservatório, sistema de filtragem, bomba hidráulica (conversor de energia mecânica em hidráulica), motor de acionamento, e pode incluir acumuladores, intensificadores de pressão e trocadores de calor.</li>
+    <li><strong>4.2. Circuito de Comando e Controle:</strong><br>
+        Composto pelo conjunto de válvulas responsáveis pela regulação da energia fluídica: válvulas controladoras de vazão, de pressão e direcionais.</li>
+    <li><strong>4.3. Subsistema de Atuação:</strong><br>
+        Onde a energia hidráulica é reconvertida em energia mecânica para realizar trabalho útil. Os componentes aqui são os atuadores, que podem ser lineares (cilindros) ou rotativos (motores hidráulicos e osciladores).</li>
+</ul>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_2.png" alt="Diagrama funcional de um sistema hidráulico, ilustrando a HPU, o circuito de controle e o subsistema de atuação.">
+    <figcaption>Arquitetura funcional simplificada de um circuito hidráulico.</figcaption>
+</figure>
+
+<h3>5. ANÁLISE COMPARATIVA DOS SISTEMAS HIDRÁULICOS</h3>
+<p>A decisão de empregar um sistema hidráulico é frequentemente tomada onde a aplicação de sistemas puramente mecânicos ou elétricos é inviável ou ineficiente. Uma análise crítica revela as seguintes vantagens e desvantagens.</p>
+
+<h4>5.1. Vantagens</h4>
+<ul>
+    <li><strong>Elevada Densidade de Potência:</strong> Relação potência/peso e potência/volume superior à dos sistemas elétricos e mecânicos, permitindo componentes mais compactos para uma mesma capacidade de força.</li>
+    <li><strong>Flexibilidade de Montagem:</strong> Os componentes são interligados por mangueiras e tubulações, oferecendo grande liberdade no design e na disposição física dos elementos.</li>
+    <li><strong>Dinâmica e Controle:</strong> A baixa inércia dos atuadores hidráulicos permite elevadas acelerações, desacelerações e rápidas reversões de movimento com controle preciso e suave.</li>
+    <li><strong>Controle de Velocidade:</strong> Permite a variação contínua da velocidade em uma ampla faixa, com ajustes de alta resolução (micrométricos), algo complexo e custoso em outros sistemas.</li>
+    <li><strong>Proteção contra Sobrecarga:</strong> A proteção do sistema é inerentemente simples e confiável, realizada por meio de válvulas de alívio de pressão.</li>
+    <li><strong>Lubrificação Intrínseca:</strong> O próprio fluido de trabalho atua como agente lubrificante para os componentes móveis do sistema.</li>
+</ul>
+
+<h4>5.2. Desvantagens</h4>
+<ul>
+    <li><strong>Eficiência Energética:</strong> O rendimento global é limitado devido às múltiplas conversões de energia e às perdas inerentes ao sistema, que se dividem em:
+        <ol type="a">
+            <li>perdas na conversão de energia (elétrica → mecânica → hidráulica → mecânica);</li>
+            <li>perdas volumétricas (vazamentos internos nos componentes, que aumentam com a pressão e o desgaste);</li>
+            <li>perdas por atrito (mecânico e viscoso do fluido).</li>
+        </ol>
+    </li>
+    <li><strong>Sensibilidade à Contaminação:</strong> A presença de partículas sólidas ou água no fluido é a principal causa de falhas prematuras, exigindo um rigoroso controle de filtragem e manutenção.</li>
+    <li><strong>Riscos Associados ao Fluido:</strong> Óleos minerais são inflamáveis, apresentando risco de incêndio. Fluidos resistentes ao fogo estão disponíveis, mas possuem custo mais elevado e, por vezes, características de desempenho inferiores.</li>
+</ul>
+
+<h4>5.3. Comparativo com Sistemas Pneumáticos</h4>
+<p>
+    Em comparação direta, os sistemas hidráulicos oferecem um controle de força e velocidade muito mais preciso devido à baixa compressibilidade do óleo. Eles operam em níveis de pressão ordens de magnitude maiores que os sistemas pneumáticos, resultando em uma capacidade de transmissão de potência substancialmente superior para um mesmo volume de atuador. A principal vantagem dos sistemas pneumáticos reside em seu menor custo de aquisição e na simplicidade de seus componentes.
+</p>
+
+<div class="status-bloqueio"></div>
+    </p><div class="status-bloqueio"></div></div>
         <div id="aula2" class="module"><h2>Aula 2: Fundamentos</h2><p>Conteúdo da Aula 2...</p><div class="status-bloqueio"></div></div>
         <div id="aula3" class="module"><h2>Aula 3: Simbologia</h2><p>Conteúdo da Aula 3...</p><div class="status-bloqueio"></div></div>
         <div id="aula4" class="module"><h2>Aula 4: Fluidos</h2><p>Conteúdo da Aula 4...</p><div class="status-bloqueio"></div></div>
