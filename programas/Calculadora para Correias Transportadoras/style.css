@@ -12,47 +12,25 @@
     --borda-radius: 8px;
 }
 
-body {
+/* Regras principais para o layout de tela cheia */
+html, body {
+    margin: 0;
+    padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-    margin: 0;
-    
-    /* MODIFICAÇÃO: O padding foi removido (era 20px). */
-    /* Isso elimina qualquer espaço em branco entre a borda da janela e o seu conteúdo. */
-    padding: 0;
-
-    /* MODIFICAÇÃO: As propriedades Flexbox foram removidas. */
-    /* 'display: flex', 'justify-content: center' e 'align-items: flex-start' */
-    /* serviam para centralizar o container quando ele era menor. */
-    /* Como agora ele vai ocupar toda a tela, essa centralização não é mais necessária. */
-    min-height: 100vh;
 }
 
 .container {
     width: 100%;
-    
-    /* MODIFICAÇÃO: A largura máxima foi removida (era max-width: 700px). */
-    /* Esta era a principal regra que limitava seu container a uma faixa central. */
-    /* Removê-la permite que o container se expanda por toda a largura. */
-    
-    /* MODIFICAÇÃO: Altura adicionada para preencher a tela verticalmente. */
-    /* Isso garante que o container tenha sempre a altura da janela do navegador. */
-    min-height: 100vh;
-
+    min-height: 100vh; /* Garante que o container ocupe no mínimo toda a altura da tela */
     background-color: var(--cor-texto-claro);
-    
-    /* MODIFICAÇÃO: border-radius e box-shadow foram removidos. */
-    /* Essas propriedades criam um efeito de "card", com cantos arredondados e sombra, */
-    /* que não fazem sentido em um layout de tela cheia. */
-    /* border-radius: var(--borda-radius); */
-    /* box-shadow: var(--sombra); */
-    
-    /* MODIFICAÇÃO: overflow alterado para permitir rolagem vertical. */
-    /* 'overflow-y: auto' garante que se o conteúdo dentro das calculadoras for muito grande, */
-    /* uma barra de rolagem aparecerá dentro do container, evitando que o layout quebre. */
-    overflow-y: auto;
+    box-sizing: border-box; 
+    overflow-y: auto; /* Permite rolagem se o conteúdo interno for maior que a tela */
 }
+
+/* ================================================= */
+/* ===         ESTRUTURA E NAVEGAÇÃO           === */
+/* ================================================= */
 
 header {
     background-color: var(--cor-primaria);
@@ -65,10 +43,6 @@ header h1 {
     margin: 0;
     font-size: 1.8em;
 }
-
-/* ================================================= */
-/* ===         ESTILOS DE NAVEGAÇÃO E ABAS         === */
-/* ================================================= */
 
 .navegacao {
     display: flex;
@@ -88,7 +62,7 @@ header h1 {
 }
 
 .nav-button:hover {
-    background-color: #1565c0; /* Azul um pouco mais escuro */
+    background-color: #1565c0;
 }
 
 .nav-button.active {
@@ -96,13 +70,19 @@ header h1 {
     border-bottom: 4px solid var(--cor-destaque);
 }
 
+main {
+    padding: 25px;
+}
+
 /* ================================================= */
-/* ===       ESTILOS DAS CALCULADORAS ORIGINAIS    === */
+/* ===         PAINÉIS E FORMULÁRIOS           === */
 /* ================================================= */
 
 .calculadora {
-    padding: 25px;
-    border-top: 1px solid #ddd;
+    /* Limita a largura do conteúdo interno para melhor leitura em telas grandes */
+    max-width: 800px;
+    /* Centraliza o conteúdo dentro da área do 'main' */
+    margin: 0 auto;
 }
 
 .calculadora h2 {
@@ -128,7 +108,7 @@ header h1 {
     border: 1px solid #ccc;
     border-radius: var(--borda-radius);
     font-size: 1em;
-    box-sizing: border-box; /* Garante que padding não afete a largura total */
+    box-sizing: border-box;
 }
 
 .input-group input[type="number"]:focus {
@@ -151,7 +131,7 @@ header h1 {
 }
 
 .btn-calcular:hover {
-    background-color: #fbc02d; /* Amarelo mais escuro */
+    background-color: #fbc02d;
 }
 
 .resultado {
@@ -164,36 +144,13 @@ header h1 {
     display: none; /* Começa escondido */
 }
 
-/* Animação de fade-in para o resultado */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
 .resultado.erro {
-    border-left-color: #d32f2f; /* Vermelho para erros */
+    border-left-color: #d32f2f;
     color: #d32f2f;
 }
 
 .resultado.sucesso {
-     border-left-color: #388e3c; /* Verde para sucesso */
-}
-
-.resultado p {
-    margin: 0 0 10px 0;
-    font-size: 1.1em;
-}
-
-.resultado p:last-child {
-    margin-bottom: 0;
-}
-
-.resultado strong {
-    color: var(--cor-primaria);
+    border-left-color: #388e3c;
 }
 
 /* Classe para esconder painéis inativos */
@@ -201,14 +158,13 @@ header h1 {
     display: none;
 }
 
-
 /* ================================================= */
 /* ===       ESTILOS DO CONVERSOR DE UNIDADES      === */
 /* ================================================= */
 
 .sub-navegacao {
     display: flex;
-    flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas menores */
+    flex-wrap: wrap;
     gap: 5px;
     margin-bottom: 25px;
     border-bottom: 2px solid var(--cor-fundo);
@@ -216,7 +172,7 @@ header h1 {
 }
 
 .sub-nav-button {
-    flex-grow: 1; /* Faz os botões ocuparem o espaço disponível */
+    flex-grow: 1;
     padding: 10px 12px;
     background-color: #e0e0e0;
     color: var(--cor-texto);
@@ -245,7 +201,7 @@ header h1 {
 
 .conversor-linha {
     display: flex;
-    align-items: flex-end; /* Alinha os inputs e selects na base */
+    align-items: flex-end;
     gap: 15px;
 }
 
@@ -277,13 +233,7 @@ header h1 {
 }
 
 .conversor-resultado {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: var(--borda-radius);
-    font-size: 1.1em;
     font-weight: bold;
-    box-sizing: border-box;
     background-color: var(--cor-fundo);
     color: var(--cor-primaria);
     text-align: center;
@@ -293,54 +243,30 @@ header h1 {
     font-size: 2em;
     font-weight: bold;
     color: var(--cor-secundaria);
-    padding-bottom: 10px; /* Alinha verticalmente com os inputs */
+    padding-bottom: 10px;
 }
 
 /* ================================================= */
 /* ===  AJUSTES DE RESPONSIVIDADE (MEDIA QUERIES)  === */
 /* ================================================= */
-/* ATENÇÃO: Os ajustes de responsividade foram mantidos, */
-/* mas talvez precisem de revisão dependendo do design final da tela cheia. */
 
-/* Para telas de celular e menores */
 @media (max-width: 600px) {
+    main {
+        padding: 20px;
+    }
     .conversor-linha {
         flex-direction: column;
         align-items: stretch;
         gap: 20px;
     }
     .igual {
-        transform: rotate(90deg); /* Vira o sinal de igual */
+        transform: rotate(90deg);
         margin: -5px auto;
     }
 }
 
-/* Para telas muito pequenas */
 @media (max-width: 480px) {
-    body {
-        padding: 0;
-    }
-    .container {
-        /* MODIFICAÇÃO: A altura mínima e o border-radius foram removidos aqui */
-        /* para evitar redundância e conflito com as regras principais. */
-        /* min-height: 100vh; */
-        /* border-radius: 0; */
-    }
     .navegacao {
-        flex-direction: column; /* Empilha os botões da navegação principal */
-    }
-    .nav-button {
-        font-size: 0.9em;
-        text-align: center;
-        border-bottom: 1px solid #1565c0;
-    }
-    .nav-button.active {
-         border-bottom: 4px solid var(--cor-destaque);
-    }
-    header h1 {
-        font-size: 1.5em;
-    }
-    .calculadora {
-        padding: 20px;
+        flex-direction: column;
     }
 }
