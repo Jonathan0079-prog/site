@@ -44,6 +44,26 @@ header h1 {
     transition: font-size 0.2s;
 }
 
+/* --- Subtítulo do Cabeçalho --- */
+.header-subtitle {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header-subtitle h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #f9d28b;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.2rem;
+}
+
+.header-subtitle p {
+    font-size: 0.98rem;
+    color: #e0e0e0;
+    margin-bottom: 0.3rem;
+}
+
 /* --- Botão de Menu Flutuante --- */
 .menu-toggler {
     position: fixed;
@@ -139,22 +159,7 @@ nav#main-nav a:hover {
 }
 
 /* --- Banner e Seções --- */
-#banner {
-    background: linear-gradient(rgba(26, 43, 64, 0.8), rgba(26, 43, 64, 0.8)), url('https://via.placeholder.com/1920x500.png?text=Fundo+Industrial') no-repeat center center/cover;
-    color: #fff;
-    text-align: center;
-    padding: 3rem 1rem 2.5rem 1rem;
-    border-radius: 0 0 20px 20px;
-}
-
-#banner h2 {
-    font-size: 2.8rem;
-    margin-bottom: 1rem;
-}
-
-#banner p {
-    font-size: 1.4rem;
-}
+/* #banner removido conforme solicitado */
 
 /* --- Cursos Cards --- */
 #cursos {
@@ -277,8 +282,8 @@ footer {
 
 @media (max-width: 992px) {
     header h1 { font-size: 2rem; }
-    #banner h2 { font-size: 2.2rem; }
-    #banner p { font-size: 1.2rem; }
+    .header-subtitle h2 { font-size: 1rem; }
+    .header-subtitle p { font-size: 0.9rem; }
     #cursos h2 { font-size: 2rem; }
     .cursos-container { gap: 1.5rem; }
     .curso-card { width: 300px; }
@@ -291,15 +296,15 @@ footer {
     .cursos-container { flex-direction: column; align-items: center; gap: 1rem; }
     .curso-card { width: 98%; max-width: 400px; }
     nav#main-nav { width: 220px; }
-    #banner h2 { font-size: 1.3rem; }
+    .header-subtitle h2 { font-size: 0.95rem; }
+    .header-subtitle p { font-size: 0.85rem; }
 }
 
 @media (max-width: 500px) {
     .container { width: 100%; padding: 4px 0; }
     header h1 { font-size: 1.1rem; }
-    #banner { padding: 1.3rem 2vw 1rem 2vw; border-radius: 0 0 10px 10px; }
-    #banner h2 { font-size: 1.1rem; }
-    #banner p { font-size: 1rem; }
+    .header-subtitle h2 { font-size: 0.85rem; }
+    .header-subtitle p { font-size: 0.78rem; }
     #cursos { padding: 1.2rem 0; }
     #cursos h2 { font-size: 1.1rem; }
     .curso-card { width: 99vw; min-width: 0; border-radius: 5px; }
@@ -321,4 +326,3 @@ nav#main-nav {
 .menu-toggler {
     touch-action: manipulation;
     -webkit-tap-highlight-color: rgba(243,156,18,0.17);
-}
