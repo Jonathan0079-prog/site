@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora para Correias Transportadoras</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Calculadora para Correias Transportadoras</h1>
+        </header>
+        
+        <nav class="navegacao">
+            <button id="btn-nav-direto" class="nav-button active" onclick="mostrarCalculadora('calc-direto')" aria-controls="calc-direto">Acionamento Direto</button>
+            <button id="btn-nav-indireto" class="nav-button" onclick="mostrarCalculadora('calc-indireto')" aria-controls="calc-indireto">Acion. com Polias</button>
+            <button id="btn-nav-bobina" class="nav-button" onclick="mostrarCalculadora('calc-bobina')" aria-controls="calc-bobina">Compr. Bobina</button>
+        </nav>
+
+        <main>
+            <div id="calc-direto" class="calculadora" role="tabpanel">
+                <h2>Cálculo de Velocidade (Acionamento Direto)</h2>
+                <div class="input-group">
+                    <label for="direto-n-motor">Rotação do Motor (RPM)</label>
+                    <input type="number" id="direto-n-motor" placeholder="Ex: 1750" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="direto-i-redutor">Relação de Redução do Redutor</label>
+                    <input type="number" id="direto-i-redutor" placeholder="Ex: 30 (para 30:1)" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="direto-d-rolo">Diâmetro do Rolo de Tração (mm)</label>
+                    <input type="number" id="direto-d-rolo" placeholder="Ex: 250" class="campo-calculo">
+                </div>
+                <button class="btn-calcular" onclick="calcularVelocidadeDireta()">Calcular</button>
+                <div id="resultado-direto" class="resultado"></div>
+            </div>
+
+            <div id="calc-indireto" class="calculadora hidden" role="tabpanel">
+                <h2>Cálculo de Velocidade (Acionamento com Polias)</h2>
+                <div class="input-group">
+                    <label for="indireto-n-motor">Rotação do Motor (RPM)</label>
+                    <input type="number" id="indireto-n-motor" placeholder="Ex: 1750" class="campo-calculo">
+                </div>
+                 <div class="input-group">
+                    <label for="indireto-d-polia-motora">Diâmetro da Polia do Motor (mm)</label>
+                    <input type="number" id="indireto-d-polia-motora" placeholder="Ex: 150" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="indireto-d-polia-movida">Diâmetro da Polia no Redutor (mm)</label>
+                    <input type="number" id="indireto-d-polia-movida" placeholder="Ex: 300" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="indireto-i-redutor">Relação de Redução do Redutor</label>
+                    <input type="number" id="indireto-i-redutor" placeholder="Ex: 20 (para 20:1)" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="indireto-d-rolo">Diâmetro do Rolo de Tração (mm)</label>
+                    <input type="number" id="indireto-d-rolo" placeholder="Ex: 250" class="campo-calculo">
+                </div>
+                <button class="btn-calcular" onclick="calcularVelocidadeIndireta()">Calcular</button>
+                <div id="resultado-indireto" class="resultado"></div>
+            </div>
+
+            <div id="calc-bobina" class="calculadora hidden" role="tabpanel">
+                <h2>Cálculo de Comprimento de Correia em Bobina</h2>
+                <div class="input-group">
+                    <label for="bobina-d-externo">Diâmetro Externo da Bobina (mm)</label>
+                    <input type="number" id="bobina-d-externo" placeholder="Ex: 1200" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="bobina-d-interno">Diâmetro Interno da Bobina (furo) (mm)</label>
+                    <input type="number" id="bobina-d-interno" placeholder="Ex: 300" class="campo-calculo">
+                </div>
+                <div class="input-group">
+                    <label for="bobina-e-correia">Espessura da Correia (mm)</label>
+                    <input type="number" id="bobina-e-correia" placeholder="Ex: 12" class="campo-calculo">
+                </div>
+                <button class="btn-calcular" onclick="calcularComprimentoBobina()">Calcular</button>
+                <div id="resultado-bobina" class="resultado"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
