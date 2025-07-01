@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-});ment.querySelectorAll('.curso-card');
+
+    // --- Animação dos cards do curso ---
+    const cards = document.querySelectorAll('.curso-card');
     if (cards.length > 0) {
         const observerOptions = {
             root: null, // Observa em relação à viewport
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Seu código bônus para os botões foi mantido
+    // --- Código bônus para os botões dos cursos ---
     const courseButtons = document.querySelectorAll('.btn');
     courseButtons.forEach(button => {
         button.addEventListener('click', (event) => {
@@ -55,3 +57,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+});
