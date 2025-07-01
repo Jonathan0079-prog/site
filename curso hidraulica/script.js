@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // --- CONFIGURAÇÃO ---
-    const TEMPO_POR_MODULO_SEGUNDOS = 10; // Tempo mínimo em cada módulo
+    const TEMPO_POR_MODULO_SEGUNDOS = 10; // Tempo mínimo de permanência ATIVA em cada módulo.
 
     // --- ELEMENTOS DA INTERFACE ---
     const modules = document.querySelectorAll('.module');
@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let highestUnlockedModule = 0;
     const totalModules = modules.length;
 
-    // Variáveis para controlar os temporizadores
-    let unlockTimer = null;
+    // Variável para o nosso contador de segundos (o "timer")
     let countdownInterval = null;
 
     /**
      * INICIALIZAÇÃO DO CURSO
+     * Carrega o progresso salvo do aluno.
      */
     function inicializarCurso() {
         const savedHighest = parseInt(localStorage.getItem('highestUnlockedModule') || '0', 10);
@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
      * @param {number} index - O índice do módulo a ser exibido.
      */
     function showModule(index) {
-        clearTimeout(unlockTimer);
-        clearInterval(countdownInterval);
+        // Para qualquer timer que esteja rodando antes de mudar de página
+        pausarTimerDePermanencia();
 
         modules.forEach(module => module.classList.remove('active'));
 
@@ -50,70 +50,78 @@ document.addEventListener('DOMContentLoaded', function() {
         const statusBloqueioDiv = currentModule.querySelector('.status-bloqueio');
         statusBloqueioDiv.style.display = 'none';
 
+        // LÓGICA DE BLOQUEIO: Só se aplica se estivermos no módulo mais avançado
         if (index === highestUnlockedModule && index < totalModules - 1) {
             nextBtn.disabled = true;
-            verificarEstadoDoTimer(index, statusBloqueioDiv);
+            // Inicia o processo de verificação de tempo para este módulo
+            iniciarTimerDePermanencia(statusBloqueioDiv);
         } else {
             nextBtn.disabled = (index === totalModules - 1);
         }
     }
 
     /**
-     * NOVA LÓGICA: Verifica se já existe um timer ativo no localStorage.
-     * @param {number} index - O índice do módulo atual.
+     * Inicia ou retoma o contador de tempo de permanência ativa.
      * @param {HTMLElement} displayElement - Onde exibir a mensagem.
      */
-    function verificarEstadoDoTimer(index, displayElement) {
-        const timerStateJSON = localStorage.getItem('timerState');
-        const agora = Date.now();
+    function iniciarTimerDePermanencia(displayElement) {
+        // Garante que não haja timers duplicados rodando
+        pausarTimerDePermanencia();
 
-        if (timerStateJSON) {
-            const timerState = JSON.parse(timerStateJSON);
-            // Verifica se o timer salvo é para o módulo atual
-            if (timerState.moduleIndex === index) {
-                const tempoRestanteMs = timerState.unlockTimestamp - agora;
+        displayElement.style.display = 'block';
 
-                if (tempoRestanteMs <= 0) {
-                    // O tempo já passou enquanto o usuário estava fora. Desbloqueia imediatamente.
-                    efetuarDesbloqueio(displayElement);
-                    return;
-                } else {
-                    // Continua o timer com o tempo restante.
-                    iniciarContador(tempoRestanteMs, displayElement, () => efetuarDesbloqueio(displayElement));
-                    return;
-                }
+        // Carrega o progresso de tempo já gasto neste módulo
+        let progressoJSON = localStorage.getItem('timerProgress');
+        let progresso = progressoJSON ? JSON.parse(progressoJSON) : { moduleIndex: -1, segundosGastos: 0 };
+
+        // Se o progresso salvo não for do módulo atual, reseta.
+        if (progresso.moduleIndex !== currentModuleIndex) {
+            progresso = { moduleIndex: currentModuleIndex, segundosGastos: 0 };
+        }
+
+        let segundosGastos = progresso.segundosGastos;
+
+        // Função que roda a cada segundo (o "tick" do relógio)
+        function tick() {
+            // Se a página não estiver visível, não faz nada.
+            if (document.hidden) {
+                return;
+            }
+
+            segundosGastos++;
+            
+            // Salva o progresso a cada segundo. Essencial para persistência.
+            localStorage.setItem('timerProgress', JSON.stringify({ moduleIndex: currentModuleIndex, segundosGastos: segundosGastos }));
+
+            let tempoRestante = TEMPO_POR_MODULO_SEGUNDOS - segundosGastos;
+
+            if (tempoRestante > 0) {
+                displayElement.textContent = `Tempo de permanência na página: ${tempoRestante} segundos restantes para desbloquear.`;
+            } else {
+                // TEMPO CONCLUÍDO!
+                pausarTimerDePermanencia();
+                efetuarDesbloqueio(displayElement);
             }
         }
-        
-        // Se não há timer salvo ou é para outro módulo, inicia um novo.
-        const unlockTimestamp = agora + (TEMPO_POR_MODULO_SEGUNDOS * 1000);
-        localStorage.setItem('timerState', JSON.stringify({ moduleIndex: index, unlockTimestamp: unlockTimestamp }));
-        iniciarContador(TEMPO_POR_MODULO_SEGUNDOS * 1000, displayElement, () => efetuarDesbloqueio(displayElement));
+
+        // Verifica se o tempo já foi concluído antes de iniciar o timer
+        if (segundosGastos >= TEMPO_POR_MODULO_SEGUNDOS) {
+            efetuarDesbloqueio(displayElement);
+        } else {
+            // Inicia o timer, que vai chamar a função tick a cada 1000ms (1 segundo)
+            countdownInterval = setInterval(tick, 1000);
+            // Executa uma vez imediatamente para mostrar a mensagem inicial
+            let tempoRestanteInicial = TEMPO_POR_MODULO_SEGUNDOS - segundosGastos;
+            displayElement.textContent = `Tempo de permanência na página: ${tempoRestanteInicial} segundos restantes para desbloquear.`;
+        }
     }
 
     /**
-     * Inicia o cronômetro visual e o temporizador de desbloqueio.
-     * @param {number} milissegundos - Duração do contador em milissegundos.
-     * @param {HTMLElement} displayElement - Onde mostrar a contagem regressiva.
-     * @param {Function} callback - Função a ser executada no final.
+     * Pausa o contador de tempo.
      */
-    function iniciarContador(milissegundos, displayElement, callback) {
-        displayElement.style.display = 'block';
-        let tempoRestanteSegundos = Math.ceil(milissegundos / 1000);
-
-        function atualizarDisplay() {
-            if (tempoRestanteSegundos > 0) {
-                displayElement.textContent = `Tempo mínimo neste módulo: ${tempoRestanteSegundos} segundos para desbloquear o próximo.`;
-                tempoRestanteSegundos--;
-            }
-        }
-
-        atualizarDisplay();
-        countdownInterval = setInterval(atualizarDisplay, 1000);
-        unlockTimer = setTimeout(() => {
-            clearInterval(countdownInterval);
-            callback();
-        }, milissegundos);
+    function pausarTimerDePermanencia() {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
     }
 
     /**
@@ -123,24 +131,26 @@ document.addEventListener('DOMContentLoaded', function() {
     function efetuarDesbloqueio(displayElement) {
         highestUnlockedModule++;
         localStorage.setItem('highestUnlockedModule', highestUnlockedModule);
-        localStorage.removeItem('timerState'); // Limpa o timer do localStorage
+        
+        // Limpa o progresso do timer, pois não é mais necessário para este módulo
+        localStorage.removeItem('timerProgress');
 
         nextBtn.disabled = false;
         displayElement.style.display = 'block';
         displayElement.textContent = 'Módulo desbloqueado! Você já pode avançar.';
     }
 
-    // --- EVENT LISTENERS PARA OS BOTÕES ---
-    nextBtn.addEventListener('click', function() {
-        if (currentModuleIndex < totalModules - 1) {
-            currentModuleIndex++;
-            showModule(currentModuleIndex);
-        }
-    });
-
-    prevBtn.addEventListener('click', function() {
-        if (currentModuleIndex > 0) {
-            currentModuleIndex--;
+    // --- EVENT LISTENER PARA VISIBILIDADE DA PÁGINA ---
+    // Este é o núcleo da nova funcionalidade.
+    // O navegador dispara este evento sempre que o usuário muda de aba ou minimiza a janela.
+    document.addEventListener('visibilitychange', function() {
+        // Se a página ficou oculta, pausamos o timer.
+        if (document.hidden) {
+            pausarTimerDePermanencia();
+        } else {
+            // Se a página voltou a ficar visível, retomamos o processo do timer.
+            // A função showModule já contém a lógica para iniciar/retomar o timer,
+            // então podemos chamá-la para reavaliar o estado atual.
             showModule(currentModuleIndex);
         }
     });
