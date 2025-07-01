@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => { // "document" com 'd' minúsculo
+document.addEventListener('DOMContentLoaded', () => {
 
     const { jsPDF } = window.jspdf;
     const modules = document.querySelectorAll('.module');
@@ -151,23 +151,25 @@ document.addEventListener('DOMContentLoaded', () => { // "document" com 'd' min�
     document.getElementById('tentar-novamente-btn').addEventListener('click', iniciarQuiz);
     document.getElementById('gerar-certificado-btn').addEventListener('click', gerarCertificadoPDF);
 
+    // Função para formatar CPF (mantida apenas para CPF)
     function formatarCPF(cpf) {
-        cpf = cpf.replace(/\D/g, '');
+        cpf = cpf.replace(/\D/g, ''); // Remove tudo que não é dígito
         if (cpf.length !== 11) return cpf;
         return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
     }
 
     function gerarCertificadoPDF() {
         const nome = document.getElementById('nome-aluno').value.trim();
-        const cpf = document.getElementById('cpf-aluno').value.trim(); // Mudei para 'cpf-aluno' para ser consistente
-        if (nome === "" || cpf === "") {
-            alert("Por favor, preencha seu nome completo e documento."); // Mensagem mais genérica
+        const documento = document.getElementById('documento-aluno').value.trim(); // Renomeado de 'cpf' para 'documento'
+        const paisSelecionado = document.getElementById('pais-aluno').value;
+
+        if (nome === "" || documento === "") {
+            alert("Por favor, preencha seu nome completo e documento.");
             return;
         }
 
         const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-        // Lembre-se de colar sua logo Base64 aqui
-        const LOGO_BASE64 = ''; 
+        const LOGO_BASE64 = ''; // Cole sua logo Base64 aqui
 
         // Design do certificado
         doc.setFillColor(230, 240, 255);
@@ -208,16 +210,14 @@ document.addEventListener('DOMContentLoaded', () => { // "document" com 'd' min�
         doc.setFontSize(14);
         doc.setTextColor(50, 50, 50);
         
-        // Determina o tipo de documento a ser exibido no certificado
-        const paisSelecionado = document.getElementById('pais-aluno').value;
-        let documentoTexto = '';
+        let documentoTextoParaCertificado = '';
         if (paisSelecionado === 'angola') {
-            documentoTexto = `portador(a) do BI nº ${cpf},`;
+            documentoTextoParaCertificado = `portador(a) do BI nº ${documento},`; // Usa o documento como está (alfanumérico)
         } else {
-            documentoTexto = `portador(a) do CPF nº ${formatarCPF(cpf)},`;
+            documentoTextoParaCertificado = `portador(a) do CPF nº ${formatarCPF(documento)},`; // Formata CPF
         }
         
-        doc.text(`${documentoTexto} concluiu com aproveitamento o curso de`, 148.5, 87, { align: "center" });
+        doc.text(`${documentoTextoParaCertificado} concluiu com aproveitamento o curso de`, 148.5, 87, { align: "center" });
         
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => { // "document" com 'd' min�
         doc.setFontSize(10);
         doc.text("Conteúdos Estudados:", 20, 125);
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(9); // Reduzindo a fonte para caber melhor
+        doc.setFontSize(9); 
         const conteudos = [
             "Introdução e Tipos de Inspeção (Preventiva, Preditiva)", "Inspeção Sensitiva e Instrumentada (Termografia, Vibração)",
             "Procedimentos Padrão e Checklists", "Registro e Análise de Dados de Inspeção",
@@ -276,28 +276,33 @@ document.addEventListener('DOMContentLoaded', () => { // "document" com 'd' min�
     const documentoInput = document.getElementById('documento-aluno');
 
     if (paisSelect && documentoLabel && documentoInput) {
-        paisSelect.addEventListener('change', function() { // Função anônima corrigida
+        paisSelect.addEventListener('change', function() {
             const paisSelecionado = paisSelect.value;
 
             if (paisSelecionado === 'angola') {
                 documentoLabel.textContent = 'Seu BI:';
                 documentoInput.placeholder = 'Digite seu BI (Bilhete de Identidade)';
-                documentoInput.maxLength = 14;
+                documentoInput.maxLength = 14; // Definindo o comprimento máximo para o BI
+                documentoInput.setAttribute('pattern', '[A-Za-z0-9]+'); // Permite letras e números
             } else {
                 documentoLabel.textContent = 'Seu CPF:';
                 documentoInput.placeholder = 'Digite seu CPF (apenas números)';
-                documentoInput.maxLength = 11;
+                documentoInput.maxLength = 14; // CPF formatado pode ter 14 caracteres (incluindo . e -)
+                documentoInput.setAttribute('pattern', '[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}'); // Padrão para CPF
             }
 
             documentoInput.value = ''; // Limpa o campo ao mudar o tipo de documento
+            // Dispara o evento 'input' para aplicar formatação inicial se houver algum valor padrão
+            documentoInput.dispatchEvent(new Event('input', { bubbles: true }));
         });
 
-        // Adiciona um evento para formatar o CPF/BI enquanto o usuário digita (opcional, mas bom para UX)
+        // Adiciona um evento para formatar o CPF/BI enquanto o usuário digita
         documentoInput.addEventListener('input', function() {
             const paisSelecionado = paisSelect.value;
-            let valor = this.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+            let valor = this.value;
 
-            if (paisSelecionado !== 'angola') { // Se for CPF, formata
+            if (paisSelecionado !== 'angola') { // Se for CPF, aplica formatação e limpa não-dígitos
+                valor = valor.replace(/\D/g, ''); // Remove tudo que não é dígito APENAS para CPF
                 if (valor.length > 3 && valor.length <= 6) {
                     valor = `${valor.slice(0, 3)}.${valor.slice(3)}`;
                 } else if (valor.length > 6 && valor.length <= 9) {
@@ -305,12 +310,15 @@ document.addEventListener('DOMContentLoaded', () => { // "document" com 'd' min�
                 } else if (valor.length > 9) {
                     valor = `${valor.slice(0, 3)}.${valor.slice(3, 6)}.${valor.slice(6, 9)}-${valor.slice(9, 11)}`;
                 }
+            } else { // Se for BI, garante que não há caracteres inválidos (opcional, pode ser relaxado)
+                // Você pode adicionar uma validação mais específica para BI aqui se necessário,
+                // mas por enquanto, apenas permite qualquer caractere que não seja proibido pelo HTML5 input type="text"
+                // ou simplesmente deixa o valor como está, já que o maxLength lida com o tamanho.
             }
             this.value = valor;
         });
 
         // Garante que o estado inicial do campo de documento esteja correto
-        // Isso é importante se o HTML já tiver um valor padrão para paisSelect ou se o usuário recarregar a página
         paisSelect.dispatchEvent(new Event('change'));
 
     } else {
@@ -322,3 +330,4 @@ document.addEventListener('DOMContentLoaded', () => { // "document" com 'd' min�
     iniciarQuiz();
 
 });
+                          
