@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Interativo - Hidráulica e Pneumática</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Curso de Hidráulica e Pneumática</h1>
+    </header>
+    <main class="main-container" style="display: none;"><div id="countdown-wrapper" style="display: none;">
+            <div class="release-countdown-container">
+                <h3>O Curso Completo Será Liberado Em Breve!</h3>
+                <p>O acesso aos demais módulos será liberado automaticamente na data de lançamento.</p>
+                <div id="countdown-timer">
+                    <div class="countdown-block"><span id="days" class="countdown-value">--</span><span class="countdown-label">Dias</span></div>
+                    <div class="countdown-block"><span id="hours" class="countdown-value">--</span><span class="countdown-label">Horas</span></div>
+                    <div class="countdown-block"><span id="minutes" class="countdown-value">--</span><span class="countdown-label">Minutos</span></div>
+                    <div class="countdown-block"><span id="seconds" class="countdown-value">--</span><span class="countdown-label">Segundos</span></div>
+                </div>
+            </div>
+        </div>
+
+    </main> <div id="aula1" class="module active"><h2 >Aula 1: Introdução</h2><p><h2><span style="font-size: 1.5em; vertical-align: middle;">📜</span> Aula 1: Introdução e Fundamentos</h2>
+
+<h3>1. PERSPECTIVA HISTÓRICA</h3>
+<p>
+    No domínio da engenharia, existem três vetores energéticos primários para a transmissão de potência: o <strong>mecânico</strong>, o <strong>elétrico</strong> e o <strong>fluídico</strong>.
+</p>
+<p>
+    A transmissão mecânica, por sua natureza, é a de maior antiguidade e, por conseguinte, a mais difundida no imaginário comum. Suas origens remontam à invenção da roda, evoluindo para um complexo arsenal de dispositivos que incluem engrenagens de alta precisão, cames, sistemas de correias e correntes, molas, polias e outros elementos de máquina.
+</p>
+<p>
+    A transmissão elétrica, um pilar da era moderna, emprega uma matriz de componentes como geradores, motores, transformadores e semicondutores. Constitui o único vetor viável para a transmissão de energia em larga escala e a grandes distâncias.
+</p>
+<p>
+    A potência fluida, por sua vez, possui uma gênese que antecede a era Cristã em milênios. O marco tecnológico inicial de que se tem registro é a roda d'água, um dispositivo que converte a energia potencial gravitacional da água em trabalho mecânico. Posteriormente, o Império Romano demonstrou notável proficiência em engenharia hidráulica com seus aquedutos, projetados para o transporte e distribuição de água em larga escala.
+</p>
+<p>
+    Não obstante, a aplicação de fluidos sob pressão como meio primário para transmissão de potência é um desenvolvimento tecnológico mais recente, cujo crescimento exponencial ocorreu no período pós-Primeira Guerra Mundial.
+</p>
+<p>
+    Os eventos mais significativos na cronologia da energia fluida incluem:
+</p>
+<ul>
+    <li><strong>1795:</strong> O engenheiro inglês Joseph Bramah patenteia e constrói a primeira prensa hidráulica, que aplicava o Princípio de Pascal utilizando água como fluido de trabalho.</li>
+    <li><strong>1850:</strong> William Armstrong desenvolve o primeiro guindaste hidráulico e, como necessidade intrínseca ao projeto, o primeiro acumulador de pistão com peso.</li>
+    <li><strong>1900:</strong> Ocorre nos Estados Unidos a construção da primeira bomba de pistões axiais de deslocamento variável. Este evento marca a transição da água para o óleo mineral como fluido de trabalho, o que representou um avanço significativo em termos de lubrificação, corrosão e range de temperatura operacional.</li>
+</ul>
+<p>
+    Atualmente, com os avanços da metalurgia e da química de polímeros (fluidos sintéticos), a ubiquidade e a criticidade da transmissão de potência óleo-hidráulica são manifestas, abrangendo desde sistemas de frenagem automotiva até complexos atuadores em aeronaves aeroespaciais e robótica industrial.
+</p>
+<p>
+    Na engenharia contemporânea, a tecnologia óleo-hidráulica é insubstituível. Qual outro vetor energético oferece a capacidade de gerar macro-esforços para erguer equipamentos de várias toneladas, e ao mesmo tempo, permitir micro-manipulações de alta precisão, como o manuseio de um objeto frágil sem danificá-lo?
+</p>
+
+<h3>2. CONCEITOS FUNDAMENTAIS</h3>
+<p>
+    A seguir, são estabelecidas definições de rigor técnico que fundamentarão nosso estudo:
+</p>
+<p><strong>Fluido:</strong><br>
+    Em mecânica dos fluidos, define-se como uma substância que se deforma continuamente sob a aplicação de uma tensão de cisalhamento, por menor que seja sua magnitude. Para os fins desta disciplina, nosso objeto de estudo é o fluido hidráulico, tipicamente um óleo mineral ou sintético.
+</p>
+<p><strong>Hidráulica:</strong><br>
+    Ramo da ciência, especificamente da mecânica dos fluidos, que estuda o comportamento de líquidos em repouso (hidrostática) e em movimento (hidrodinâmica). Nosso foco é a <strong>óleo-hidráulica</strong>, uma subdisciplina da hidráulica aplicada que emprega óleos como fluido de trabalho para transmitir energia.
+</p>
+<p><strong>Sistemas Óleo-Hidráulicos:</strong><br>
+    Configurações de componentes projetadas para transmitir e controlar potência através de um fluido hidráulico pressurizado. A funcionalidade destes sistemas baseia-se na idealização prática da incompressibilidade do óleo em pressões operacionais comuns. Classificam-se em duas categorias principais: estáticos (hidrostáticos) e cinéticos (hidrodinâmicos).
+</p>
+<p><strong>Sistemas Óleo-Hidráulicos Estáticos (Hidrostáticos):</strong><br>
+    Sistemas onde a transmissão de energia se dá predominantemente pela energia de pressão (energia potencial) do fluido, caracterizados por alta pressão e baixa velocidade de escoamento. Pressões operacionais podem exceder 1000 bar (100 MPa).
+</p>
+<p><strong>Sistemas Óleo-Hidráulicos Cinéticos (Hidrodinâmicos):</strong><br>
+    Sistemas que utilizam a energia cinética do fluido para a transmissão de potência, caracterizados por altas velocidades de escoamento (da ordem de 50 m/s) e pressões relativamente baixas.
+</p>
+<p>
+    Este curso se concentrará nos sistemas hidrostáticos, que constituem a vasta maioria das aplicações industriais e móbeis, como prensas, máquinas operatrizes, equipamentos de construção civil e injetoras de plásticos.
+</p>
+
+<h3>3. TAXONOMIA DOS SISTEMAS HIDRÁULICOS</h3>
+<p>A taxonomia dos sistemas hidráulicos pode ser estabelecida segundo múltiplos critérios técnicos.</p>
+
+<h4>3.1. De acordo com a Pressão de Operação:</h4>
+<p>Conforme as normas da extinta J.I.C. (Joint Industry Conference) e da vigente NFPA (National Fluid Power Association), a classificação por pressão é:</p>
+<ul>
+    <li>0 a 14 bar - Baixa pressão</li>
+    <li>14 a 35 bar - Média pressão</li>
+    <li>35 a 84 bar - Média-alta pressão</li>
+    <li>84 a 210 bar - Alta pressão</li>
+    <li>Acima de 210 bar - Extra-alta pressão</li>
+</ul>
+
+<h4>3.2. De acordo com a Aplicação:</h4>
+<p>Classificados como sistemas de pressão contínua ou de pressão intermitente.</p>
+
+<h4>3.3. De acordo com o Tipo de Bomba:</h4>
+<p>Sistemas de vazão constante (deslocamento fixo) ou de vazão variável (deslocamento variável).</p>
+
+<h4>3.4. De acordo com o Controle Direcional:</h4>
+<p>Sistemas de uma via (unidirecionais, controlados por válvulas) ou de duas vias (bidirecionais, com bombas reversíveis).</p>
+
+<h3>4. ARQUITETURA FUNCIONAL DE UM SISTEMA HIDRÁULICO</h3>
+<p>Apesar da vasta diversidade de circuitos, a arquitetura funcional de qualquer sistema hidráulico pode ser segmentada em três subsistemas principais:</p>
+<ul>
+    <li><strong>4.1. Unidade de Geração de Potência (HPU - Hydraulic Power Unit):</strong><br>
+        Constituída pelo reservatório, sistema de filtragem, bomba hidráulica (conversor de energia mecânica em hidráulica), motor de acionamento, e pode incluir acumuladores, intensificadores de pressão e trocadores de calor.</li>
+    <li><strong>4.2. Circuito de Comando e Controle:</strong><br>
+        Composto pelo conjunto de válvulas responsáveis pela regulação da energia fluídica: válvulas controladoras de vazão, de pressão e direcionais.</li>
+    <li><strong>4.3. Subsistema de Atuação:</strong><br>
+        Onde a energia hidráulica é reconvertida em energia mecânica para realizar trabalho útil. Os componentes aqui são os atuadores, que podem ser lineares (cilindros) ou rotativos (motores hidráulicos e osciladores).</li>
+</ul>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_2.png" alt="Diagrama funcional de um sistema hidráulico, ilustrando a HPU, o circuito de controle e o subsistema de atuação.">
+    <figcaption>Arquitetura funcional simplificada de um circuito hidráulico.</figcaption>
+</figure>
+
+<h3>5. ANÁLISE COMPARATIVA DOS SISTEMAS HIDRÁULICOS</h3>
+<p>A decisão de empregar um sistema hidráulico é frequentemente tomada onde a aplicação de sistemas puramente mecânicos ou elétricos é inviável ou ineficiente. Uma análise crítica revela as seguintes vantagens e desvantagens.</p>
+
+<h4>5.1. Vantagens</h4>
+<ul>
+    <li><strong>Elevada Densidade de Potência:</strong> Relação potência/peso e potência/volume superior à dos sistemas elétricos e mecânicos, permitindo componentes mais compactos para uma mesma capacidade de força.</li>
+    <li><strong>Flexibilidade de Montagem:</strong> Os componentes são interligados por mangueiras e tubulações, oferecendo grande liberdade no design e na disposição física dos elementos.</li>
+    <li><strong>Dinâmica e Controle:</strong> A baixa inércia dos atuadores hidráulicos permite elevadas acelerações, desacelerações e rápidas reversões de movimento com controle preciso e suave.</li>
+    <li><strong>Controle de Velocidade:</strong> Permite a variação contínua da velocidade em uma ampla faixa, com ajustes de alta resolução (micrométricos), algo complexo e custoso em outros sistemas.</li>
+    <li><strong>Proteção contra Sobrecarga:</strong> A proteção do sistema é inerentemente simples e confiável, realizada por meio de válvulas de alívio de pressão.</li>
+    <li><strong>Lubrificação Intrínseca:</strong> O próprio fluido de trabalho atua como agente lubrificante para os componentes móveis do sistema.</li>
+</ul>
+
+<h4>5.2. Desvantagens</h4>
+<ul>
+    <li><strong>Eficiência Energética:</strong> O rendimento global é limitado devido às múltiplas conversões de energia e às perdas inerentes ao sistema, que se dividem em:
+        <ol type="a">
+            <li>perdas na conversão de energia (elétrica → mecânica → hidráulica → mecânica);</li>
+            <li>perdas volumétricas (vazamentos internos nos componentes, que aumentam com a pressão e o desgaste);</li>
+            <li>perdas por atrito (mecânico e viscoso do fluido).</li>
+        </ol>
+    </li>
+    <li><strong>Sensibilidade à Contaminação:</strong> A presença de partículas sólidas ou água no fluido é a principal causa de falhas prematuras, exigindo um rigoroso controle de filtragem e manutenção.</li>
+    <li><strong>Riscos Associados ao Fluido:</strong> Óleos minerais são inflamáveis, apresentando risco de incêndio. Fluidos resistentes ao fogo estão disponíveis, mas possuem custo mais elevado e, por vezes, características de desempenho inferiores.</li>
+</ul>
+
+<h4>5.3. Comparativo com Sistemas Pneumáticos</h4>
+<p>
+    Em comparação direta, os sistemas hidráulicos oferecem um controle de força e velocidade muito mais preciso devido à baixa compressibilidade do óleo. Eles operam em níveis de pressão ordens de magnitude maiores que os sistemas pneumáticos, resultando em uma capacidade de transmissão de potência substancialmente superior para um mesmo volume de atuador. A principal vantagem dos sistemas pneumáticos reside em seu menor custo de aquisição e na simplicidade de seus componentes.
+</p>
+
+</p><div class="status-bloqueio"></div></div>
+        <div id="aula2" class="module"><h2>Aula 2: Fundamentos</h2><p><h2><span style="font-size: 1.5em; vertical-align: middle;">⚙️</span> Aula 2: Fundamentos e Princípios Físicos</h2>
+
+<p>Assim como em qualquer disciplina da engenharia, a hidráulica industrial fundamenta-se em princípios físicos basilares. A proficiência em sua aplicação prática exige o domínio desses conceitos. Seria infrutífero, por exemplo, tentar dimensionar um circuito sem compreender as leis que governam a pressão e a energia. Este capítulo, portanto, abordará os princípios fundamentais da hidráulica e as formulações matemáticas mais empregadas na prática.</p>
+
+<h3>1. Lei de Pascal</h3>
+<p>
+    Blaise Pascal (1623-1662) foi um físico e matemático cujos trabalhos estabeleceram a base da hidrostática. Dentre seus postulados, destaca-se o "Princípio Fundamental da Hidráulica", que enuncia:
+</p>
+<blockquote class="principle-box">
+    "A pressão aplicada a um ponto de um fluido incompressível em repouso, confinado em um recipiente, é transmitida integralmente e com a mesma intensidade a todos os pontos do fluido e às paredes do recipiente que o contém."
+</blockquote>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_1.png" alt="Ilustração do Princípio de Pascal, com pressão aplicada em um ponto A sendo transmitida igualmente para um ponto B em um recipiente fechado.">
+    <figcaption>Figura II.1: Representação esquemática da Lei de Pascal.</figcaption>
+</figure>
+
+<p>
+    A Figura II.1 ilustra a aplicação deste princípio. Forças e movimentos podem ser transmitidos através do fluido, que atua como meio transmissor. Se uma pressão é aplicada no ponto "A", um manômetro posicionado no ponto "B" registrará um valor de pressão idêntico, desconsiderando efeitos gravitacionais.
+</p>
+
+<h3>2. Princípio da Conservação da Energia</h3>
+<p>
+    A Primeira Lei da Termodinâmica, o Princípio da Conservação da Energia, postula que a energia não pode ser criada nem destruída, apenas convertida ou transferida de uma forma para outra. A energia total de um sistema isolado permanece constante.
+</p>
+<p>
+    Toda energia que utilizamos é, em sua essência, uma conversão de uma forma de energia preexistente na natureza. A energia térmica de uma caldeira provém da energia química armazenada em um combustível; a energia elétrica é gerada pela conversão da energia potencial gravitacional da água (hidrelétricas) ou da energia nuclear (termonucleares). Lavoisier enunciou: "Na natureza nada se cria, nada se perde, tudo se transforma". Este princípio é diretamente aplicável à energia.
+</p>
+<p>
+    Em sistemas óleo-hidráulicos, observamos uma cadeia de conversões energéticas: a energia <strong>elétrica</strong> é convertida em energia <strong>mecânica</strong> (no motor elétrico), que por sua vez é convertida em energia <strong>hidráulica</strong> (pela bomba, que confere pressão e vazão ao óleo). Finalmente, esta energia hidráulica é reconvertida em <strong>mecânica</strong> no atuador.
+</p>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_3.png" alt="Diagrama de um multiplicador de força hidráulico, onde uma força menor em um pistão pequeno move um peso maior em um pistão grande.">
+    <figcaption>Figura II.2: Demonstração da multiplicação de força e o balanço de trabalho (Força x Deslocamento).</figcaption>
+</figure>
+
+<p>
+    A Figura II.2 ilustra um multiplicador de força hidráulico. Uma carga de 2.000 kg é deslocada por 1 centímetro pela aplicação de uma força equivalente a 1.000 kg, que atua ao longo de 2 centímetros. Isso é possível porque a área do pistão "B" é o dobro da área do pistão "A". Verifica-se que o trabalho realizado (Força × Deslocamento) é conservado em ambos os lados, demonstrando que um pequeno esforço com grande deslocamento pode gerar um grande esforço com pequeno deslocamento.
+</p>
+<p>
+    Este fenômeno é análogo ao <strong>Princípio da Alavanca</strong>, ilustrado na Figura II.3. Uma massa de 50 kg equilibra uma de 100 kg, pois a relação das distâncias ao ponto de apoio (fulcro) é de 2:1. Na hidráulica, a relação entre as áreas dos pistões cumpre o papel que as distâncias cumprem na alavanca. Este é o princípio que permite obter forças de grande magnitude a partir de fontes de potência relativamente pequenas.
+</p>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_4.png" alt="Ilustração do Princípio da Alavanca, com pesos diferentes em equilíbrio devido a diferentes distâncias do fulcro.">
+    <figcaption>Figura II.3: Paralelo entre o sistema hidráulico e o Princípio da Alavanca.</figcaption>
+</figure>
+
+
+<h3>3. Força e Pressão</h3>
+<p>
+    Em física, <strong>Força (F)</strong> é definida como uma grandeza vetorial capaz de alterar o estado de inércia de um corpo ou de lhe causar uma deformação.
+</p>
+<p>
+    Quando uma força F é aplicada perpendicularmente sobre uma superfície de área A, define-se a <strong>Pressão (P)</strong> como a razão entre a magnitude da força e a área sobre a qual ela atua. A pressão é uma medida da força distribuída por unidade de área.
+</p>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_5.png" alt="Fórmula da Pressão: P = F / A">
+    <figcaption>Relação fundamental entre Pressão, Força e Área.</figcaption>
+</figure>
+
+<p>
+    Em óleo-hidráulica, um conceito crucial deve ser compreendido: <strong>a bomba gera vazão (fluxo), não pressão</strong>. A pressão em um circuito hidráulico surge como uma reação a uma resistência imposta ao fluxo de óleo. Seja essa resistência uma carga externa em um atuador, uma restrição em uma válvula ou o atrito na tubulação. Sem resistência, não há pressão.
+</p>
+<p>
+    As unidades de pressão mais comuns na indústria são kg/cm², PSI (Pounds per Square Inch) e, de acordo com o Sistema Internacional (SI), o <strong>bar</strong>, onde 1 bar ≈ 1.02 kg/cm² ≈ 14.5 PSI.
+</p>
+
+<h3>4. Pressão Hidrostática</h3>
+<p>
+    A Terra é envolta por uma camada gasosa, a atmosfera, que exerce uma pressão sobre a superfície. Ao nível do mar, essa pressão é definida como 1 atmosfera (1 atm). Pelo princípio de Pascal, essa pressão atmosférica é transmitida a qualquer fluido em um recipiente aberto.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_6.png" alt="Reservatório aberto sofrendo a ação da pressão atmosférica.">
+    <figcaption>Figura II.4: Influência da pressão atmosférica.</figcaption>
+</figure>
+<p>
+    Adicionalmente, a própria coluna de fluido dentro de um reservatório exerce uma pressão devido ao seu peso. A pressão total em qualquer ponto submerso em um fluido é a soma da pressão na superfície (ex: atmosférica) com a pressão exercida pela coluna de fluido acima desse ponto. A esta última parcela, damos o nome de <strong>pressão hidrostática</strong>.
+</p>
+<p>
+    A pressão hidrostática depende exclusivamente da altura da coluna de fluido e de sua densidade, e não do formato ou volume do recipiente, como ilustra a "experiência do manômetro" na Figura II.5. Embora o reservatório maior contenha um volume e peso de água muito maiores, a pressão registrada pelos manômetros na mesma profundidade (10 metros) é idêntica (1 kg/cm²), pois a pressão é uma medida de força por unidade de área.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_7.png" alt="Dois reservatórios de diâmetros diferentes, mas com a mesma altura de fluido, mostrando a mesma leitura de pressão na base.">
+    <figcaption>Figura II.5: A pressão hidrostática independe do diâmetro do reservatório.</figcaption>
+</figure>
+<p>
+    A Figura II.6 demonstra experimentalmente a variação da pressão com a profundidade. O jato de líquido que emana do orifício mais baixo possui maior alcance, pois está submetido a uma maior pressão hidrostática.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_8.png" alt="Reservatório com três furos em diferentes alturas, mostrando que o jato inferior é o mais forte.">
+    <figcaption>Figura II.6: Evidência prática da pressão hidrostática.</figcaption>
+</figure>
+
+<h3>5. Princípio de Bernoulli</h3>
+<p>
+    Considere o sistema na Figura II.7, com duas câmaras interligadas por um duto de diâmetro reduzido (uma restrição). Se uma força no pistão "A" gera uma pressão de 100 bar, essa pressão é restabelecida na câmara "B". Contudo, um manômetro posicionado no duto "C" indicará uma pressão inferior a 100 bar.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_9.png" alt="Sistema mostrando a queda de pressão em uma restrição devido ao aumento de velocidade do fluido.">
+    <figcaption>Figura II.7: Ilustração do Princípio de Bernoulli.</figcaption>
+</figure>
+<p>
+    Daniel Bernoulli (1700-1782) formulou o princípio que explica este fenômeno, uma forma da lei de conservação de energia para fluidos em movimento:
+</p>
+<blockquote class="principle-box">
+    "Para um escoamento ideal (sem atrito), a soma das energias de pressão, cinética e potencial, por unidade de volume, é constante ao longo de uma linha de corrente."
+</blockquote>
+<p>
+    Em termos simplificados, para uma mesma altura, onde a velocidade do fluido aumenta, sua pressão estática diminui. No duto "C", a área é menor, então para manter a vazão constante, a velocidade do fluido deve aumentar. Esse aumento da energia cinética ocorre às custas de uma redução na energia de pressão, explicando a leitura menor no manômetro.
+</p>
+
+<h3>6. Escoamento de Fluido em Tubulações</h3>
+<p>
+    Um fluido em um sistema sempre seguirá o percurso de menor resistência. Se o fluxo de uma bomba se depara com três ramificações, cada uma com uma resistência diferente (exigindo 20 bar, 50 bar e 70 bar para serem transpostas), o fluido atuará sequencialmente: primeiro vencerá a resistência de 20 bar, depois a de 50 bar e, por último, a de 70 bar.
+</p>
+<p>
+    O escoamento em si pode ocorrer de duas formas distintas: <strong>laminar</strong> ou <strong>turbulento</strong>. O regime de escoamento depende de fatores como a viscosidade do fluido, sua velocidade, o diâmetro da tubulação e a rugosidade interna da mesma.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_11.png" alt="Ilustração mostrando a diferença entre escoamento laminar (camadas suaves) e turbulento (vórtices e mistura caótica).">
+    <figcaption>Figura II.8: Representação de escoamento laminar e turbulento.</figcaption>
+</figure>
+<p>
+    Para quantificar e prever o tipo de escoamento, utiliza-se o <strong>Número de Reynolds (Re)</strong>, um grupo adimensional que representa a razão entre as forças de inércia e as forças de viscosidade do fluido.
+</p>
+<div class="formula-container">
+    <p>Re = (v ⋅ D) / ν</p>
+    <small>Onde: v = velocidade do fluido, D = diâmetro do duto, ν = viscosidade cinemática</small>
+</div>
+<figure class="image-container" style="max-width: 300px; margin: 1rem auto;">
+    <img src="assets/Screenshot_10.png" alt="Fórmula do Número de Reynolds">
+</figure>
+<p>
+    Empiricamente, para escoamento em dutos, a seguinte classificação é adotada:
+</p>
+<ul>
+    <li><strong>Re &lt; 2000:</strong> Regime de escoamento <strong>laminar</strong>, caracterizado por um movimento suave e em camadas paralelas.</li>
+    <li><strong>Re &gt; 3000:</strong> Regime de escoamento <strong>turbulento</strong>, caracterizado por vórtices, mistura intensa e maior perda de energia.</li>
+    <li><strong>2000 &lt; Re &lt; 3000:</strong> Região de transição, onde o escoamento é instável e pode alternar entre os dois regimes.</li>
+</ul>
+<p>
+    O ideal para circuitos óleo-hidráulicos é que o regime de escoamento seja laminar (Re ≤ 2.000), pois em regimes turbulentos, as perdas de pressão (perdas de carga) são exponencialmente maiores. Sempre que possível, deve-se evitar na concepção dos circuitos o emprego de restrições ou curvas de raio curto, pois são indutores de turbulência.
+</p>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_12.png" alt="Diagrama ilustrando a diferença de perda de carga entre escoamento laminar e turbulento.">
+    <figcaption>Figura II.9: Gráfico comparativo de perda de carga vs. vazão para regimes laminar e turbulento.</figcaption>
+</figure>
+
+<figure class="image-container">
+    <img src="assets/Screenshot_13.png" alt="Exemplos de componentes que induzem turbulência, como curvas abruptas.">
+    <figcaption>Figura II.10: Elementos indutores de turbulência em um circuito.</figcaption>
+</figure>
+
+<h3>7. Vazão em Tubulações</h3>
+<p>
+    A vazão (Q) de um fluido, que representa o volume de fluido que atravessa uma determinada seção transversal por unidade de tempo, pode ser determinada de duas formas. Ela pode ser expressa como a razão entre o volume (V) e o tempo (t), ou como o produto da velocidade média do fluido (v) pela área da seção transversal (A) por onde ele escoa.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_14.png" alt="Fórmulas para o cálculo de vazão.">
+    <figcaption>Relações fundamentais para o cálculo de vazão (Q).</figcaption>
+</figure>
+<p>
+    É de suma importância observar as velocidades de escoamento recomendadas para diferentes partes do circuito hidráulico. A RACINE, por exemplo, recomenda as seguintes faixas de velocidade para óleo hidráulico, visando otimizar a eficiência e a vida útil do sistema:
+</p>
+<ul class="recommendation-list">
+    <li><strong>Para Linhas de Sucção e Preenchimento:</strong><br> v = 60,96 a 121,92 cm/s (2 a 4 ft/s)</li>
+    <li><strong>Para Linhas de Retorno:</strong><br> v = 304,80 a 457,20 cm/s (10 a 15 ft/s)</li>
+    <li><strong>Para Retorno (após válvula de alívio):</strong><br> v = 457,20 a 762,20 cm/s (15 a 25 ft/s)</li>
+    <li><strong>Para Linhas de Pressão (abaixo de 210 bar):</strong><br> v = 457,20 a 762,20 cm/s (15 a 25 ft/s)</li>
+    <li><strong>Para Linhas de Pressão (acima de 210 bar):</strong><br> v = 457,20 a 609,60 cm/s (15 a 20 ft/s)</li>
+</ul>
+<p>
+    A observância dessas velocidades contribui para manter o regime de escoamento laminar, minimizando as perdas de carga e assegurando que o dimensionamento da tubulação resulte em diâmetros comerciais padronizados.
+</p>
+
+<h3>8. Perda de Carga em Sistemas Hidráulicos</h3>
+<p>
+    Durante o escoamento do fluido através do sistema, ocorre uma queda de pressão, tecnicamente denominada <strong>perda de carga (ΔP)</strong>. Esta perda é atribuível ao atrito do fluido com as paredes da tubulação (perda de carga distribuída) e às perturbações no fluxo causadas por componentes como curvas, válvulas e conexões (perda de carga localizada). A fórmula geral de Darcy-Weisbach, aqui apresentada de forma simplificada para uso prático, permite o cálculo dessa perda:
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_15.png" alt="Fórmula simplificada para cálculo de perda de carga (Delta P).">
+    <figcaption>Fórmula simplificada para o cálculo da perda de carga.</figcaption>
+</figure>
+<ul>
+    <li><strong>ΔP:</strong> Perda de carga do sistema [bar]</li>
+    <li><strong>f:</strong> Fator de atrito de Darcy (adimensional)</li>
+    <li><strong>L:</strong> Comprimento total da tubulação [cm] (L = L<sub>l</sub> + L<sub>s</sub>)</li>
+    <li><strong>L<sub>l</sub>:</strong> Comprimento da tubulação retilínea [cm]</li>
+    <li><strong>L<sub>s</sub>:</strong> Comprimento equivalente das singularidades [cm]</li>
+    <li><strong>D:</strong> Diâmetro interno da tubulação [cm]</li>
+    <li><strong>v:</strong> Velocidade de escoamento do fluido [cm/s]</li>
+    <li><strong>γ:</strong> Massa específica do fluido [kg/m³] (para óleo SAE-10, γ ≈ 881,1 kg/m³)</li>
+</ul>
+
+<h3>9. Detalhamento dos Cálculos</h3>
+
+<h4>9.1. Determinação do Fator "f"</h4>
+<p>
+    O fator de atrito "f" é uma função do Número de Reynolds e da rugosidade relativa da parede interna do duto. Quanto maior a rugosidade, maior a resistência ao escoamento e, consequentemente, maior a perda de carga. A figura a seguir ilustra, em escala microscópica, a interação entre as moléculas do fluido (polímeros) e as irregularidades da superfície da tubulação, que geram o atrito responsável pela perda de energia.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_16.png" alt="Representação microscópica da parede interna de um duto e das moléculas de óleo (polímeros).">
+    <figcaption>Interação microscópica entre o fluido e a parede do duto.</figcaption>
+</figure>
+
+<h4>9.2. Determinação de Ls, Ll e L</h4>
+<p>
+    Como salientado, restrições, curvas e válvulas causam perdas de carga localizadas. Fabricantes como a RACINE fornecem em seus catálogos as quedas de pressão para cada componente sob condições específicas de vazão e pressão.
+</p>
+<p>
+    Para elementos geométricos como curvas e cotovelos, a prática comum é determinar um "comprimento equivalente" (L<sub>s</sub>) de tubulação retilínea que produziria a mesma perda de carga. Existem tabelas, como a apresentada a seguir, para estimar esses valores. O comprimento total (L) para o cálculo é então a soma do comprimento retilíneo real (L<sub>l</sub>) com a soma dos comprimentos equivalentes de todas as singularidades (L<sub>s</sub>).
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_17.jpg" alt="Tabela de transformação de singularidades em comprimentos equivalentes.">
+    <figcaption>Tabela para determinação de comprimentos equivalentes de singularidades comuns.</figcaption>
+</figure>
+
+<h4>9.3. Determinação de "D"</h4>
+<p>
+    O diâmetro interno (D) da tubulação é um parâmetro crítico, calculado a partir da área da seção transversal (A) necessária para acomodar a vazão (Q) do sistema à velocidade (v) recomendada.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_18.png" alt="Fórmula A = Q / v">
+    <figcaption>Cálculo da área da seção a partir da vazão e velocidade.</figcaption>
+</figure>
+<p>
+    Adotando a velocidade recomendada para linhas de pressão (v ≈ 457,20 cm/s ou 15 ft/s), a fórmula para a área se torna:
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_19.png" alt="Fórmula A = Q / 457.20">
+</figure>
+<p>
+    Uma vez determinada a área "A", o diâmetro "D" é obtido pela relação geométrica:
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_20.png" alt="Fórmula D = raiz quadrada de (4A / pi)">
+</figure>
+
+<h4>9.4. Determinação de "v" e "γ"</h4>
+<p>
+    A velocidade do fluido (v) deve ser a recomendada para cada seção do circuito, conforme item 7. A utilização dessas velocidades é uma heurística de projeto que visa manter o Número de Reynolds abaixo de 2.000, garantindo o escoamento laminar.
+</p>
+<p>
+    A massa específica (γ) para um óleo hidráulico padrão, como o SAE-10, é de aproximadamente 881,1 kg/m³.
+</p>
+
+<h4>9.6. Procedimento de Cálculo</h4>
+<ol type="a">
+    <li>Determine o fator de atrito "f".</li>
+    <li>Calcule o comprimento equivalente das singularidades "Ls" e some ao comprimento retilíneo "Ll" para obter o comprimento total "L". Some as perdas de carga localizadas específicas das válvulas (obtidas em catálogos).</li>
+    <li>Calcule a perda de carga distribuída (ΔP) usando a fórmula e some-a às perdas localizadas das válvulas para obter a perda de carga total do sistema.</li>
+    <li>Verifique se a pressão disponível na bomba é suficiente para vencer a perda de carga total e ainda realizar o trabalho necessário. Se P<sub>bomba</sub> - ΔP<sub>total</sub> < P<sub>trabalho</sub>, o sistema é inadequado.</li>
+</ol>
+
+<h4>9.7. Observação Final sobre Perdas e Aquecimento</h4>
+<p>
+    O cálculo de perda de carga é de importância crítica no projeto de sistemas hidráulicos. Restrições no percurso do fluxo, como reduções de diâmetro ou orifícios, são as maiores contribuintes para a perda de carga e, consequentemente, para o aquecimento do óleo.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_21.png" alt="Ilustração do escoamento de óleo através de restrições.">
+    <figcaption>Figura II.13: Efeito de restrições no fluxo e pressão.</figcaption>
+</figure>
+<p>
+    O atrito entre as moléculas do fluido (polímeros) ao passarem por uma restrição gera calor. Este fenômeno é análogo ao aquecimento das mãos ao esfregá-las com força. O aquecimento excessivo degrada o óleo, reduzindo sua viscosidade e vida útil.
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_22.png" alt="Ilustração do atrito entre polímeros de óleo.">
+    <figcaption>Figura II.14: Aquecimento por atrito intermolecular.</figcaption>
+</figure>
+<p>
+    Na prática de montagem, é crucial que as curvas em tubulações tenham um raio de, no mínimo, 2.5 a 3 vezes o diâmetro externo do duto, para evitar o "enrugamento" interno, que cria uma restrição e um ponto de perda de carga.
+</p>
+
+<h3>10. Exemplos de Cálculos</h3>
+
+<h4>10.1. Cálculo da Área da Seção de um Duto</h4>
+<h5>10.1.1. Calcular a área da seção de um duto de 10 cm de diâmetro.</h5>
+<figure class="image-container"><img src="assets/Screenshot_25.png" alt="Cálculo da área para um duto de 10cm."></figure>
+
+<h5>10.1.2. Calcular a área da seção de um duto de 1 1/4" de diâmetro.</h5>
+<figure class="image-container"><img src="assets/Screenshot_26.png" alt="Cálculo da área para um duto de 1 1/4 polegadas."></figure>
+
+<h4>10.2. Cálculo do Diâmetro Interno a Partir da Área</h4>
+<h5>10.2.1. Calcular o diâmetro do duto cuja seção possui uma área de 1,267 cm².</h5>
+<figure class="image-container"><img src="assets/Screenshot_27.png" alt="Cálculo do diâmetro a partir de uma área de 1,267 cm²."></figure>
+
+<h4>10.3. Dimensionamento de Dutos a Partir da Vazão</h4>
+<h5>10.3.1. Calcular as áreas e diâmetros para as linhas de pressão, sucção e retorno de um sistema com vazão máxima de 6 litros/minuto.</h5>
+<p>Q = 6 l/min = 100 cm³/s</p>
+<p><strong>a) Linha de pressão (v<sub>p</sub> ≈ 457,2 cm/s):</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_28.png" alt="Cálculo da área de pressão para 6 l/min."></figure>
+<figure class="image-container"><img src="assets/Screenshot_29.png" alt="Cálculo do diâmetro de pressão para 6 l/min."></figure>
+<p>Adota-se D<sub>pressão</sub> = 0,524 cm (próximo a 3/16").</p>
+<p><strong>b) Linha de retorno (v<sub>r</sub> ≈ 304,8 cm/s):</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_30.png" alt="Cálculo da área e diâmetro de retorno para 6 l/min."></figure>
+<p>Adota-se D<sub>retorno</sub> = 0,635 cm (1/4").</p>
+
+<h5>10.3.2. Calcular as áreas e diâmetros para um sistema com vazão máxima de 60 litros/minuto.</h5>
+<p>Q = 60 l/min = 1000 cm³/s</p>
+<p><strong>a) Linha de pressão (v<sub>p</sub> ≈ 457,2 cm/s):</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_31.png" alt="Cálculo da área de pressão para 60 l/min."></figure>
+            <p>
+    Adotamos o duto comercial de diâmetro superior mais próximo: <strong>D<sub>pressão</sub> = 19mm (3/4")</strong>.
+</p>
+<p><strong>b) Na sucção (v<sub>s</sub> ≈ 121,92 cm/s):</strong></p>
+<figure class="image-container">
+    <img src="assets/Screenshot_32.png" alt="Cálculo da área e diâmetro de sucção para 60 l/min.">
+</figure>
+<p>
+    Adotamos o duto comercial de diâmetro superior mais próximo: <strong>D<sub>sucção</sub> = 35mm (1 3/8")</strong>.
+</p>
+<p><strong>c) No retorno (v<sub>r</sub> ≈ 304,80 cm/s):</strong></p>
+<figure class="image-container">
+    <img src="assets/Screenshot_33.png" alt="Cálculo da área e diâmetro de retorno para 60 l/min.">
+</figure>
+<p>
+    Adotamos o duto comercial de diâmetro superior mais próximo: <strong>D<sub>retorno</sub> = 21mm (7/8")</strong>.
+</p>
+
+<h4>10.4. Determinação do Tipo de Escoamento</h4>
+
+<h5>10.4.1. Determinar o tipo de escoamento em uma linha de pressão de 15mm de diâmetro interno.</h5>
+<figure class="image-container">
+    <img src="assets/Screenshot_34.png" alt="Cálculo do Número de Reynolds para D=15mm.">
+</figure>
+<div class="answer-box">
+    <strong>Resposta:</strong> O escoamento é <strong>laminar</strong>, pois o Número de Reynolds (Re = 1371,6) está na faixa de 0 a 2.000.
+</div>
+
+<h5>10.4.2. Determinar o tipo de escoamento em uma linha de pressão de 22mm de diâmetro interno.</h5>
+<figure class="image-container">
+    <img src="assets/Screenshot_35.png" alt="Cálculo do Número de Reynolds para D=22mm.">
+</figure>
+<div class="answer-box">
+    <strong>Resposta:</strong> O escoamento é <strong>indeterminado (regime de transição)</strong>, pois o Número de Reynolds (Re = 2011,6) está na faixa de 2.000 a 3.000. Poderá ocorrer uma perda de carga mais acentuada do que no regime laminar.
+</div>
+
+<h5>10.4.3. Determinar o tipo de escoamento em uma linha de pressão de 55mm de diâmetro interno.</h5>
+<figure class="image-container">
+    <img src="assets/Screenshot_36.png" alt="Cálculo do Número de Reynolds para D=55mm.">
+</figure>
+<div class="answer-box">
+    <strong>Resposta:</strong> O escoamento é <strong>turbulento</strong>, pois o Número de Reynolds (Re = 5029,2) está acima de 3.000. Haverá uma perda de carga elevada no sistema.
+</div>
+
+<h4>10.5. Exemplo de Cálculo de Perda de Carga de um Sistema</h4>
+<h5>10.5.1. Calcular a perda de carga total de um sistema dadas as seguintes condições:</h5>
+<ol type="a" class="problem-list">
+    <li>Vazão máxima: Q = 18,925 l/min (5 GPM)</li>
+    <li>Velocidade de fluxo recomendada (linha de pressão): v = 457,20 cm/s (15 ft/s)</li>
+    <li>Condições: Tubos curvados, temperatura do fluido variável.</li>
+    <li>Comprimento da tubulação retilínea (L<sub>l</sub>): 1346 cm</li>
+    <li>Singularidades encontradas no sistema:
+        <ul>
+            <li>2 cotovelos de 90° (raio longo)</li>
+            <li>2 cotovelos de 90° (raio curto)</li>
+            <li>2 cotovelos de 45°</li>
+            <li>4 curvas de 90° (raio longo)</li>
+            <li>2 "tês" de saída bilateral</li>
+            <li>1 registro de globo</li>
+        </ul>
+    </li>
+    <li>Válvulas RACINE na linha de pressão (perdas localizadas a serem consideradas):
+        <ul>
+            <li>2 válvulas de controle direcional de 1/4"</li>
+            <li>2 válvulas de sequência de 3/8"</li>
+            <li>1 válvula de controle de vazão (vazão máx. 30 l/min)</li>
+            <li>1 válvula de retenção pilotada de 3/4" (montada em placa)</li>
+        </ul>
+    </li>
+    <li>Fluido utilizado: Óleo SAE-10.</li>
+</ol>
+<p><strong>Questão:</strong> Sabendo que o sistema necessita de uma pressão mínima de 160 bar no atuador e que a pressão máxima fornecida pela bomba é de 210 bar, qual a conclusão sobre a viabilidade do sistema?</p>
+<hr>
+<p><strong>Solução:</strong></p>
+<p><strong>- Determinação do diâmetro interno (D) da tubulação:</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_37.png" alt="Cálculo do diâmetro para o problema."></figure>
+<p>Adota-se o diâmetro comercial padrão: <strong>D = 0,9525 cm (3/8")</strong>.</p>
+
+<p><strong>- Verificação do regime de escoamento (cálculo de "f"):</strong></p>
+<figure class="image-container"><img src="assets/Screenshot_38.png" alt="Cálculo do Número de Reynolds para o problema."></figure>
+<p>Como Re < 2.000, o escoamento é laminar. Para este regime, o fator de atrito 'f' pode ser calculado pela fórmula f = 64/Re. Adotando uma viscosidade cinemática de 0,5 Stokes (fator de segurança para obter um 'f' e ΔP maiores), temos:</p>
+<figure class="image-container"><img src="assets/Screenshot_39.png" alt="Cálculo do fator de atrito 'f'."></figure>
+
+<p><strong>- Determinação do comprimento equivalente das singularidades (L<sub>s</sub>):</strong></p>
+<p>Utilizando a tabela de comprimentos equivalentes (Figura II.12.A) para um diâmetro de 3/8":</p>
+<figure class="image-container"><img src="assets/Screenshot_40.png" alt="Tabela de cálculo do comprimento equivalente Ls."></figure>
+
+<p><strong>- Determinação da perda de carga localizada nas válvulas (ΔP<sub>válvulas</sub>):</strong></p>
+<p>Dados obtidos dos catálogos técnicos da RACINE para as condições de operação:</p>
+<figure class="image-container"><img src="assets/Screenshot_41.png" alt="Tabela de cálculo da perda de carga localizada nas válvulas."></figure>
+
+<p><strong>- Cálculo da perda de carga total no sistema (ΔP<sub>total</sub>):</strong></p>
+<p>Primeiro, a perda de carga distribuída e das singularidades geométricas:</p>
+<figure class="image-container"><img src="assets/Screenshot_42.png" alt="Cálculo da perda de carga distribuída e geométrica."></figure>
+<p>Agora, somamos a perda das válvulas:</p>
+<p class="formula-container">ΔP<sub>total</sub> = ΔP + ΔP<sub>válvulas</sub> = 21,125 + 17,04 = <strong>38,165 bar</strong></p>
+
+<p><strong>- Conclusão Final:</strong></p>
+<div class="conclusion-box">
+    <p>A pressão máxima fornecida pela bomba é de 210 bar. A perda de carga total calculada é de 38,165 bar. Portanto, a pressão útil disponível no atuador será:</p>
+    <p>P<sub>disp</sub> = P<sub>máx</sub> - ΔP<sub>total</sub> = 210 - 38,165 = <strong>171,835 bar</strong></p>
+    <p>Como a pressão disponível (171,835 bar) é superior à pressão mínima exigida pelo sistema (160 bar), concluímos que, sob estas condições e assumindo ausência de vazamentos significativos, <strong>o sistema funcionará satisfatoriamente</strong>.</p>
+</div>
+<p>
+    Na prática, este procedimento é realizado para cada ramificação do circuito que leva a um atuador diferente, garantindo que a pressão de trabalho seja adequada em todos os pontos.
+</p>
+<p>
+    A título de ilustração, a perda de carga total (ΔP<sub>total</sub>) representa a potência do sistema que é convertida em calor:
+</p>
+<figure class="image-container">
+    <img src="assets/Screenshot_43.png" alt="Fórmula de cálculo da potência perdida em calor.">
+    <figcaption>A potência perdida (em CV ou kW) é dissipada na forma de calor, influenciando no dimensionamento de trocadores de calor.</figcaption>
+</figure>
+            </p><div class="status-bloqueio"></div></div>
+    
+        <div id="aula3" class="module"><h2>Aula 3: Simbologia</h2><p>Conteúdo da Aula 3...</p><div class="status-bloqueio"></div></div>
+        <div id="aula4" class="module"><h2>Aula 4: Fluidos</h2><p>Conteúdo da Aula 4...</p><div class="status-bloqueio"></div></div>
+        <div id="aula5" class="module"><h2>Aula 5: Reservatórios</h2><p>Conteúdo da Aula 5...</p><div class="status-bloqueio"></div></div>
+        <div id="aula6" class="module"><h2>Aula 6: Filtros</h2><p>Conteúdo da Aula 6...</p><div class="status-bloqueio"></div></div>
+        <div id="aula7" class="module"><h2>Aula 7: Cilindros</h2><p>Conteúdo da Aula 7...</p><div class="status-bloqueio"></div></div>
+        <div id="aula8" class="module"><h2>Aula 8: Bombas</h2><p>Conteúdo da Aula 8...</p><div class="status-bloqueio"></div></div>
+        <div id="aula9" class="module"><h2>Aula 9: Válvulas de Pressão</h2><p>Conteúdo da Aula 9...</p><div class="status-bloqueio"></div></div>
+        <div id="aula10" class="module"><h2>Aula 10: Válvulas Direcionais</h2><p>Conteúdo da Aula 10...</p><div class="status-bloqueio"></div></div>
+        <div id="aula11" class="module"><h2>Aula 11: Válvulas de Vazão</h2><p>Conteúdo da Aula 11...</p><div class="status-bloqueio"></div></div>
+        <div id="aula12" class="module"><h2>Aula 12: Atuadores Rotativos</h2><p>Conteúdo da Aula 12...</p><div class="status-bloqueio"></div></div>
+        <div id="aula13" class="module"><h2>Aula 13: Acumuladores</h2><p>Conteúdo da Aula 13...</p><div class="status-bloqueio"></div></div>
+        <div id="aula14" class="module"><h2>Aula 14: Intensificadores</h2><p>Conteúdo da Aula 14...</p><div class="status-bloqueio"></div></div>
+        <div id="aula15" class="module"><h2>Aula 15: Trocadores de Calor</h2><p>Conteúdo da Aula 15...</p><div class="status-bloqueio"></div></div>
+        <div id="aula16" class="module"><h2>Aula 16: Outros Equipamentos</h2><p>Conteúdo da Aula 16...</p><div class="status-bloqueio"></div></div>
+        <div id="aula17" class="module"><h2>Aula 17: Tabelas e Fórmulas</h2><p>Conteúdo da Aula 17...</p><div class="status-bloqueio"></div></div>
+        <div id="quiz" class="module"><h2>Quiz Final</h2><p>Aqui você irá adicionar as perguntas do seu quiz.</p><div class="status-bloqueio"></div></div>
+        <div id="certificado" class="module"><h2>Certificado de Conclusão</h2><p>O certificado aparecerá aqui.</p><div class="status-bloqueio"></div></div>
+    </main>
+    <nav class="floating-nav" style="display: none;"> <button id="prev-btn" title="Módulo Anterior">&larr;</button>
+        <span id="module-indicator">1 / 19</span>
+        <button id="next-btn" title="Próximo Módulo">&rarr;</button>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <script>
+        // Data e hora do lançamento completo do curso
+        const RELEASE_DATE = new Date(2025, 6, 22, 9, 0, 0); // 22 de Julho de 2025, 09:00
+
+        const agora = new Date().getTime();
+        const dataLancamento = RELEASE_DATE.getTime();
+
+        let scriptFileToLoad;
+
+        if (agora < dataLancamento) {
+            // Se a data de lançamento ainda não chegou, carrega o script de acesso antecipado
+            scriptFileToLoad = 'script-acesso-antecipado.js';
+        } else {
+            // Se a data de lançamento já passou, carrega o script do curso completo
+            scriptFileToLoad = 'script-curso-completo.js';
+        }
+
+        // Cria uma nova tag de script e a adiciona à página
+        const script = document.createElement('script');
+        script.src = scriptFileToLoad;
+        document.body.appendChild(script);
+    </script>
+</body>
+</html>
