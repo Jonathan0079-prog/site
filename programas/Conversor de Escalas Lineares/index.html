@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Conversor Processo-Sinal</title>
+    <title>Conversor Processo-Sinal-Bits</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <h1>Processo ⇔ Sinal</h1>
-        <p>Conversor de Escalas Lineares</p>
+        <h1>Processo ⇔ Sinal ⇔ Bits</h1>
+        <p>Conversor de Escalas Lineares para Automação</p>
     </header>
 
     <div class="main-container">
@@ -39,22 +39,26 @@
             <h2 class="calc-title">Cálculos de Conversão</h2>
             
             <div class="input-group">
-                <label for="calcInputPv">Processo para Sinal:</label>
+                <label for="calcInputPv">Valor do Processo:</label>
                 <div class="conversion-row">
-                   <input type="number" id="calcInputPv" placeholder="Valor do Processo">
-                   <span>➡️</span>
-                   <input type="text" id="calcOutputSignal" placeholder="Resultado (Sinal)" readonly>
+                   <input type="number" id="calcInputPv" placeholder="Entrada Processo">
                 </div>
            </div>
 
            <div class="input-group">
-               <label for="calcInputSignal">Sinal para Processo:</label>
+               <label for="calcInputSignal">Valor do Sinal (mA, V):</label>
                 <div class="conversion-row">
-                   <input type="number" id="calcInputSignal" placeholder="Valor do Sinal">
-                   <span>➡️</span>
-                   <input type="text" id="calcOutputPv" placeholder="Resultado (Processo)" readonly>
+                   <input type="number" id="calcInputSignal" placeholder="Entrada Sinal">
                 </div>
            </div>
+
+            <div class="input-group">
+                <label for="calcInputBits">Valor em Bits (0-65535):</label>
+                 <div class="conversion-row">
+                    <input type="number" id="calcInputBits" placeholder="Entrada Bits" min="0" max="65535">
+                 </div>
+            </div>
+
 
             <div id="erro-container" class="erro-container hidden">
                 <p id="erro-msg"></p>
