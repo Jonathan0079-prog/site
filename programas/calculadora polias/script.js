@@ -30,15 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const dom = {};
     const ids = [
         'rpmMotor', 'potenciaMotor', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos',
-        'calcularBtn', 'resetBtn', 'printBtn', 'themeToggle', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn',
+        'calcularBtn', 'resetBtn', 'printBtn', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn',
         'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'projectName', 'saveProjectBtn', 'projectList',
         'importBtn', 'exportBtn', 'fileInput', 'compareProject1', 'compareProject2', 'compareBtn', 
         'failureType', 'diagnosisResult', 'direct-calculation-module', 'reverse-calculation-module', 
         'direct-results-container', 'reverse-results-container', 'comparison-results-container', 'solutionsTable', 
         'comparisonTable', 'resultadoCorreia', 'resultadoNumCorreias', 'resultadoRpm', 'resultadoRelacao', 
         'resultadoVelocidade', 'resultadoAngulo', 'resultadoForca', 'resultadoFrequencia', 'velocidadeCorreiaCard',
-        'anguloAbracamentoCard', 'forcaEixoCard', 'frequenciaVibracaoCard', 'customModal', 'modalMessage',
-        'modalConfirmBtn', 'modalCancelBtn'
+        'anguloAbracamentoCard', 'forcaEixoCard', 'frequenciaVibracaoCard', 'customModal', 
+        'modalMessage', 'modalConfirmBtn', 'modalCancelBtn', 'dicasLista', 'tips-card'
     ];
     ids.forEach(id => dom[id] = document.getElementById(id));
 
@@ -165,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dom['direct-results-container'].style.display = mode === 'direct' ? 'block' : 'none';
         dom['reverse-results-container'].style.display = mode === 'reverse' ? 'block' : 'none';
         dom['comparison-results-container'].style.display = mode === 'compare' ? 'block' : 'none';
+        dom['tips-card'].style.display = (mode === 'direct' || mode === 'reverse') ? 'block' : 'none';
         dom.modeDirectBtn.classList.toggle('active', mode === 'direct');
         dom.modeReverseBtn.classList.toggle('active', mode === 'reverse');
     }
@@ -242,20 +243,16 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     }
 
-    function importProjects() {
-        dom.fileInput.click();
-    }
+    function importProjects() { dom.fileInput.click(); }
 
     function handleFileSelect(event) {
         const file = event.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = (e) => {
             try {
                 const importedProjects = JSON.parse(e.target.result);
                 if (!Array.isArray(importedProjects)) throw new Error("O ficheiro não contém uma lista de projetos válida.");
-                
                 showModal('Isto irá adicionar os projetos do ficheiro à sua lista. Projetos com nomes duplicados serão ignorados. Deseja continuar?', 'confirm', () => {
                     const existingProjects = JSON.parse(localStorage.getItem('pulleyProjects')) || [];
                     const existingNames = new Set(existingProjects.map(p => p.name));
@@ -265,11 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadProjects();
                     showModal(`${newProjects.length} projetos foram importados com sucesso!`);
                 });
-
             } catch (error) {
                 showModal(`Erro ao importar o ficheiro: ${error.message}`);
             } finally {
-                // Limpa o valor do input para permitir importar o mesmo ficheiro novamente
                 dom.fileInput.value = '';
             }
         };
@@ -290,13 +285,22 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.customModal.style.display = 'flex';
     }
 
-    function hideModal() {
-        dom.customModal.style.display = 'none';
-    }
+    function hideModal() { dom.customModal.style.display = 'none'; }
     
     // --- FUNÇÕES DE SETUP E EVENTOS ---
     function setupEventListeners() {
-        // ... (todos os outros listeners)
+        dom.modeDirectBtn.addEventListener('click', () => setMode('direct'));
+        dom.modeReverseBtn.addEventListener('click', () => setMode('reverse'));
+        dom.calcularBtn.addEventListener('click', runDirectCalculation);
+        dom.optimizeBtn.addEventListener('click', runReverseOptimization);
+        dom.resetBtn.addEventListener('click', resetForm);
+        dom.printBtn.addEventListener('click', () => window.print());
+        dom.diametroMotora.addEventListener('change', suggestDistance);
+        dom.diametroMovida.addEventListener('change', suggestDistance);
+        dom.saveProjectBtn.addEventListener('click', saveProject);
+        dom.projectList.addEventListener('click', handleProjectListClick);
+        dom.compareBtn.addEventListener('click', runComparison);
+        dom.failureType.addEventListener('change', runDiagnosis);
         dom.importBtn.addEventListener('click', importProjects);
         dom.exportBtn.addEventListener('click', exportProjects);
         dom.fileInput.addEventListener('change', handleFileSelect);
@@ -305,19 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
             hideModal();
         });
         dom.modalCancelBtn.addEventListener('click', hideModal);
-        dom.modeDirectBtn.addEventListener('click', () => setMode('direct'));
-        dom.modeReverseBtn.addEventListener('click', () => setMode('reverse'));
-        dom.calcularBtn.addEventListener('click', runDirectCalculation);
-        dom.optimizeBtn.addEventListener('click', runReverseOptimization);
-        dom.resetBtn.addEventListener('click', resetForm);
-        dom.printBtn.addEventListener('click', () => window.print());
-        dom.themeToggle.addEventListener('change', toggleTheme);
-        dom.diametroMotora.addEventListener('change', suggestDistance);
-        dom.diametroMovida.addEventListener('change', suggestDistance);
-        dom.saveProjectBtn.addEventListener('click', saveProject);
-        dom.projectList.addEventListener('click', handleProjectListClick);
-        dom.compareBtn.addEventListener('click', runComparison);
-        dom.failureType.addEventListener('change', runDiagnosis);
         document.querySelectorAll('input[type="number"]').forEach(input => {
             input.addEventListener('input', () => input.classList.remove('invalid'));
         });
@@ -413,18 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
             loadSolutionIntoDirectForm(projects[index]);
         }
     }
-
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    }
-
-    function loadTheme() {
-        if (localStorage.getItem('theme') === 'dark') {
-            dom.themeToggle.checked = true;
-            document.body.classList.add('dark-mode');
-        }
-    }
     
     function loadSolutionIntoDirectForm(sol) {
         dom.rpmMotor.value = sol.rpm;
@@ -451,10 +430,23 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (value <= warnLimit) card.classList.add('warning');
         }
     }
+    
+    function generateTips({ velocidadeCorreia, angulo, relacao }) {
+        dom.dicasLista.innerHTML = '';
+        const addTip = (text, type = 'info') => {
+            const li = document.createElement('li');
+            li.textContent = text;
+            li.className = type;
+            dom.dicasLista.appendChild(li);
+        };
+        if (relacao > 7) addTip('Relações de transmissão muito altas (>7:1) podem causar deslizamento e exigir polias especiais.', 'warning');
+        if (velocidadeCorreia > 33) addTip('Velocidade da correia acima de 33 m/s. Polias podem precisar de balanceamento dinâmico.', 'warning');
+        if (angulo < 120) addTip('Ângulo de abraçamento baixo. A capacidade de transmissão de potência é reduzida. Considere aumentar a distância entre eixos.', 'danger');
+        addTip('Para projetos críticos, sempre consulte os catálogos técnicos dos fabricantes de correias para obter os dados completos.');
+    }
 
     function init() {
         setupEventListeners();
-        loadTheme();
         populateBeltProfileSelect();
         loadProjects();
         resetForm();
