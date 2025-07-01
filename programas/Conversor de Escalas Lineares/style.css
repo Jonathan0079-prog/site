@@ -9,145 +9,7 @@
     --cor-texto: #212529;
     --cor-sucesso: #28a745;
     --cor-erro: #dc3545;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    /* Garante que a rolagem seja suave */
-    scroll-behavior: smooth;
-}
-
-body {
-    width: 100%;
-    min-height: 100vh;
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-    /* REMOVIDO: display: flex e flex-direction: column. Esta era a causa do problema. */
-}
-
-header {
-    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
-    color: #ffffff;
-    padding: 1.2rem 1rem;
-    text-align: center;
-    border-bottom: 5px solid var(--cor-destaque);
-    /* REMOVIDO: flex-shrink: 0, não é mais necessário */
-}
-
-header h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 2rem;
-}
-
-header p {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1em;
-    opacity: 0.9;
-}
-
-.main-container {
-    padding: 2rem 1rem; /* Aumentei o padding para melhor espaçamento */
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto; /* Centraliza o container na página */
-    /* REMOVIDO: flex-grow: 1 e outras propriedades flex. */
-}
-
-.calculator-container {
-    background: #ffffff;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    width: 100%;
-}
-
-h2 {
-    font-family: 'Oswald', sans-serif;
-    color: var(--cor-primaria);
-    margin-bottom: 1.2rem;
-    text-align: center;
-    font-size: 1.4rem;
-}
-
-h2.calc-title {
-    margin-top: 1.5rem;
-}
-
-.range-container {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.range-container .input-group {
-    flex: 1;
-    min-width: 180px;
-}
-
-.input-group {
-    margin-bottom: 1rem;
-}
-
-.input-group label {
-    font-weight: bold;
-    color: var(--cor-texto);
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.field-pair, .conversion-row {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.conversion-row span {
-    font-size: 1.5rem;
-    color: var(--cor-destaque);
-}
-
-input[type="number"], input[type="text"] {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: #fff;
-    text-align: center;
-}
-
-input[readonly] {
-    background-color: #e9ecef;
-    font-weight: bold;
-    color: var(--cor-primaria);
-}
-
-.erro-container {
-    margin-top: 1rem;
-    padding: 0.8rem;
-    background-color: #f8d7da;
-    border: 1px solid var(--cor-erro);
-    color: #721c24;
-    border-radius: 5px;
-/* Importando fontes do Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap');
-
-:root {
-    --cor-primaria: #003366;
-    --cor-secundaria: #005a9c;
-    --cor-destaque: #ffc107;
-    --cor-fundo: #f8f9fa;
-    --cor-texto: #212529;
-    --cor-sucesso: #28a745;
-    --cor-erro: #dc3545;
+    --cor-cinza: #6c757d;
 }
 
 * {
@@ -167,6 +29,8 @@ body {
     line-height: 1.6;
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -189,10 +53,11 @@ header p {
 }
 
 .main-container {
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
     width: 100%;
-    max-width: 500px;
+    max-width: 550px;
     margin: 0 auto;
+    flex-grow: 1;
 }
 
 .calculator-container {
@@ -203,45 +68,138 @@ header p {
     width: 100%;
 }
 
-h2 {
+.section-title {
     font-family: 'Oswald', sans-serif;
-    color: var(--cor-primaria);
-    margin-bottom: 1.2rem;
-    text-align: center;
     font-size: 1.4rem;
+    color: var(--cor-primaria);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
 }
 
-h2.calc-title {
-    margin-top: 2rem; /* Aumentado para dar mais espaço */
+.section-title:nth-of-type(2) {
+    margin-top: 2rem;
 }
 
-.range-container {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+.helper-text {
+    font-size: 0.8rem;
+    color: var(--cor-cinza);
+    margin: 0;
 }
 
-.range-container .input-group {
-    flex: 1;
-    min-width: 180px;
+.helper-text.instruction {
+    text-align: center;
+    margin-top: -0.5rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
 }
 
 .input-group {
-    margin-bottom: 1.2rem; /* Aumentado para melhor espaçamento */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
 }
 
-.input-group label {
-    font-weight: bold;
-    color: var(--cor-texto);
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
+.input-group.single {
+    align-items: flex-start;
+}
+
+.label-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 50%;
 }
 
 .field-pair, .conversion-row {
     display: flex;
     gap: 0.5rem;
+    flex-basis: 50%;
+}
+
+.input-group.single .conversion-row {
+    flex-basis: auto;
+    width: 100%;
+}
+
+.input-group.single .label-wrapper {
+    flex-basis: auto;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 500px) {
+    .input-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    .label-wrapper, .field-pair, .conversion-row {
+        flex-basis: auto;
+        width: 100%;
+    }
+}
+
+.label-with-info {
+    display: flex;
     align-items: center;
+    gap: 0.5rem;
+}
+
+.info-container {
+    position: relative;
+    display: inline-block;
+}
+
+.info-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    background-color: var(--cor-cinza);
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: serif;
+    cursor: help;
+}
+
+.tooltip {
+    visibility: hidden;
+    opacity: 0;
+    width: 280px;
+    background-color: var(--cor-texto);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -140px;
+    transition: opacity 0.3s;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--cor-texto) transparent transparent transparent;
+}
+
+.info-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
 }
 
 input[type="number"], input[type="text"] {
@@ -249,15 +207,9 @@ input[type="number"], input[type="text"] {
     padding: 0.8rem;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 1.1rem; /* Aumentei um pouco a fonte nos campos */
+    font-size: 1.1rem;
     background-color: #fff;
     text-align: center;
-}
-
-input[readonly] {
-    background-color: #e9ecef;
-    font-weight: bold;
-    color: var(--cor-primaria);
 }
 
 .erro-container {
@@ -275,14 +227,19 @@ input[readonly] {
     display: none;
 }
 
-@media (max-height: 450px) {
-    .main-container {
-        padding: 1rem;
-    }
-    header h1 {
-        font-size: 1.5rem;
-    }
-    header p {
-        font-size: 0.9rem;
-    }
+/* --- ESTILO DO RODAPÉ ATUALIZADO --- */
+footer {
+    text-align: center;
+    padding: 1.2rem;
+    font-size: 0.9rem;
+    color: #ffffff; /* Cor do texto alterada para branco */
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria)); /* Mesma cor do cabeçalho */
+    width: 100%;
+    border-top: 5px solid var(--cor-destaque); /* Adiciona a mesma borda do cabeçalho */
+}
+
+.copyright {
+    font-weight: 500;
+    margin: 0;
+    opacity: 0.9;
 }
