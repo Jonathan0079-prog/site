@@ -26,17 +26,6 @@ function inicializarApp() {
             }
         });
     });
-
-    // --- Configura eventos para o CONVERSOR DE UNIDADES ---
-    const inputsConversor = document.querySelectorAll('.conversor-input, .conversor-select');
-    inputsConversor.forEach(el => {
-        // 'input' para o campo de número, 'change' para os selects
-        const eventType = el.tagName === 'INPUT' ? 'input' : 'change';
-        el.addEventListener(eventType, converterUnidades);
-    });
-    
-    // Dispara a primeira conversão ao carregar a página para mostrar um valor inicial
-    converterUnidades();
 }
 
 
@@ -169,90 +158,4 @@ function calcularComprimentoBobina() {
         <p>Comprimento estimado da correia: <strong>${comprimento_metros.toFixed(2)} metros</strong></p>
     `;
     exibirResultado(resultadoEl, htmlResultado);
-}
-
-
-// ===================================================================
-// === LÓGICA DO CONVERSOR DE UNIDADES
-// ===================================================================
-
-// Objeto que armazena todos os fatores de conversão para uma unidade base.
-// A unidade base é a referência para todos os outros cálculos na mesma categoria.
-const FATORES = {
-    comprimento: { // Base: Metro (m)
-        'm': 1, 'km': 1000, 'cm': 0.01, 'mm': 0.001, 'in': 0.0254, 'ft': 0.3048, 'mi': 1609.34
-    },
-    massa: { // Base: Quilograma (kg)
-        'kg': 1, 'g': 0.001, 't': 1000, 'lb': 0.453592, 'oz': 0.0283495
-    },
-    pressao: { // Base: Pascal (Pa)
-        'pa': 1, 'kpa': 1000, 'bar': 100000, 'psi': 6894.76, 'atm': 101325, 'kgfcm2': 98066.5
-    },
-    area: { // Base: Metro Quadrado (m²)
-        'm2': 1, 'km2': 1000000, 'ha': 10000, 'ft2': 0.092903, 'ac': 4046.86
-    },
-    volume: { // Base: Metro Cúbico (m³)
-        'm3': 1, 'l': 0.001, 'ml': 0.000001, 'gal': 0.00378541, 'ft3': 0.0283168
-    }
-};
-
-/**
- * Mostra o painel de conversão selecionado dentro da aba do conversor.
- * @param {string} idPainel O ID do painel a ser mostrado.
- */
-function mostrarPainelConversao(idPainel) {
-    document.querySelectorAll('.painel-conversao').forEach(painel => {
-        painel.classList.add('hidden');
-    });
-    document.querySelectorAll('.sub-nav-button').forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    const painelAtivo = document.getElementById(idPainel);
-    painelAtivo.classList.remove('hidden');
-    document.querySelector(`.sub-nav-button[onclick="mostrarPainelConversao('${idPainel}')"]`).classList.add('active');
-    
-    converterUnidades();
-}
-
-/**
- * Função central que realiza a conversão de unidades em tempo real.
- */
-function converterUnidades() {
-    const painelAtivo = document.querySelector('.painel-conversao:not(.hidden)');
-    if (!painelAtivo) return;
-
-    const prefixo = painelAtivo.id.split('-')[1]; 
-    const categoria = prefixo === 'comp' ? 'comprimento' : prefixo;
-
-    const inputValor = document.getElementById(`${prefixo}-valor`);
-    const selectDe = document.getElementById(`${prefixo}-de`);
-    const selectPara = document.getElementById(`${prefixo}-para`);
-    const inputResultado = document.getElementById(`${prefixo}-resultado`);
-
-    const valor = parseFloat(inputValor.value);
-    if (isNaN(valor)) {
-        inputResultado.value = '...';
-        return;
-    }
-    
-    const unidadeDe = selectDe.value;
-    const unidadePara = selectPara.value;
-    
-    // Lógica da conversão:
-    // 1. Converte o valor de entrada para a unidade base
-    const valorBase = valor * FATORES[categoria][unidadeDe];
-    // 2. Converte o valor base para a unidade de destino
-    const valorFinal = valorBase / FATORES[categoria][unidadePara];
-
-    // Formata o número para exibição, usando notação científica se for muito pequeno
-    if (valorFinal < 0.0001 && valorFinal > 0) {
-        inputResultado.value = valorFinal.toExponential(4);
-    } else {
-        // Usa toLocaleString para formatação local e limita as casas decimais.
-        inputResultado.value = valorFinal.toLocaleString(undefined, { 
-            minimumFractionDigits: 0, 
-            maximumFractionDigits: 6 
-        });
-    }
 }
