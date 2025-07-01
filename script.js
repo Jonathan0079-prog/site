@@ -47,40 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     courseButtons.forEach(button => {
         button.addEventListener('click', (event) => {
             const targetPage = event.target.getAttribute('href');
-            if (targetPage.includes('curso-')) {
-                event.preventDefault(); 
-                window.location.href = targetPage;
-            }
-        });
-    });
-
-});
-        const observerOptions = {
-            root: null, // Observa em relação à viewport
-            rootMargin: '0px',
-            threshold: 0.1 // O gatilho é acionado quando 10% do card está visível
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        cards.forEach(card => {
-            observer.observe(card);
-        });
-    }
-    
-    // Seu código bônus para os botões foi mantido
-    const courseButtons = document.querySelectorAll('.btn');
-    courseButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            const targetPage = event.target.getAttribute('href');
-            if (targetPage.includes('curso-')) {
+            if (targetPage && targetPage.includes('curso-')) {
                 event.preventDefault(); 
                 window.location.href = targetPage;
             }
