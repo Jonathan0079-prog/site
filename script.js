@@ -1,12 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Menu Hamburguer ---
+
+    // --- NOVA LÓGICA PARA O MENU HAMBURGER ---
     const menuToggler = document.querySelector('.menu-toggler');
     const mainNav = document.querySelector('#main-nav');
 
     if (menuToggler && mainNav) {
         menuToggler.addEventListener('click', () => {
+            // Adiciona ou remove a classe 'visible' da navegação
             mainNav.classList.toggle('visible');
-            // Troca o ícone de menu/fechar
+            
+            // Bônus: Troca o ícone de 'menu' para 'fechar'
             const icon = menuToggler.querySelector('.material-icons');
             if (mainNav.classList.contains('visible')) {
                 icon.textContent = 'close';
@@ -14,16 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon.textContent = 'menu';
             }
         });
-        // Opcional: Fecha o menu ao clicar em algum link
-        mainNav.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mainNav.classList.remove('visible');
-                menuToggler.querySelector('.material-icons').textContent = 'menu';
-            });
-        });
     }
 
-    // --- Animação dos cards do curso ---
+    // --- SEU CÓDIGO EXISTENTE PARA ANIMAR OS CARDS ---
     const cards = document.querySelectorAll('.curso-card');
     if (cards.length > 0) {
         const observerOptions = {
@@ -46,15 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // --- Código bônus para os botões dos cursos ---
+    // Seu código bônus para os botões foi mantido
     const courseButtons = document.querySelectorAll('.btn');
     courseButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            const targetPage = button.getAttribute('href');
+            const targetPage = event.target.getAttribute('href');
             if (targetPage && targetPage.includes('curso-')) {
                 event.preventDefault(); 
                 window.location.href = targetPage;
             }
         });
     });
+
 });
