@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- NOVA LÓGICA PARA O MENU HAMBURGER ---
+    // --- LÓGICA PARA O MENU HAMBURGER ---
     const menuToggler = document.querySelector('.menu-toggler');
     const mainNav = document.querySelector('#main-nav');
 
@@ -8,8 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
         menuToggler.addEventListener('click', () => {
             // Adiciona ou remove a classe 'visible' da navegação
             mainNav.classList.toggle('visible');
+            // Adiciona ou remove a classe 'open' do botão para a animação de rotação
+            menuToggler.classList.toggle('open');
             
-            // Bônus: Troca o ícone de 'menu' para 'fechar'
+            // Troca o ícone de 'menu' para 'fechar'
             const icon = menuToggler.querySelector('.material-icons');
             if (mainNav.classList.contains('visible')) {
                 icon.textContent = 'close';
@@ -19,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- SEU CÓDIGO EXISTENTE PARA ANIMAR OS CARDS ---
-    const cards = document.querySelectorAll('.curso-card');
+    // --- LÓGICA PARA ANIMAR OS CARDS AO APARECEREM NA TELA ---
+    const cards = document.querySelectorAll('.curso-card-link'); // Observa o link que envolve o card
     if (cards.length > 0) {
         const observerOptions = {
             root: null, // Observa em relação à viewport
@@ -32,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+                    observer.unobserve(entry.target); // Para de observar depois que a animação acontece
                 }
             });
         }, observerOptions);
@@ -41,17 +43,4 @@ document.addEventListener('DOMContentLoaded', () => {
             observer.observe(card);
         });
     }
-    
-    // Seu código bônus para os botões foi mantido
-    const courseButtons = document.querySelectorAll('.btn');
-    courseButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            const targetPage = event.target.getAttribute('href');
-            if (targetPage && targetPage.includes('curso-')) {
-                event.preventDefault(); 
-                window.location.href = targetPage;
-            }
-        });
-    });
-
 });
