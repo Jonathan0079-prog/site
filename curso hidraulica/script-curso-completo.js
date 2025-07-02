@@ -380,4 +380,13 @@ function inicializarCurso() {
         // Só mostra se já finalizou o curso
         btnReiniciar.style.display = cursoFinalizado ? 'inline-block' : 'none';
     }
+
+    const btnVoltarInicio = document.getElementById('voltar-inicio-btn');
+    if (btnVoltarInicio) {
+        btnVoltarInicio.addEventListener('click', () => {
+            // Volta para o primeiro módulo (Aula 1)
+            localStorage.setItem('currentModuleIndex', '0');
+            window.location.reload();
+        });
+    }
 }
