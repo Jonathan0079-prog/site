@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Lubrificantes Equivalentes</title>
+    <title>Sistema de Gestão de Lubrificação</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>Sistema de Gestão de Lubrificação</h1>
+    </header>
 
     <div class="container">
-        <header>
-            <h1>Buscador de Lubrificantes Industriais</h1>
-            <p>Encontre óleos equivalentes de diferentes marcas.</p>
-        </header>
-
         <main>
             <div class="search-box">
-                <h2>Qual óleo você utiliza?</h2>
+                <h2>Buscador de Equivalentes</h2>
                 <div class="input-group">
                     <label for="marca-select">Marca:</label>
                     <select id="marca-select">
@@ -32,13 +30,33 @@
                 <button id="search-button">Encontrar Equivalentes</button>
             </div>
 
+            <section class="calculator-section">
+                <h2>Calculadora de Viscosidade Ideal</h2>
+                <div class="calculator-grid">
+                    <div class="input-group">
+                        <label for="temp-operacao">Temperatura de Operação (°C)</label>
+                        <input type="number" id="temp-operacao" placeholder="Ex: 60">
+                    </div>
+                    <div class="input-group">
+                        <label for="tipo-equipamento">Tipo de Equipamento</label>
+                        <select id="tipo-equipamento">
+                            <option value="">-- Selecione o tipo --</option>
+                            <option value="redutor_paralelo">Redutor de Eixos Paralelos</option>
+                            <option value="redutor_semfim">Redutor Coroa e Sem-Fim</option>
+                            <option value="hidraulico_palhetas">Bomba Hidráulica de Palhetas</option>
+                            <option value="hidraulico_pistoes">Bomba Hidráulica de Pistões</option>
+                            <option value="mancal_deslizamento">Mancal de Deslizamento</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="calculate-button">Calcular Viscosidade</button>
+                <div id="calculator-result" class="hidden">
+                    </div>
+            </section>
+
             <div id="results-container">
                 </div>
         </main>
-
-        <footer>
-            <p>Desenvolvido como uma ferramenta de referência.</p>
-        </footer>
     </div>
 
     <script type="module" src="script.js"></script>
