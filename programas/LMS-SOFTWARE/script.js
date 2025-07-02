@@ -217,6 +217,125 @@ document.addEventListener('DOMContentLoaded', () => {
             htmlResultados += `
                 <div class="warning-message">
                     <strong>ATENÇÃO:</strong> Esta lista é apenas uma referência. Antes de qualquer troca, é <strong>OBRIGATÓRIO</strong> consultar o manual do seu equipamento e comparar as fichas técnicas (TDS) de ambos os produtos.
+// script.js
+
+// 1. Importa a base de dados do arquivo separado.
+import { tabelaSimilaridade } from './data/database.js';
+
+// Aguarda o conteúdo da página ser totalmente carregado para executar o script
+document.addEventListener('DOMContentLoaded', () => {
+    // A PARTIR DAQUI, O CÓDIGO É O MESMO DA NOSSA ÚLTIMA VERSÃO.
+    // Ele já está pronto para trabalhar com a variável importada 'tabelaSimilaridade'.
+
+    // Seleção dos elementos do HTML
+    const marcaSelect = document.getElementById('marca-select');
+    const oleoSelect = document.getElementById('oleo-select');
+    const searchButton = document.getElementById('search-button');
+    const resultsContainer = document.getElementById('results-container');
+
+    // Função para popular o dropdown de marcas dinamicamente
+    function popularMarcas() {
+        const marcas = new Set();
+        tabelaSimilaridade.forEach(grupo => {
+            Object.keys(grupo).forEach(key => {
+                if (key !== 'APLICACAO') {
+                    marcas.add(key);
+                }
+            });
+        });
+        const marcasOrdenadas = Array.from(marcas).sort();
+        marcasOrdenadas.forEach(marca => {
+            const option = document.createElement('option');
+            option.value = marca;
+            option.textContent = marca;
+            marcaSelect.appendChild(option);
+        });
+    }
+
+    // Popula o dropdown de produtos com base na marca selecionada
+    function popularProdutosPorMarca(marcaSelecionada) {
+        oleoSelect.innerHTML = '';
+        
+        if (!marcaSelecionada) {
+            oleoSelect.disabled = true;
+            const option = document.createElement('option');
+            option.value = "";
+            option.textContent = "-- Primeiro selecione uma marca --";
+            oleoSelect.appendChild(option);
+        } else {
+            oleoSelect.disabled = false;
+            const option = document.createElement('option');
+            option.value = "";
+            option.textContent = "-- Selecione o Produto --";
+            oleoSelect.appendChild(option);
+            
+            const produtos = new Set();
+            tabelaSimilaridade.forEach(grupo => {
+                if (grupo[marcaSelecionada]) {
+                    produtos.add(grupo[marcaSelecionada]);
+                }
+            });
+            
+            const produtosOrdenados = Array.from(produtos).sort();
+            produtosOrdenados.forEach(produto => {
+                const opt = document.createElement('option');
+                opt.value = produto;
+                opt.textContent = produto;
+                oleoSelect.appendChild(opt);
+            });
+        }
+    }
+    
+    // Função principal de busca
+    function encontrarSubstitutos() {
+        const marcaSelecionada = marcaSelect.value;
+        const oleoSelecionado = oleoSelect.value;
+
+        resultsContainer.innerHTML = '';
+
+        if (!marcaSelecionada || !oleoSelecionado) {
+            resultsContainer.innerHTML = `<p class="error-message">Por favor, selecione uma marca e um produto.</p>`;
+            return;
+        }
+
+        let encontrado = null;
+        for (const grupo of tabelaSimilaridade) {
+            if (grupo[marcaSelecionada] && grupo[marcaSelecionada] === oleoSelecionado) {
+                encontrado = grupo;
+                break;
+            }
+        }
+        
+        exibirResultados(encontrado, marcaSelecionada);
+    }
+
+    // Função para exibir os resultados
+    function exibirResultados(grupoEncontrado, marcaOriginal) {
+        if (grupoEncontrado) {
+            const substitutos = { ...grupoEncontrado };
+            const aplicacao = substitutos.APLICACAO;
+            delete substitutos.APLICACAO;
+            delete substitutos[marcaOriginal];
+            
+            let htmlResultados = `
+                <h3 class="results-header">Equivalentes encontrados para sua busca:</h3>
+                <h4 class="results-subheader">Aplicação: ${aplicacao}</h4>
+                <ul class="results-list">
+            `;
+
+            for (const marca in substitutos) {
+                htmlResultados += `
+                    <li>
+                        <span class="brand">${marca}:</span>
+                        <span class="product">${substitutos[marca]}</span>
+                    </li>
+                `;
+            }
+            htmlResultados += `</ul>`;
+            
+            htmlResultados += `
+                <div class="warning-message">
+                    <strong>ATENÇÃO:</strong> Esta lista é apenas uma referência. Antes de qualquer troca, é <strong>OBRIGATÓRIO</strong> consultar o manual do seu equipamento e comparar as fichas técnicas (TDS) de ambos os produtos.
                 </div>
             `;
             resultsContainer.innerHTML = htmlResultados;
@@ -225,11 +344,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // *** NOVO OUVINTE DE EVENTO ***
-    // Escuta por mudanças no dropdown de MARCAS
+    // Ouve por mudanças no dropdown de MARCAS
     marcaSelect.addEventListener('change', () => {
         popularProdutosPorMarca(marcaSelect.value);
-        resultsContainer.innerHTML = ''; // Limpa resultados antigos ao trocar de marca
+        resultsContainer.innerHTML = '';
     });
 
     // Adiciona o evento de clique ao botão de busca
@@ -238,3 +356,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicia a aplicação populando as marcas no dropdown
     popularMarcas();
 });
+
