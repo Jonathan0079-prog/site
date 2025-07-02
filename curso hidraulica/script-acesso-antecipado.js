@@ -11,6 +11,7 @@ const firebaseConfig = {
   measurementId: "G-0DD784H7E0"
 };
 
+// A constante RELEASE_DATE é definida no index.html e fica disponível globalmente para este script.
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 let releaseCountdownInterval = null;
@@ -27,7 +28,9 @@ auth.onAuthStateChanged(function(user) {
 function inicializarModoAcessoAntecipado() {
     document.querySelector('.floating-nav').style.display = 'none';
     const modules = document.querySelectorAll('.module');
-    modules.forEach((module) => { module.style.display = 'none'; });
+    modules.forEach((module) => {
+        module.style.display = 'none';
+    });
     const countdownWrapper = document.getElementById('countdown-wrapper');
     if (countdownWrapper) countdownWrapper.style.display = 'block';
     iniciarContadorRegressivo();
@@ -44,7 +47,8 @@ function iniciarContadorRegressivo() {
     if (!countdownWrapper) return;
     const daysEl = document.getElementById('days'), hoursEl = document.getElementById('hours'), minutesEl = document.getElementById('minutes'), secondsEl = document.getElementById('seconds');
     function updateTimer() {
-        const agora = new Date().getTime(), distancia = RELEASE_DATE.getTime() - agora;
+        const agora = new Date().getTime();
+        const distancia = RELEASE_DATE.getTime() - agora;
         if (distancia < 0) {
             clearInterval(releaseCountdownInterval);
             alert("O curso completo foi liberado! A página será atualizada.");
