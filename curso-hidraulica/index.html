@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso Interativo - HidrÃ¡ulica e PneumÃ¡tica</title>
+    <title>Curso Interativo - Hidráulica e Pneumática</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Curso de HidrÃ¡ulica e PneumÃ¡tica</h1>
+        <h1>Curso de Hidráulica e Pneumática</h1>
+        <button id="logout-btn" title="Sair do Curso">Sair</button>
     </header>
 
     <main class="main-container" style="display: none;">
 
         <div id="countdown-wrapper" style="display: none;">
             <div class="release-countdown-container">
-                <h3>O Curso Completo SerÃ¡ Liberado Em Breve!</h3>
-                <p>O acesso aos demais mÃ³dulos serÃ¡ liberado automaticamente na data de lanÃ§amento.</p>
+                <h3>O Curso Completo Será Liberado Em Breve!</h3>
+                <p>O acesso aos demais módulos será liberado automaticamente na data de lançamento.</p>
                 <div id="countdown-timer">
                     <div class="countdown-block"><span id="days" class="countdown-value">--</span><span class="countdown-label">Dias</span></div>
                     <div class="countdown-block"><span id="hours" class="countdown-value">--</span><span class="countdown-label">Horas</span></div>
@@ -27,65 +28,40 @@
         </div>
 
         <div id="aula1" class="module">
-            <h2><span style="font-size: 1.5em; vertical-align: middle;">ðŸ“œ</span> Aula 1: IntroduÃ§Ã£o</h2>
-            <p>ConteÃºdo da Aula 1 de IntroduÃ§Ã£o vai aqui...</p>
+            <h2><span style="font-size: 1.5em; vertical-align: middle;">📜</span> Aula 1: Introdução</h2>
+            <p>Conteúdo da Aula 1 de Introdução vai aqui...</p>
             <div class="status-bloqueio"></div>
         </div>
 
         <div id="aula2" class="module">
-            <h2><span style="font-size: 1.5em; vertical-align: middle;">âš™ï¸</span> Aula 2: Fundamentos</h2>
-            <p>ConteÃºdo da Aula 2 de Fundamentos vai aqui...</p>
+            <h2><span style="font-size: 1.5em; vertical-align: middle;">⚙️</span> Aula 2: Fundamentos</h2>
+            <p>Conteúdo da Aula 2 de Fundamentos vai aqui...</p>
             <div class="status-bloqueio"></div>
         </div>
-
-        <div id="aula3" class="module"><h2>Aula 3: Simbologia</h2><p>ConteÃºdo da Aula 3...</p><div class="status-bloqueio"></div></div>
-        <div id="aula4" class="module"><h2>Aula 4: Fluidos</h2><p>ConteÃºdo da Aula 4...</p><div class="status-bloqueio"></div></div>
-        <div id="aula5" class="module"><h2>Aula 5: ReservatÃ³rios</h2><p>ConteÃºdo da Aula 5...</p><div class="status-bloqueio"></div></div>
-        <div id="aula6" class="module"><h2>Aula 6: Filtros</h2><p>ConteÃºdo da Aula 6...</p><div class="status-bloqueio"></div></div>
-        <div id="aula7" class="module"><h2>Aula 7: Cilindros</h2><p>ConteÃºdo da Aula 7...</p><div class="status-bloqueio"></div></div>
-        <div id="aula8" class="module"><h2>Aula 8: Bombas</h2><p>ConteÃºdo da Aula 8...</p><div class="status-bloqueio"></div></div>
-        <div id="aula9" class="module"><h2>Aula 9: VÃ¡lvulas de PressÃ£o</h2><p>ConteÃºdo da Aula 9...</p><div class="status-bloqueio"></div></div>
-        <div id="aula10" class="module"><h2>Aula 10: VÃ¡lvulas Direcionais</h2><p>ConteÃºdo da Aula 10...</p><div class="status-bloqueio"></div></div>
-        <div id="aula11" class="module"><h2>Aula 11: VÃ¡lvulas de VazÃ£o</h2><p>ConteÃºdo da Aula 11...</p><div class="status-bloqueio"></div></div>
-        <div id="aula12" class="module"><h2>Aula 12: Atuadores Rotativos</h2><p>ConteÃºdo da Aula 12...</p><div class="status-bloqueio"></div></div>
-        <div id="aula13" class="module"><h2>Aula 13: Acumuladores</h2><p>ConteÃºdo da Aula 13...</p><div class="status-bloqueio"></div></div>
-        <div id="aula14" class="module"><h2>Aula 14: Intensificadores</h2><p>ConteÃºdo da Aula 14...</p><div class="status-bloqueio"></div></div>
-        <div id="aula15" class="module"><h2>Aula 15: Trocadores de Calor</h2><p>ConteÃºdo da Aula 15...</p><div class="status-bloqueio"></div></div>
-        <div id="aula16" class="module"><h2>Aula 16: Outros Equipamentos</h2><p>ConteÃºdo da Aula 16...</p><div class="status-bloqueio"></div></div>
-        <div id="aula17" class="module"><h2>Aula 17: Tabelas e FÃ³rmulas</h2><p>ConteÃºdo da Aula 17...</p><div class="status-bloqueio"></div></div>
-        <div id="quiz" class="module"><h2>Quiz Final</h2><p>Aqui vocÃª irÃ¡ adicionar as perguntas do seu quiz.</p><div class="status-bloqueio"></div></div>
-        <div id="certificado" class="module"><h2>Certificado de ConclusÃ£o</h2><p>O certificado aparecerÃ¡ aqui.</p><div class="status-bloqueio"></div></div>
-
-    </main> <nav class="floating-nav" style="display: none;">
-        <button id="prev-btn" title="MÃ³dulo Anterior">&larr;</button>
+        
+        <div id="aula3" class="module"><h2>Aula 3: Simbologia</h2><p>Conteúdo da Aula 3...</p><div class="status-bloqueio"></div></div>
+        </main> <nav class="floating-nav" style="display: none;">
+        <button id="prev-btn" title="Módulo Anterior">&larr;</button>
         <span id="module-indicator">1 / 19</span>
-        <button id="next-btn" title="PrÃ³ximo MÃ³dulo">&rarr;</button>
+        <button id="next-btn" title="Próximo Módulo">&rarr;</button>
     </nav>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
     <script>
-        // Data e hora do lanÃ§amento completo do curso
-        // PARA TESTAR O CONTADOR, USE UMA DATA FUTURA (2025)
         const RELEASE_DATE = new Date(2025, 6, 22, 9, 0, 0); 
-        // PARA TESTAR O CURSO COMPLETO, USE UMA DATA PASSADA (2024)
-        // const RELEASE_DATE = new Date(2024, 6, 22, 9, 0, 0); 
-
         const agora = new Date().getTime();
-        const dataLancamento = RELEASE_DATE.getTime();
-
         let scriptFileToLoad;
-
-        if (agora < dataLancamento) {
+        if (agora < RELEASE_DATE.getTime()) {
             scriptFileToLoad = 'script-acesso-antecipado.js';
         } else {
             scriptFileToLoad = 'script-curso-completo.js';
         }
-
         const script = document.createElement('script');
         script.src = scriptFileToLoad;
         document.body.appendChild(script);
     </script>
 </body>
 </html>
+
