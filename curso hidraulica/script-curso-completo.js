@@ -1,9 +1,13 @@
-// ==========================================================
+// =================================================================
 // SCRIPT PARA O MODO: CURSO COMPLETO (VERSÃO FINAL CORRIGIDA)
 // Unifica: Timer de Módulo + Quiz com PDF + Certificado
-// ==========================================================
+// =================================================================
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Inicializa a biblioteca jsPDF para o certificado
     const { jsPDF } = window.jspdf;
+
+    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyB_yPeyN-_z4JZ4hny8x3neU3InyRl6OEg",
       authDomain: "curso-hidraulica.firebaseapp.com",
@@ -17,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    // Porteiro de Segurança: só inicializa o curso se o usuário estiver logado
     auth.onAuthStateChanged(function(user) {
         if (user) {
             document.querySelector('.main-container').style.display = 'block';
@@ -26,8 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Função principal que organiza toda a lógica
     function inicializarCurso() {
         if(document.querySelector('#countdown-wrapper')) document.querySelector('#countdown-wrapper').style.display = 'none';
+        
         const logoutBtn = document.getElementById('logout-btn');
         if (logoutBtn) logoutBtn.addEventListener('click', () => auth.signOut().catch(err => console.error(err)));
     
@@ -37,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextBtn = document.getElementById('next-btn'); // NOME CORRIGIDO
         const moduleIndicator = document.getElementById('module-indicator');
         const floatingNav = document.querySelector('.floating-nav');
+        
         let currentModuleIndex = 0;
         let highestUnlockedModule = parseInt(localStorage.getItem('highestUnlockedModule') || '0', 10);
         currentModuleIndex = Math.min(parseInt(localStorage.getItem('currentModuleIndex') || '0', 10), highestUnlockedModule);
@@ -46,29 +54,36 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index < 0 || index > highestUnlockedModule) return;
             currentModuleIndex = index;
             pausarTimerDePermanencia();
+            
             modules.forEach(m => m.classList.remove('active'));
             const currentModule = modules[currentModuleIndex];
             currentModule.classList.add('active');
             localStorage.setItem('currentModuleIndex', index);
+
             moduleIndicator.textContent = `${index + 1} / ${modules.length}`;
             prevBtn.disabled = (currentModuleIndex === 0);
+
             const isQuizOrCert = currentModule.id === 'quiz' || currentModule.id === 'certificado';
             floatingNav.style.display = isQuizOrCert ? 'none' : 'flex';
+            
             const statusBloqueioDiv = currentModule.querySelector('.status-bloqueio');
             if (statusBloqueioDiv) statusBloqueioDiv.style.display = 'none';
+
             if (index === highestUnlockedModule && !isQuizOrCert) {
                 nextBtn.disabled = true;
                 iniciarTimerDePermanencia(statusBloqueioDiv);
             } else {
                 nextBtn.disabled = (index === highestUnlockedModule);
             }
+            
             if (currentModule.id === 'quiz') iniciarQuiz();
             if (currentModule.id === 'certificado') checkCertificateAccess();
             window.scrollTo(0, 0);
         }
+
         prevBtn.addEventListener('click', () => showModule(currentModuleIndex - 1));
         nextBtn.addEventListener('click', () => showModule(currentModuleIndex + 1));
-
+        
         function iniciarTimerDePermanencia(displayElement) {
             if(!displayElement) return;
             pausarTimerDePermanencia();
@@ -87,16 +102,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (segundosGastos >= TEMPO_POR_MODULO_SEGUNDOS) { efetuarDesbloqueio(displayElement); }
             else { perModuleCountdownInterval = setInterval(tick, 1000); tick(); }
         }
+
         function pausarTimerDePermanencia() { clearInterval(perModuleCountdownInterval); perModuleCountdownInterval = null; }
+        
         function efetuarDesbloqueio(displayElement) {
             if(!displayElement) return;
             if (currentModuleIndex === highestUnlockedModule) {
                 highestUnlockedModule++;
-                localStorage.setItem('highestUnlockedModule', highestUnlockedModule);
+                localStorage.setItem('highestUnlockedModule', String(highestUnlockedModule));
             }
             localStorage.removeItem('timerProgress');
             nextBtn.disabled = false;
-            displayElement.style.display = 'block';
             displayElement.textContent = 'Módulo desbloqueado! Você já pode avançar.';
         }
         document.addEventListener('visibilitychange', () => { if(!document.hidden) { showModule(currentModuleIndex); } else { pausarTimerDePermanencia(); } });
@@ -116,26 +132,31 @@ document.addEventListener('DOMContentLoaded', () => {
             if(quizContainerEl) quizContainerEl.style.display = 'block';
             mostrarPergunta();
         }
+
         function mostrarPergunta() {
             const p = perguntas[perguntaAtual];
             perguntaTituloEl.textContent = `Pergunta ${perguntaAtual + 1}/${perguntas.length}: ${p.pergunta}`;
             opcoesQuizEl.innerHTML = '';
             p.opcoes.forEach(op => { const btn = document.createElement('button'); btn.textContent = op; btn.onclick = () => verificarResposta(op, p.resposta); opcoesQuizEl.appendChild(btn); });
         }
+
         function verificarResposta(opcao, resposta) {
             const botoes = opcoesQuizEl.querySelectorAll('button');
+            let acertou = (opcao === resposta);
+            if(acertou) pontuacao++;
+            feedbackEl.textContent = acertou ? '✅ Correto!' : '❌ Incorreto.';
+            feedbackEl.style.color = acertou ? 'var(--cor-sucesso)' : 'var(--cor-erro)';
             botoes.forEach(btn => {
                 btn.disabled = true;
                 if (btn.textContent === resposta) btn.classList.add('correta');
                 else if (btn.textContent === opcao) btn.classList.add('incorreta');
             });
-            if (opcao === resposta) { pontuacao++; feedbackEl.textContent = '✅ Correto!'; feedbackEl.style.color = 'var(--cor-sucesso)'; }
-            else { feedbackEl.textContent = '❌ Incorreto.'; feedbackEl.style.color = 'var(--cor-erro)'; }
             setTimeout(() => { perguntaAtual++; if (perguntaAtual < perguntas.length) mostrarPergunta(); else finalizarQuiz(); }, 1500);
         }
+
         function finalizarQuiz() {
             quizContainerEl.style.display = 'none';
-            if ((pontuacao / perguntas.length) >= 0.6) { // 60% para passar
+            if ((pontuacao / perguntas.length) >= 0.6) {
                 certificadoFormEl.style.display = 'block';
                 localStorage.setItem('quizPassed', 'true');
                 if (highestUnlockedModule < modules.length - 1) { highestUnlockedModule = modules.length - 1; localStorage.setItem('highestUnlockedModule', String(highestUnlockedModule)); }
@@ -148,14 +169,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function checkCertificateAccess() {
             if (localStorage.getItem('quizPassed') === 'true') {
+                document.getElementById('certificate-gate').style.display = 'none';
                 document.getElementById('certificado-form-container').style.display = 'block';
-                document.getElementById('reprovado-container').style.display = 'none';
             } else {
+                document.getElementById('certificate-gate').style.display = 'block';
                 document.getElementById('certificado-form-container').style.display = 'none';
-                document.getElementById('reprovado-container').style.display = 'none'; // Esconder por padrão
-                // A lógica de reprovação já mostra o #reprovado-container
             }
         }
+        
         function formatarCPF(cpf) {
             cpf = cpf.replace(/\D/g, '').slice(0, 11);
             if (cpf.length > 9) return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
@@ -163,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cpf.length > 3) return cpf.replace(/(\d{3})(\d{3})/, '$1.$2');
             return cpf;
         }
+
         function gerarCertificadoPDF() {
             const nome = document.getElementById('nome-aluno').value.trim(), documento = document.getElementById('documento-aluno').value.trim(), pais = document.getElementById('pais-aluno').value;
             if (!nome || !documento) return alert("Preencha nome e documento.");
@@ -181,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             doc.setFont("helvetica", "normal"); doc.text(`Emitido em: ${data}`, 147.5, 197, { align: "center" });
             doc.save(`Certificado - ${nome}.pdf`);
         }
+
         const paisSelect = document.getElementById('pais-aluno'), docLabel = document.getElementById('documento-label'), docInput = document.getElementById('documento-aluno');
         if (paisSelect && docLabel && docInput) {
             paisSelect.addEventListener('change', function() { docLabel.textContent = this.value === 'angola' ? 'Seu BI:' : 'Seu CPF:'; docInput.placeholder = this.value === 'angola' ? 'Digite seu BI' : 'Digite seu CPF'; docInput.value = ''; });
