@@ -144,3 +144,26 @@ header h1 { font-size: 2.2rem; }
     header h1 { font-size: 1.8rem; padding-right: 45px; }
     #logout-btn { top: 50%; right: 10px; transform: translateY(-50%); }
 }
+
+/* Ajuste responsivo para imagens dentro das aulas */
+.image-container img,
+figure img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Garante que as imagens não ultrapassem a largura do container em telas pequenas */
+@media (max-width: 768px) {
+    .main-container,
+    .module {
+        padding: 0 0.5rem;
+    }
+    .image-container img,
+    figure img {
+        max-width: 100vw;
+        width: 100%;
+        height: auto;
+    }
+}
