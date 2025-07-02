@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <h1>Curso de Hidráulica Industrial</h1>
+        <h1>Curso de Hidráulica e Pneumática</h1>
         <button id="logout-btn" title="Sair do Curso"><i class="fas fa-sign-out-alt"></i></button>
     </header>
 
@@ -96,11 +96,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
-        // Torna RELEASE_DATE global para todos os scripts
-        window.RELEASE_DATE = new Date(2025, 6, 2, 8, 52, 0); 
+        window.RELEASE_DATE = new Date(2025, 6, 2, 9, 0, 0); 
         const agora = new Date().getTime();
         let scriptFileToLoad;
-        if (agora < window.RELEASE_DATE.getTime()) {
+        if (agora < RELEASE_DATE.getTime()) {
             scriptFileToLoad = 'script-acesso-antecipado.js';
         } else {
             scriptFileToLoad = 'script-curso-completo.js';
