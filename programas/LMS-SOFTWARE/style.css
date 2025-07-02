@@ -1,0 +1,176 @@
+/* Estilo geral e tema escuro solicitado */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    background-color: #2d2d2d;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+}
+
+header h1 {
+    color: #00aaff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+header p {
+    text-align: center;
+    color: #bbbbbb;
+    margin-top: 0;
+}
+
+/* Caixa de busca */
+.search-box {
+    background-color: #3c3c3c;
+    padding: 25px;
+    border-radius: 6px;
+    margin-bottom: 30px;
+    border: 1px solid #4a4a4a;
+}
+
+.search-box h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #00aaff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #e0e0e0;
+}
+
+input[type="text"],
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #252525;
+    color: #f0f0f0;
+    font-size: 16px;
+    box-sizing: border-box; /* Garante que padding não afete a largura total */
+}
+
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+    border-color: #00aaff;
+    box-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #0088cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background-color: #00aaff;
+}
+
+button:active {
+    transform: scale(0.99);
+}
+
+/* Container de Resultados */
+#results-container {
+    background-color: #3c3c3c;
+    padding: 25px;
+    border-radius: 6px;
+    border: 1px solid #4a4a4a;
+    min-height: 100px;
+}
+
+.results-header {
+    margin-top: 0;
+    color: #e0e0e0;
+}
+
+.results-subheader {
+    color: #00aaff;
+    margin-top: 0;
+    font-style: italic;
+}
+
+.results-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.results-list li {
+    background-color: #2d2d2d;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    border-left: 5px solid #0088cc;
+}
+
+.results-list .brand {
+    font-weight: bold;
+    color: #cccccc;
+}
+
+.results-list .product {
+    font-weight: normal;
+    color: #00aaff;
+}
+
+/* Mensagens de erro e aviso */
+.error-message {
+    color: #ff4d4d;
+    font-weight: bold;
+    text-align: center;
+}
+
+.not-found-message {
+    color: #ffcc00;
+    text-align: center;
+}
+
+.warning-message {
+    background-color: #4d2a00;
+    color: #ffddb3;
+    border: 1px solid #ff8800;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.warning-message strong {
+    color: #ffaa5e;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #888;
+    font-size: 14px;
+}
