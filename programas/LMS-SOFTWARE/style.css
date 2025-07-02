@@ -1,193 +1,123 @@
-/* Estilo geral e tema escuro solicitado */
+/* Importando fontes e usando variáveis de cor do seu projeto */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --cor-primaria: #003366;      /* Azul Escuro */
+    --cor-secundaria: #005a9c;     /* Azul Médio */
+    --cor-destaque: #ffc107;      /* Amarelo/Dourado */
+    --cor-fundo: #f8f9fa;         /* Cinza bem claro */
+    --cor-texto: #212529;         /* Preto Suave */
+    --cor-sucesso: #28a745;       /* Verde */
+    --cor-erro: #dc3545;          /* Vermelho */
+    --cor-borda: #dee2e6;        /* Cinza para bordas */
+}
+
+/* --- ESTILOS GERAIS --- */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #1a1a1a;
-    color: #f0f0f0;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
     margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
+    padding: 0;
 }
 
 .container {
-    width: 100%;
     max-width: 800px;
-    background-color: #2d2d2d;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    padding: 30px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 5px solid var(--cor-destaque);
 }
 
 header h1 {
-    color: #00aaff;
-    text-align: center;
-    margin-bottom: 10px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
 }
 
-header p {
-    text-align: center;
-    color: #bbbbbb;
-    margin-top: 0;
-}
-
-/* Caixa de busca */
+/* --- CAIXA DE BUSCA --- */
 .search-box {
-    background-color: #3c3c3c;
-    padding: 25px;
-    border-radius: 6px;
-    margin-bottom: 30px;
-    border: 1px solid #4a4a4a;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-top: 2rem;
 }
 
 .search-box h2 {
-    margin-top: 0;
-    border-bottom: 2px solid #00aaff;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    text-align: center;
+    color: var(--cor-primaria);
+    margin-bottom: 2rem;
+    font-family: 'Oswald', sans-serif;
 }
 
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
 }
 
 .input-group label {
-    display: block;
-    margin-bottom: 8px;
     font-weight: bold;
-    color: #e0e0e0;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--cor-secundaria);
 }
 
-input[type="text"],
 select {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #555;
-    border-radius: 4px;
-    background-color: #252525;
-    color: #f0f0f0;
-    font-size: 16px;
-    box-sizing: border-box; /* Garante que padding não afete a largura total */
+    padding: 0.8rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #fff;
 }
 
-input[type="text"]:focus,
-select:focus {
-    outline: none;
-    border-color: #00aaff;
-    box-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
+select:disabled {
+    background-color: #e9ecef;
 }
 
-button {
+button#search-button {
     width: 100%;
-    padding: 15px;
-    background-color: #0088cc;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: bold;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    border: none;
+    color: white;
+    font-weight: bold;
+    background-color: var(--cor-secundaria);
+    transition: background-color 0.2s ease;
+    margin-top: 1rem;
 }
 
-button:hover {
-    background-color: #00aaff;
+button#search-button:hover {
+    background-color: var(--cor-primaria);
 }
 
-button:active {
-    transform: scale(0.99);
-}
-
-/* Container de Resultados */
+/* --- CONTAINER DE RESULTADOS --- */
 #results-container {
-    background-color: #3c3c3c;
-    padding: 25px;
-    border-radius: 6px;
-    border: 1px solid #4a4a4a;
-    min-height: 100px;
+    margin-top: 2rem;
 }
-
-.results-header {
-    margin-top: 0;
-    color: #e0e0e0;
-}
-
-.results-subheader {
-    color: #00aaff;
-    margin-top: 0;
-    font-style: italic;
-}
-
-.results-list {
-    list-style: none;
-    padding-left: 0;
-}
-
-.results-list li {
-    background-color: #2d2d2d;
-    padding: 15px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    border-left: 5px solid #0088cc;
-}
-
-.results-list .brand {
-    font-weight: bold;
-    color: #cccccc;
-}
-
-.results-list .product {
-    font-weight: normal;
-    color: #00aaff;
-}
-
-/* Mensagens de erro e aviso */
-.error-message {
-    color: #ff4d4d;
-    font-weight: bold;
-    text-align: center;
-}
-
-.not-found-message {
-    color: #ffcc00;
-    text-align: center;
-}
-
-.warning-message {
-    background-color: #4d2a00;
-    color: #ffddb3;
-    border: 1px solid #ff8800;
-    padding: 15px;
-    border-radius: 4px;
-    margin-top: 20px;
-    text-align: center;
-}
-
-.warning-message strong {
-    color: #ffaa5e;
-}
-
-footer {
-    text-align: center;
-    margin-top: 30px;
-    color: #888;
-    font-size: 14px;
-}
-/* style.css - Adicionar ao final do arquivo */
 
 .product-card {
-    background-color: #2d2d2d;
-    border: 1px solid #555;
-    border-left: 5px solid #00aaff;
+    background-color: #fff;
+    border: 1px solid var(--cor-borda);
+    border-left: 5px solid var(--cor-primaria);
     padding: 20px;
     margin-bottom: 25px;
     border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .product-card.original h4 {
     margin-top: 0;
-    color: #f0f0f0;
+    color: var(--cor-primaria);
+    font-family: 'Oswald', sans-serif;
 }
 
 .product-card p {
@@ -196,17 +126,30 @@ footer {
 
 .equivalents-title {
     margin-top: 30px;
-    border-bottom: 1px solid #555;
+    border-bottom: 2px solid var(--cor-borda);
     padding-bottom: 10px;
+    color: var(--cor-primaria);
+    font-family: 'Oswald', sans-serif;
+}
+
+.results-list {
+    list-style: none;
+    padding: 0;
 }
 
 .results-list li {
+    background-color: #fff;
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    border-left: none; /* Remove a borda anterior para um novo estilo */
-    border-bottom: 1px solid #4a4a4a;
+    transition: background-color 0.2s;
+}
+
+.results-list li:hover {
+    background-color: #f8f9fa;
 }
 
 .results-list .product-details {
@@ -214,14 +157,24 @@ footer {
     flex-direction: column;
 }
 
+.results-list .brand {
+    font-weight: bold;
+    color: var(--cor-secundaria);
+}
+
+.results-list .product {
+    font-weight: bold;
+    color: var(--cor-texto);
+}
+
 .tech-info {
     font-size: 0.9em;
-    color: #bbb;
+    color: #6c757d;
     margin-top: 5px;
 }
 
 .compatibility-info {
-    padding: 5px 10px;
+    padding: 5px 12px;
     border-radius: 15px;
     font-size: 0.8em;
     font-weight: bold;
@@ -230,12 +183,39 @@ footer {
 }
 
 .compat-ok {
-    background-color: #1a5c32;
-    color: #a3ffc9;
+    background-color: #e9f7ec;
+    color: var(--cor-sucesso);
+    border: 1px solid var(--cor-sucesso);
 }
 
 .compat-nok {
-    background-color: #6b2020;
-    color: #ffc2c2;
+    background-color: #fdedee;
+    color: var(--cor-erro);
+    border: 1px solid var(--cor-erro);
 }
 
+/* --- MENSAGENS DE AVISO E ERRO --- */
+.warning-message {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #fff3cd;
+    border: 1px solid var(--cor-destaque);
+    color: #664d03;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.error-message {
+    text-align: center;
+    padding: 1rem;
+    background-color: #f8d7da;
+    color: var(--cor-erro);
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1rem;
+    color: #6c757d;
+}
