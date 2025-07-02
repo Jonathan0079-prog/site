@@ -1,6 +1,6 @@
 // data/database.js
 
-// A estrutura agora é mais rica. Cada produto é um objeto com mais detalhes.
+// A estrutura dos produtos continua a mesma
 export const tabelaSimilaridade = [
     // --- ÓLEOS HIDRÁULICOS ---
     {
@@ -25,25 +25,6 @@ export const tabelaSimilaridade = [
             "PETROBRAS": { "NOME": "LUBRAX INDUSTRIAL HLP 68", "BASE": "MINERAL" }
         }
     },
-    // --- ÓLEOS PARA REDUTORES ---
-    {
-        "APLICACAO": "REDUTORES E ENGRENAGENS",
-        "ISO_VG": "220",
-        "PRODUTOS": {
-            "MOBIL":     { "NOME": "MOBILGEAR 600 XP 220", "BASE": "MINERAL" },
-            "SHELL":     { "NOME": "OMALA S2 GX 220", "BASE": "MINERAL" },
-            "CASTROL":   { "NOME": "ALPHA SP 220", "BASE": "MINERAL" }
-        }
-    },
-    {
-        "APLICACAO": "REDUTORES E ENGRENAGENS",
-        "ISO_VG": "320",
-        "PRODUTOS": {
-            "MOBIL":     { "NOME": "MOBILGEAR 600 XP 320", "BASE": "MINERAL" },
-            "SHELL":     { "NOME": "OMALA S2 GX 320", "BASE": "MINERAL" },
-            "IPIRANGA":  { "NOME": "IPIGEAR CLP 320", "BASE": "MINERAL" }
-        }
-    },
     // --- ÓLEOS SINTÉTICOS ---
     {
         "APLICACAO": "REDUTORES E ENGRENAGENS (ALTA PERFORMANCE)",
@@ -63,10 +44,48 @@ export const tabelaSimilaridade = [
     }
 ];
 
-// Adicionamos também uma matriz de compatibilidade de bases
+// ATUALIZAÇÃO: Matriz de compatibilidade agora é mais detalhada
 export const matrizCompatibilidade = {
-    "MINERAL": ["MINERAL", "SINTÉTICO (PAO)"],
-    "SINTÉTICO (PAO)": ["MINERAL", "SINTÉTICO (PAO)"],
-    "SINTÉTICO (PAG)": ["SINTÉTICO (PAG)"]
-    // Adicionar mais bases conforme necessário (ex: Éster, Silicone)
+    "MINERAL": {
+        "MINERAL": {
+            "status": "OK",
+            "descricao": "Óleos de mesma base (Mineral) são totalmente compatíveis. A mistura é segura, desde que a viscosidade e a aplicação sejam as mesmas."
+        },
+        "SINTÉTICO (PAO)": {
+            "status": "CUIDADO",
+            "descricao": "Bases Minerais e Sintéticas (PAO) são geralmente compatíveis, mas a mistura pode afetar o desempenho dos aditivos. Recomenda-se limitar a mistura a no máximo 10% ou realizar um flushing para garantir a performance."
+        },
+        "SINTÉTICO (PAG)": {
+            "status": "INCOMPATÍVEL",
+            "descricao": "Mistura PROIBIDA. Óleos Minerais e Sintéticos (PAG) são quimicamente incompatíveis. A mistura resultará em formação de borra, gel, e perda total da capacidade de lubrificação, causando falha catastrófica no equipamento. O flushing completo do sistema é OBRIGATÓRIO."
+        }
+    },
+    "SINTÉTICO (PAO)": {
+        "MINERAL": {
+            "status": "CUIDADO",
+            "descricao": "Bases Sintéticas (PAO) e Minerais são geralmente compatíveis, mas a mistura pode reduzir o desempenho do óleo sintético. Recomenda-se limitar a mistura a no máximo 10% ou realizar um flushing para garantir a performance."
+        },
+        "SINTÉTICO (PAO)": {
+            "status": "OK",
+            "descricao": "Óleos de mesma base (Sintético PAO) são totalmente compatíveis. A mistura é segura."
+        },
+        "SINTÉTICO (PAG)": {
+            "status": "INCOMPATÍVEL",
+            "descricao": "Mistura PROIBIDA. Óleos Sintéticos (PAO) e (PAG) são quimicamente incompatíveis e não devem ser misturados sob nenhuma circunstância. O flushing completo do sistema é OBRIGATÓRIO."
+        }
+    },
+    "SINTÉTICO (PAG)": {
+        "MINERAL": {
+            "status": "INCOMPATÍVEL",
+            "descricao": "Mistura PROIBIDA. Óleos Sintéticos (PAG) e Minerais são quimicamente incompatíveis. A mistura resultará em formação de borra e gel, causando falha catastrófica no equipamento. O flushing completo do sistema é OBRIGATÓRIO."
+        },
+        "SINTÉTICO (PAO)": {
+            "status": "INCOMPATÍVEL",
+            "descricao": "Mistura PROIBIDA. Óleos Sintéticos (PAG) e (PAO) são quimicamente incompatíveis e não devem ser misturados sob nenhuma circunstância. O flushing completo do sistema é OBRIGATÓRIO."
+        },
+        "SINTÉTICO (PAG)": {
+            "status": "OK",
+            "descricao": "Óleos de mesma base (Sintético PAG) são totalmente compatíveis. A mistura é segura."
+        }
+    }
 };
