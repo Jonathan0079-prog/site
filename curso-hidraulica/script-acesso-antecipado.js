@@ -1,7 +1,6 @@
 // ==========================================================
 // SCRIPT PARA O MODO: ACESSO ANTECIPADO (ANTES DO LANÇAMENTO)
 // ==========================================================
-
 const firebaseConfig = {
   apiKey: "AIzaSyB_yPeyN-_z4JZ4hny8x3neU3InyRl6OEg",
   authDomain: "curso-hidraulica.firebaseapp.com",
@@ -12,7 +11,7 @@ const firebaseConfig = {
   measurementId: "G-0DD784H7E0"
 };
 
-const RELEASE_DATE = new Date(2025, 6, 22, 9, 0, 0);
+// A constante RELEASE_DATE NÃO é declarada aqui, pois já existe no index.html
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 let releaseCountdownInterval = null;
@@ -36,50 +35,41 @@ function inicializarModoAcessoAntecipado() {
             module.style.display = 'none';
         }
     });
-
     iniciarContadorRegressivo();
-
-    // Lógica do botão de logout
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
-            auth.signOut().catch((error) => {
-                console.error('Erro ao fazer logout:', error);
-            });
+            auth.signOut().catch((error) => console.error('Erro ao fazer logout:', error));
         });
     }
 }
 
 function iniciarContadorRegressivo() {
     const countdownWrapper = document.getElementById('countdown-wrapper');
+    if (!countdownWrapper) return;
     countdownWrapper.style.display = 'block';
     const daysEl = document.getElementById('days');
     const hoursEl = document.getElementById('hours');
     const minutesEl = document.getElementById('minutes');
     const secondsEl = document.getElementById('seconds');
-
     function updateTimer() {
         const agora = new Date().getTime();
         const distancia = RELEASE_DATE.getTime() - agora;
-
         if (distancia < 0) {
             clearInterval(releaseCountdownInterval);
             alert("O curso completo foi liberado! A página será atualizada.");
             window.location.reload(); 
             return;
         }
-
         const days = Math.floor(distancia / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distancia % (1000 * 60)) / 1000);
-
         daysEl.textContent = String(days).padStart(2, '0');
         hoursEl.textContent = String(hours).padStart(2, '0');
         minutesEl.textContent = String(minutes).padStart(2, '0');
         secondsEl.textContent = String(seconds).padStart(2, '0');
     }
-
     releaseCountdownInterval = setInterval(updateTimer, 1000);
     updateTimer();
 }
