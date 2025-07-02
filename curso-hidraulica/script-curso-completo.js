@@ -2,7 +2,6 @@
 // SCRIPT PARA O MODO: CURSO COMPLETO (APÓS O LANÇAMENTO)
 // ==========================================================
 
-// Configuração do Firebase fornecida pelo usuário
 const firebaseConfig = {
   apiKey: "AIzaSyB_yPeyN-_z4JZ4hny8x3neU3InyRl6OEg",
   authDomain: "curso-hidraulica.firebaseapp.com",
@@ -13,13 +12,9 @@ const firebaseConfig = {
   measurementId: "G-0DD784H7E0"
 };
 
-// Inicializa o Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-/**
- * Porteiro de Segurança
- */
 auth.onAuthStateChanged(function(user) {
     if (user) {
         document.querySelector('.main-container').style.display = 'block';
@@ -30,27 +25,30 @@ auth.onAuthStateChanged(function(user) {
     }
 });
 
-
-/**
- * Função principal que contém toda a lógica do curso COMPLETO.
- */
 function inicializarCursoCompleto() {
-    // Garante que o contador de lançamento não seja exibido
     const countdownWrapper = document.getElementById('countdown-wrapper');
     if(countdownWrapper) countdownWrapper.style.display = 'none';
     
+    // Lógica do botão de logout
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().catch((error) => {
+                console.error('Erro ao fazer logout:', error);
+            });
+        });
+    }
+
     const TEMPO_POR_MODULO_SEGUNDOS = 10;
     const modules = document.querySelectorAll('.module');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     const moduleIndicator = document.getElementById('module-indicator');
-    
     let currentModuleIndex = 0;
     let highestUnlockedModule = 0;
     const totalModules = modules.length;
     let countdownInterval = null;
 
-    // Carrega o progresso salvo do aluno
     const savedHighest = parseInt(localStorage.getItem('highestUnlockedModule') || '0', 10);
     highestUnlockedModule = savedHighest;
     const savedCurrent = parseInt(localStorage.getItem('currentModuleIndex') || '0', 10);
@@ -67,7 +65,6 @@ function inicializarCursoCompleto() {
         prevBtn.disabled = (index === 0);
         const statusBloqueioDiv = currentModule.querySelector('.status-bloqueio');
         statusBloqueioDiv.style.display = 'none';
-
         if (index === highestUnlockedModule && index < totalModules - 1) {
             nextBtn.disabled = true;
             iniciarTimerDePermanencia(statusBloqueioDiv);
@@ -85,7 +82,6 @@ function inicializarCursoCompleto() {
             progresso = { moduleIndex: currentModuleIndex, segundosGastos: 0 };
         }
         let segundosGastos = progresso.segundosGastos;
-
         function tick() {
             if (document.hidden) return;
             segundosGastos++;
@@ -98,7 +94,6 @@ function inicializarCursoCompleto() {
                 efetuarDesbloqueio(displayElement);
             }
         }
-
         if (segundosGastos >= TEMPO_POR_MODULO_SEGUNDOS) {
             efetuarDesbloqueio(displayElement);
         } else {
