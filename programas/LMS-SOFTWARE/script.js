@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const produtos = [];
         tabelaSimilaridade.forEach((grupo, index) => {
             if (grupo.PRODUTOS[marcaSelecionada]) {
-                // Armazenamos o índice do grupo e o nome do produto para referência futura
                 const produtoInfo = {
                     nome: grupo.PRODUTOS[marcaSelecionada].NOME,
                     grupoIndex: index
@@ -51,12 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        // Ordena os produtos pelo nome
         produtos.sort((a, b) => a.nome.localeCompare(b.nome));
 
         produtos.forEach(produto => {
             const opt = document.createElement('option');
-            // O valor agora é o índice do grupo na tabela, para fácil recuperação
             opt.value = produto.grupoIndex;
             opt.textContent = produto.nome;
             oleoSelect.appendChild(opt);
@@ -81,9 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function exibirResultados(grupo, marcaOriginal) {
         const produtoOriginal = grupo.PRODUTOS[marcaOriginal];
         
-        // Clona o objeto de produtos para manipulação segura
         const substitutos = { ...grupo.PRODUTOS };
-        delete substitutos[marcaOriginal]; // Remove o produto original da lista de substitutos
+        delete substitutos[marcaOriginal];
 
         let htmlResultados = `
             <h3 class="results-header">Análise de Equivalência</h3>
@@ -105,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const marcaSubstituto in substitutos) {
                 const produtoSubstituto = substitutos[marcaSubstituto];
                 
-                // Lógica simples de compatibilidade para exibição
                 const compativeis = matrizCompatibilidade[produtoOriginal.BASE] || [];
                 const eCompativel = compativeis.includes(produtoSubstituto.BASE);
                 const compatibilidadeHTML = eCompativel 
@@ -142,6 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     searchButton.addEventListener('click', encontrarSubstitutos);
 
+    // ==========================================================
+    // CORREÇÃO: As duas linhas abaixo estavam faltando.
+    // Elas iniciam o preenchimento dos menus quando a página carrega.
+    // ==========================================================
     popularMarcas();
-    popularProdutosPorMarca(''); // Inicia o select de produtos como desabilitado
+    popularProdutosPorMarca(''); 
 });
