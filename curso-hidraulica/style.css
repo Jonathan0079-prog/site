@@ -25,6 +25,7 @@ body {
 
 /* HEADER */
 header {
+    position: relative; /* Necessário para o posicionamento absoluto do botão de logout */
     background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
     color: #ffffff;
     padding: 1.5rem 1rem;
@@ -34,6 +35,28 @@ header {
 
 header h1 {
     font-size: 2.2rem;
+}
+
+/* BOTÃO DE LOGOUT */
+#logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--cor-destaque);
+    color: var(--cor-primaria);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#logout-btn:hover {
+    background-color: #ffca2c;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 /* ESTILOS DA PÁGINA DE LOGIN */
