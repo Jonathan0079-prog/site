@@ -1,132 +1,75 @@
-/* Importando fontes e usando variáveis de cor do seu projeto */
+/* ... (todo o CSS anterior, até a seção de resultados) ... */
+
+/* ESTILOS GERAIS - sem alterações */
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap');
-
-:root {
-    --cor-primaria: #003366;      /* Azul Escuro */
-    --cor-secundaria: #005a9c;     /* Azul Médio */
-    --cor-destaque: #ffc107;      /* Amarelo/Dourado */
-    --cor-fundo: #f8f9fa;         /* Cinza bem claro */
-    --cor-texto: #212529;         /* Preto Suave */
-    --cor-sucesso: #28a745;       /* Verde */
-    --cor-erro: #dc3545;          /* Vermelho */
-    --cor-cuidado: #ffc107;       /* Amarelo para Cuidado */
-    --cor-borda: #dee2e6;        /* Cinza para bordas */
-}
-
-/* --- ESTILOS GERAIS (sem alterações) --- */
-body {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-    margin: 0;
-    padding: 0;
-}
-.container { max-width: 800px; margin: 2rem auto; padding: 1rem; }
-header { background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria)); color: #ffffff; padding: 1.5rem 1rem; text-align: center; border-bottom: 5px solid var(--cor-destaque); }
-header h1 { font-family: 'Oswald', sans-serif; font-size: 2.2rem; }
+:root { /* ... variáveis de cor ... */ }
+body { /* ... */ }
+.container { /* ... */ }
+header { /* ... */ }
 .hidden { display: none !important; }
-.input-group { margin-bottom: 1.5rem; }
-.input-group label { font-weight: bold; display: block; margin-bottom: 0.5rem; color: var(--cor-secundaria); }
-select, input[type="number"], input[type="text"], input[type="date"] { width: 100%; padding: 0.8rem; border: 1px solid var(--cor-borda); border-radius: 5px; font-size: 1rem; background-color: #fff; }
 
-/* --- BUSCADOR E CALCULADORA (sem alterações) --- */
-.search-box, .calculator-section, .planner-section { background: #ffffff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-top: 2.5rem; }
-.search-box h2, .calculator-section h2, .planner-section h2 { text-align: center; color: var(--cor-primaria); margin-bottom: 2rem; font-family: 'Oswald', sans-serif; }
-.calculator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-button#search-button, button#calculate-button { width: 100%; padding: 1rem; font-size: 1.1rem; border-radius: 5px; cursor: pointer; border: none; color: white; font-weight: bold; margin-top: 1rem; transition: background-color 0.2s ease; }
-button#search-button { background-color: var(--cor-secundaria); }
-button#search-button:hover { background-color: var(--cor-primaria); }
-button#calculate-button { background-color: var(--cor-sucesso); }
-button#calculate-button:hover { opacity: 0.9; }
-#calculator-result { margin-top: 2rem; padding: 1.5rem; border-radius: 6px; text-align: center; background-color: #eaf3fa; border: 2px solid var(--cor-secundaria); }
-#calculator-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: var(--cor-sucesso); font-family: 'Oswald', sans-serif; }
-button#find-oils-button { width: auto; padding: 0.8rem 1.5rem; font-size: 1rem; border-radius: 5px; cursor: pointer; border: none; color: var(--cor-primaria); font-weight: bold; background-color: transparent; border: 2px solid var(--cor-primaria); transition: all 0.2s ease; margin-top: 1.5rem; }
-button#find-oils-button:hover { background-color: var(--cor-primaria); color: white; }
+/* BUSCADOR E CALCULADORA - com uma nova classe adicionada */
+.search-box, .calculator-section, .planner-section { /* ... */ }
+.search-box h2, .calculator-section h2, .planner-section h2 { /* ... */ }
+/* ... (outros estilos sem alteração) ... */
+#calculator-result .recommended-vg { /* ... */ }
 
-/* --- RESULTADOS E MODAL (sem alterações) --- */
+/* NOVO: Estilo para a justificativa da calculadora */
+.justification-text {
+    font-size: 0.95em;
+    color: #495057;
+    margin-top: 10px;
+    border-top: 1px solid var(--cor-borda);
+    padding-top: 10px;
+}
+
+
+/* --- CONTAINER DE RESULTADOS (ATUALIZADO) --- */
 #results-container, #calculator-search-results-container { margin-top: 2rem; }
-.product-card { background-color: #fff; border: 1px solid var(--cor-borda); border-left: 5px solid var(--cor-primaria); padding: 20px; margin-bottom: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.equivalents-title, .results-header { margin-top: 30px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px; color: var(--cor-primaria); font-family: 'Oswald', sans-serif; }
-.results-list { list-style: none; padding: 0; }
-.results-list li { background-color: #fff; padding: 15px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; transition: background-color 0.2s; }
-.compatibility-info { display: flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; font-weight: bold; margin-top: 10px; text-align: center; }
-.compat-ok { background-color: #e9f7ec; color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso); }
-.compat-cuidado { background-color: #fff8e1; color: #8d6e00; border: 1px solid var(--cor-cuidado); }
-.compat-incompativel { background-color: #fdedee; color: var(--cor-erro); border: 1px solid var(--cor-erro); }
-.info-icon { cursor: pointer; color: #6c757d; transition: color 0.2s; }
-.modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-.modal-content { background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
-.modal-close { position: absolute; top: 10px; right: 15px; font-size: 2rem; border: none; background: none; cursor: pointer; color: #aaa; }
+.product-card { /* ... */ }
 
-/* ============================================= */
-/* NOVOS ESTILOS PARA O PLANNER         */
-/* ============================================= */
-.planner-section {
-    border-top: 4px solid var(--cor-destaque);
-}
-
-.planner-form .form-grid {
+/* NOVO: Estilo para o grid de dados técnicos */
+.tech-data-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-}
-
-.planner-form button[type="submit"] {
-    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
     padding: 1rem;
-    font-size: 1.1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: white;
-    font-weight: bold;
-    background-color: var(--cor-primaria);
-    transition: background-color 0.2s ease;
     margin-top: 1rem;
-}
-.planner-form button[type="submit"]:hover {
-    background-color: var(--cor-secundaria);
-}
-
-.plan-table-container {
-    margin-top: 2.5rem;
-}
-
-.plan-table-container h3 {
-    color: var(--cor-primaria);
-    margin-bottom: 1rem;
-}
-
-#plan-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-#plan-table thead {
-    background-color: #eaf3fa;
-}
-
-#plan-table th, #plan-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid var(--cor-borda);
-}
-
-#plan-table tbody tr:hover {
     background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid var(--cor-borda);
 }
 
-#plan-table .action-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--cor-erro);
-    font-size: 1.2rem;
+.tech-data-item {
+    text-align: center;
 }
 
-@media (max-width: 768px) {
-    .planner-form .form-grid {
-        grid-template-columns: 1fr;
-    }
+.tech-data-item .label {
+    font-size: 0.8em;
+    color: #6c757d;
+    display: block;
 }
+
+.tech-data-item .value {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: var(--cor-secundaria);
+}
+
+/* ... (restante do CSS, incluindo a seção do planner e da modal) ... */
+.results-list li {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column; /* Alterado para empilhar verticalmente */
+    align-items: flex-start; /* Alinha à esquerda */
+    gap: 10px;
+}
+.list-item-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+/* ... (restante do CSS sem alterações) ... */
+
