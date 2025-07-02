@@ -3,11 +3,68 @@
 import { tabelaSimilaridade, matrizCompatibilidade } from './data/database.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Variáveis do Buscador de Equivalentes
     const marcaSelect = document.getElementById('marca-select');
     const oleoSelect = document.getElementById('oleo-select');
     const searchButton = document.getElementById('search-button');
     const resultsContainer = document.getElementById('results-container');
+    
+    // Variáveis da Calculadora de Viscosidade
+    const tempOperacaoInput = document.getElementById('temp-operacao');
+    const tipoEquipamentoSelect = document.getElementById('tipo-equipamento');
+    const calculateButton = document.getElementById('calculate-button');
+    const calculatorResultDiv = document.getElementById('calculator-result');
 
+    // =======================================================
+    //          LÓGICA DA CALCULADORA DE VISCOSIDADE
+    // =======================================================
+    function calcularViscosidade() {
+        const temp = parseFloat(tempOperacaoInput.value);
+        const tipo = tipoEquipamentoSelect.value;
+
+        if (isNaN(temp) || !tipo) {
+            alert('Por favor, preencha todos os campos da calculadora.');
+            return;
+        }
+
+        let vgRecomendado = 'N/A';
+
+        // Lógica de recomendação baseada em regras práticas da indústria
+        if (tipo === 'redutor_paralelo') {
+            if (temp < 40) vgRecomendado = '150';
+            else if (temp < 60) vgRecomendado = '220';
+            else if (temp < 80) vgRecomendado = '320';
+            else vgRecomendado = '460';
+        } else if (tipo === 'redutor_semfim') {
+            if (temp < 40) vgRecomendado = '320';
+            else if (temp < 70) vgRecomendado = '460';
+            else vgRecomendado = '680';
+        } else if (tipo === 'hidraulico_palhetas') {
+            if (temp < 50) vgRecomendado = '32';
+            else if (temp < 70) vgRecomendado = '46';
+            else vgRecomendado = '68';
+        } else if (tipo === 'hidraulico_pistoes') {
+            if (temp < 55) vgRecomendado = '46';
+            else if (temp < 75) vgRecomendado = '68';
+            else vgRecomendado = '100';
+        } else if (tipo === 'mancal_deslizamento') {
+             if (temp < 50) vgRecomendado = '68';
+            else if (temp < 70) vgRecomendado = '100';
+            else vgRecomendado = '150';
+        }
+
+        // Exibe o resultado
+        calculatorResultDiv.innerHTML = `
+            <h3>Viscosidade Recomendada:</h3>
+            <p>A viscosidade ideal para a sua aplicação é:</p>
+            <p class="recommended-vg">ISO VG ${vgRecomendado}</p>
+        `;
+        calculatorResultDiv.classList.remove('hidden');
+    }
+
+    // =======================================================
+    //          LÓGICA DO BUSCADOR DE EQUIVALENTES
+    // =======================================================
     function popularMarcas() {
         const marcas = new Set();
         tabelaSimilaridade.forEach(grupo => {
@@ -130,17 +187,23 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.innerHTML = htmlResultados;
     }
 
+    // =======================================================
+    //          EVENT LISTENERS (OUVINTES DE EVENTOS)
+    // =======================================================
+    
+    // Para a Calculadora
+    calculateButton.addEventListener('click', calcularViscosidade);
+
+    // Para o Buscador de Equivalentes
     marcaSelect.addEventListener('change', () => {
         popularProdutosPorMarca(marcaSelect.value);
         resultsContainer.innerHTML = '';
     });
-
     searchButton.addEventListener('click', encontrarSubstitutos);
 
-    // ==========================================================
-    // CORREÇÃO: As duas linhas abaixo estavam faltando.
-    // Elas iniciam o preenchimento dos menus quando a página carrega.
-    // ==========================================================
+    // =======================================================
+    //          INICIALIZAÇÃO DA APLICAÇÃO
+    // =======================================================
     popularMarcas();
     popularProdutosPorMarca(''); 
 });
