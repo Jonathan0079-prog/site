@@ -221,3 +221,19 @@ header h1 {
     text-transform: uppercase;
     margin-top: 0.5rem;
 }
+
+/* AJUSTE PARA O BOTÃO DE LOGOUT EM TELAS MENORES */
+@media (max-width: 768px) {
+    #logout-btn {
+        top: 10px;
+        right: 10px;
+        transform: translateY(0); /* Remove o ajuste de centralização vertical */
+        width: 40px;
+        height: 40px;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+        padding-right: 45px; /* Adiciona espaço para não sobrepor o botão */
+    }
+}
