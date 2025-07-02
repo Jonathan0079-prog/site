@@ -2,7 +2,6 @@
 // SCRIPT PARA O MODO: ACESSO ANTECIPADO (ANTES DO LANÇAMENTO)
 // ==========================================================
 
-// Configuração do Firebase fornecida pelo usuário
 const firebaseConfig = {
   apiKey: "AIzaSyB_yPeyN-_z4JZ4hny8x3neU3InyRl6OEg",
   authDomain: "curso-hidraulica.firebaseapp.com",
@@ -14,16 +13,10 @@ const firebaseConfig = {
 };
 
 const RELEASE_DATE = new Date(2025, 6, 22, 9, 0, 0);
-
-// Inicializa o Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-
 let releaseCountdownInterval = null;
 
-/**
- * Porteiro de Segurança
- */
 auth.onAuthStateChanged(function(user) {
     if (user) {
         document.querySelector('.main-container').style.display = 'block';
@@ -33,35 +26,33 @@ auth.onAuthStateChanged(function(user) {
     }
 });
 
-/**
- * Configura a página para o modo de acesso antecipado.
- */
 function inicializarModoAcessoAntecipado() {
-    // Esconde a navegação principal, pois não será usada
     document.querySelector('.floating-nav').style.display = 'none';
-
-    // Mostra apenas a Aula 1
     const modules = document.querySelectorAll('.module');
     modules.forEach((module, index) => {
         if (index === 0) {
             module.classList.add('active');
         } else {
-            module.style.display = 'none'; // Apenas esconde as outras
+            module.style.display = 'none';
         }
     });
 
-    // Inicia o contador regressivo para o lançamento
     iniciarContadorRegressivo();
+
+    // Lógica do botão de logout
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().catch((error) => {
+                console.error('Erro ao fazer logout:', error);
+            });
+        });
+    }
 }
 
-
-/**
- * Inicia e atualiza o contador regressivo na tela.
- */
 function iniciarContadorRegressivo() {
     const countdownWrapper = document.getElementById('countdown-wrapper');
     countdownWrapper.style.display = 'block';
-
     const daysEl = document.getElementById('days');
     const hoursEl = document.getElementById('hours');
     const minutesEl = document.getElementById('minutes');
@@ -73,8 +64,6 @@ function iniciarContadorRegressivo() {
 
         if (distancia < 0) {
             clearInterval(releaseCountdownInterval);
-            // Quando o tempo acabar, recarregar a página fará o "script inteligente"
-            // carregar o arquivo do curso completo automaticamente.
             alert("O curso completo foi liberado! A página será atualizada.");
             window.location.reload(); 
             return;
@@ -92,5 +81,5 @@ function iniciarContadorRegressivo() {
     }
 
     releaseCountdownInterval = setInterval(updateTimer, 1000);
-    updateTimer(); // Chama uma vez imediatamente
+    updateTimer();
 }
