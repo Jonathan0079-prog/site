@@ -47,7 +47,11 @@
 
         <div id="quiz" class="module">
             <h2><i class="fas fa-question-circle"></i> Quiz Final de Aproveitamento</h2>
-            <div id="quiz-container"><h3 id="pergunta-titulo">Carregando pergunta...</h3><div id="opcoes-quiz"></div><div id="feedback"></div></div>
+            <div id="quiz-container">
+                <h3 id="pergunta-titulo">Carregando pergunta...</h3>
+                <div id="opcoes-quiz"></div>
+                <div id="feedback"></div>
+            </div>
         </div>
 
         <div id="certificado" class="module">
@@ -59,90 +63,30 @@
             <div id="certificado-form-container" style="display: none;">
                 <h3>Parabéns, você foi aprovado!</h3>
                 <p>Preencha os dados abaixo para gerar seu certificado em PDF.</p>
-                <form id="gerar-certificado-form"><label for="nome-aluno">Seu Nome Completo:</label><input type="text" id="nome-aluno" placeholder="Digite seu nome como aparecerá no certificado" required><label for="pais-aluno">Seu País:</label><select id="pais-aluno"><option value="brasil">Brasil</option><option value="angola">Angola</option></select><label id="documento-label" for="documento-aluno">Seu CPF:</label><input type="text" id="documento-aluno" placeholder="Digite seu CPF (apenas números)" required><button type="button" id="gerar-certificado-btn">Gerar Certificado PDF</button></form>
+                <form id="gerar-certificado-form">
+                    <label for="nome-aluno">Seu Nome Completo:</label>
+                    <input type="text" id="nome-aluno" placeholder="Digite seu nome como aparecerá no certificado" required>
+                    <label id="documento-label" for="documento-aluno">Seu CPF:</label>
+                    <input type="text" id="documento-aluno" placeholder="Digite seu CPF" required>
+                    <label for="pais-aluno">País:</label>
+                    <select id="pais-aluno">
+                        <option value="brasil">Brasil</option>
+                        <option value="angola">Angola</option>
+                    </select>
+                    <button type="button" id="gerar-certificado-btn">Gerar Certificado</button>
+                </form>
             </div>
             <div id="reprovado-container" style="display: none;">
-                <h3>Não foi desta vez...</h3><p>Infelizmente, você não atingiu a pontuação mínima para aprovação.</p><p>Estude mais um pouco os módulos e tente novamente!</p><button type="button" id="tentar-novamente-btn">Tentar Quiz Novamente</button>
+                <h3>Não foi desta vez...</h3>
+                <p>Infelizmente, você não atingiu a pontuação mínima para aprovação.</p>
+                <p>Estude mais um pouco os módulos e tente novamente!</p>
+                <button type="button" id="tentar-novamente-btn">Tentar Novamente</button>
             </div>
             <div id="certificate-display-area"></div>
         </div>
     </main>
 
-    <nav class="floating-nav" style="display: none;">
-        <button id="prev-btn" title="Módulo Anterior">&larr;</button>
-        <span id="module-indicator">1 / 19</span>
-        <button id="next-btn" title="Próximo Módulo">&rarr;</button>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso Interativo - Hidráulica e Pneumática</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <h1>Curso de Hidráulica e Pneumática</h1>
-        <button id="logout-btn" title="Sair do Curso"><i class="fas fa-sign-out-alt"></i></button>
-    </header>
-
-    <main class="main-container" style="display: none;">
-        <div id="countdown-wrapper" style="display: none;">
-            <div class="release-countdown-container">
-                <h3>O Curso Completo Será Liberado Em Breve!</h3>
-                <p>O acesso aos demais módulos será liberado automaticamente na data de lançamento.</p>
-                <div id="countdown-timer">
-                    <div class="countdown-block"><span id="days" class="countdown-value">--</span><span class="countdown-label">Dias</span></div>
-                    <div class="countdown-block"><span id="hours" class="countdown-value">--</span><span class="countdown-label">Horas</span></div>
-                    <div class="countdown-block"><span id="minutes" class="countdown-value">--</span><span class="countdown-label">Minutos</span></div>
-                    <div class="countdown-block"><span id="seconds" class="countdown-value">--</span><span class="countdown-label">Segundos</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="aula1" class="module"><h2 ><span style="font-size: 1.5em; vertical-align: middle;">📜</span> Aula 1: Introdução</h2><p>Conteúdo completo da Aula 1 vai aqui...</p><div class="status-bloqueio"></div></div>
-        <div id="aula2" class="module"><h2><span style="font-size: 1.5em; vertical-align: middle;">⚙️</span> Aula 2: Fundamentos</h2><p>Conteúdo completo da Aula 2 vai aqui...</p><div class="status-bloqueio"></div></div>
-        <div id="aula3" class="module"><h2>Aula 3: Simbologia</h2><p>Conteúdo da Aula 3...</p><div class="status-bloqueio"></div></div>
-        <div id="aula4" class="module"><h2>Aula 4: Fluidos</h2><p>Conteúdo da Aula 4...</p><div class="status-bloqueio"></div></div>
-        <div id="aula5" class="module"><h2>Aula 5: Reservatórios</h2><p>Conteúdo da Aula 5...</p><div class="status-bloqueio"></div></div>
-        <div id="aula6" class="module"><h2>Aula 6: Filtros</h2><p>Conteúdo da Aula 6...</p><div class="status-bloqueio"></div></div>
-        <div id="aula7" class="module"><h2>Aula 7: Cilindros</h2><p>Conteúdo da Aula 7...</p><div class="status-bloqueio"></div></div>
-        <div id="aula8" class="module"><h2>Aula 8: Bombas</h2><p>Conteúdo da Aula 8...</p><div class="status-bloqueio"></div></div>
-        <div id="aula9" class="module"><h2>Aula 9: Válvulas de Pressão</h2><p>Conteúdo da Aula 9...</p><div class="status-bloqueio"></div></div>
-        <div id="aula10" class="module"><h2>Aula 10: Válvulas Direcionais</h2><p>Conteúdo da Aula 10...</p><div class="status-bloqueio"></div></div>
-        <div id="aula11" class="module"><h2>Aula 11: Válvulas de Vazão</h2><p>Conteúdo da Aula 11...</p><div class="status-bloqueio"></div></div>
-        <div id="aula12" class="module"><h2>Aula 12: Atuadores Rotativos</h2><p>Conteúdo da Aula 12...</p><div class="status-bloqueio"></div></div>
-        <div id="aula13" class="module"><h2>Aula 13: Acumuladores</h2><p>Conteúdo da Aula 13...</p><div class="status-bloqueio"></div></div>
-        <div id="aula14" class="module"><h2>Aula 14: Intensificadores</h2><p>Conteúdo da Aula 14...</p><div class="status-bloqueio"></div></div>
-        <div id="aula15" class="module"><h2>Aula 15: Trocadores de Calor</h2><p>Conteúdo da Aula 15...</p><div class="status-bloqueio"></div></div>
-        <div id="aula16" class="module"><h2>Aula 16: Outros Equipamentos</h2><p>Conteúdo da Aula 16...</p><div class="status-bloqueio"></div></div>
-        <div id="aula17" class="module"><h2>Aula 17: Tabelas e Fórmulas</h2><p>Conteúdo da Aula 17...</p><div class="status-bloqueio"></div></div>
-
-        <div id="quiz" class="module">
-            <h2><i class="fas fa-question-circle"></i> Quiz Final de Aproveitamento</h2>
-            <div id="quiz-container"><h3 id="pergunta-titulo">Carregando pergunta...</h3><div id="opcoes-quiz"></div><div id="feedback"></div></div>
-        </div>
-
-        <div id="certificado" class="module">
-            <h2><i class="fas fa-certificate"></i> Emissão do Certificado</h2>
-            <div id="certificate-gate">
-                <p>Você precisa ser aprovado no Quiz Final para poder gerar seu certificado.</p>
-                <p>Volte ao módulo anterior e teste seus conhecimentos!</p>
-            </div>
-            <div id="certificado-form-container" style="display: none;">
-                <h3>Parabéns, você foi aprovado!</h3>
-                <p>Preencha os dados abaixo para gerar seu certificado em PDF.</p>
-                <form id="gerar-certificado-form"><label for="nome-aluno">Seu Nome Completo:</label><input type="text" id="nome-aluno" placeholder="Digite seu nome como aparecerá no certificado" required><label for="pais-aluno">Seu País:</label><select id="pais-aluno"><option value="brasil">Brasil</option><option value="angola">Angola</option></select><label id="documento-label" for="documento-aluno">Seu CPF:</label><input type="text" id="documento-aluno" placeholder="Digite seu CPF (apenas números)" required><button type="button" id="gerar-certificado-btn">Gerar Certificado PDF</button></form>
-            </div>
-            <div id="reprovado-container" style="display: none;">
-                <h3>Não foi desta vez...</h3><p>Infelizmente, você não atingiu a pontuação mínima para aprovação.</p><p>Estude mais um pouco os módulos e tente novamente!</p><button type="button" id="tentar-novamente-btn">Tentar Quiz Novamente</button>
-            </div>
-            <div id="certificate-display-area"></div>
-        </div>
-    </main>
-
-    <nav class="floating-nav" style="display: none;">
+    <nav class="floating-nav" style="display: none; flex-direction: row; gap: 1em;">
         <button id="prev-btn" title="Módulo Anterior">&larr;</button>
         <span id="module-indicator">1 / 19</span>
         <button id="next-btn" title="Próximo Módulo">&rarr;</button>
@@ -152,7 +96,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
-        const RELEASE_DATE = new Date(2025, 6, 22, 9, 0, 0); 
+        // Coloque a data de liberação para o passado para testar!
+        const RELEASE_DATE = new Date(2024, 6, 22, 9, 0, 0); // Julho=6 para JS (0-based)
         const agora = new Date().getTime();
         let scriptFileToLoad;
         if (agora < RELEASE_DATE.getTime()) {
@@ -166,4 +111,3 @@
     </script>
 </body>
 </html>
-
