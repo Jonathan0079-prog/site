@@ -13,7 +13,7 @@
     --cor-borda: #dee2e6;        /* Cinza para bordas */
 }
 
-/* --- ESTILOS GERAIS --- */
+/* --- ESTILOS GERAIS (sem alterações) --- */
 body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
@@ -22,112 +22,57 @@ body {
     margin: 0;
     padding: 0;
 }
+.container { max-width: 800px; margin: 2rem auto; padding: 1rem; }
+header { background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria)); color: #ffffff; padding: 1.5rem 1rem; text-align: center; border-bottom: 5px solid var(--cor-destaque); }
+header h1 { font-family: 'Oswald', sans-serif; font-size: 2.2rem; }
+.hidden { display: none !important; }
+.input-group { margin-bottom: 1.5rem; }
+.input-group label { font-weight: bold; display: block; margin-bottom: 0.5rem; color: var(--cor-secundaria); }
+select, input[type="number"], input[type="text"], input[type="date"] { width: 100%; padding: 0.8rem; border: 1px solid var(--cor-borda); border-radius: 5px; font-size: 1rem; background-color: #fff; }
 
-.container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 1rem;
+/* --- BUSCADOR E CALCULADORA (sem alterações) --- */
+.search-box, .calculator-section, .planner-section { background: #ffffff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-top: 2.5rem; }
+.search-box h2, .calculator-section h2, .planner-section h2 { text-align: center; color: var(--cor-primaria); margin-bottom: 2rem; font-family: 'Oswald', sans-serif; }
+.calculator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+button#search-button, button#calculate-button { width: 100%; padding: 1rem; font-size: 1.1rem; border-radius: 5px; cursor: pointer; border: none; color: white; font-weight: bold; margin-top: 1rem; transition: background-color 0.2s ease; }
+button#search-button { background-color: var(--cor-secundaria); }
+button#search-button:hover { background-color: var(--cor-primaria); }
+button#calculate-button { background-color: var(--cor-sucesso); }
+button#calculate-button:hover { opacity: 0.9; }
+#calculator-result { margin-top: 2rem; padding: 1.5rem; border-radius: 6px; text-align: center; background-color: #eaf3fa; border: 2px solid var(--cor-secundaria); }
+#calculator-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: var(--cor-sucesso); font-family: 'Oswald', sans-serif; }
+button#find-oils-button { width: auto; padding: 0.8rem 1.5rem; font-size: 1rem; border-radius: 5px; cursor: pointer; border: none; color: var(--cor-primaria); font-weight: bold; background-color: transparent; border: 2px solid var(--cor-primaria); transition: all 0.2s ease; margin-top: 1.5rem; }
+button#find-oils-button:hover { background-color: var(--cor-primaria); color: white; }
+
+/* --- RESULTADOS E MODAL (sem alterações) --- */
+#results-container, #calculator-search-results-container { margin-top: 2rem; }
+.product-card { background-color: #fff; border: 1px solid var(--cor-borda); border-left: 5px solid var(--cor-primaria); padding: 20px; margin-bottom: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.equivalents-title, .results-header { margin-top: 30px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px; color: var(--cor-primaria); font-family: 'Oswald', sans-serif; }
+.results-list { list-style: none; padding: 0; }
+.results-list li { background-color: #fff; padding: 15px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; transition: background-color 0.2s; }
+.compatibility-info { display: flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; font-weight: bold; margin-top: 10px; text-align: center; }
+.compat-ok { background-color: #e9f7ec; color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso); }
+.compat-cuidado { background-color: #fff8e1; color: #8d6e00; border: 1px solid var(--cor-cuidado); }
+.compat-incompativel { background-color: #fdedee; color: var(--cor-erro); border: 1px solid var(--cor-erro); }
+.info-icon { cursor: pointer; color: #6c757d; transition: color 0.2s; }
+.modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.modal-content { background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+.modal-close { position: absolute; top: 10px; right: 15px; font-size: 2rem; border: none; background: none; cursor: pointer; color: #aaa; }
+
+/* ============================================= */
+/* NOVOS ESTILOS PARA O PLANNER         */
+/* ============================================= */
+.planner-section {
+    border-top: 4px solid var(--cor-destaque);
 }
 
-header {
-    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
-    color: #ffffff;
-    padding: 1.5rem 1rem;
-    text-align: center;
-    border-bottom: 5px solid var(--cor-destaque);
-}
-
-header h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 2.2rem;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* --- CAIXA DE BUSCA --- */
-.search-box {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    margin-top: 2rem;
-}
-
-.search-box h2 {
-    text-align: center;
-    color: var(--cor-primaria);
-    margin-bottom: 2rem;
-    font-family: 'Oswald', sans-serif;
-}
-
-.input-group {
-    margin-bottom: 1.5rem;
-}
-
-.input-group label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--cor-secundaria);
-}
-
-select, input[type="number"] {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid var(--cor-borda);
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: #fff;
-}
-
-select:disabled {
-    background-color: #e9ecef;
-}
-
-button#search-button {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: white;
-    font-weight: bold;
-    background-color: var(--cor-secundaria);
-    transition: background-color 0.2s ease;
-    margin-top: 1rem;
-}
-
-button#search-button:hover {
-    background-color: var(--cor-primaria);
-}
-
-/* --- SEÇÃO DA CALCULADORA --- */
-.calculator-section {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    margin-top: 2.5rem;
-    border-top: 4px solid var(--cor-secundaria);
-}
-
-.calculator-section h2 {
-    text-align: center;
-    color: var(--cor-primaria);
-    margin-bottom: 2rem;
-    font-family: 'Oswald', sans-serif;
-}
-
-.calculator-grid {
+.planner-form .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
 }
 
-button#calculate-button {
+.planner-form button[type="submit"] {
     width: 100%;
     padding: 1rem;
     font-size: 1.1rem;
@@ -136,237 +81,52 @@ button#calculate-button {
     border: none;
     color: white;
     font-weight: bold;
-    background-color: var(--cor-sucesso);
-    transition: background-color 0.2s ease;
-    margin-top: 2rem;
-}
-
-button#calculate-button:hover {
-    opacity: 0.9;
-}
-
-#calculator-result {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    border-radius: 6px;
-    text-align: center;
-    background-color: #eaf3fa;
-    border: 2px solid var(--cor-secundaria);
-}
-
-#calculator-result h3 {
-    margin: 0 0 10px 0;
-    color: var(--cor-primaria);
-}
-
-#calculator-result p {
-    margin: 0;
-    font-size: 1.1rem;
-}
-
-#calculator-result .recommended-vg {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--cor-sucesso);
-    font-family: 'Oswald', sans-serif;
-}
-
-button#find-oils-button {
-    width: auto;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: var(--cor-primaria);
-    font-weight: bold;
-    background-color: transparent;
-    border: 2px solid var(--cor-primaria);
-    transition: all 0.2s ease;
-    margin-top: 1.5rem;
-}
-
-button#find-oils-button:hover {
     background-color: var(--cor-primaria);
-    color: white;
+    transition: background-color 0.2s ease;
+    margin-top: 1rem;
+}
+.planner-form button[type="submit"]:hover {
+    background-color: var(--cor-secundaria);
 }
 
-
-/* --- CONTAINER DE RESULTADOS --- */
-#results-container {
-    margin-top: 2rem;
+.plan-table-container {
+    margin-top: 2.5rem;
 }
 
-.product-card {
-    background-color: #fff;
-    border: 1px solid var(--cor-borda);
-    border-left: 5px solid var(--cor-primaria);
-    padding: 20px;
-    margin-bottom: 25px;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-}
-
-.product-card.original h4 {
-    margin-top: 0;
+.plan-table-container h3 {
     color: var(--cor-primaria);
-    font-family: 'Oswald', sans-serif;
+    margin-bottom: 1rem;
 }
 
-.product-card p {
-    margin: 5px 0;
+#plan-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
 }
 
-.equivalents-title {
-    margin-top: 30px;
-    border-bottom: 2px solid var(--cor-borda);
-    padding-bottom: 10px;
-    color: var(--cor-primaria);
-    font-family: 'Oswald', sans-serif;
+#plan-table thead {
+    background-color: #eaf3fa;
 }
 
-.results-list {
-    list-style: none;
-    padding: 0;
+#plan-table th, #plan-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--cor-borda);
 }
 
-.results-list li {
-    background-color: #fff;
-    padding: 15px;
-    border-bottom: 1px solid #e9ecef;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    transition: background-color 0.2s;
-}
-
-.results-list li:hover {
+#plan-table tbody tr:hover {
     background-color: #f8f9fa;
 }
 
-.results-list .product-details {
-    display: flex;
-    flex-direction: column;
-}
-
-.results-list .brand {
-    font-weight: bold;
-    color: var(--cor-secundaria);
-}
-
-.results-list .product {
-    font-weight: bold;
-    color: var(--cor-texto);
-}
-
-.tech-info {
-    font-size: 0.9em;
-    color: #6c757d;
-    margin-top: 5px;
-}
-
-.compatibility-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 0.8em;
-    font-weight: bold;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.compat-ok {
-    background-color: #e9f7ec; color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso);
-}
-.compat-cuidado {
-    background-color: #fff8e1; color: #8d6e00; border: 1px solid var(--cor-cuidado);
-}
-.compat-incompativel {
-    background-color: #fdedee; color: var(--cor-erro); border: 1px solid var(--cor-erro);
-}
-
-.info-icon {
-    cursor: pointer;
-    color: #6c757d;
-    transition: color 0.2s;
-}
-
-.info-icon:hover {
-    color: var(--cor-secundaria);
-}
-
-/* --- MENSAGENS DE AVISO E ERRO --- */
-.warning-message {
-    margin-top: 2rem;
-    padding: 1rem;
-    background-color: #fff3cd;
-    border: 1px solid var(--cor-destaque);
-    color: #664d03;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.error-message {
-    text-align: center;
-    padding: 1rem;
-    background-color: #f8d7da;
-    color: var(--cor-erro);
-    border-radius: 5px;
-}
-
-footer {
-    text-align: center;
-    margin-top: 3rem;
-    padding: 1rem;
-    color: #6c757d;
-}
-
-/* --- ESTILOS DA MODAL --- */
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    max-width: 500px;
-    width: 90%;
-    position: relative;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-}
-
-.modal-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 2rem;
-    border: none;
+#plan-table .action-btn {
     background: none;
+    border: none;
     cursor: pointer;
-    color: #aaa;
-}
-.modal-close:hover {
-    color: #333;
+    color: var(--cor-erro);
+    font-size: 1.2rem;
 }
 
-#modal-title {
-    margin-top: 0;
-    font-family: 'Oswald', sans-serif;
+@media (max-width: 768px) {
+    .planner-form .form-grid {
+        grid-template-columns: 1fr;
+    }
 }
-
-#modal-title.status-ok { color: var(--cor-sucesso); }
-#modal-title.status-cuidado { color: var(--cor-cuidado); }
-#modal-title.status-incompativel { color: var(--cor-erro); }
