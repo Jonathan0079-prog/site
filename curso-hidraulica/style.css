@@ -25,7 +25,7 @@ body {
 
 /* HEADER */
 header {
-    position: relative; /* Necessário para o posicionamento absoluto do botão de logout */
+    position: relative;
     background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
     color: #ffffff;
     padding: 1.5rem 1rem;
