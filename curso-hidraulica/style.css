@@ -25,7 +25,7 @@ body {
 
 /* HEADER */
 header {
-    position: relative;
+    position: relative; /* Necessário para o posicionamento absoluto do botão de logout */
     background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
     color: #ffffff;
     padding: 1.5rem 1rem;
@@ -37,25 +37,29 @@ header h1 {
     font-size: 2.2rem;
 }
 
-/* BOTÃO DE LOGOUT */
+/* BOTÃO DE LOGOUT COM ÍCONE */
 #logout-btn {
     position: absolute;
-    top: 20px;
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajuste fino da centralização */
     right: 20px;
     background-color: var(--cor-destaque);
     color: var(--cor-primaria);
     border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: bold;
+    border-radius: 50%; /* Deixa o botão redondo */
+    width: 45px;  /* Largura fixa */
+    height: 45px; /* Altura fixa */
+    font-size: 1.2rem; /* Tamanho do ícone */
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #logout-btn:hover {
     background-color: #ffca2c;
-    transform: scale(1.05);
+    transform: translateY(-50%) scale(1.1); /* Efeito de zoom no hover */
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
