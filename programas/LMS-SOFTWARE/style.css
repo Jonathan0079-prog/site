@@ -9,6 +9,7 @@
     --cor-texto: #212529;         /* Preto Suave */
     --cor-sucesso: #28a745;       /* Verde */
     --cor-erro: #dc3545;          /* Vermelho */
+    --cor-cuidado: #ffc107;       /* Amarelo para Cuidado */
     --cor-borda: #dee2e6;        /* Cinza para bordas */
 }
 
@@ -41,6 +42,10 @@ header h1 {
     font-size: 2.2rem;
 }
 
+.hidden {
+    display: none !important;
+}
+
 /* --- CAIXA DE BUSCA --- */
 .search-box {
     background: #ffffff;
@@ -68,7 +73,7 @@ header h1 {
     color: var(--cor-secundaria);
 }
 
-select {
+select, input[type="number"] {
     width: 100%;
     padding: 0.8rem;
     border: 1px solid var(--cor-borda);
@@ -98,6 +103,94 @@ button#search-button {
 button#search-button:hover {
     background-color: var(--cor-primaria);
 }
+
+/* --- SEÇÃO DA CALCULADORA --- */
+.calculator-section {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-top: 2.5rem;
+    border-top: 4px solid var(--cor-secundaria);
+}
+
+.calculator-section h2 {
+    text-align: center;
+    color: var(--cor-primaria);
+    margin-bottom: 2rem;
+    font-family: 'Oswald', sans-serif;
+}
+
+.calculator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+button#calculate-button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: bold;
+    background-color: var(--cor-sucesso);
+    transition: background-color 0.2s ease;
+    margin-top: 2rem;
+}
+
+button#calculate-button:hover {
+    opacity: 0.9;
+}
+
+#calculator-result {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+    background-color: #eaf3fa;
+    border: 2px solid var(--cor-secundaria);
+}
+
+#calculator-result h3 {
+    margin: 0 0 10px 0;
+    color: var(--cor-primaria);
+}
+
+#calculator-result p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+#calculator-result .recommended-vg {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--cor-sucesso);
+    font-family: 'Oswald', sans-serif;
+}
+
+button#find-oils-button {
+    width: auto;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: var(--cor-primaria);
+    font-weight: bold;
+    background-color: transparent;
+    border: 2px solid var(--cor-primaria);
+    transition: all 0.2s ease;
+    margin-top: 1.5rem;
+}
+
+button#find-oils-button:hover {
+    background-color: var(--cor-primaria);
+    color: white;
+}
+
 
 /* --- CONTAINER DE RESULTADOS --- */
 #results-container {
@@ -174,6 +267,9 @@ button#search-button:hover {
 }
 
 .compatibility-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     padding: 5px 12px;
     border-radius: 15px;
     font-size: 0.8em;
@@ -183,15 +279,23 @@ button#search-button:hover {
 }
 
 .compat-ok {
-    background-color: #e9f7ec;
-    color: var(--cor-sucesso);
-    border: 1px solid var(--cor-sucesso);
+    background-color: #e9f7ec; color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso);
+}
+.compat-cuidado {
+    background-color: #fff8e1; color: #8d6e00; border: 1px solid var(--cor-cuidado);
+}
+.compat-incompativel {
+    background-color: #fdedee; color: var(--cor-erro); border: 1px solid var(--cor-erro);
 }
 
-.compat-nok {
-    background-color: #fdedee;
-    color: var(--cor-erro);
-    border: 1px solid var(--cor-erro);
+.info-icon {
+    cursor: pointer;
+    color: #6c757d;
+    transition: color 0.2s;
+}
+
+.info-icon:hover {
+    color: var(--cor-secundaria);
 }
 
 /* --- MENSAGENS DE AVISO E ERRO --- */
@@ -219,106 +323,50 @@ footer {
     padding: 1rem;
     color: #6c757d;
 }
-/* style.css - Adicionar ao final do arquivo */
 
-/* --- SEÇÃO DA CALCULADORA --- */
-.calculator-section {
-    background: #ffffff;
-    padding: 2rem;
+/* --- ESTILOS DA MODAL --- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    margin-top: 2.5rem;
-    border-top: 4px solid var(--cor-secundaria);
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
 
-.calculator-section h2 {
-    text-align: center;
-    color: var(--cor-primaria);
-    margin-bottom: 2rem;
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #aaa;
+}
+.modal-close:hover {
+    color: #333;
+}
+
+#modal-title {
+    margin-top: 0;
     font-family: 'Oswald', sans-serif;
 }
 
-.calculator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-
-input[type="number"] {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid var(--cor-borda);
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: #fff;
-}
-
-button#calculate-button {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: white;
-    font-weight: bold;
-    background-color: var(--cor-sucesso);
-    transition: background-color 0.2s ease;
-    margin-top: 2rem;
-}
-
-button#calculate-button:hover {
-    opacity: 0.9;
-}
-
-#calculator-result {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    border-radius: 6px;
-    text-align: center;
-    background-color: #eaf3fa;
-    border: 2px solid var(--cor-secundaria);
-}
-
-#calculator-result h3 {
-    margin: 0 0 10px 0;
-    color: var(--cor-primaria);
-}
-
-#calculator-result p {
-    margin: 0;
-    font-size: 1.1rem;
-}
-
-#calculator-result .recommended-vg {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--cor-sucesso);
-    font-family: 'Oswald', sans-serif;
-}
-
-.hidden {
-    display: none;
-}
-/* style.css - Adicionar ao final do arquivo */
-
-/* --- Estilo para o botão de integração --- */
-button#find-oils-button {
-    width: auto; /* Largura automática baseada no texto */
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: var(--cor-primaria);
-    font-weight: bold;
-    background-color: transparent;
-    border: 2px solid var(--cor-primaria);
-    transition: all 0.2s ease;
-    margin-top: 1.5rem;
-}
-
-button#find-oils-button:hover {
-    background-color: var(--cor-primaria);
-    color: white;
-}
+#modal-title.status-ok { color: var(--cor-sucesso); }
+#modal-title.status-cuidado { color: var(--cor-cuidado); }
+#modal-title.status-incompativel { color: var(--cor-erro); }
