@@ -54,65 +54,20 @@
                 <button id="calculate-button">Calcular Viscosidade</button>
                 <div id="calculator-result" class="hidden">
                     <h3>Viscosidade Recomendada:</h3>
-                    <p>A viscosidade ideal para a sua aplicação é:</p>
                     <p id="recommended-vg-text" class="recommended-vg"></p>
+                    <p id="calculator-justification" class="justification-text"></p>
                     <button id="find-oils-button" class="hidden">Buscar Óleos com esta Viscosidade</button>
                 </div>
             </section>
             <div id="calculator-search-results-container"></div>
-
+            
             <section class="planner-section">
-                <h2>Plano de Lubrificação</h2>
-                <form id="equipment-form" class="planner-form">
-                    <div class="form-grid">
-                        <div class="input-group">
-                            <label for="equipment-name">Nome do Equipamento / TAG</label>
-                            <input type="text" id="equipment-name" placeholder="Ex: Prensa Hidráulica 02" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="equipment-oil">Óleo Utilizado</label>
-                            <select id="equipment-oil" required>
-                                <option value="">-- Selecione um óleo da base --</option>
-                                </select>
-                        </div>
-                        <div class="input-group">
-                            <label for="change-interval">Intervalo de Troca (em horas)</label>
-                            <input type="number" id="change-interval" placeholder="Ex: 4000" required>
-                        </div>
-                        <div class="input-group">
-                             <label for="start-date">Data de Início / Última Troca</label>
-                            <input type="date" id="start-date" required>
-                        </div>
-                    </div>
-                    <button type="submit">Adicionar ao Plano</button>
-                </form>
-
-                <div class="plan-table-container">
-                    <h3>Cronograma de Manutenção</h3>
-                    <table id="plan-table">
-                        <thead>
-                            <tr>
-                                <th>Equipamento</th>
-                                <th>Óleo Utilizado</th>
-                                <th>Próxima Troca</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            </tbody>
-                    </table>
-                </div>
-            </section>
+                </section>
         </main>
     </div>
 
     <div id="compatibility-modal" class="modal-backdrop hidden">
-        <div class="modal-content">
-            <button id="modal-close-button" class="modal-close">&times;</button>
-            <h3 id="modal-title"></h3>
-            <p id="modal-description"></p>
         </div>
-    </div>
 
     <script type="module" src="script.js"></script>
 </body>
