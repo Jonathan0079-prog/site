@@ -300,3 +300,25 @@ button#calculate-button:hover {
 .hidden {
     display: none;
 }
+/* style.css - Adicionar ao final do arquivo */
+
+/* --- Estilo para o botão de integração --- */
+button#find-oils-button {
+    width: auto; /* Largura automática baseada no texto */
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: var(--cor-primaria);
+    font-weight: bold;
+    background-color: transparent;
+    border: 2px solid var(--cor-primaria);
+    transition: all 0.2s ease;
+    margin-top: 1.5rem;
+}
+
+button#find-oils-button:hover {
+    background-color: var(--cor-primaria);
+    color: white;
+}
