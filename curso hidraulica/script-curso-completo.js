@@ -56,6 +56,7 @@ function inicializarCurso() {
     let highestUnlockedModule = parseInt(localStorage.getItem('highestUnlockedModule') || '0', 10);
     currentModuleIndex = Math.min(parseInt(localStorage.getItem('currentModuleIndex') || '0', 10), highestUnlockedModule);
     let perModuleCountdownInterval = null;
+    let cursoFinalizado = localStorage.getItem('cursoFinalizado') === 'true';
 
     // --- LÓGICA DE NAVEGAÇÃO ---
     function showModule(index) {
@@ -93,7 +94,19 @@ function inicializarCurso() {
     if(nextBtn) nextBtn.addEventListener('click', () => showModule(currentModuleIndex + 1));
 
     // --- LÓGICA DO TIMER DE MÓDULO ---
+    function isFormado() {
+        return localStorage.getItem('formado') === 'true';
+    }
+
     function iniciarTimerDePermanencia(displayElement) {
+        if (isFormado()) {
+            if (displayElement) {
+                displayElement.style.display = 'block';
+                displayElement.textContent = 'Módulo desbloqueado! Você já pode avançar.';
+                if(nextBtn) nextBtn.disabled = false;
+            }
+            return;
+        }
         if(!displayElement) return;
         pausarTimerDePermanencia();
         displayElement.style.display = 'block';
@@ -322,6 +335,12 @@ function inicializarCurso() {
         doc.text(`Emitido em: ${data}`, 147.5, 197, { align: "center" });
 
         doc.save(`Certificado - ${nome}.pdf`);
+        localStorage.setItem('cursoFinalizado', 'true');
+        localStorage.setItem('formado', 'true'); // <-- Adicione esta linha
+        cursoFinalizado = true;
+        // Mostra o botão de reinício
+        const btnReiniciar = document.getElementById('reiniciar-curso-btn');
+        if (btnReiniciar) btnReiniciar.style.display = 'inline-block';
     }
 
     const paisSelect = document.getElementById('pais-aluno'),
@@ -344,4 +363,21 @@ function inicializarCurso() {
 
     // --- INICIALIZAÇÃO DO DOM ---
     showModule(currentModuleIndex);
+
+    // Lógica do botão de reinício
+    const btnReiniciar = document.getElementById('reiniciar-curso-btn');
+    if (btnReiniciar) {
+        btnReiniciar.addEventListener('click', () => {
+            // Limpa progresso e reinicia
+            localStorage.removeItem('highestUnlockedModule');
+            localStorage.removeItem('currentModuleIndex');
+            localStorage.removeItem('timerProgress');
+            localStorage.removeItem('quizPassed');
+            localStorage.removeItem('cursoFinalizado');
+            // NÃO remova localStorage.removeItem('formado');
+            window.location.reload();
+        });
+        // Só mostra se já finalizou o curso
+        btnReiniciar.style.display = cursoFinalizado ? 'inline-block' : 'none';
+    }
 }
