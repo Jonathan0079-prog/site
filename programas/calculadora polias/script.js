@@ -525,15 +525,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         populateBeltProfileSelect();
 
-        // Tenta selecionar um perfil padrão se nenhum estiver selecionado
+ // Tenta selecionar um perfil padrão se nenhum estiver selecionado
         if (!dom.tipoCorreia.value && dom.tipoCorreia.options.length > 0) {
             dom.tipoCorreia.value = dom.tipoCorreia.options[0].value;
         }
+ updatePulleySelects(); // Chamar updatePulleySelects após tentar definir o perfil padrão
         populateServiceFactorSelects();
         loadFormState();
  setupEventListeners(); 
         loadProjects(); // Make sure loadProjects also uses checks for dom.projectList
-        updatePulleySelects(); // Chamar updatePulleySelects após tentar definir o perfil padrão
     }
 
     init();
