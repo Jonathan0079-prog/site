@@ -16,10 +16,12 @@ body {
     color: #333;
     line-height: 1.6;
     min-height: 100vh;
-    /* --- ADICIONE ESTAS 3 LINHAS --- */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 /* --- Container centralizador --- */
@@ -39,10 +41,7 @@ header {
     text-align: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
-/* Adicione esta nova regra */
-main {
-    flex: 1 0 auto;
-}
+
 header h1 {
     font-size: 2.5rem;
     letter-spacing: 2px;
@@ -259,13 +258,18 @@ nav#main-nav a .material-icons {
     opacity: 0.9;
 }
 
+/* --- Estilo para o botão de Instalação no Menu --- */
+#main-nav ul li#install-pwa-li a:hover {
+    background-color: #e9f7ec; /* Um verde bem claro para o hover */
+}
+
+
 /* --- Rodapé --- */
 footer {
     background-color: #1a2b40;
     color: #aeb9c7;
     text-align: center;
     padding: 1.5rem 0;
-    margin-top: 2rem;
     font-size: 1rem;
 }
 
