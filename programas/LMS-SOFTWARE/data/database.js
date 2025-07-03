@@ -1,6 +1,5 @@
 // data/database.js
 
-// ATUALIZAÇÃO: A estrutura dos produtos agora é muito mais rica em dados técnicos.
 export const tabelaSimilaridade = [
     // --- ÓLEOS HIDRÁULICOS ---
     {
@@ -41,7 +40,6 @@ export const tabelaSimilaridade = [
     }
 ];
 
-// Matriz de compatibilidade (sem alterações nesta etapa)
 export const matrizCompatibilidade = {
     "MINERAL": {
         "MINERAL": { "status": "OK", "descricao": "Óleos de mesma base (Mineral) são totalmente compatíveis. A mistura é segura, desde que a viscosidade e a aplicação sejam as mesmas." },
