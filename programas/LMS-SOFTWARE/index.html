@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGL - Buscador de Equivalentes</title>
+    <title>SGL - Plano de Lubrificação</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,75 +11,67 @@
     <header>
         <h1>Sistema de Gestão de Lubrificação</h1>
         <nav class="main-nav">
-            <a href="index.html" class="nav-link active">Buscador</a>
+            <a href="index.html" class="nav-link">Buscador</a>
             <a href="calculadora.html" class="nav-link">Calculadora</a>
-            <a href="plano.html" class="nav-link">Plano de Lubrificação</a>
+            <a href="plano.html" class="nav-link active">Plano de Lubrificação</a>
         </nav>
     </header>
 
     <div class="container">
         <main>
-            <div class="search-box">
-                <h2>Buscador de Equivalentes</h2>
-                <div class="input-group">
-                    <label for="marca-select">Marca:</label>
-                    <select id="marca-select">
-                        <option value="">-- Selecione a Marca --</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="oleo-select">Nome do Produto:</label>
-                    <select id="oleo-select" disabled>
-                        <option value="">-- Primeiro selecione uma marca --</option>
-                    </select>
-                </div>
-                <button id="search-button">Encontrar Equivalentes</button>
-            </div>
-            <div id="results-container"></div>
+            <section class="planner-section">
+                <h2>Plano de Lubrificação</h2>
+                <form id="equipment-form" class="planner-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="equipment-name">Nome do Equipamento / TAG</label>
+                            <input type="text" id="equipment-name" placeholder="Ex: Prensa Hidráulica 02" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="equipment-oil">Óleo Utilizado</label>
+                            <select id="equipment-oil" required>
+                                <option value="">-- Selecione um óleo da base --</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="change-interval">Intervalo de Troca (em horas)</label>
+                            <input type="number" id="change-interval" placeholder="Ex: 4000" required>
+                        </div>
+                        <div class="input-group">
+                             <label for="start-date">Data de Início / Última Troca</label>
+                            <input type="date" id="start-date" required>
+                        </div>
+                    </div>
+                    <button type="submit">Adicionar ao Plano</button>
+                </form>
 
-            <section class="knowledge-base-section">
-                <h2>Base de Conhecimento Técnico</h2>
-                <div class="accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            O que é Viscosidade (ISO VG)?
-                            <i class="fas fa-chevron-down"></i>
+                <div class="plan-table-container">
+                    <div class="table-header">
+                        <h3>Cronograma de Manutenção</h3>
+                        <button id="generate-pdf-button" class="report-button">
+                            <i class="fas fa-file-pdf"></i> Gerar Relatório
                         </button>
-                        <div class="accordion-content">
-                            <p>A viscosidade é a propriedade mais importante de um lubrificante...</p>
-                        </div>
                     </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            Tipos de Óleo Base: Mineral vs. Sintético
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-content">
-                            <p>O óleo base compõe a maior parte do lubrificante...</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            A Importância do Flushing (Limpeza do Sistema)
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-content">
-                            <p>O flushing é o processo de circulação de um fluido de limpeza...</p>
-                        </div>
-                    </div>
+                    <table id="plan-table">
+                        <thead>
+                            <tr>
+                                <th>Equipamento</th>
+                                <th>Óleo Utilizado</th>
+                                <th>Próxima Troca</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
                 </div>
             </section>
         </main>
     </div>
 
-    <div id="compatibility-modal" class="modal-backdrop hidden">
-        <div class="modal-content">
-            <button id="modal-close-button" class="modal-close">&times;</button>
-            <h3 id="modal-title"></h3>
-            <p id="modal-description"></p>
-        </div>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 
-    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/plano.js"></script>
 </body>
 </html>
