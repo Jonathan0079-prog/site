@@ -88,7 +88,7 @@ select, input[type="number"], input[type="text"], input[type="date"] {
 select:disabled { background-color: #e9ecef; }
 
 /* SEÇÕES PRINCIPAIS */
-.search-box, .calculator-section, .planner-section, .knowledge-base-section, .blend-calculator-section {
+.search-box, .calculator-section, .planner-section, .knowledge-base-section, .blend-calculator-section, .settings-section {
     background: #ffffff;
     padding: 2rem;
     border-radius: 8px;
@@ -96,7 +96,7 @@ select:disabled { background-color: #e9ecef; }
     margin-top: 2.5rem;
 }
 
-.search-box h2, .calculator-section h2, .planner-section h2, .knowledge-base-section h2, .blend-calculator-section h2 {
+.search-box h2, .calculator-section h2, .planner-section h2, .knowledge-base-section h2, .blend-calculator-section h2, .settings-section h2 {
     text-align: center;
     color: var(--cor-primaria);
     margin-bottom: 2rem;
@@ -142,64 +142,26 @@ button#find-oils-button {
 }
 button#find-oils-button:hover { background-color: var(--cor-primaria); color: white; }
 
-/* SEÇÃO DA CALCULADORA VG */
+/* CALCULADORAS */
 .calculator-section { border-top: 4px solid var(--cor-secundaria); }
 .calculator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
 #calculator-result { margin-top: 2rem; padding: 1.5rem; border-radius: 6px; text-align: center; background-color: #eaf3fa; border: 2px solid var(--cor-secundaria); }
 #calculator-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: var(--cor-sucesso); font-family: 'Oswald', sans-serif; }
 .justification-text { font-size: 0.95em; color: #495057; margin-top: 10px; border-top: 1px solid var(--cor-borda); padding-top: 10px; }
 
-
-/* SEÇÃO CALCULADOR DE MISTURA */
-.blend-calculator-section { border-top: 4px solid #6f42c1; /* Roxo */ }
-.blend-form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
-}
-.oil-input-card {
-    border: 1px solid var(--cor-borda);
-    padding: 1.5rem;
-    border-radius: 6px;
-    background-color: #f8f9fa;
-}
-.oil-input-card h3 {
-    margin-top: 0;
-    color: var(--cor-secundaria);
-    border-bottom: 2px solid var(--cor-borda);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
-}
+.blend-calculator-section { border-top: 4px solid #6f42c1; }
+.blend-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+.oil-input-card { border: 1px solid var(--cor-borda); padding: 1.5rem; border-radius: 6px; background-color: #f8f9fa; }
+.oil-input-card h3 { margin-top: 0; color: var(--cor-secundaria); border-bottom: 2px solid var(--cor-borda); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
 .oil-input-card h3 i { margin-right: 0.5rem; }
-button#calculate-blend-button {
-    background-color: #6f42c1; /* Roxo */
-}
+button#calculate-blend-button { background-color: #6f42c1; }
 button#calculate-blend-button:hover { background-color: #5a3d90; }
-
-#blend-result {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    border-radius: 6px;
-    text-align: center;
-    background-color: #f3eef9;
-    border: 2px solid #6f42c1;
-}
-
-#blend-result h3 {
-    margin: 0 0 10px 0;
-    color: var(--cor-primaria);
-}
-
-#blend-result .recommended-vg { /* Reutiliza estilo, mas com cor diferente */
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #6f42c1;
-    font-family: 'Oswald', sans-serif;
-}
+#blend-result { margin-top: 2rem; padding: 1.5rem; border-radius: 6px; text-align: center; background-color: #f3eef9; border: 2px solid #6f42c1; }
+#blend-result h3 { margin: 0 0 10px 0; color: var(--cor-primaria); }
+#blend-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: #6f42c1; font-family: 'Oswald', sans-serif; }
 
 
-/* CONTAINER DE RESULTADOS */
+/* --- CONTAINER DE RESULTADOS (COM LAYOUT CORRIGIDO) --- */
 #results-container, #calculator-search-results-container { margin-top: 2rem; }
 .product-card { background-color: #fff; border: 1px solid var(--cor-borda); border-left: 5px solid var(--cor-primaria); padding: 20px; margin-bottom: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .equivalents-title, .results-header { margin-top: 30px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px; color: var(--cor-primaria); font-family: 'Oswald', sans-serif; }
@@ -210,45 +172,46 @@ button#calculate-blend-button:hover { background-color: #5a3d90; }
 .tech-data-item .value { font-weight: bold; font-size: 1.1em; color: var(--cor-secundaria); }
 
 .results-list { list-style: none; padding: 0; }
-.results-list li { padding: 15px; border-bottom: 1px solid #e9ecef; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.list-item-header { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+.results-list li {
+    background-color: #fff;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.list-item-header { 
+    display: flex; 
+    justify-content: space-between; 
+    width: 100%; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 10px;
+}
+.product-details { display: flex; flex-direction: column; }
 .results-list .brand { font-weight: bold; color: var(--cor-secundaria); }
 .results-list .product { font-weight: bold; color: var(--cor-texto); }
 
-.compatibility-info { display: flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; font-weight: bold; text-align: center; }
+.compatibility-info { display: flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; font-weight: bold; text-align: center; flex-shrink: 0; }
 .compat-ok { background-color: #e9f7ec; color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso); }
 .compat-cuidado { background-color: #fff8e1; color: #8d6e00; border: 1px solid var(--cor-cuidado); }
 .compat-incompativel { background-color: #fdedee; color: var(--cor-erro); border: 1px solid var(--cor-erro); }
-.info-icon { cursor: pointer; color: #6c757d; transition: color 0.2s; }
+.info-icon { cursor: pointer; color: #6c757d; transition: color 0.2s; margin-left: 5px; }
 .info-icon:hover { color: var(--cor-secundaria); }
 
 
 /* SEÇÃO DO PLANO DE LUBRIFICAÇÃO */
 .planner-section { border-top: 4px solid var(--cor-destaque); }
 .planner-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-
 .plan-table-container { margin-top: 2.5rem; }
-.table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
+.table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .table-header h3 { color: var(--cor-primaria); margin: 0; }
-
-.report-button {
-    background-color: var(--cor-erro);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
+.report-button { background-color: var(--cor-erro); color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; font-weight: bold; cursor: pointer; transition: opacity 0.2s; }
 .report-button:hover { opacity: 0.85; }
 .report-button i { margin-right: 0.5rem; }
-
 #plan-table { width: 100%; border-collapse: collapse; text-align: left; }
 #plan-table thead { background-color: #eaf3fa; }
 #plan-table th, #plan-table td { padding: 12px 15px; border-bottom: 1px solid var(--cor-borda); }
@@ -256,7 +219,24 @@ button#calculate-blend-button:hover { background-color: #5a3d90; }
 #plan-table .action-btn { background: none; border: none; cursor: pointer; color: var(--cor-erro); font-size: 1.2rem; }
 
 
-/* MODAL */
+/* SEÇÃO DE CONFIGURAÇÕES */
+.settings-section { border-top: 4px solid var(--cor-secundaria); }
+.section-description { text-align: center; max-width: 600px; margin: 0 auto 2.5rem auto; font-size: 1.1rem; color: #6c757d; }
+.settings-card { background-color: #f8f9fa; border: 1px solid var(--cor-borda); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+.settings-card h3 { margin-top: 0; margin-bottom: 0.5rem; color: var(--cor-primaria); }
+.settings-card p { margin-bottom: 1.5rem; }
+.settings-card button { padding: 0.8rem 1rem; font-size: 1rem; border-radius: 5px; cursor: pointer; border: none; color: white; font-weight: bold; transition: background-color 0.2s; }
+.settings-card .main-button { background-color: var(--cor-sucesso); }
+.settings-card .main-button:hover { background-color: #218838; }
+.settings-card .secondary-button { background-color: var(--cor-secundaria); }
+.settings-card .secondary-button:hover { background-color: var(--cor-primaria); }
+.settings-card.danger-zone { border-color: var(--cor-erro); background-color: #fdedee; }
+.settings-card.danger-zone h3 { color: var(--cor-erro); }
+.settings-card .delete-button { background-color: var(--cor-erro); }
+.settings-card .delete-button:hover { background-color: #c82333; }
+
+
+/* MODAL E BASE DE CONHECIMENTO */
 .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
 .modal-content { background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
 .modal-close { position: absolute; top: 10px; right: 15px; font-size: 2rem; border: none; background: none; cursor: pointer; color: #aaa; }
@@ -265,37 +245,13 @@ button#calculate-blend-button:hover { background-color: #5a3d90; }
 #modal-title.status-ok { color: var(--cor-sucesso); }
 #modal-title.status-cuidado { color: var(--cor-cuidado); }
 #modal-title.status-incompativel { color: var(--cor-erro); }
-
-
-/* BASE DE CONHECIMENTO */
 .knowledge-base-section { border-top: 4px solid var(--cor-sucesso); }
 .accordion-item { border-bottom: 1px solid var(--cor-borda); }
-.accordion-header {
-    background-color: transparent;
-    border: none;
-    width: 100%;
-    text-align: left;
-    padding: 1rem;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: var(--cor-secundaria);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.2s;
-}
+.accordion-header { background-color: transparent; border: none; width: 100%; text-align: left; padding: 1rem; font-size: 1.1rem; font-weight: bold; color: var(--cor-secundaria); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.2s; }
 .accordion-header:hover { background-color: #eaf3fa; }
 .accordion-header i { transition: transform 0.3s ease; }
 .accordion-header.active i { transform: rotate(180deg); }
-
-.accordion-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-    background-color: #f8f9fa;
-    padding: 0 1rem;
-}
+.accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background-color: #f8f9fa; padding: 0 1rem; }
 .accordion-content p { margin: 1rem 0; }
 .accordion-content ul { padding-left: 20px; }
 .accordion-content li { margin-bottom: 0.5rem; }
@@ -308,158 +264,7 @@ footer { text-align: center; margin-top: 3rem; padding: 1rem; color: #6c757d; }
 
 /* RESPONSIVIDADE */
 @media (max-width: 768px) {
-    .planner-form .form-grid {
+    .planner-form .form-grid, .blend-form, .calculator-grid {
         grid-template-columns: 1fr;
     }
-    .blend-form {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ... (todo o seu CSS anterior) ... */
-
-/* ============================================= */
-/* NOVOS ESTILOS PARA PROJETOS SALVOS            */
-/* ============================================= */
-.saved-projects-section {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    margin-top: 2.5rem;
-    border-top: 4px solid var(--cor-destaque);
-}
-
-.saved-projects-section h2 {
-    text-align: center;
-    color: var(--cor-primaria);
-    margin-bottom: 2rem;
-    font-family: 'Oswald', sans-serif;
-}
-
-.save-project-form {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-end;
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--cor-borda);
-}
-
-.save-project-form .input-group {
-    flex-grow: 1;
-    margin-bottom: 0;
-}
-
-.save-project-form button, .load-project-form button {
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: white;
-    font-weight: bold;
-    background-color: var(--cor-primaria);
-    transition: background-color 0.2s;
-    white-space: nowrap; /* Impede que o texto quebre */
-}
-.save-project-form button i, .load-project-form button i {
-    margin-right: 0.5rem;
-}
-
-.load-project-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.load-project-form .button-group {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.load-project-form .button-group button {
-    flex-grow: 1;
-}
-
-.delete-button {
-    background-color: var(--cor-erro) !important;
-}
-
-.delete-button:hover {
-    background-color: #c82333 !important;
-}
-
-@media (max-width: 600px) {
-    .save-project-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-}
-
-/* ... (todo o seu CSS anterior) ... */
-
-/* ============================================= */
-/* NOVOS ESTILOS PARA A PÁGINA DE CONFIGURAÇÕES   */
-/* ============================================= */
-
-.settings-section {
-    border-top: 4px solid var(--cor-secundaria);
-}
-
-.section-description {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto 2.5rem auto;
-    font-size: 1.1rem;
-    color: #6c757d;
-}
-
-.settings-card {
-    background-color: #f8f9fa;
-    border: 1px solid var(--cor-borda);
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-}
-
-.settings-card h3 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    color: var(--cor-primaria);
-}
-
-.settings-card p {
-    margin-bottom: 1.5rem;
-}
-
-.settings-card button {
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    color: white;
-    font-weight: bold;
-    transition: background-color 0.2s;
-}
-
-.settings-card .main-button { background-color: var(--cor-sucesso); }
-.settings-card .main-button:hover { background-color: #218838; }
-
-.settings-card .secondary-button { background-color: var(--cor-secundaria); }
-.settings-card .secondary-button:hover { background-color: var(--cor-primaria); }
-
-.settings-card.danger-zone {
-    border-color: var(--cor-erro);
-    background-color: #fdedee;
-}
-.settings-card.danger-zone h3 {
-    color: var(--cor-erro);
-}
-.settings-card .delete-button {
-    background-color: var(--cor-erro);
-}
-.settings-card .delete-button:hover {
-    background-color: #c82333;
 }
