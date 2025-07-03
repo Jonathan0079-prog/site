@@ -1,6 +1,5 @@
 // data/database.js
 
-// ATUALIZAÇÃO: Base de dados corrigida e massivamente expandida com novas categorias e dados técnicos.
 export const tabelaSimilaridade = [
   // --- ÓLEOS HIDRÁULICOS ---
   {
@@ -28,17 +27,15 @@ export const tabelaSimilaridade = [
       SHELL:     { NOME: "TELLUS S2 M 68", BASE: "MINERAL", IV: "103", PONTO_FULGOR: "245", PONTO_FLUIDEZ: "-27" },
       CASTROL:   { NOME: "HYSPIN AWS 68", BASE: "MINERAL", IV: "101", PONTO_FULGOR: "240", PONTO_FLUIDEZ: "-25" },
       PETROBRAS: { NOME: "LUBRAX INDUSTRIAL HLP 68", BASE: "MINERAL", IV: "97", PONTO_FULGOR: "230", PONTO_FLUIDEZ: "-21" },
-      TEXACO:    { NOME: "RANDO HD 68", BASE: "MINERAL", IV: "99", PONTO_FULGOR: "242", PONTO_FLUIDEZ": "-30" },
-      YPF:       { NOME: "HIDRAULICO B 68", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "238", PONTO_FLUIDEZ": "-23" },
-      TOTAL:     { NOME: "AZOLLA ZS 68", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "244", PONTO_FLUIDEZ": "-27" },
-      FUCHS:     { NOME: "RENOLIN B 20", BASE: "MINERAL", IV: "100", PONTO_FULGOR: "240", PONTO_FLUIDEZ": "-21" },
-      EXXONMOBIL:{ NOME: "NUTO H 68", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "226", PONTO_FLUIDEZ": "-18" },
-      PHILLIPS66:{ NOME: "MEGAFLOW AW 68", BASE: "MINERAL", IV: "100", PONTO_FULGOR: "238", PONTO_FLUIDEZ": "-18" },
-      GULF:      { NOME: "HARMONY AW 68", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "236", PONTO_FLUIDEZ": "-33" }
+      TEXACO:    { NOME: "RANDO HD 68", BASE: "MINERAL", IV: "99", PONTO_FULGOR: "242", PONTO_FLUIDEZ: "-30" },
+      YPF:       { NOME: "HIDRAULICO B 68", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "238", PONTO_FLUIDEZ: "-23" },
+      TOTAL:     { NOME: "AZOLLA ZS 68", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "244", PONTO_FLUIDEZ: "-27" },
+      FUCHS:     { NOME: "RENOLIN B 20", BASE: "MINERAL", IV: "100", PONTO_FULGOR: "240", PONTO_FLUIDEZ: "-21" },
+      EXXONMOBIL:{ NOME: "NUTO H 68", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "226", PONTO_FLUIDEZ: "-18" },
+      PHILLIPS66:{ NOME: "MEGAFLOW AW 68", BASE: "MINERAL", IV: "100", PONTO_FULGOR: "238", PONTO_FLUIDEZ: "-18" },
+      GULF:      { NOME: "HARMONY AW 68", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "236", PONTO_FLUIDEZ: "-33" }
     }
   },
-
-  // --- REDUTORES E ENGRENAGENS (MINERAL) ---
   {
     APLICACAO: "REDUTORES E ENGRENAGENS (MINERAL)",
     ISO_VG: "220",
@@ -55,8 +52,6 @@ export const tabelaSimilaridade = [
       GULF:      { NOME: "EP LUBRICANT HD 220", BASE: "MINERAL", IV: "97", PONTO_FULGOR: "250", PONTO_FLUIDEZ: "-15" }
     }
   },
-
-  // --- REDUTORES E ENGRENAGENS (SINTÉTICO PAO) ---
   {
     APLICACAO: "REDUTORES E ENGRENAGENS (SINTÉTICO PAO)",
     ISO_VG: "220",
@@ -67,10 +62,8 @@ export const tabelaSimilaridade = [
       TOTAL:  { NOME: "CARTER SH 220", BASE: "SINTÉTICO (PAO)", IV: "153", PONTO_FULGOR: "258", PONTO_FLUIDEZ: "-51" }
     }
   },
-
-  // --- REDUTORES E ENGRENAGENS (SINTÉTICO PAG) ---
   {
-    APLICACAO: "REDUTORES E ENGRENAGENS (SINTÉTICO PAG)",
+    APLICacao: "REDUTORES E ENGRENAGENS (SINTÉTICO PAG)",
     ISO_VG: "220",
     PRODUTOS: {
       MOBIL:  { NOME: "MOBIL GLYGOYLE 220", BASE: "SINTÉTICO (PAG)", IV: "220", PONTO_FULGOR: "270", PONTO_FLUIDEZ: "-39" },
@@ -79,8 +72,6 @@ export const tabelaSimilaridade = [
       TOTAL:  { NOME: "CARTER SY 220", BASE: "SINTÉTICO (PAG)", IV: "230", PONTO_FULGOR: "280", PONTO_FLUIDEZ: "-36" }
     }
   },
-
-  // --- COMPRESSORES DE AR (PARAFUSO) ---
   {
     APLICACAO: "COMPRESSOR DE AR PARAFUSO (MINERAL)",
     ISO_VG: "46",
@@ -91,8 +82,6 @@ export const tabelaSimilaridade = [
       TOTAL: { NOME: "DACNIS 46", BASE: "MINERAL", IV: "97", PONTO_FULGOR: "228", PONTO_FLUIDEZ: "-24" }
     }
   },
-
-  // --- TURBINAS A GÁS E VAPOR ---
   {
     APLICACAO: "TURBINAS A GÁS E VAPOR (MINERAL)",
     ISO_VG: "32",
@@ -103,11 +92,9 @@ export const tabelaSimilaridade = [
       TOTAL: { NOME: "PRESLIA 32", BASE: "MINERAL", IV: "105", PONTO_FULGOR: "222", PONTO_FLUIDEZ: "-27" }
     }
   },
-  
-  // --- GRAXAS ---
   {
     APLICACAO: "GRAXA DE LÍTIO MULTIUSO",
-    ISO_VG: "NLGI 2", // Usamos NLGI para graxas
+    ISO_VG: "NLGI 2",
     PRODUTOS: {
       MOBIL: { NOME: "MOBILUX EP 2", BASE: "LÍTIO", IV: "N/A", PONTO_FULGOR: "N/A", PONTO_FLUIDEZ: "N/A" },
       SHELL: { NOME: "GADUS S2 V220 2", BASE: "LÍTIO", IV: "N/A", PONTO_FULGOR: "N/A", PONTO_FLUIDEZ: "N/A" },
@@ -117,7 +104,6 @@ export const tabelaSimilaridade = [
   }
 ];
 
-// Matriz de compatibilidade (sem alterações)
 export const matrizCompatibilidade = {
     "MINERAL": {
         "MINERAL": { "status": "OK", "descricao": "Óleos de mesma base (Mineral) são totalmente compatíveis. A mistura é segura, desde que a viscosidade e a aplicação sejam as mesmas." },
@@ -134,7 +120,6 @@ export const matrizCompatibilidade = {
         "SINTÉTICO (PAO)": { "status": "INCOMPATÍVEL", "descricao": "Mistura PROIBIDA. Óleos Sintéticos (PAG) e (PAO) são quimicamente incompatíveis e não devem ser misturados sob nenhuma circunstância. O flushing completo do sistema é OBRIGATÓRIO." },
         "SINTÉTICO (PAG)": { "status": "OK", "descricao": "Óleos de mesma base (Sintético PAG) são totalmente compatíveis. A mistura é segura." }
     },
-    // Adicionamos a compatibilidade de graxas
     "LÍTIO": {
         "LÍTIO": { "status": "OK", "descricao": "Graxas de mesma base (Lítio) são geralmente compatíveis. No entanto, sempre verifique a compatibilidade dos espessantes e aditivos." },
         "COMPLEXO DE LÍTIO": { "status": "CUIDADO", "descricao": "A mistura é possível, mas pode haver uma leve alteração nas propriedades, como o ponto de gota. Monitore a consistência da graxa após a mistura." }
