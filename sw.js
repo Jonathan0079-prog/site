@@ -1,33 +1,27 @@
-// sw.js - Service Worker v4 (Caminhos Relativos e Estratégia Robusta)
+// sw.js - Service Worker v5 (Estratégia Definitiva: Network First, Falling Back to Cache)
 
-const CACHE_NAME = 'manutencao-industrial-cache-v4'; // ATUALIZE A VERSÃO para forçar a atualização
+// IMPORTANTE: Altere a versão para forçar a atualização no navegador do utilizador!
+const CACHE_NAME = 'manutencao-industrial-cache-v5'; 
 
-// Lista de ficheiros essenciais. Usar caminhos relativos torna o PWA mais flexível.
-const urlsToCache = [
-  './',
-  './index.html',
-  './style.css',
-  './script.js',
-  './programas/index.html',
-  './programas/LMS-SOFTWARE/index.html',
-  './programas/torque parafusos/index.html',
-  // Adicione aqui os caminhos para as OUTRAS páginas HTML que quer que funcionem offline
-  './images/icon-512x512.png'
+// Ficheiros essenciais do "App Shell" - o mínimo para a aplicação arrancar.
+const APP_SHELL_URLS = [
+  '/site/index.html',
+  '/site/style.css',
+  '/site/images/icon-512x512.png' // Apenas o essencial para o arranque
 ];
 
-// Evento de Instalação: Guarda os ficheiros essenciais em cache.
+// Evento de Instalação: Guarda apenas o mínimo necessário em cache.
 self.addEventListener('install', event => {
   console.log('[Service Worker] A instalar...');
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('[Service Worker] A guardar ficheiros essenciais em cache');
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(CACHE_NAME).then(cache => {
+      console.log('[Service Worker] A guardar o App Shell em cache');
+      return cache.addAll(APP_SHELL_URLS);
+    })
   );
 });
 
-// Evento de Ativação: Limpa caches antigos.
+// Evento de Ativação: Limpa caches com nomes antigos.
 self.addEventListener('activate', event => {
   console.log('[Service Worker] A ativar...');
   event.waitUntil(
@@ -44,25 +38,27 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Evento de Fetch: Estratégia "Cache-First" (Cache Primeiro) para máxima velocidade offline.
+// Evento de Fetch: Esta é a nova estratégia, mais segura.
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Se o recurso estiver no cache, retorna-o.
-        if (response) {
-          return response;
-        }
-        // Se não, vai à rede para o buscar.
-        return fetch(event.request).then(
-          networkResponse => {
-            // E guarda a resposta em cache para a próxima vez.
-            return caches.open(CACHE_NAME).then(cache => {
-              cache.put(event.request, networkResponse.clone());
-              return networkResponse;
-            });
+    // 1. Tenta primeiro obter da rede (online-first).
+    fetch(event.request)
+      .then(networkResponse => {
+        // Se a rede funcionou, guardamos uma cópia em cache para uso offline.
+        return caches.open(CACHE_NAME).then(cache => {
+          // Apenas guarda em cache pedidos GET bem-sucedidos.
+          if (event.request.method === 'GET') {
+            cache.put(event.request, networkResponse.clone());
           }
-        );
+          // E retorna a resposta da rede para o utilizador ver a página completa.
+          return networkResponse;
+        });
+      })
+      // 2. Se a rede falhar (está offline), o .catch é ativado.
+      .catch(() => {
+        console.log(`[Service Worker] Falha na rede. A tentar obter do cache: ${event.request.url}`);
+        // Tenta encontrar uma correspondência no cache.
+        return caches.match(event.request);
       })
   );
 });
