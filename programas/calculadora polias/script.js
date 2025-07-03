@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ids = [
         'rpmMotor', 'potenciaMotor', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos',
         'fatorServico',
-        'calcularBtn', 'resetBtn', 'printBtn', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn',
+        'calcularBtn', 'resetBtn', 'printBtn', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn', 
         'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico',
         'projectName', 'saveProjectBtn', 'projectList',
         'importBtn', 'exportBtn', 'fileInput', 'compareProject1', 'compareProject2', 'compareBtn',
@@ -421,7 +421,6 @@ document.addEventListener('DOMContentLoaded', () => {
  if (dom.diametroMotora) dom.diametroMotora.addEventListener('change', suggestDistance);
  if (dom.diametroMovida) dom.diametroMovida.addEventListener('change', suggestDistance); // Ensure this has a check
 
- console.log('Configurando listener para calcularBtn:', dom.calcularBtn);
  if (dom.calcularBtn) dom.calcularBtn.addEventListener('click', runDirectCalculation);
  console.log('Configurando listener para optimizeBtn:', dom.optimizeBtn);
  if (dom.optimizeBtn) dom.optimizeBtn.addEventListener('click', runReverseOptimization);
@@ -430,7 +429,6 @@ document.addEventListener('DOMContentLoaded', () => {
  console.log('Configurando listener para printBtn:', dom.printBtn);
  if (dom.printBtn) dom.printBtn.addEventListener('click', () => window.print());
 
- console.log('Adicionando listener para:', 'saveProjectBtn', dom.saveProjectBtn);
  if (dom.saveProjectBtn) dom.saveProjectBtn.addEventListener('click', saveProject);
  console.log('Adicionando listener para:', 'projectList', dom.projectList);
  if (dom.projectList) dom.projectList.addEventListener('click', handleProjectListClick);
@@ -507,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ids = [
             'rpmMotor', 'potenciaMotor', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos',
             'fatorServico',
-            'calcularBtn', 'resetBtn', 'printBtn', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn',
+            'calcularBtn', 'resetBtn', 'printBtn', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn', 
             'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico',
             'projectName', 'saveProjectBtn', 'projectList',
             'importBtn', 'exportBtn', 'fileInput', 'compareProject1', 'compareProject2', 'compareBtn',
