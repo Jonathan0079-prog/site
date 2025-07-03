@@ -1,5 +1,16 @@
 const DB = {
-    pulleys: { // Usado apenas no modo reverso
+    // NOVA SEÇÃO ADICIONADA
+    serviceFactors: {
+        '1.0': { text: 'Condições Leves (Máquinas-ferramenta, ventiladores até 10 CV)', value: 1.0 },
+        '1.1': { text: 'Condições Leves (Agitadores de líquidos, geradores, 8-10h/dia)', value: 1.1 },
+        '1.2': { text: 'Serviço Normal (Bombas centrífugas, compressores, 10-16h/dia)', value: 1.2 },
+        '1.3': { text: 'Serviço Normal (Máquinas para trabalhar madeira, prensas)', value: 1.3 },
+        '1.4': { text: 'Serviço Pesado (Elevadores de carga, moinhos, >16h/dia)', value: 1.4 },
+        '1.5': { text: 'Serviço Pesado (Britadores, laminadores, cargas com choque)', value: 1.5 },
+        '1.6': { text: 'Serviço Muito Pesado (Cargas de choque extremo, partidas frequentes)', value: 1.6 }
+    },
+    // O RESTO DO ARQUIVO CONTINUA IGUAL
+    pulleys: { 
         'A': [63, 71, 80, 90, 100, 112, 125, 140, 160, 180, 200, 224, 250, 280, 315, 355, 400, 450, 500], 'B': [100, 112, 125, 140, 160, 180, 200, 224, 250, 280, 315, 355, 400, 450, 500, 560, 630],
         'C': [200, 224, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900, 1000, 1250], '3V': [60, 63, 67, 71, 75, 80, 85, 90, 95, 100, 106, 112, 118, 125, 132, 140, 150, 160, 170, 180, 190, 200, 212, 236, 265, 315],
         '5V': [125, 132, 140, 150, 160, 170, 180, 190, 200, 212, 224, 236, 250, 265, 280, 300, 315, 335, 355, 400, 450, 500, 560, 630],
