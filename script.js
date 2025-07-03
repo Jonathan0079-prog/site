@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- LÓGICA PARA O MENU HAMBURGER ---
+    // --- LÓGICA ORIGINAL DO SEU MENU HAMBURGER ---
     const menuToggler = document.querySelector('.menu-toggler');
     const mainNav = document.querySelector('#main-nav');
 
@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA PARA ANIMAR OS CARDS AO APARECEREM NA TELA ---
-    const cards = document.querySelectorAll('.curso-card-link'); // Observa o link que envolve o card
+    // --- LÓGICA ORIGINAL PARA ANIMAR OS CARDS ---
+    const cards = document.querySelectorAll('.curso-card-link');
     if (cards.length > 0) {
         const observerOptions = {
             root: null, // Observa em relação à viewport
@@ -43,4 +43,63 @@ document.addEventListener('DOMContentLoaded', () => {
             observer.observe(card);
         });
     }
+
+
+    // =============================================================
+    //      LÓGICA ADICIONADA PARA O BOTÃO DE INSTALAÇÃO DO PWA
+    // =============================================================
+    
+    let deferredPrompt; // Esta variável irá guardar o evento de instalação
+    const installLi = document.getElementById('install-pwa-li');
+    const installButton = document.getElementById('install-pwa-button');
+
+    // O navegador dispara este evento se o site for "instalável"
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Previne que o mini-infobar padrão apareça
+        e.preventDefault();
+        
+        // Guarda o evento para que possamos acioná-lo mais tarde
+        deferredPrompt = e;
+        
+        // Mostra o nosso botão de instalação personalizado que está no menu
+        if (installLi) {
+            console.log('App é instalável. A mostrar o botão de instalação.');
+            installLi.style.display = 'block';
+        }
+    });
+
+    // Adiciona o ouvinte de clique ao nosso botão de instalação
+    if (installButton) {
+        installButton.addEventListener('click', async (e) => {
+            e.preventDefault(); // Previne a ação padrão do link
+            
+            // Esconde o nosso botão, pois ele só pode ser usado uma vez
+            if (installLi) {
+                installLi.style.display = 'none';
+            }
+            
+            // Mostra a janela de instalação nativa do navegador
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                
+                // Espera pela escolha do utilizador
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`Ação do utilizador: ${outcome}`);
+                
+                // Limpa a variável, pois o prompt não pode ser usado novamente
+                deferredPrompt = null;
+            }
+        });
+    }
+
+    // Opcional: Ouve quando a app é instalada com sucesso
+    window.addEventListener('appinstalled', () => {
+        console.log('Obrigado por instalar a nossa aplicação!');
+        // Esconde o botão de instalação caso ainda esteja visível
+        if (installLi) {
+            installLi.style.display = 'none';
+        }
+        deferredPrompt = null;
+    });
+
 });
