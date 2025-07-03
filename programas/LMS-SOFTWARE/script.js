@@ -4,14 +4,12 @@ import { tabelaSimilaridade, matrizCompatibilidade } from './data/database.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Seleção de Elementos DOM ---
-    // Buscador
     const marcaSelect = document.getElementById('marca-select');
     const oleoSelect = document.getElementById('oleo-select');
     const searchButton = document.getElementById('search-button');
     const resultsContainer = document.getElementById('results-container');
     const calculatorSearchResultsContainer = document.getElementById('calculator-search-results-container');
     
-    // Calculadora
     const tempOperacaoInput = document.getElementById('temp-operacao');
     const tipoEquipamentoSelect = document.getElementById('tipo-equipamento');
     const calculateButton = document.getElementById('calculate-button');
@@ -20,13 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const justificationText = document.getElementById('calculator-justification');
     const findOilsButton = document.getElementById('find-oils-button');
 
-    // Modal
     const modal = document.getElementById('compatibility-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalDescription = document.getElementById('modal-description');
     const modalCloseButton = document.getElementById('modal-close-button');
 
-    // Planner
     const equipmentForm = document.getElementById('equipment-form');
     const equipmentOilSelect = document.getElementById('equipment-oil');
     const planTableBody = document.querySelector('#plan-table tbody');
@@ -175,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function exibirResultados(grupo, marcaOriginal) {
         resultsContainer.innerHTML = '';
+        calculatorSearchResultsContainer.innerHTML = '';
         const produtoOriginal = grupo.PRODUTOS[marcaOriginal];
         const substitutos = { ...grupo.PRODUTOS };
         delete substitutos[marcaOriginal];
@@ -264,11 +261,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const equipmentName = document.getElementById('equipment-name').value;
         const equipmentOil = document.getElementById('equipment-oil').value;
         const changeInterval = parseInt(document.getElementById('change-interval').value);
-        const startDate = new Date(document.getElementById('start-date').value);
-        if (isNaN(startDate.getTime())) {
-            alert('Por favor, insira uma data de início válida.');
+        const startDateString = document.getElementById('start-date').value;
+        const startDate = new Date(startDateString + 'T00:00:00');
+
+        if (!equipmentName || !equipmentOil || isNaN(changeInterval) || isNaN(startDate.getTime())) {
+            alert('Por favor, preencha todos os campos do plano de lubrificação.');
             return;
         }
+
         const hoursPerDay = 8;
         const daysToNextChange = changeInterval / hoursPerDay;
         const nextChangeDate = new Date(startDate);
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             planTableBody.appendChild(row);
         });
-        document.querySelectorAll('.action-btn').forEach(button => {
+        document.querySelectorAll('#plan-table .action-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 const id = parseInt(e.currentTarget.getAttribute('data-id'));
                 removerItemDoPlano(id);
