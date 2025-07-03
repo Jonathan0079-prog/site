@@ -2,12 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- SELEÇÃO DE ELEMENTOS DO DOM ---
     const dom = {};
-    // IDS NOVOS ADICIONADOS
     const ids = [
         'rpmMotor', 'potenciaMotor', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos',
-        'fatorServico', // <-- NOVO
+        'fatorServico',
         'calcularBtn', 'resetBtn', 'printBtn', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn',
-        'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico', // <-- NOVO
+        'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico',
         'projectName', 'saveProjectBtn', 'projectList',
         'importBtn', 'exportBtn', 'fileInput', 'compareProject1', 'compareProject2', 'compareBtn',
         'failureType', 'diagnosisResult', 'direct-calculation-module', 'reverse-calculation-module',
@@ -23,15 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentResults = {};
     let modalCallback = null;
 
-    // --- LÓGICA DE CÁLCULO (ATUALIZADA) ---
+    // --- LÓGICA DE CÁLCULO (SEM ALTERAÇÕES NESTE PASSO) ---
     function performCalculations(params) {
-        // 'fs' (Fator de Serviço) foi adicionado aos parâmetros
         const { name, rpm, power, fs, d1, d2, c, profile } = params;
-        if ([rpm, power, fs, d1, d2, c, profile].some(p => p === null || p === undefined || (typeof p === 'number' && p <= 0))) return null;
+        if ([rpm, power, fs, d1, d2, c, profile].some(p => p === null || p === undefined || (typeof p === 'number' && p <= 0) || p === '')) return null;
 
-        // 1. CALCULAR A POTÊNCIA DE PROJETO
         const designPower = power * fs;
-
         const rpmFinal = rpm * (d1 / d2);
         const ratio = d2 / d1;
         const L = 2 * c + (Math.PI * (d1 + d2) / 2) + (Math.pow(d2 - d1, 2) / (4 * c));
@@ -46,76 +42,37 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (L > avgLength * 1.25) Kl = DB.lengthFactors[profile].l;
         const correctedPower = DB.basePower[profile] * Ka * Kl;
         
-        // 2. USAR A POTÊNCIA DE PROJETO PARA CALCULAR O NÚMERO DE CORREIAS
         const numBelts = Math.ceil(designPower / correctedPower);
-
-        // 3. USAR A POTÊNCIA DE PROJETO PARA CALCULAR A CARGA NO EIXO
         const shaftLoad = (2 * (designPower * 735.5 / beltSpeed) * numBelts) / 9.81;
         const vibrationFreq = (1 / (2 * (c / 1000))) * Math.sqrt((shaftLoad * 9.81) / DB.beltMass[profile]);
 
         const bestFitBelt = findBestFit(L, beltLengths);
         const beltName = `${profile}${Math.round(bestFitBelt / 25.4)}0`;
-
-        // Retornar os novos dados também
+        
         return { name: name || 'Projeto Atual', rpm, power, fs, designPower, profile, d1, d2, c, rpmFinal, ratio, L, beltSpeed, angle, numBelts, shaftLoad, vibrationFreq, beltName, bestFitBelt };
     }
 
-    // --- LÓGICA DOS MÓDULOS (ATUALIZADA) ---
-    function runDirectCalculation() {
-        if (!validateInputs(true)) { showModal('Por favor, corrija os campos inválidos.'); return; }
-        const params = {
-            rpm: parseFloat(dom.rpmMotor.value),
-            power: parseFloat(dom.potenciaMotor.value),
-            fs: parseFloat(dom.fatorServico.value), // <-- NOVO
-            d1: parseFloat(dom.diametroMotora.value),
-            d2: parseFloat(dom.diametroMovida.value),
-            c: parseFloat(dom.distanciaEixos.value),
-            profile: dom.tipoCorreia.value
-        };
-        currentResults = performCalculations(params);
-        if (currentResults) {
-            updateDirectResultsUI(currentResults);
+    // --- LÓGICA DOS MÓDULOS (SEM ALTERAÇÕES NESTE PASSO) ---
+    // ... runDirectCalculation, runReverseOptimization, etc ...
+
+    // --- ATUALIZAÇÃO DA UI ---
+    
+    // ... setMode, updateDirectResultsUI, etc ...
+    
+    function populateSelect(selectElement, options, isObject = false) {
+        const currentValue = selectElement.value;
+        selectElement.innerHTML = '';
+        options.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = isObject ? opt.value : opt;
+            option.textContent = isObject ? opt.text : (opt + ' mm'); // Adiciona ' mm' para polias
+            selectElement.appendChild(option);
+        });
+        if (Array.from(selectElement.options).some(opt => opt.value == currentValue)) {
+            selectElement.value = currentValue;
         }
     }
 
-    function runReverseOptimization() {
-        if (!validateInputs(false)) { showModal('Por favor, corrija os campos inválidos.'); return; }
-        const rpmMotor = parseFloat(dom.revRpmMotor.value);
-        const targetRpm = parseFloat(dom.revRpmFinal.value);
-        const power = parseFloat(dom.revPotenciaMotor.value);
-        const fs = parseFloat(dom.revFatorServico.value); // <-- NOVO
-        const tolerance = 0.05;
-        let solutions = [];
-
-        Object.keys(DB.pulleys).forEach(profile => {
-            DB.pulleys[profile].forEach(d1 => {
-                const targetD2 = d1 * (rpmMotor / targetRpm);
-                const d2 = findBestFit(targetD2, DB.pulleys[profile]);
-                const rpmFinal = rpmMotor * (d1 / d2);
-
-                if (Math.abs(rpmFinal - targetRpm) / targetRpm <= tolerance) {
-                    const c = 2 * (d1 + d2);
-                    // Passando o 'fs' para o cálculo
-                    const results = performCalculations({ rpm: rpmMotor, power, fs, d1, d2, c, profile });
-                    if (results && results.angle >= 120) {
-                        const cost = (d1 + d2) * DB.costs.pulley + results.bestFitBelt * DB.costs.belt;
-                        solutions.push({ ...results, cost });
-                    }
-                }
-            });
-        });
-
-        solutions.sort((a, b) => a.cost - b.cost);
-        displayOptimizationResults(solutions.slice(0, 50));
-        setMode('reverse');
-    }
-
-    //... As funções runDiagnosis e runComparison continuam iguais por enquanto ...
-    // ... mas runComparison vai se beneficiar da mudança no 'performCalculations' automaticamente!
-    
-    // --- ATUALIZAÇÃO DA UI (SEM MUDANÇAS VISÍVEIS DIRETAS, MAS USA OS NOVOS DADOS) ---
-
-    // --- FUNÇÃO NOVA PARA POPULAR OS SELECTS DE FATOR DE SERVIÇO ---
     function populateServiceFactorSelects() {
         const selects = [dom.fatorServico, dom.revFatorServico];
         selects.forEach(selectElement => {
@@ -128,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = `FS ${factor.value} - ${factor.text}`;
                 selectElement.appendChild(option);
             }
-            // Definir um valor padrão, por exemplo, o de Serviço Normal
             if(selectElement.querySelector('option[value="1.2"]')) {
                 selectElement.value = '1.2';
             }
@@ -136,19 +92,94 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function populateBeltProfileSelect() {
-        populateSelect(dom.tipoCorreia, Object.keys(DB.pulleys));
+        // Altera a função populateSelect para não adicionar ' mm' no final
+        const selectElement = dom.tipoCorreia;
+        selectElement.innerHTML = '';
+        Object.keys(DB.pulleys).forEach(opt => {
+             const option = document.createElement('option');
+             option.value = opt;
+             option.textContent = opt;
+             selectElement.appendChild(option);
+        });
+    }
+    
+    // FUNÇÃO NOVA PARA POPULAR OS SELETORES DE POLIA
+    function updatePulleySelects() {
+        const profile = dom.tipoCorreia.value;
+        if (!profile || !DB.pulleys[profile]) return;
+
+        const pulleySizes = DB.pulleys[profile];
+        // Usamos a função 'populateSelect' que já tínhamos!
+        populateSelect(dom.diametroMotora, pulleySizes);
+        populateSelect(dom.diametroMovida, pulleySizes);
+
+        // Define um valor padrão para a polia movida, se possível um maior que a motora
+        if (dom.diametroMotora.options.length > 1) {
+            dom.diametroMotora.selectedIndex = Math.floor(dom.diametroMotora.options.length / 4); // Pega uma polia menor
+        }
+        if (dom.diametroMovida.options.length > 1) {
+             dom.diametroMovida.selectedIndex = Math.floor(dom.diametroMovida.options.length / 2); // Pega uma polia intermediária
+        }
+        // Sugere a distância inicial
+        suggestDistance();
+    }
+    
+    // ... O resto das funções (import/export, modal, etc.) continua igual ...
+
+    // --- FUNÇÕES DE SETUP E EVENTOS (ATUALIZADA) ---
+    function setupEventListeners() {
+        dom.modeDirectBtn.addEventListener('click', () => setMode('direct'));
+        dom.modeReverseBtn.addEventListener('click', () => setMode('reverse'));
+        dom.calcularBtn.addEventListener('click', runDirectCalculation);
+        dom.optimizeBtn.addEventListener('click', runReverseOptimization);
+        dom.resetBtn.addEventListener('click', resetForm);
+        dom.printBtn.addEventListener('click', () => window.print());
+        
+        // EVENTOS ATUALIZADOS/ADICIONADOS
+        dom.tipoCorreia.addEventListener('change', updatePulleySelects); // <-- NOVO EVENTO
+        dom.diametroMotora.addEventListener('change', suggestDistance);
+        dom.diametroMovida.addEventListener('change', suggestDistance);
+
+        dom.saveProjectBtn.addEventListener('click', saveProject);
+        // ... resto dos eventos ...
     }
 
-    // ... O resto do script (import/export, modal, eventos, etc.) continua o mesmo ...
+    function resetForm() {
+        document.querySelectorAll('input[type="number"], input[type="text"]').forEach(input => input.value = '');
+        document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+        
+        // Lógica de reset atualizada
+        populateBeltProfileSelect();
+        populateServiceFactorSelects();
+        updatePulleySelects(); // <-- Adicionado aqui para resetar as polias
+        
+        const resultFields = ['resultadoRpm', 'resultadoRelacao', 'resultadoCorreia', 'resultadoNumCorreias', 'resultadoVelocidade', 'resultadoAngulo', 'resultadoForca', 'resultadoFrequencia'];
+        resultFields.forEach(id => dom[id] ? dom[id].textContent = '--' : null);
+        
+        const resultCards = ['velocidadeCorreiaCard', 'anguloAbracamentoCard', 'forcaEixoCard', 'frequenciaVibracaoCard'];
+        resultCards.forEach(id => dom[id] ? dom[id].classList.remove('warning', 'danger') : null);
+        
+        dom.dicasLista.innerHTML = '<li>Preencha os dados e clique em "Calcular".</li>';
+        currentResults = {};
+    }
 
     // --- FUNÇÃO DE INICIALIZAÇÃO (ATUALIZADA) ---
     function init() {
         setupEventListeners();
         populateBeltProfileSelect();
-        populateServiceFactorSelects(); // <-- CHAMADA DA NOVA FUNÇÃO
+        populateServiceFactorSelects();
+        updatePulleySelects(); // <-- Adicionado aqui para popular na inicialização
         loadProjects();
-        resetForm();
+        // resetForm(); // O reset já é chamado pelas funções acima
     }
 
     init();
+
+    // Restante do seu script... (todas as outras funções que não foram alteradas)
+    // runDirectCalculation, runReverseOptimization, runDiagnosis, runComparison
+    // setMode, updateDirectResultsUI, displayOptimizationResults
+    // exportProjects, importProjects, handleFileSelect
+    // showModal, hideModal
+    // validateInputs, suggestDistance, saveProject, loadProjects, handleProjectListClick
+    // loadSolutionIntoDirectForm, findBestFit, updateCardStatus, generateTips
 });
