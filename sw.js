@@ -5,9 +5,9 @@ const CACHE_NAME = 'manutencao-industrial-cache-v5';
 
 // Ficheiros essenciais do "App Shell" - o mínimo para a aplicação arrancar.
 const APP_SHELL_URLS = [
-  '/site/index.html',
-  '/site/style.css',
-  '/site/images/icon-512x512.png' // Apenas o essencial para o arranque
+  '/index.html',
+  '/style.css',
+  '/images/icon-512x512.png' // Apenas o essencial para o arranque
 ];
 
 // Evento de Instalação: Guarda apenas o mínimo necessário em cache.
