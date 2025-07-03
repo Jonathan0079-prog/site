@@ -1,7 +1,7 @@
 {
-    "name": "Manutenção Industrial ARQUIVOS",
-    "short_name": "SGL",
-    "description": "Ferramenta completa para o chão de fábrica na mannutenção industrial.",
+    "name": "Manutenção Industrial Arquivos",
+    "short_name": "Manutenção",
+    "description": "O seu portal de conhecimento em Manutenção Industrial.",
     "start_url": "/site/index.html",
     "scope": "/site/",
     "display": "standalone",
@@ -11,12 +11,14 @@
         {
             "src": "/site/images/icon-192x192.png",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/site/images/icon-512x512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ]
 }
