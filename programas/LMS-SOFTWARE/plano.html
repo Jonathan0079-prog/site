@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGL - Plano de Lubrificação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Gestão de Lubrificação</h1>
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link">Buscador</a>
+            <a href="calculadora.html" class="nav-link">Calculadora</a>
+            <a href="plano.html" class="nav-link active">Plano de Lubrificação</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main>
+            <section class="planner-section">
+                <h2>Plano de Lubrificação</h2>
+                <form id="equipment-form" class="planner-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="equipment-name">Nome do Equipamento / TAG</label>
+                            <input type="text" id="equipment-name" placeholder="Ex: Prensa Hidráulica 02" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="equipment-oil">Óleo Utilizado</label>
+                            <select id="equipment-oil" required>
+                                <option value="">-- Selecione um óleo da base --</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="change-interval">Intervalo de Troca (em horas)</label>
+                            <input type="number" id="change-interval" placeholder="Ex: 4000" required>
+                        </div>
+                        <div class="input-group">
+                             <label for="start-date">Data de Início / Última Troca</label>
+                            <input type="date" id="start-date" required>
+                        </div>
+                    </div>
+                    <button type="submit">Adicionar ao Plano</button>
+                </form>
+                <div class="plan-table-container">
+                    <h3>Cronograma de Manutenção</h3>
+                    <table id="plan-table">
+                        <thead>
+                            <tr>
+                                <th>Equipamento</th>
+                                <th>Óleo Utilizado</th>
+                                <th>Próxima Troca</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="js/plano.js"></script>
+</body>
+</html>
