@@ -72,7 +72,7 @@ select:disabled {
 }
 
 /* --- SEÇÕES PRINCIPAIS (BUSCADOR, CALCULADORA, PLANNER) --- */
-.search-box, .calculator-section, .planner-section {
+.search-box, .calculator-section, .planner-section, .knowledge-base-section {
     background: #ffffff;
     padding: 2rem;
     border-radius: 8px;
@@ -80,7 +80,7 @@ select:disabled {
     margin-top: 2.5rem;
 }
 
-.search-box h2, .calculator-section h2, .planner-section h2 {
+.search-box h2, .calculator-section h2, .planner-section h2, .knowledge-base-section h2 {
     text-align: center;
     color: var(--cor-primaria);
     margin-bottom: 2rem;
@@ -182,6 +182,40 @@ button#find-oils-button:hover { background-color: var(--cor-primaria); color: wh
 #modal-title.status-ok { color: var(--cor-sucesso); }
 #modal-title.status-cuidado { color: var(--cor-cuidado); }
 #modal-title.status-incompativel { color: var(--cor-erro); }
+
+
+/* --- BASE DE CONHECIMENTO --- */
+.knowledge-base-section { border-top: 4px solid var(--cor-sucesso); }
+.accordion-item { border-bottom: 1px solid var(--cor-borda); }
+.accordion-header {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--cor-secundaria);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+.accordion-header:hover { background-color: #eaf3fa; }
+.accordion-header i { transition: transform 0.3s ease; }
+.accordion-header.active i { transform: rotate(180deg); }
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: #f8f9fa;
+    padding: 0 1rem;
+}
+.accordion-content p { margin: 1rem 0; }
+.accordion-content ul { padding-left: 20px; }
+.accordion-content li { margin-bottom: 0.5rem; }
 
 
 /* --- MENSAGENS E FOOTER --- */
