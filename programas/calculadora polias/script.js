@@ -17,12 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
         'modalMessage', 'modalConfirmBtn', 'modalCancelBtn', 'dicasLista', 'tips-card',
         'diagram-card', 'pulley1', 'pulley2', 'beltPath', 'centerLine', 'pulley1_text', 'pulley2_text'
     ];
-    ids.forEach(id => dom[id] = document.getElementById(id));
+    ids.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            dom[id] = element;
+        } else {
+            console.error(`Error: Elemento com ID '${id}' não foi encontrado no DOM.`);
+        }
+    });
 
     // --- ESTADO DA APLICAÇÃO ---
     let currentResults = {};
     let modalCallback = null;
-    let currentMode = 'direct'; // Variável para rastrear o modo atual
+    let currentMode = 'direct';
 
     // --- ESTADO DO FORMULÁRIO (localStorage) ---
     const formStateKey = 'transmissionFormState';
@@ -32,13 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     
     function saveFormState() {
-        const state = {
-            mode: currentMode
-        };
+        const state = { mode: currentMode };
         formInputIds.forEach(id => {
-            if (dom[id]) {
-                state[id] = dom[id].value;
-            }
+            if (dom[id]) state[id] = dom[id].value;
         });
         localStorage.setItem(formStateKey, JSON.stringify(state));
     }
@@ -56,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         setMode(state.mode || 'direct');
-        
         updatePulleySelects();
         
         if(state.diametroMotora) dom.diametroMotora.value = state.diametroMotora;
@@ -90,14 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (L > avgLength * 1.25) Kl = DB.lengthFactors[profile].l;
         
         const correctedBeltPower = nominalBeltPower * Ka * Kl;
-        
         const numBelts = Math.ceil(designPower / correctedBeltPower);
         
         const rpmFinal = rpm * (d1 / d2);
         const beltSpeed = (d1 * rpm * Math.PI) / (60 * 1000);
         const shaftLoad = (2 * (designPower * 735.5 / beltSpeed) * numBelts) / 9.81;
         const vibrationFreq = (1 / (2 * (c / 1000))) * Math.sqrt((shaftLoad * 9.81) / DB.beltMass[profile]);
-
         const bestFitBelt = findBestFit(L, beltLengths);
         const beltName = `${profile}${Math.round(bestFitBelt / 25.4)}0`;
         
@@ -137,11 +137,12 @@ document.addEventListener('DOMContentLoaded', () => {
             DB.pulleys[profile].forEach(d1 => {
                 const targetD2 = d1 * (rpmMotor / targetRpm);
                 const d2 = findBestFit(targetD2, DB.pulleys[profile]);
+                if (d2 <= d1) return; // Otimização: Ignora relações menores que 1
                 const rpmFinal = rpmMotor * (d1 / d2);
 
                 if (Math.abs(rpmFinal - targetRpm) / targetRpm <= tolerance) {
                     const c = 2 * (d1 + d2);
-                    const results = performCalculations({ rpm: rpmMotor, power, fs, d1, d2, c, profile });
+                    const results = performCalculations({ name: 'Solução Otimizada', rpm: rpmMotor, power, fs, d1, d2, c, profile });
                     if (results && results.angle >= 120) {
                         const cost = (d1 + d2) * DB.costs.pulley + results.bestFitBelt * DB.costs.belt;
                         solutions.push({ ...results, cost });
@@ -177,16 +178,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const results1 = performCalculations(proj1Data);
         const results2 = performCalculations(proj2Data);
+        if (!results1 || !results2) { showModal("Erro ao recalcular um dos projetos para comparação."); return; }
 
         const fields = [
-            { label: "RPM Final", key: "rpmFinal", unit: " RPM" }, { label: "Nº Correias", key: "numBelts", unit: "" },
-            { label: "Velocidade", key: "beltSpeed", unit: " m/s" }, { label: "Abraçamento", key: "angle", unit: "°" },
-            { label: "Força no Eixo", key: "shaftLoad", unit: " kgf" }, { label: "Freq. Vibração", key: "vibrationFreq", unit: " Hz" }
+            { label: "RPM Final", key: "rpmFinal", unit: " RPM", fixed: 0 },
+            { label: "Nº Correias", key: "numBelts", unit: "", fixed: 0 },
+            { label: "Velocidade", key: "beltSpeed", unit: " m/s", fixed: 2 },
+            { label: "Abraçamento", key: "angle", unit: "°", fixed: 1 },
+            { label: "Força no Eixo", key: "shaftLoad", unit: " kgf", fixed: 2 },
+            { label: "Freq. Vibração", key: "vibrationFreq", unit: " Hz", fixed: 1 }
         ];
 
         let tableHTML = `<thead><tr><th>Parâmetro</th><th>${proj1Data.name}</th><th>${proj2Data.name}</th></tr></thead><tbody>`;
         fields.forEach(f => {
-            tableHTML += `<tr><td>${f.label}</td><td>${results1[f.key].toFixed(2)}${f.unit}</td><td>${results2[f.key].toFixed(2)}${f.unit}</td></tr>`;
+            tableHTML += `<tr><td>${f.label}</td><td>${results1[f.key].toFixed(f.fixed)}${f.unit}</td><td>${results2[f.key].toFixed(f.fixed)}${f.unit}</td></tr>`;
         });
         tableHTML += `</tbody>`;
         dom.comparisonTable.innerHTML = tableHTML;
@@ -198,13 +203,17 @@ document.addEventListener('DOMContentLoaded', () => {
         currentMode = mode;
         dom['direct-calculation-module'].style.display = mode === 'direct' ? 'block' : 'none';
         dom['reverse-calculation-module'].style.display = mode === 'reverse' ? 'block' : 'none';
-        dom['direct-results-container'].style.display = (mode === 'direct' || mode === 'compare') ? 'block' : 'none';
+        dom['direct-results-container'].style.display = 'block'; // Manter sempre visível
         dom['reverse-results-container'].style.display = mode === 'reverse' ? 'block' : 'none';
         dom['comparison-results-container'].style.display = mode === 'compare' ? 'block' : 'none';
+        
+        // Esconder os resultados específicos se não for o modo certo
+        dom['results-card'].style.display = (mode === 'direct' || mode === 'compare') ? 'block' : 'none';
+        
         dom['tips-card'].style.display = (mode === 'direct' || mode === 'reverse') ? 'block' : 'none';
         dom.modeDirectBtn.classList.toggle('active', mode === 'direct');
         dom.modeReverseBtn.classList.toggle('active', mode === 'reverse');
-        resetDiagram();
+        if (mode !== 'direct') resetDiagram();
     }
 
     function updateDirectResultsUI(results) {
@@ -213,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.resultadoCorreia.textContent = `${results.beltName} (${results.bestFitBelt.toFixed(0)} mm)`;
         dom.resultadoNumCorreias.textContent = results.numBelts;
         dom.resultadoVelocidade.textContent = results.beltSpeed.toFixed(2);
-        dom.resultadoAngulo.textContent = results.angle.toFixed(2);
+        dom.resultadoAngulo.textContent = results.angle.toFixed(1);
         dom.resultadoForca.textContent = results.shaftLoad.toFixed(2);
         dom.resultadoFrequencia.textContent = results.vibrationFreq.toFixed(1);
 
@@ -297,16 +306,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const largeArcFlag = (Math.PI - 2 * alpha) > Math.PI ? 1 : 0;
         
-        const pathData = [
-            `M ${p1_x1} ${p1_y1}`,
-            `L ${p2_x1} ${p2_y1}`,
-            `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${p2_x2} ${p2_y2}`,
-            `L ${p1_x2} ${p1_y2}`,
-            `A ${r1} ${r1} 0 ${largeArcFlag} 1 ${p1_x1} ${p1_y1}`,
-        ].join(' ');
+        const pathData = `M ${p1_x1} ${p1_y1} L ${p2_x1} ${p2_y1} A ${r2} ${r2} 0 ${largeArcFlag} 1 ${p2_x2} ${p2_y2} L ${p1_x2} ${p1_y2} A ${r1} ${r1} 0 ${largeArcFlag} 1 ${p1_x1} ${p1_y1}`;
 
         dom.beltPath.setAttribute('d', pathData);
-        
         dom.centerLine.setAttribute('x1', cx1);
         dom.centerLine.setAttribute('x2', cx2);
     }
@@ -319,6 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNÇÕES AUXILIARES E DE SETUP ---
     function populateSelect(selectElement, options, isObject = false) {
+        if (!selectElement) return;
         const currentValue = selectElement.value;
         selectElement.innerHTML = '';
         options.forEach(opt => {
@@ -352,6 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateBeltProfileSelect() {
         const selectElement = dom.tipoCorreia;
+        if (!selectElement) return;
         selectElement.innerHTML = '';
         Object.keys(DB.pulleys).forEach(opt => {
              const option = document.createElement('option');
@@ -378,12 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
         suggestDistance();
     }
     
-    // --- IMPORT/EXPORT, MODAL, PROJETOS, etc. ---
-    function exportProjects() { /* ... */ }
-    function importProjects() { /* ... */ }
-    function handleFileSelect(event) { /* ... */ }
-    function showModal(message, type = 'alert', callback = null) { /* ... */ }
-    function hideModal() { /* ... */ }
     function setupEventListeners() {
         dom.modeDirectBtn.addEventListener('click', () => { setMode('direct'); saveFormState(); });
         dom.modeReverseBtn.addEventListener('click', () => { setMode('reverse'); saveFormState(); });
@@ -426,6 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
             [dom.revRpmMotor, dom.revRpmFinal, dom.revPotenciaMotor];
         
         inputsToCheck.forEach(input => {
+            if (!input) return;
             const value = parseFloat(input.value);
             if (isNaN(value) || value <= 0) {
                 input.classList.add('invalid');
@@ -437,7 +436,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
     
-    function suggestDistance() { /* ... */ }
+    function suggestDistance() {
+        if (!dom.diametroMotora.value || !dom.diametroMovida.value) return;
+        const d1 = parseFloat(dom.diametroMotora.value);
+        const d2 = parseFloat(dom.diametroMovida.value);
+        if (d1 > 0 && d2 > 0) {
+            dom.distanciaEixos.value = (2 * (d1 + d2)).toFixed(0);
+        }
+    }
+
     function resetForm() {
         document.querySelectorAll('input[type="number"], input[type="text"]').forEach(input => input.value = '');
         document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
@@ -457,13 +464,181 @@ document.addEventListener('DOMContentLoaded', () => {
         resetDiagram();
         localStorage.removeItem(formStateKey);
     }
-    function saveProject() { /* ... */ }
-    function loadProjects() { /* ... */ }
-    function handleProjectListClick(e) { /* ... */ }
-    function loadSolutionIntoDirectForm(sol) { /* ... */ }
-    function findBestFit(target, options) { return options.reduce((prev, curr) => Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev); }
-    function updateCardStatus(card, value, warnLimit, dangerLimit, higherIsBetter = true) { /* ... */ }
-    function generateTips(results) { /* ... */ }
+
+    function saveProject() {
+        if (!currentResults.rpm) { showModal('Calcule um projeto antes de salvar.'); return; }
+        const projectName = dom.projectName.value.trim();
+        if (!projectName) { showModal('Por favor, dê um nome ao projeto.'); return; }
+        
+        // Inclui o Fator de Serviço no projeto salvo
+        const { rpm, power, fs, profile, d1, d2, c } = currentResults;
+        const projectData = { name: projectName, rpm, power, fs, profile, d1, d2, c };
+
+        const projects = JSON.parse(localStorage.getItem('pulleyProjects')) || [];
+        const existingIndex = projects.findIndex(p => p.name === projectName);
+
+        if (existingIndex > -1) {
+            showModal(`Já existe um projeto com o nome "${projectName}". Deseja sobrescrevê-lo?`, 'confirm', () => {
+                projects[existingIndex] = projectData;
+                localStorage.setItem('pulleyProjects', JSON.stringify(projects));
+                loadProjects();
+            });
+        } else {
+            projects.push(projectData);
+            localStorage.setItem('pulleyProjects', JSON.stringify(projects));
+            dom.projectName.value = '';
+            loadProjects();
+        }
+    }
+
+    function loadProjects() {
+        const projects = JSON.parse(localStorage.getItem('pulleyProjects')) || [];
+        const options = projects.map((p, i) => ({ value: i, text: p.name }));
+        populateSelect(dom.compareProject1, options, true);
+        populateSelect(dom.compareProject2, options, true);
+        dom.projectList.innerHTML = '';
+        projects.forEach((proj, index) => {
+            const item = document.createElement('div');
+            item.className = 'project-item';
+            item.innerHTML = `<span>${proj.name}</span><button class="delete-project-btn" data-index="${index}"><i class="fas fa-trash-alt"></i></button>`;
+            dom.projectList.appendChild(item);
+        });
+    }
+
+    function handleProjectListClick(e) {
+        const target = e.target;
+        const projectItem = target.closest('.project-item');
+        if (!projectItem) return;
+
+        const span = projectItem.querySelector('span');
+        const deleteBtn = target.closest('.delete-project-btn');
+        const index = deleteBtn ? deleteBtn.dataset.index : span.parentElement.querySelector('.delete-project-btn').dataset.index;
+        
+        if (!index) return;
+        
+        const projects = JSON.parse(localStorage.getItem('pulleyProjects')) || [];
+        
+        if (deleteBtn) {
+            showModal(`Tem a certeza que deseja apagar o projeto "${projects[index].name}"?`, 'confirm', () => {
+                projects.splice(index, 1);
+                localStorage.setItem('pulleyProjects', JSON.stringify(projects));
+                loadProjects();
+            });
+        } else {
+            loadSolutionIntoDirectForm(projects[index]);
+        }
+    }
+    
+    function loadSolutionIntoDirectForm(sol) {
+        dom.rpmMotor.value = sol.rpm;
+        dom.potenciaMotor.value = sol.power;
+        dom.fatorServico.value = sol.fs || '1.2'; // Usa FS salvo ou um padrão
+        dom.tipoCorreia.value = sol.profile;
+        
+        updatePulleySelects(); // Atualiza as opções de polia primeiro
+        
+        dom.diametroMotora.value = sol.d1;
+        dom.diametroMovida.value = sol.d2;
+        dom.distanciaEixos.value = sol.c.toFixed(0);
+        
+        setMode('direct');
+        runDirectCalculation();
+        dom.projectName.value = sol.name; // Preenche o nome para fácil salvamento
+    }
+    
+    function findBestFit(target, options) {
+        return options.reduce((prev, curr) => Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
+    }
+    
+    function updateCardStatus(card, value, warnLimit, dangerLimit, higherIsBetter = true) {
+        if (!card) return;
+        card.classList.remove('warning', 'danger', 'success');
+        if (higherIsBetter) {
+            if (value < dangerLimit) card.classList.add('danger');
+            else if (value < warnLimit) card.classList.add('warning');
+            else card.classList.add('success');
+        } else {
+            if (value > dangerLimit) card.classList.add('danger');
+            else if (value > warnLimit) card.classList.add('warning');
+            else card.classList.add('success');
+        }
+    }
+
+    function generateTips(results) {
+        dom.dicasLista.innerHTML = '';
+        const addTip = (text, type = 'info') => {
+            const li = document.createElement('li');
+            li.innerHTML = `<i class="fas fa-info-circle"></i> ${text}`;
+            li.className = type;
+            dom.dicasLista.appendChild(li);
+        };
+        if (results.ratio > 7) addTip('Relações de transmissão muito altas (>7:1) podem causar deslizamento e exigir polias especiais.', 'warning');
+        if (results.beltSpeed > 33) addTip('Velocidade da correia acima de 33 m/s. Polias podem precisar de balanceamento dinâmico.', 'warning');
+        if (results.angle < 120) addTip('Ângulo de abraçamento baixo. A capacidade de transmissão de potência é reduzida. Considere aumentar a distância entre eixos.', 'danger');
+        addTip('Para projetos críticos, sempre consulte os catálogos técnicos dos fabricantes de correias para obter os dados completos.');
+    }
+    
+    function showModal(message, type = 'alert', callback = null) {
+        dom.modalMessage.textContent = message;
+        modalCallback = callback;
+        if (type === 'confirm') {
+            dom.modalConfirmBtn.style.display = 'inline-block';
+            dom.modalCancelBtn.textContent = 'Cancelar';
+        } else {
+            dom.modalConfirmBtn.style.display = 'none';
+            dom.modalCancelBtn.textContent = 'OK';
+        }
+        dom.customModal.style.display = 'flex';
+    }
+
+    function hideModal() {
+        dom.customModal.style.display = 'none';
+    }
+
+    function importProjects() { dom.fileInput.click(); }
+
+    function exportProjects() {
+        const projects = localStorage.getItem('pulleyProjects');
+        if (!projects || projects === '[]') {
+            showModal('Não há projetos salvos para exportar.');
+            return;
+        }
+        const blob = new Blob([projects], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `projetos_polias_${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const importedProjects = JSON.parse(e.target.result);
+                if (!Array.isArray(importedProjects)) throw new Error("O ficheiro não contém uma lista de projetos válida.");
+                showModal('Isto irá adicionar os projetos do ficheiro à sua lista. Projetos com nomes duplicados serão ignorados. Deseja continuar?', 'confirm', () => {
+                    const existingProjects = JSON.parse(localStorage.getItem('pulleyProjects')) || [];
+                    const existingNames = new Set(existingProjects.map(p => p.name));
+                    const newProjects = importedProjects.filter(p => p.name && !existingNames.has(p.name));
+                    const mergedProjects = [...existingProjects, ...newProjects];
+                    localStorage.setItem('pulleyProjects', JSON.stringify(mergedProjects));
+                    loadProjects();
+                    showModal(`${newProjects.length} projetos foram importados com sucesso!`);
+                });
+            } catch (error) {
+                showModal(`Erro ao importar o ficheiro: ${error.message}`);
+            } finally {
+                dom.fileInput.value = '';
+            }
+        };
+        reader.readAsText(file);
+    }
     
     // --- FUNÇÃO DE INICIALIZAÇÃO ---
     function init() {
