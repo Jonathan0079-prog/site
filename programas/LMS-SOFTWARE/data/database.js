@@ -1,8 +1,8 @@
 // data/database.js
 
-// ATUALIZAÇÃO: Base de dados massivamente expandida e reorganizada com base na "Tabela de Similaridade" fornecida.
+// ATUALIZAÇÃO: Base de dados massivamente expandida com mais viscosidades (VG 100, VG 460, etc.) e produtos.
 export const tabelaSimilaridade = [
-  // --- SISTEMAS HIDRÁULICOS E CIRCULATÓRIOS ---
+  // --- SISTEMAS HIDRÁULICOS E CIRCULATÓRIOS (MINERAL) ---
   {
     APLICACAO: "HIDRÁULICO & CIRCULATÓRIO (MINERAL)",
     ISO_VG: "32",
@@ -48,8 +48,22 @@ export const tabelaSimilaridade = [
       PETRONAS: { NOME: "TUTELA HONOR HLP 68", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "230", PONTO_FLUIDEZ: "-21" }
     }
   },
+  {
+    APLICACAO: "HIDRÁULICO & CIRCULATÓRIO (MINERAL)",
+    ISO_VG: "100",
+    PRODUTOS: {
+      MOBIL: { NOME: "DTE 27", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "244", PONTO_FLUIDEZ: "-24" },
+      SHELL: { NOME: "TELLUS S2 M 100", BASE: "MINERAL", IV: "96", PONTO_FULGOR: "250", PONTO_FLUIDEZ: "-24" },
+      CASTROL: { NOME: "HYSPIN AWS 100", BASE: "MINERAL", IV: "97", PONTO_FULGOR: "242", PONTO_FLUIDEZ: "-24" },
+      PETROBRAS: { NOME: "LUBRAX INDUSTRIAL HLP 100", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "236", PONTO_FLUIDEZ: "-18" },
+      TEXACO: { NOME: "RANDO HD 100", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "254", PONTO_FLUIDEZ: "-27" },
+      TOTAL: { NOME: "AZOLLA ZS 100", BASE: "MINERAL", IV: "97", PONTO_FULGOR: "256", PONTO_FLUIDEZ: "-24" },
+      FUCHS: { NOME: "RENOLIN B 25", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "250", PONTO_FLUIDEZ: "-18" },
+      PETRONAS: { NOME: "TUTELA HONOR HLP 100", BASE: "MINERAL", IV: "96", PONTO_FULGOR: "234", PONTO_FLUIDEZ: "-15" }
+    }
+  },
   
-  // --- REDUTORES E ENGRENAGENS ---
+  // --- REDUTORES E ENGRENAGENS (MINERAL) ---
   {
     APLICACAO: "REDUTORES E ENGRENAGENS (MINERAL)",
     ISO_VG: "150",
@@ -78,28 +92,82 @@ export const tabelaSimilaridade = [
       PETRONAS: { NOME: "TUTELA EP 220", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "240", PONTO_FLUIDEZ: "-15" }
     }
   },
+    {
+    APLICACAO: "REDUTORES E ENGRENAGENS (MINERAL)",
+    ISO_VG: "320",
+    PRODUTOS: {
+      MOBIL: { NOME: "MOBILGEAR 600 XP 320", BASE: "MINERAL", IV: "97", PONTO_FULGOR: "240", PONTO_FLUIDEZ: "-24" },
+      SHELL: { NOME: "OMALA S2 GX 320", BASE: "MINERAL", IV: "97", PONTO_FULGOR: "260", PONTO_FLUIDEZ: "-18" },
+      CASTROL: { NOME: "ALPHA SP 320", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "250", PONTO_FLUIDEZ: "-18" },
+      PETROBRAS: { NOME: "LUBRAX INDUSTRIAL CLP 320", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "254", PONTO_FLUIDEZ: "-12" },
+      TEXACO: { NOME: "MEROPA 320", BASE: "MINERAL", IV: "96", PONTO_FULGOR: "258", PONTO_FLUIDEZ: "-18" },
+      TOTAL: { NOME: "CARTER EP 320", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "262", PONTO_FLUIDEZ: "-21" },
+      FUCHS: { NOME: "RENOLIN CLP 320", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "255", PONTO_FLUIDEZ: "-18" },
+      PETRONAS: { NOME: "TUTELA EP 320", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "250", PONTO_FLUIDEZ: "-12" }
+    }
+  },
+  {
+    APLICACAO: "REDUTORES E ENGRENAGENS (MINERAL)",
+    ISO_VG: "460",
+    PRODUTOS: {
+      MOBIL: { NOME: "MOBILGEAR 600 XP 460", BASE: "MINERAL", IV: "96", PONTO_FULGOR: "250", PONTO_FLUIDEZ: "-21" },
+      SHELL: { NOME: "OMALA S2 GX 460", BASE: "MINERAL", IV: "97", PONTO_FULGOR: "265", PONTO_FLUIDEZ: "-15" },
+      CASTROL: { NOME: "ALPHA SP 460", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "260", PONTO_FLUIDEZ: "-15" },
+      PETROBRAS: { NOME: "LUBRAX INDUSTRIAL CLP 460", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "268", PONTO_FLUIDEZ: "-9" },
+      TEXACO: { NOME: "MEROPA 460", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "266", PONTO_FLUIDEZ: "-15" },
+      TOTAL: { NOME: "CARTER EP 460", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "274", PONTO_FLUIDEZ: "-18" },
+      FUCHS: { NOME: "RENOLIN CLP 460", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "260", PONTO_FLUIDEZ: "-15" },
+      PETRONAS: { NOME: "TUTELA EP 460", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "260", PONTO_FLUIDEZ: "-9" }
+    }
+  },
+
+  // --- REDUTORES E ENGRENAGENS (SINTÉTICO PAO) ---
   {
     APLICACAO: "REDUTORES E ENGRENAGENS (SINTÉTICO PAO)",
     ISO_VG: "220",
     PRODUTOS: {
       MOBIL: { NOME: "MOBILGEAR SHC XMP 220", BASE: "SINTÉTICO (PAO)", IV: "152", PONTO_FULGOR: "250", PONTO_FLUIDEZ: "-48" },
       SHELL: { NOME: "OMALA S4 GXV 220", BASE: "SINTÉTICO (PAO)", IV: "153", PONTO_FULGOR: "262", PONTO_FLUIDEZ: "-45" },
+      CASTROL: { NOME: "OPTIGEAR SYNTHETIC X 220", BASE: "SINTÉTICO (PAO)", IV: "150", PONTO_FULGOR: "248", PONTO_FLUIDEZ: "-45" },
       TEXACO: { NOME: "PINNACLE EP 220", BASE: "SINTÉTICO (PAO)", IV: "155", PONTO_FULGOR: "255", PONTO_FLUIDEZ: "-47" },
       TOTAL: { NOME: "CARTER SH 220", BASE: "SINTÉTICO (PAO)", IV: "153", PONTO_FULGOR: "258", PONTO_FLUIDEZ: "-51" }
     }
   },
+  {
+    APLICACAO: "REDUTORES E ENGRENAGENS (SINTÉTICO PAO)",
+    ISO_VG: "460",
+    PRODUTOS: {
+      MOBIL: { NOME: "MOBILGEAR SHC XMP 460", BASE: "SINTÉTICO (PAO)", IV: "155", PONTO_FULGOR: "254", PONTO_FLUIDEZ: "-45" },
+      SHELL: { NOME: "OMALA S4 GXV 460", BASE: "SINTÉTICO (PAO)", IV: "166", PONTO_FULGOR: "268", PONTO_FLUIDEZ: "-42" },
+      CASTROL: { NOME: "OPTIGEAR SYNTHETIC X 460", BASE: "SINTÉTICO (PAO)", IV: "155", PONTO_FULGOR: "250", PONTO_FLUIDEZ: "-42" },
+      TOTAL: { NOME: "CARTER SH 460", BASE: "SINTÉTICO (PAO)", IV: "156", PONTO_FULGOR: "262", PONTO_FLUIDEZ: "-48" }
+    }
+  },
+
+  // --- REDUTORES E ENGRENAGENS (SINTÉTICO PAG) ---
   {
     APLICACAO: "REDUTORES E ENGRENAGENS (SINTÉTICO PAG)",
     ISO_VG: "220",
     PRODUTOS: {
       MOBIL: { NOME: "MOBIL GLYGOYLE 220", BASE: "SINTÉTICO (PAG)", IV: "220", PONTO_FULGOR: "270", PONTO_FLUIDEZ: "-39" },
       SHELL: { NOME: "OMALA S4 WE 220", BASE: "SINTÉTICO (PAG)", IV: "235", PONTO_FULGOR: "285", PONTO_FLUIDEZ: "-42" },
+      CASTROL: { NOME: "ALPHASYN PG 220", BASE: "SINTÉTICO (PAG)", IV: "230", PONTO_FULGOR: "270", PONTO_FLUIDEZ: "-39" },
       TEXACO: { NOME: "SYNLUBE CLP 220", BASE: "SINTÉTICO (PAG)", IV: "225", PONTO_FULGOR: "275", PONTO_FLUIDEZ: "-40" },
       TOTAL: { NOME: "CARTER SY 220", BASE: "SINTÉTICO (PAG)", IV: "230", PONTO_FULGOR: "280", PONTO_FLUIDEZ: "-36" }
     }
   },
+  {
+    APLICACAO: "REDUTORES E ENGRENAGENS (SINTÉTICO PAG)",
+    ISO_VG: "460",
+    PRODUTOS: {
+      MOBIL: { NOME: "MOBIL GLYGOYLE 460", BASE: "SINTÉTICO (PAG)", IV: "251", PONTO_FULGOR: "286", PONTO_FLUIDEZ: "-33" },
+      SHELL: { NOME: "OMALA S4 WE 460", BASE: "SINTÉTICO (PAG)", IV: "260", PONTO_FULGOR: "288", PONTO_FLUIDEZ: "-39" },
+      CASTROL: { NOME: "ALPHASYN PG 460", BASE: "SINTÉTICO (PAG)", IV: "250", PONTO_FULGOR: "274", PONTO_FLUIDEZ: "-33" },
+      TOTAL: { NOME: "CARTER SY 460", BASE: "SINTÉTICO (PAG)", IV: "255", PONTO_FULGOR: "284", PONTO_FLUIDEZ: "-33" }
+    }
+  },
   
-  // --- TURBINAS A GÁS E VAPOR ---
+  // --- TURBINAS A GÁS E VAPOR (MINERAL) ---
   {
     APLICACAO: "TURBINAS A GÁS E VAPOR (MINERAL)",
     ISO_VG: "32",
@@ -112,7 +180,7 @@ export const tabelaSimilaridade = [
     }
   },
   
-  // --- COMPRESSORES DE AR ---
+  // --- COMPRESSORES DE AR (MINERAL) ---
   {
     APLICACAO: "COMPRESSOR DE AR PARAFUSO (MINERAL)",
     ISO_VG: "46",
@@ -130,12 +198,12 @@ export const tabelaSimilaridade = [
       APLICACAO: "GUIAS E BARRAMENTOS",
       ISO_VG: "68",
       PRODUTOS: {
-          MOBIL: { NOME: "VACTRA Nº 2", BASE: "MINERAL", IV: "N/A", PONTO_FULGOR: "230", PONTO_FLUIDEZ: "-15" },
-          SHELL: { NOME: "TONNA S2 M 68", BASE: "MINERAL", IV: "N/A", PONTO_FULGOR: "225", PONTO_FLUIDEZ: "-18" },
-          CASTROL: { NOME: "MAGNA SW 68", BASE: "MINERAL", IV: "N/A", PONTO_FULGOR: "220", PONTO_FLUIDEZ: "-12" },
-          PETROBRAS: { NOME: "LUBRAX INDUSTRIAL GBA 2", BASE: "MINERAL", IV: "N/A", PONTO_FULGOR: "224", PONTO_FLUIDEZ: "-12" },
-          TOTAL: { NOME: "DROSERA MS 68", BASE: "MINERAL", IV: "N/A", PONTO_FULGOR: "232", PONTO_FLUIDEZ: "-18" },
-          PETRONAS: { NOME: "TUTELA G 68", BASE: "MINERAL", IV: "N/A", PONTO_FULGOR: "220", PONTO_FLUIDEZ: "-15" }
+          MOBIL: { NOME: "VACTRA Nº 2", BASE: "MINERAL", IV: "96", PONTO_FULGOR: "230", PONTO_FLUIDEZ: "-15" },
+          SHELL: { NOME: "TONNA S2 M 68", BASE: "MINERAL", IV: "98", PONTO_FULGOR: "225", PONTO_FLUIDEZ: "-18" },
+          CASTROL: { NOME: "MAGNA SW 68", BASE: "MINERAL", IV: "97", PONTO_FULGOR: "220", PONTO_FLUIDEZ: "-12" },
+          PETROBRAS: { NOME: "LUBRAX INDUSTRIAL GBA 2", BASE: "MINERAL", IV: "95", PONTO_FULGOR: "224", PONTO_FLUIDEZ: "-12" },
+          TOTAL: { NOME: "DROSERA MS 68", BASE: "MINERAL", IV: "99", PONTO_FULGOR: "232", PONTO_FLUIDEZ: "-18" },
+          PETRONAS: { NOME: "TUTELA G 68", BASE: "MINERAL", IV: "96", PONTO_FULGOR: "220", PONTO_FLUIDEZ: "-15" }
       }
   },
   
@@ -183,10 +251,17 @@ export const matrizCompatibilidade = {
     },
     "LÍTIO": {
         "LÍTIO": { "status": "OK", "descricao": "Graxas de mesma base (Lítio) são geralmente compatíveis. No entanto, sempre verifique a compatibilidade dos espessantes e aditivos." },
-        "COMPLEXO DE LÍTIO": { "status": "CUIDADO", "descricao": "A mistura é possível, mas pode haver uma leve alteração nas propriedades, como o ponto de gota. Monitore a consistência da graxa após a mistura." }
+        "COMPLEXO DE LÍTIO": { "status": "CUIDADO", "descricao": "A mistura é possível, mas pode haver uma leve alteração nas propriedades, como o ponto de gota. Monitore a consistência da graxa após a mistura." },
+        "COMPLEXO DE CÁLCIO": { "status": "INCOMPATÍVEL", "descricao": "Mistura PROIBIDA. Graxas de Lítio e Complexo de Sulfonato de Cálcio são incompatíveis. A mistura pode causar amolecimento e perda de performance."}
     },
     "COMPLEXO DE LÍTIO": {
         "LÍTIO": { "status": "CUIDADO", "descricao": "A mistura é possível, mas pode haver uma leve alteração nas propriedades, como o ponto de gota. Monitore a consistência da graxa após a mistura." },
-        "COMPLEXO DE LÍTIO": { "status": "OK", "descricao": "Graxas de mesma base (Complexo de Lítio) são totalmente compatíveis." }
+        "COMPLEXO DE LÍTIO": { "status": "OK", "descricao": "Graxas de mesma base (Complexo de Lítio) são totalmente compatíveis." },
+        "COMPLEXO DE CÁLCIO": { "status": "INCOMPATÍVEL", "descricao": "Mistura PROIBIDA. Graxas de Complexo de Lítio e Complexo de Sulfonato de Cálcio são incompatíveis. A mistura pode causar amolecimento e perda de performance."}
+    },
+     "COMPLEXO DE CÁLCIO": {
+        "LÍTIO": { "status": "INCOMPATÍVEL", "descricao": "Mistura PROIBIDA. Graxas de Complexo de Sulfonato de Cálcio e Lítio são incompatíveis. A mistura pode causar amolecimento e perda de performance." },
+        "COMPLEXO DE LÍTIO": { "status": "INCOMPATÍVEL", "descricao": "Mistura PROIBIDA. Graxas de Complexo de Sulfonato de Cálcio e Complexo de Lítio são incompatíveis. A mistura pode causar amolecimento e perda de performance." },
+        "COMPLEXO DE CÁLCIO": { "status": "OK", "descricao": "Graxas de mesma base (Complexo de Sulfonato de Cálcio) são totalmente compatíveis." }
     }
 };
