@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGL - Buscador de Equivalentes</title>
+    
+    <link rel="manifest" href="/site/manifest.json">
+    <meta name="theme-color" content="#003366">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="/site/manifest.json">
-<meta name="theme-color" content="#003366">
 </head>
 <body>
     <header>
@@ -51,14 +53,27 @@
             <section class="knowledge-base-section">
                 <h2>Base de Conhecimento Técnico</h2>
                 <div class="accordion">
-                    </div>
+                  </div>
             </section>
         </main>
     </div>
 
     <div id="compatibility-modal" class="modal-backdrop hidden">
-        </div>
+      </div>
 
     <script type="module" src="js/script.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // O caminho para o sw.js deve ser absoluto a partir da raiz do domínio
+                navigator.serviceWorker.register('/site/sw.js').then(registration => {
+                    console.log('ServiceWorker registado com sucesso para todo o site!');
+                }, err => {
+                    console.log('Registo do ServiceWorker falhou: ', err);
+                });
+            });
+        }
+    </script>
 </body>
 </html>
