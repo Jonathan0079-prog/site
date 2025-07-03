@@ -86,7 +86,7 @@ select, input[type="number"], input[type="text"], input[type="date"] {
 
 select:disabled { background-color: #e9ecef; }
 
-/* --- SEÇÕES PRINCIPAIS --- */
+/* SEÇÕES PRINCIPAIS */
 .search-box, .calculator-section, .planner-section, .knowledge-base-section {
     background: #ffffff;
     padding: 2rem;
@@ -102,7 +102,7 @@ select:disabled { background-color: #e9ecef; }
     font-family: 'Oswald', sans-serif;
 }
 
-/* --- BOTÕES --- */
+/* BOTÕES */
 button#search-button, button#calculate-button, .planner-form button[type="submit"] {
     width: 100%;
     padding: 1rem;
@@ -141,13 +141,42 @@ button#find-oils-button {
 }
 button#find-oils-button:hover { background-color: var(--cor-primaria); color: white; }
 
-/* --- SEÇÃO DO PLANO DE LUBRIFICAÇÃO (ATUALIZADA) --- */
+/* SEÇÃO DA CALCULADORA */
+.calculator-section { border-top: 4px solid var(--cor-secundaria); }
+.calculator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+#calculator-result { margin-top: 2rem; padding: 1.5rem; border-radius: 6px; text-align: center; background-color: #eaf3fa; border: 2px solid var(--cor-secundaria); }
+#calculator-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: var(--cor-sucesso); font-family: 'Oswald', sans-serif; }
+.justification-text { font-size: 0.95em; color: #495057; margin-top: 10px; border-top: 1px solid var(--cor-borda); padding-top: 10px; }
+
+/* CONTAINER DE RESULTADOS */
+#results-container, #calculator-search-results-container { margin-top: 2rem; }
+.product-card { background-color: #fff; border: 1px solid var(--cor-borda); border-left: 5px solid var(--cor-primaria); padding: 20px; margin-bottom: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.equivalents-title, .results-header { margin-top: 30px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px; color: var(--cor-primaria); font-family: 'Oswald', sans-serif; }
+
+.tech-data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; padding: 1rem; margin-top: 1rem; background-color: #f8f9fa; border-radius: 4px; border: 1px solid var(--cor-borda); }
+.tech-data-item { text-align: center; }
+.tech-data-item .label { font-size: 0.8em; color: #6c757d; display: block; }
+.tech-data-item .value { font-weight: bold; font-size: 1.1em; color: var(--cor-secundaria); }
+
+.results-list { list-style: none; padding: 0; }
+.results-list li { padding: 15px; border-bottom: 1px solid #e9ecef; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.list-item-header { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+.results-list .brand { font-weight: bold; color: var(--cor-secundaria); }
+.results-list .product { font-weight: bold; color: var(--cor-texto); }
+
+.compatibility-info { display: flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; font-weight: bold; text-align: center; }
+.compat-ok { background-color: #e9f7ec; color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso); }
+.compat-cuidado { background-color: #fff8e1; color: #8d6e00; border: 1px solid var(--cor-cuidado); }
+.compat-incompativel { background-color: #fdedee; color: var(--cor-erro); border: 1px solid var(--cor-erro); }
+.info-icon { cursor: pointer; color: #6c757d; transition: color 0.2s; }
+.info-icon:hover { color: var(--cor-secundaria); }
+
+/* SEÇÃO DO PLANO DE LUBRIFICAÇÃO */
 .planner-section { border-top: 4px solid var(--cor-destaque); }
 .planner-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 
 .plan-table-container { margin-top: 2.5rem; }
-
-.table-header { /* NOVO */
+.table-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -155,7 +184,7 @@ button#find-oils-button:hover { background-color: var(--cor-primaria); color: wh
 }
 .table-header h3 { color: var(--cor-primaria); margin: 0; }
 
-.report-button { /* NOVO */
+.report-button {
     background-color: var(--cor-erro);
     color: white;
     border: none;
@@ -174,31 +203,7 @@ button#find-oils-button:hover { background-color: var(--cor-primaria); color: wh
 #plan-table tbody tr:hover { background-color: #f8f9fa; }
 #plan-table .action-btn { background: none; border: none; cursor: pointer; color: var(--cor-erro); font-size: 1.2rem; }
 
-/* --- OUTROS ESTILOS (calculadora, resultados, modal, knowledge-base, etc.) --- */
-/* (O resto do CSS continua exatamente igual) */
-.calculator-section { border-top: 4px solid var(--cor-secundaria); }
-.calculator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-#calculator-result { margin-top: 2rem; padding: 1.5rem; border-radius: 6px; text-align: center; background-color: #eaf3fa; border: 2px solid var(--cor-secundaria); }
-#calculator-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: var(--cor-sucesso); font-family: 'Oswald', sans-serif; }
-.justification-text { font-size: 0.95em; color: #495057; margin-top: 10px; border-top: 1px solid var(--cor-borda); padding-top: 10px; }
-#results-container, #calculator-search-results-container { margin-top: 2rem; }
-.product-card { background-color: #fff; border: 1px solid var(--cor-borda); border-left: 5px solid var(--cor-primaria); padding: 20px; margin-bottom: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.equivalents-title, .results-header { margin-top: 30px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px; color: var(--cor-primaria); font-family: 'Oswald', sans-serif; }
-.tech-data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; padding: 1rem; margin-top: 1rem; background-color: #f8f9fa; border-radius: 4px; border: 1px solid var(--cor-borda); }
-.tech-data-item { text-align: center; }
-.tech-data-item .label { font-size: 0.8em; color: #6c757d; display: block; }
-.tech-data-item .value { font-weight: bold; font-size: 1.1em; color: var(--cor-secundaria); }
-.results-list { list-style: none; padding: 0; }
-.results-list li { padding: 15px; border-bottom: 1px solid #e9ecef; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.list-item-header { display: flex; justify-content: space-between; width: 100%; align-items: center; }
-.results-list .brand { font-weight: bold; color: var(--cor-secundaria); }
-.results-list .product { font-weight: bold; color: var(--cor-texto); }
-.compatibility-info { display: flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; font-weight: bold; text-align: center; }
-.compat-ok { background-color: #e9f7ec; color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso); }
-.compat-cuidado { background-color: #fff8e1; color: #8d6e00; border: 1px solid var(--cor-cuidado); }
-.compat-incompativel { background-color: #fdedee; color: var(--cor-erro); border: 1px solid var(--cor-erro); }
-.info-icon { cursor: pointer; color: #6c757d; transition: color 0.2s; }
-.info-icon:hover { color: var(--cor-secundaria); }
+/* MODAL */
 .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
 .modal-content { background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
 .modal-close { position: absolute; top: 10px; right: 15px; font-size: 2rem; border: none; background: none; cursor: pointer; color: #aaa; }
@@ -207,17 +212,48 @@ button#find-oils-button:hover { background-color: var(--cor-primaria); color: wh
 #modal-title.status-ok { color: var(--cor-sucesso); }
 #modal-title.status-cuidado { color: var(--cor-cuidado); }
 #modal-title.status-incompativel { color: var(--cor-erro); }
+
+/* BASE DE CONHECIMENTO */
 .knowledge-base-section { border-top: 4px solid var(--cor-sucesso); }
 .accordion-item { border-bottom: 1px solid var(--cor-borda); }
-.accordion-header { background-color: transparent; border: none; width: 100%; text-align: left; padding: 1rem; font-size: 1.1rem; font-weight: bold; color: var(--cor-secundaria); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.2s; }
+.accordion-header {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--cor-secundaria);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
 .accordion-header:hover { background-color: #eaf3fa; }
 .accordion-header i { transition: transform 0.3s ease; }
 .accordion-header.active i { transform: rotate(180deg); }
-.accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background-color: #f8f9fa; padding: 0 1rem; }
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: #f8f9fa;
+    padding: 0 1rem;
+}
 .accordion-content p { margin: 1rem 0; }
 .accordion-content ul { padding-left: 20px; }
 .accordion-content li { margin-bottom: 0.5rem; }
+
+/* MENSAGENS E FOOTER */
 .warning-message { margin-top: 2rem; padding: 1rem; background-color: #fff3cd; border: 1px solid var(--cor-destaque); color: #664d03; border-radius: 5px; text-align: center; }
 .error-message { text-align: center; padding: 1rem; background-color: #f8d7da; color: var(--cor-erro); border-radius: 5px; }
 footer { text-align: center; margin-top: 3rem; padding: 1rem; color: #6c757d; }
-@media (max-width: 768px) { .planner-form .form-grid { grid-template-columns: 1fr; } }
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .planner-form .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
