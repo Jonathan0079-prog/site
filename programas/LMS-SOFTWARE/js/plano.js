@@ -1,5 +1,6 @@
 // js/plano.js
 
+// O caminho agora sobe um nível (../) para encontrar a pasta 'data'
 import { tabelaSimilaridade } from '../data/database.js';
 
 // Usamos o objeto global jsPDF que foi carregado pelos scripts no HTML
@@ -10,10 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const equipmentForm = document.getElementById('equipment-form');
     const equipmentOilSelect = document.getElementById('equipment-oil');
     const planTableBody = document.querySelector('#plan-table tbody');
-    const generatePdfButton = document.getElementById('generate-pdf-button'); // NOVO
+    const generatePdfButton = document.getElementById('generate-pdf-button');
     
-    // Armazena os itens do plano e também o estado dos dados no localStorage
-    let planItems = JSON.parse(localStorage.getItem('planItems')) || [];
+    // Carrega os itens do plano do localStorage ou inicializa um array vazio
+    let planItems = JSON.parse(localStorage.getItem('planItemsSGL')) || [];
 
     // --- LÓGICA DO PLANNER ---
     function popularOleosDoPlano() {
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function persistItems() {
-        localStorage.setItem('planItems', JSON.stringify(planItems));
+        localStorage.setItem('planItemsSGL', JSON.stringify(planItems));
     }
 
     function adicionarItemAoPlano(event) {
@@ -43,13 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const equipmentOil = document.getElementById('equipment-oil').value;
         const changeInterval = parseInt(document.getElementById('change-interval').value);
         const startDateString = document.getElementById('start-date').value;
-        const startDate = new Date(startDateString + 'T00:00:00');
-
+        
         if (!equipmentName || !equipmentOil || isNaN(changeInterval) || !startDateString) {
             alert('Por favor, preencha todos os campos do plano de lubrificação.');
             return;
         }
 
+        const startDate = new Date(startDateString + 'T00:00:00');
         const hoursPerDay = 8; // Assumimos um turno de 8 horas
         const daysToNextChange = changeInterval / hoursPerDay;
         const nextChangeDate = new Date(startDate);
@@ -91,19 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     </button>
                 </td>
             `;
+            row.querySelector('.action-btn').addEventListener('click', () => removerItemDoPlano(item.id));
             planTableBody.appendChild(row);
-        });
-        
-        // Adiciona os listeners aos botões de remoção após a renderização
-        document.querySelectorAll('#plan-table .action-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const id = parseInt(e.currentTarget.getAttribute('data-id'));
-                removerItemDoPlano(id);
-            });
         });
     }
 
-    // --- LÓGICA DE GERAÇÃO DE PDF (NOVA) ---
+    // --- LÓGICA DE GERAÇÃO DE PDF ---
     function generatePDF() {
         if (planItems.length === 0) {
             alert("Não há dados na tabela para gerar um relatório.");
@@ -112,34 +106,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const doc = new jsPDF();
         
-        // Cabeçalho
         doc.setFontSize(18);
         doc.text("Relatório do Plano de Lubrificação", 14, 22);
         doc.setFontSize(11);
         doc.text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')}`, 14, 30);
         
-        // Tabela
         const tableColumn = ["Equipamento / TAG", "Óleo Utilizado", "Próxima Troca Agendada"];
-        const tableRows = [];
-
-        planItems.forEach(item => {
-            const itemData = [
-                item.name,
-                item.oil,
-                item.nextChange,
-            ];
-            tableRows.push(itemData);
-        });
+        const tableRows = planItems.map(item => [item.name, item.oil, item.nextChange]);
 
         doc.autoTable({
             head: [tableColumn],
             body: tableRows,
             startY: 40,
             theme: 'grid',
-            headStyles: { fillColor: [0, 51, 102] } // Cor --cor-primaria
+            headStyles: { fillColor: [0, 51, 102] } 
         });
 
-        // Rodapé
         const pageCount = doc.internal.getNumberOfPages();
         for(var i = 1; i <= pageCount; i++) {
             doc.setPage(i);
@@ -148,13 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
             doc.text('Página ' + String(i) + ' de ' + String(pageCount), doc.internal.pageSize.width - 40, doc.internal.pageSize.height - 10);
         }
 
-        // Salvar o PDF
-        doc.save('Plano_de_Lubrificacao.pdf');
+        doc.save(`Plano_de_Lubrificacao_${new Date().toISOString().slice(0,10)}.pdf`);
     }
 
     // --- EVENT LISTENERS ---
     equipmentForm.addEventListener('submit', adicionarItemAoPlano);
-    generatePdfButton.addEventListener('click', generatePDF); // NOVO
+    generatePdfButton.addEventListener('click', generatePDF);
 
     // --- INICIALIZAÇÃO ---
     popularOleosDoPlano();
