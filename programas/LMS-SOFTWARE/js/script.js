@@ -59,18 +59,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ATUALIZADO: Permite mostrar todas as marcas ao selecionar "todas as aplicações"
     function popularMarcas(aplicacaoSelecionada) {
         resetSelect(marcaSelect, '-- Selecione uma aplicação --');
         resetSelect(oleoSelect, '-- Selecione uma marca --');
-        
-        if (!aplicacaoSelecionada) return;
+
+        // Se nenhuma aplicação for selecionada (todas), mostra todas as marcas
+        let gruposFiltrados;
+        if (!aplicacaoSelecionada) {
+            gruposFiltrados = tabelaSimilaridade;
+        } else {
+            gruposFiltrados = tabelaSimilaridade.filter(item => item.APLICACAO === aplicacaoSelecionada);
+        }
 
         const marcas = new Set();
-        tabelaSimilaridade
-            .filter(item => item.APLICACAO === aplicacaoSelecionada)
-            .forEach(grupo => {
-                Object.keys(grupo.PRODUTOS).forEach(marca => marcas.add(marca));
-            });
+        gruposFiltrados.forEach(grupo => {
+            Object.keys(grupo.PRODUTOS).forEach(marca => marcas.add(marca));
+        });
 
         marcaSelect.innerHTML = '<option value="">-- Selecione a Marca --</option>';
         Array.from(marcas).sort().forEach(marca => {
@@ -88,8 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!marcaSelecionada) return;
 
         const produtos = [];
+        // NOTA: Aqui continua filtrando pela aplicação selecionada!
         tabelaSimilaridade
-            .filter(item => item.APLICACAO === aplicacaoSelecionada)
+            .filter(item => !aplicacaoSelecionada || item.APLICACAO === aplicacaoSelecionada)
             .forEach((grupo, index) => {
                 if (grupo.PRODUTOS[marcaSelecionada]) {
                     produtos.push({
@@ -196,8 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     searchButton.addEventListener('click', encontrarSubstitutos);
-    modalCloseButton.addEventListener('click', fecharModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
+    modalCloseButton && modalCloseButton.addEventListener('click', fecharModal);
+    modal && modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
 
     // --- INICIALIZAÇÃO ---
     popularAplicacoes();
