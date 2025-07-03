@@ -229,3 +229,32 @@ footer { text-align: center; margin-top: 3rem; padding: 1rem; color: #6c757d; }
         grid-template-columns: 1fr;
     }
 }
+/* ... (todos os estilos anteriores permanecem os mesmos) ... */
+
+/* ESTILO DA NOVA BARRA DE NAVEGAÇÃO */
+.main-nav {
+    background-color: var(--cor-primaria);
+    padding: 0.5rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+    background-color: var(--cor-secundaria);
+}
+
+.nav-link.active {
+    background-color: var(--cor-destaque);
+    color: var(--cor-primaria);
+}
+
