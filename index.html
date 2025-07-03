@@ -5,80 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manutenção Industrial Arquivos - Início</title>
     
-    <link rel="manifest" href="/site/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003366">
     
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-
     <header>
-        <div class="container">
-            <h1>MANUTENÇÃO INDUSTRIAL ARQUIVOS</h1>
-            <div class="header-subtitle">
-                <h2>O seu portal de conhecimento em Manutenção Industrial</h2>
-                <p>Cursos, artigos e arquivos para impulsionar sua carreira.</p>
-            </div>
-        </div>
-    </header>
+        </header>
 
     <main>
-        <section id="cursos">
-            <div class="container">
-                <h2>Nossos Cursos</h2>
-                <div class="cursos-container">
-                    
-                    <a href="preditiva/index.html" class="curso-card-link">
-                        <div class="curso-card">
-                            <img src="capas/plano-de-manutencao-5-01-01-min-6-1024x850.png" alt="Capa do Curso de Manutenção Preditiva">
-                            <div class="curso-info">
-                                <h3>Introdução à Manutenção Preditiva</h3>
-                                <p>Aprenda os fundamentos das técnicas preditivas para evitar falhas e otimizar a produção.</p>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="curso hidraulica/index.html" class="curso-card-link">
-                        <div class="curso-card">
-                            <img src="capas/atuadores-PARKER-catalogos_INDUSTRIAL-40-2.png.webp" alt="Capa do Curso de Hidraulica Industrial">
-                            <div class="curso-info">
-                                <h3>Hidráulica Industrial</h3>
-                                <p>Domine a hidráulica e seja referência.</p>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="rolamentos/index.html" class="curso-card-link">
-                        <div class="curso-card">
-                            <img src="capas/Screenshot-2025-05-15-132615.png" alt="Capa do Curso de Montagem de Rolamentos">
-                            <div class="curso-info">
-                                <h3>Montagem de Rolamentos</h3>
-                                <p>Entenda e aplique as formas corretas na montagem de rolamentos.</p>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="curso lubrificação/index.html" class="curso-card-link">
-                        <div class="curso-card">
-                            <img src="curso lubrificação/images (51).jpeg" alt="Capa lubrificação industrial">
-                            <div class="curso-info">
-                                <h3>Curso Completo de Lubrificação</h3>
-                                <p>Um curso interativo e completo, dos fundamentos da tribologia às estratégias avançadas.</p>
-                            </div>
-                        </div>
-                    </a>
-
-                </div>
-            </div>
-        </section>
-    </main>
+        </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2025 MANUTENÇÃO INDUSTRIAL ARQUIVOS. Todos os direitos reservados.</p>
-        </div>
-    </footer>
+        </footer>
 
     <button class="menu-toggler">
         <i class="material-icons">menu</i>
@@ -108,10 +49,11 @@
     <script src="script.js"></script>
 
     <script>
+        // Caminho do Service Worker corrigido
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/site/sw.js').then(registration => {
-                    console.log('ServiceWorker registado com sucesso para todo o site!');
+                navigator.serviceWorker.register('sw.js').then(registration => {
+                    console.log('ServiceWorker registado com sucesso!');
                 }, err => {
                     console.log('Registo do ServiceWorker falhou: ', err);
                 });
