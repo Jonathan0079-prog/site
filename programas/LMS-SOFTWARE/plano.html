@@ -44,8 +44,14 @@
                     </div>
                     <button type="submit">Adicionar ao Plano</button>
                 </form>
+
                 <div class="plan-table-container">
-                    <h3>Cronograma de Manutenção</h3>
+                     <div class="table-header">
+                        <h3>Cronograma de Manutenção</h3>
+                        <button id="generate-pdf-button" class="report-button">
+                            <i class="fas fa-file-pdf"></i> Gerar Relatório
+                        </button>
+                    </div>
                     <table id="plan-table">
                         <thead>
                             <tr>
@@ -62,6 +68,9 @@
             </section>
         </main>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 
     <script type="module" src="js/plano.js"></script>
 </body>
