@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suíte de Engenharia de Transmissão por Correias</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#003366">
+
+    <style>
+        #diagram-card {
+        }
+        #transmissionDiagram {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+            background: var(--background-color-light);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        #transmissionDiagram .pulley {
+            fill: #7d8da1; /* Cinza azulado para as polias */
+            stroke: #333;
+            stroke-width: 1px;
+        }
+        #transmissionDiagram .belt {
+            fill: none;
+            stroke: #555; /* Cinza escuro para a correia */
+            stroke-width: 4px;
+            stroke-linejoin: round;
+        }
+        #transmissionDiagram .center-line {
+            stroke: var(--danger-color);
+            stroke-width: 0.5px;
+            stroke-dasharray: 4 2;
+        }
+         #transmissionDiagram .diagram-text {
+            font-size: 12px;
+            fill: var(--text-color);
+            text-anchor: middle;
+            font-weight: bold;
+        }
+
+        .input-group {
+ margin-bottom: 15px;
+}
+        .input-group label {
+ display: block;
+ margin-bottom: 5px;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header"></header>
+        <main class="app-main">
+            <section id="inputs-column">
+                <div class="card" id="direct-calculation-module">
+                    <h2><i class="fas fa-calculator"></i> Cálculo Direto</h2>
+                    <div class="input-group">
+                        <label for="rpmMotor">RPM do Motor:</label>
+                        <input type="number" id="rpmMotor" placeholder="Ex: 1750" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="potenciaMotor">Potência do Motor (HP):</label>
+                        <input type="number" id="potenciaMotor" placeholder="Ex: 5" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="fatorServico">Fator de Serviço:</label>
+                        <select id="fatorServico"></select>
+                    </div>
+                    <div class="input-group">
+                        <label for="tipoCorreia">Perfil da Correia:</label>
+                        <select id="tipoCorreia"></select>
+                    </div>
+                    <div class="input-group">
+                        <label for="diametroMotora">Diâmetro da Polia Motora (mm):</label>
+                        <select id="diametroMotora"></select>
+                    </div>
+                    <div class="input-group">
+                        <label for="diametroMovida">Diâmetro da Polia Movida (mm):</label>
+                        <select id="diametroMovida"></select>
+                    </div>
+                    <div class="input-group">
+                        <label for="distanciaEixos">Distância entre Eixos (mm):</label>
+                        <input type="number" id="distanciaEixos" placeholder="Ex: 1000" required>
+                    </div>
+                    <button id="calcularBtn">Calcular</button>
+                </div>
+
+                <div class="card" id="reverse-calculation-module" style="display: none;">
+                    <h2><i class="fas fa-cogs"></i> Otimização Reversa</h2>
+                     <div class="input-group">
+                        <label for="revRpmMotor">RPM do Motor:</label>
+                        <input type="number" id="revRpmMotor" placeholder="Ex: 1750" required>
+                    </div>
+                     <div class="input-group">
+                        <label for="revRpmFinal">RPM Final Desejado:</label>
+                        <input type="number" id="revRpmFinal" placeholder="Ex: 500" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="revPotenciaMotor">Potência do Motor (HP):</label>
+                        <input type="number" id="revPotenciaMotor" placeholder="Ex: 5" required>
+                    </div>
+                     <div class="input-group">
+                        <label for="revFatorServico">Fator de Serviço:</label>
+                        <select id="revFatorServico"></select>
+                    </div>
+                    <button id="optimizeBtn">Otimizar</button>
+
+                    <div id="reverse-results-container">
+                         <h3>Soluções Otimizadas:</h3>
+                         <div class="card">
+                              <table id="solutionsTable">
+                                   <thead>
+                                        <tr>
+                                             <th>Perfil</th>
+                                             <th>Motora</th>
+                                             <th>Movida</th>
+                                             <th>Correia</th>
+                                             <th>Custo Estimado</th>
+                                             <th>Ações</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <!-- Results will be populated by script.js -->
+                                   </tbody>
+                              </table>
+                         </div>
+                    </div>
+                </div>
+
+                 <div class="card">
+                      <button id="resetBtn">Limpar</button>
+                       <button id="printBtn">Imprimir</button>
+                 </div>
+            </section>
+
+            <section id="outputs-column">
+                <div class="card" id="diagram-card">
+                    <h2><i class="fas fa-project-diagram"></i> Diagrama do Sistema</h2>
+                    <svg id="transmissionDiagram" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet">
+                        <line id="centerLine" class="center-line" x1="0" y1="150" x2="800" y2="150" />
+                        <circle id="pulley1" class="pulley" cx="150" cy="150" r="50" />
+                        <text id="pulley1_text" class="diagram-text" x="150" y="150">d1</text>
+                        <circle id="pulley2" class="pulley" cx="550" cy="150" r="100" />
+                        <text id="pulley2_text" class="diagram-text" x="550" y="150">d2</text>
+                        <path id="beltPath" class="belt" d="M150,100 L550,50 A100,100 0 1 1 550,250 L150,200 A50,50 0 1 1 150,100" />
+                    </svg>
+                </div>
+
+                <div id="direct-results-container">
+                     <h3>Resultados do Cálculo:</h3>
+                    <div class="card" id="results-card">
+                         <p>RPM Final: <span id="resultadoRpm">--</span></p>
+                         <p>Relação de Transmissão: <span id="resultadoRelacao">--</span></p>
+                         <p>Correia Sugerida: <span id="resultadoCorreia">--</span></p>
+                         <p>Número de Correias: <span id="resultadoNumCorreias">--</span></p>
+                    </div>
+                     <div class="card" id="velocidadeCorreiaCard">
+                         <h4>Velocidade da Correia</h4>
+                         <p><span id="resultadoVelocidade">--</span> m/s</p>
+                     </div>
+                     <div class="card" id="anguloAbracamentoCard">
+                         <h4>Ângulo de Abraçamento</h4>
+                         <p><span id="resultadoAngulo">--</span> °</p>
+                     </div>
+                     <div class="card" id="forcaEixoCard">
+                         <h4>Força no Eixo</h4>
+                         <p><span id="resultadoForca">--</span> kgf</p>
+                     </div>
+                     <div class="card" id="frequenciaVibracaoCard">
+                         <h4>Frequência de Vibração Natural da Correia</h4>
+                         <p><span id="resultadoFrequencia">--</span> Hz</p>
+                     </div>
+                </div>
+
+                <div class="card" id="tips-card" style="display: none;">
+                     <h2><i class="fas fa-lightbulb"></i> Dicas e Sugestões</h2>
+                     <ul id="dicasLista">
+                          <li>Preencha os dados e clique em "Calcular".</li>
+                     </ul>
+                </div>
+
+                 <div class="card" id="diagnosis-module">
+                      <h2><i class="fas fa-stethoscope"></i> Diagnóstico de Falhas Comuns</h2>
+                       <div class="input-group">
+                           <label for="failureType">Tipo de Falha:</label>
+                           <select id="failureType">
+                                <option value="">Selecione...</option>
+                                <option value="slipping">Deslizamento da Correia</option>
+                                <option value="noise">Ruído Excessivo</option>
+                                <option value="vibration">Vibração Anormal</option>
+                                <option value="wear">Desgaste Excessivo da Correia</option>
+                           </select>
+                      </div>
+                       <div id="diagnosisResult">
+                           <!-- Diagnosis results will be displayed here -->
+                      </div>
+                </div>
+
+                </section>
+        </main>
+    </div>
+
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Optional: Add any inline scripts here if needed, though it's
+        // generally better to keep most logic in script.js
+        // Example: document.addEventListener('DOMContentLoaded', () => { ... });
+    </script>
+
+     <!-- Modal Structure -->
+     <div id="customModal" class="modal">
+          <div class="modal-content">
+               <span class="close-button">&times;</span>
+               <p id="modalMessage"></p>
+               <div class="modal-buttons">
+                    <button id="modalConfirmBtn" style="display: none;">Confirmar</button>
+                    <button id="modalCancelBtn" style="display: none;">Cancelar</button>
+               </div>
+          </div>
+     </div>
+
+     <!-- File Input for Import (hidden) -->
+     <input type="file" id="fileInput" style="display: none;">
+
+      <!-- Comparison Results Container -->
+     <div id="comparison-results-container" style="display: none;">
+           <!-- Comparison table will be populated by script.js -->
+      </div>
+</body>
+</html>
