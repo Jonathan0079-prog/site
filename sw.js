@@ -5,6 +5,7 @@ const APP_SHELL_URLS = [
   '/index.html',
   '/style.css',
   '/images/icon-512x512.png'
+  'programas/index.html'
 ];
 
 // Instalação: cacheia arquivos essenciais
