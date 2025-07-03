@@ -321,6 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNÇÕES AUXILIARES E DE SETUP ---
     function populateSelect(selectElement, options, isObject = false) {
+        if (!selectElement) { console.warn('populateSelect chamada com elemento nulo.'); return; }
         console.log('Chamada para populateSelect. Elemento:', selectElement, '| Opções:', options);
         const currentValue = selectElement.value;
         selectElement.innerHTML = '';
@@ -498,9 +499,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- FUNÇÃO DE INICIALIZAÇÃO ---
     function init() {
         populateBeltProfileSelect();
-        // Obter referências específicas para os selects de diâmetro
-        dom.diametroMotora = document.getElementById('diametroMotora');
-        dom.diametroMovida = document.getElementById('diametroMovida');
 
  console.log('Iniciando init');
 
