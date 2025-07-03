@@ -409,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function exportProjects() { /* ... */ }
     function importProjects() { /* ... */ }
     function handleFileSelect(event) { /* ... */ }
-    function showModal(message, type = 'alert', callback = null) { /* ... */ }
+    function showModal(message, type = 'alert', callback = null) { /* ... */ } 
     function hideModal() { /* ... */ }
     function setupEventListeners() {
  console.log('Configurando event listeners.');
