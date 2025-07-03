@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'diagram-card', 'pulley1', 'pulley2', 'beltPath', 'centerLine', 'pulley1_text', 'pulley2_text'
     ];
     ids.forEach(id => dom[id] = document.getElementById(id));
+    
+    console.log('dom.saveProjectBtn:', dom.saveProjectBtn);
+
 
     // --- ESTADO DA APLICAÇÃO ---
     let currentResults = {};
@@ -416,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
  if (dom.tipoCorreia) dom.tipoCorreia.addEventListener('change', updatePulleySelects);
  if (dom.diametroMotora) dom.diametroMotora.addEventListener('change', suggestDistance);
- if (dom.diametroMovida) dom.diametroMovida.addEventListener('change', suggestDistance);
+ if (dom.diametroMovida) dom.diametroMovida.addEventListener('change', suggestDistance); // Ensure this has a check
 
  console.log('Configurando listener para calcularBtn:', dom.calcularBtn);
  if (dom.calcularBtn) dom.calcularBtn.addEventListener('click', runDirectCalculation);
@@ -498,9 +501,31 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- FUNÇÃO DE INICIALIZAÇÃO ---
     function init() {
-        populateBeltProfileSelect();
-
  console.log('Iniciando init');
+        // --- SELEÇÃO DE ELEMENTOS DO DOM ---
+        const dom = {};
+        const ids = [
+            'rpmMotor', 'potenciaMotor', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos',
+            'fatorServico',
+            'calcularBtn', 'resetBtn', 'printBtn', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn',
+            'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico',
+            'projectName', 'saveProjectBtn', 'projectList',
+            'importBtn', 'exportBtn', 'fileInput', 'compareProject1', 'compareProject2', 'compareBtn',
+            'failureType', 'diagnosisResult', 'direct-calculation-module', 'reverse-calculation-module',
+            'direct-results-container', 'reverse-results-container', 'comparison-results-container', 'solutionsTable',
+            'comparisonTable', 'resultadoCorreia', 'resultadoNumCorreias', 'resultadoRpm', 'resultadoRelacao',
+            'resultadoVelocidade', 'resultadoAngulo', 'resultadoForca', 'resultadoFrequencia', 'velocidadeCorreiaCard',
+            'anguloAbracamentoCard', 'forcaEixoCard', 'frequenciaVibracaoCard', 'customModal',
+            'modalMessage', 'modalConfirmBtn', 'modalCancelBtn', 'dicasLista', 'tips-card',
+            'diagram-card', 'pulley1', 'pulley2', 'beltPath', 'centerLine', 'pulley1_text', 'pulley2_text'
+        ];
+        ids.forEach(id => dom[id] = document.getElementById(id));
+
+        console.log('dom.saveProjectBtn:', dom.saveProjectBtn);
+        console.log('dom.diametroMotora:', dom.diametroMotora);
+        console.log('dom.diametroMovida:', dom.diametroMovida);
+
+        populateBeltProfileSelect();
 
         // Tenta selecionar um perfil padrão se nenhum estiver selecionado
         if (!dom.tipoCorreia.value && dom.tipoCorreia.options.length > 0) {
@@ -509,8 +534,8 @@ document.addEventListener('DOMContentLoaded', () => {
         populateServiceFactorSelects();
         loadFormState();
  setupEventListeners(); 
-        loadProjects();
- updatePulleySelects(); // Chamar updatePulleySelects após tentar definir o perfil padrão
+        loadProjects(); // Make sure loadProjects also uses checks for dom.projectList
+        updatePulleySelects(); // Chamar updatePulleySelects após tentar definir o perfil padrão
     }
 
     init();
