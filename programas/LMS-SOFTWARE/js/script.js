@@ -1,6 +1,44 @@
-// js/script.js
+// js/script.js (da página principal do SGL)
 
 import { tabelaSimilaridade, matrizCompatibilidade } from '../data/database.js';
+
+// --- BASE DE DADOS PARA OS ARTIGOS TÉCNICOS ---
+const baseDeConhecimento = [
+    {
+        titulo: "O que é Viscosidade (ISO VG)?",
+        conteudo: `
+            <p>A viscosidade é a propriedade mais importante de um lubrificante. Ela mede a resistência do fluido ao escoamento. Em termos simples, é a "grossura" do óleo.</p>
+            <ul>
+                <li><strong>Óleos de baixa viscosidade (finos):</strong> Escoam facilmente (ex: água). São ideais para altas velocidades e baixas cargas.</li>
+                <li><strong>Óleos de alta viscosidade (grossos):</strong> Escoam lentamente (ex: mel). São necessários para baixas velocidades e altas cargas, onde precisam de suportar mais pressão.</li>
+            </ul>
+            <p>O <strong>ISO VG (International Standards Organization Viscosity Grade)</strong> é um sistema de classificação que define a viscosidade cinemática de um óleo industrial a 40°C. Um óleo "ISO VG 46" tem uma viscosidade de 46 centistokes (cSt) a 40°C, com uma tolerância de ±10%. Escolher o ISO VG correto, conforme a recomendação do fabricante e as condições de operação, é crucial para a proteção e eficiência do equipamento.</p>
+        `
+    },
+    {
+        titulo: "Tipos de Óleo Base: Mineral vs. Sintético",
+        conteudo: `
+            <p>O óleo base compõe a maior parte do lubrificante e determina as suas características fundamentais.</p>
+            <p><strong>Óleo Mineral:</strong> Derivado do petróleo bruto, é o tipo mais comum e económico. É excelente para uma vasta gama de aplicações industriais padrão. No entanto, possui menor resistência a temperaturas extremas e oxidação em comparação com os sintéticos.</p>
+            <p><strong>Óleo Sintético (PAO - Polialfaolefina):</strong> Produzido em laboratório, oferece performance superior. Possui excelente estabilidade térmica, alto índice de viscosidade (varia menos com a temperatura) e maior vida útil. É ideal para condições severas de operação (temperaturas muito altas ou muito baixas). É compatível com óleos minerais.</p>
+            <p><strong>Óleo Sintético (PAG - Polialquileno Glicol):</strong> Outro tipo de sintético com altíssima performance, especialmente em aplicações de engrenagens sem-fim. Possui lubricidade natural superior, mas é <strong>INCOMPATÍVEL</strong> com óleos minerais e PAO. A mistura pode causar a formação de borra e gel, levando a falhas catastróficas. Exige limpeza completa (flushing) do sistema antes da troca.</p>
+        `
+    },
+    {
+        titulo: "A Importância do Flushing (Limpeza do Sistema)",
+        conteudo: `
+            <p>O flushing é o processo de circulação de um fluido de limpeza pelo sistema para remover verniz, borra, contaminantes e resíduos do óleo antigo antes de introduzir o novo lubrificante.</p>
+            <p><strong>Quando o Flushing é OBRIGATÓRIO?</strong></p>
+            <ul>
+                <li><strong>Troca de base incompatível:</strong> Ao mudar de um óleo mineral ou PAO para um óleo PAG (ou vice-versa). Como visto na nossa ferramenta, a mistura é proibida e destrutiva.</li>
+                <li><strong>Alta contaminação:</strong> Quando o óleo antigo está severamente degradado, oxidado ou contaminado com água, partículas ou outros fluidos.</li>
+                <li><strong>Falha de componente:</strong> Após uma falha de bomba, rolamento ou engrenagem, para remover as partículas metálicas geradas.</li>
+            </ul>
+            <p>Ignorar o flushing nestas situações é como tomar banho e vestir a mesma roupa suja. O novo óleo será imediatamente contaminado, a sua vida útil será drasticamente reduzida e o risco de uma nova falha permanece elevado.</p>
+        `
+    }
+];
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- SELEÇÃO DE ELEMENTOS DOM ---
@@ -15,20 +53,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalDescription = document.getElementById('modal-description');
     const modalCloseButton = document.getElementById('modal-close-button');
 
-    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    const accordionContainer = document.querySelector('.accordion');
 
-    // --- LÓGICA DA BASE DE CONHECIMENTO ---
-    accordionHeaders.forEach(header => {
-        header.addEventListener('click', () => {
-            const content = header.nextElementSibling;
-            header.classList.toggle('active');
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
+    // --- LÓGICA DA BASE DE CONHECIMENTO (NOVA) ---
+    function popularBaseDeConhecimento() {
+        if (!accordionContainer) return;
+
+        baseDeConhecimento.forEach(item => {
+            const accordionItem = document.createElement('div');
+            accordionItem.className = 'accordion-item';
+
+            const button = document.createElement('button');
+            button.className = 'accordion-header';
+            button.innerHTML = `
+                ${item.titulo}
+                <i class="fas fa-chevron-down"></i>
+            `;
+
+            const content = document.createElement('div');
+            content.className = 'accordion-content';
+            content.innerHTML = item.conteudo;
+
+            accordionItem.appendChild(button);
+            accordionItem.appendChild(content);
+            accordionContainer.appendChild(accordionItem);
+
+            button.addEventListener('click', () => {
+                button.classList.toggle('active');
+                const contentDiv = button.nextElementSibling;
+                if (contentDiv.style.maxHeight) {
+                    contentDiv.style.maxHeight = null;
+                } else {
+                    contentDiv.style.maxHeight = contentDiv.scrollHeight + "px";
+                }
+            });
         });
-    });
+    }
 
     // --- LÓGICA DA MODAL ---
     function exibirModalCompatibilidade(info) {
@@ -42,8 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.add('hidden');
     }
 
-    // --- LÓGICA DO BUSCADOR (ATUALIZADA) ---
-
+    // --- LÓGICA DO BUSCADOR ---
     function resetSelect(select, message, disabled = true) {
         select.innerHTML = `<option value="">${message}</option>`;
         select.disabled = disabled;
@@ -59,23 +118,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ATUALIZADO: Permite mostrar todas as marcas ao selecionar "todas as aplicações"
     function popularMarcas(aplicacaoSelecionada) {
         resetSelect(marcaSelect, '-- Selecione uma aplicação --');
         resetSelect(oleoSelect, '-- Selecione uma marca --');
-
-        // Se nenhuma aplicação for selecionada (todas), mostra todas as marcas
-        let gruposFiltrados;
-        if (!aplicacaoSelecionada) {
-            gruposFiltrados = tabelaSimilaridade;
-        } else {
-            gruposFiltrados = tabelaSimilaridade.filter(item => item.APLICACAO === aplicacaoSelecionada);
-        }
+        
+        if (!aplicacaoSelecionada) return;
 
         const marcas = new Set();
-        gruposFiltrados.forEach(grupo => {
-            Object.keys(grupo.PRODUTOS).forEach(marca => marcas.add(marca));
-        });
+        tabelaSimilaridade
+            .filter(item => item.APLICACAO === aplicacaoSelecionada)
+            .forEach(grupo => {
+                Object.keys(grupo.PRODUTOS).forEach(marca => marcas.add(marca));
+            });
 
         marcaSelect.innerHTML = '<option value="">-- Selecione a Marca --</option>';
         Array.from(marcas).sort().forEach(marca => {
@@ -93,14 +147,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!marcaSelecionada) return;
 
         const produtos = [];
-        // NOTA: Aqui continua filtrando pela aplicação selecionada!
         tabelaSimilaridade
-            .filter(item => !aplicacaoSelecionada || item.APLICACAO === aplicacaoSelecionada)
-            .forEach((grupo, index) => {
+            .filter(item => item.APLICACAO === aplicacaoSelecionada)
+            .forEach((grupo) => {
                 if (grupo.PRODUTOS[marcaSelecionada]) {
+                    const grupoIndexOriginal = tabelaSimilaridade.findIndex(originalGrupo => originalGrupo === grupo);
                     produtos.push({
                         nome: grupo.PRODUTOS[marcaSelecionada].NOME,
-                        grupoIndex: tabelaSimilaridade.indexOf(grupo) // Garante o índice correto do array original
+                        grupoIndex: grupoIndexOriginal
                     });
                 }
             });
@@ -193,18 +247,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- EVENT LISTENERS ---
     applicationSelect.addEventListener('change', () => {
         popularMarcas(applicationSelect.value);
-        resultsContainer.innerHTML = '';
     });
     
     marcaSelect.addEventListener('change', () => {
         popularProdutos(applicationSelect.value, marcaSelect.value);
-        resultsContainer.innerHTML = '';
     });
 
     searchButton.addEventListener('click', encontrarSubstitutos);
-    modalCloseButton && modalCloseButton.addEventListener('click', fecharModal);
-    modal && modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
+    modalCloseButton.addEventListener('click', fecharModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
 
     // --- INICIALIZAÇÃO ---
     popularAplicacoes();
+    popularBaseDeConhecimento(); // Chama a nova função para criar os artigos
 });
