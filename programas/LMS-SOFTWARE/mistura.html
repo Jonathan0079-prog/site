@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGL - Calculador de Mistura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Gestão de Lubrificação</h1>
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link">Buscador</a>
+            <a href="calculadora.html" class="nav-link">Calculadora VG</a>
+            <a href="plano.html" class="nav-link">Plano de Lubrificação</a>
+            <a href="mistura.html" class="nav-link active">Calculador de Mistura</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main>
+            <section class="blend-calculator-section">
+                <h2>Calculador de Viscosidade de Mistura</h2>
+                <div class="blend-form">
+                    <div class="oil-input-card">
+                        <h3><i class="fas fa-tint"></i> Óleo 1 (Mais Fino)</h3>
+                        <div class="input-group">
+                            <label for="viscosity1">Viscosidade Cinemática (cSt) a 40°C</label>
+                            <input type="number" id="viscosity1" placeholder="Ex: 32">
+                        </div>
+                        <div class="input-group">
+                            <label for="percentage1">Percentagem na Mistura (%)</label>
+                            <input type="number" id="percentage1" placeholder="Ex: 50">
+                        </div>
+                    </div>
+                    
+                    <div class="oil-input-card">
+                        <h3><i class="fas fa-tint"></i> Óleo 2 (Mais Grosso)</h3>
+                        <div class="input-group">
+                            <label for="viscosity2">Viscosidade Cinemática (cSt) a 40°C</label>
+                            <input type="number" id="viscosity2" placeholder="Ex: 100">
+                        </div>
+                    </div>
+                </div>
+                <button id="calculate-blend-button">Calcular Viscosidade da Mistura</button>
+
+                <div id="blend-result" class="hidden">
+                    <h3>Resultado da Mistura:</h3>
+                    <p id="blend-result-text" class="recommended-vg"></p>
+                    <p class="justification-text">Este cálculo é baseado na equação de Arrhenius e é uma estimativa precisa para óleos da mesma base. A mistura de bases diferentes pode resultar em valores diferentes e problemas de compatibilidade.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script type="module" src="js/mistura.js"></script>
+</body>
+</html>
