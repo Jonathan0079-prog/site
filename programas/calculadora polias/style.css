@@ -258,9 +258,12 @@ input.invalid {
     color: var(--primary-color);
 }
 
-.results-grid-secondary {
+#direct-results-container > .card,
+#reverse-results-container > .card,
+#comparison-results-container > .card {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    /* Adjusting grid to better accommodate potentially more items and varied sizes */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
     gap: 1rem;
 }
 

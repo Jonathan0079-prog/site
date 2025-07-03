@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const nominalBeltPower = powerForRpm + powerFromRatio;
 
         const L = 2 * c + (Math.PI * (d1 + d2) / 2) + (Math.pow(d2 - d1, 2) / (4 * c));
-        const angle = 180 - 2 * Math.asin((d2 - d1) / (2 * c)) * (180 / Math.PI);
+ const angle = (d2 > d1 && c > 0) ? (180 - 2 * Math.asin((d2 - d1) / (2 * c)) * (180 / Math.PI)) : 180;
         
         const Ka = (angle < 180) ? 1 - (0.003 * (180 - angle)) : 1.0;
         
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const bestFitBelt = findBestFit(L, beltLengths);
         const beltName = `${profile}${Math.round(bestFitBelt / 25.4)}0`;
         
-        return { name: name || 'Projeto Atual', rpm, power, fs, designPower, profile, d1, d2, c, rpmFinal, ratio, L, beltSpeed, angle, numBelts, shaftLoad, vibrationFreq, beltName, bestFitBelt };
+ return { name: name || 'Projeto Atual', rpm, power, fs, designPower, profile, d1, d2, c, rpmFinal, ratio, L, beltSpeed, angle, numBelts, shaftLoad, vibrationFreq, beltName, bestFitBelt, nominalBeltPower, correctedBeltPower };
     }
 
     // --- LÓGICA DOS MÓDULOS ---
@@ -222,6 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.resultadoForca.textContent = results.shaftLoad.toFixed(2);
         dom.resultadoFrequencia.textContent = results.vibrationFreq.toFixed(1);
 
+        // Adicionar exibição da Potência de Projeto e Comprimento Teórico
+        // Você precisará adicionar elementos HTML correspondentes em index.html
         updateCardStatus(dom.velocidadeCorreiaCard, results.beltSpeed, 30, 35);
         updateCardStatus(dom.anguloAbracamentoCard, results.angle, 120, 100, false);
         updateCardStatus(dom.forcaEixoCard, results.shaftLoad, 500, 1000);
@@ -412,16 +414,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupEventListeners() {
  console.log('Configurando event listeners.');
  if (dom.modeDirectBtn) dom.modeDirectBtn.addEventListener('click', () => { setMode('direct'); saveFormState(); });
- if (dom.modeReverseBtn) dom.modeReverseBtn.addEventListener('click', () => { setMode('reverse'); saveFormState(); });
-
-
+        if (dom.modeReverseBtn) dom.modeReverseBtn.addEventListener('click', () => { setMode('reverse'); saveFormState(); });
         formInputIds.forEach(id => { if (dom[id]) dom[id].addEventListener('change', saveFormState); });
-        
  if (dom.tipoCorreia) dom.tipoCorreia.addEventListener('change', updatePulleySelects);
  if (dom.diametroMotora) dom.diametroMotora.addEventListener('change', suggestDistance);
  if (dom.diametroMovida) dom.diametroMovida.addEventListener('change', suggestDistance); // Ensure this has a check
 
- if (dom.calcularBtn) dom.calcularBtn.addEventListener('click', runDirectCalculation);
+        if (dom.calcularBtn) dom.calcularBtn.addEventListener('click', runDirectCalculation);
  console.log('Configurando listener para optimizeBtn:', dom.optimizeBtn);
  if (dom.optimizeBtn) dom.optimizeBtn.addEventListener('click', runReverseOptimization);
  console.log('Configurando listener para resetBtn:', dom.resetBtn);
@@ -431,16 +430,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
  if (dom.saveProjectBtn) dom.saveProjectBtn.addEventListener('click', saveProject);
  console.log('Adicionando listener para:', 'projectList', dom.projectList);
- if (dom.projectList) dom.projectList.addEventListener('click', handleProjectListClick);
-        dom.compareBtn.addEventListener('click', runComparison);
-        dom.failureType.addEventListener('change', runDiagnosis);
-        dom.importBtn.addEventListener('click', importProjects);
-        dom.exportBtn.addEventListener('click', exportProjects);
-        dom.fileInput.addEventListener('change', handleFileSelect);
+        if (dom.projectList) dom.projectList.addEventListener('click', handleProjectListClick);
+        if (dom.compareBtn) dom.compareBtn.addEventListener('click', runComparison);
+        if (dom.failureType) dom.failureType.addEventListener('change', runDiagnosis);
+        if (dom.importBtn) dom.importBtn.addEventListener('click', importProjects);
+        if (dom.exportBtn) dom.exportBtn.addEventListener('click', exportProjects);
+        if (dom.fileInput) dom.fileInput.addEventListener('change', handleFileSelect);
         
-        dom.modalConfirmBtn.addEventListener('click', () => { if (modalCallback) modalCallback(); hideModal(); });
-        dom.modalCancelBtn.addEventListener('click', hideModal);
-        
+        if (dom.modalConfirmBtn) dom.modalConfirmBtn.addEventListener('click', () => { if (modalCallback) modalCallback(); hideModal(); });
+        if (dom.modalCancelBtn) dom.modalCancelBtn.addEventListener('click', hideModal);
+
         document.querySelectorAll('input[type="number"]').forEach(input => { input.addEventListener('input', () => input.classList.remove('invalid')); });
         
         dom.solutionsTable.addEventListener('click', (e) => {
