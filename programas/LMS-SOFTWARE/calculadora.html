@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGL - Calculadora de Viscosidade</title>
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#003366">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="../style.css"> </head>
 <body>
     <header>
         <h1>Sistema de Gestão de Lubrificação</h1>
         <nav class="main-nav">
-            <a href="index.html" class="nav-link">Buscador</a>
-            <a href="calculadora.html" class="nav-link active">Calculadora</a>
-            <a href="plano.html" class="nav-link">Plano de Lubrificação</a>
-            <a href="mistura.html" class="nav-link">Calculador de Mistura</a>
+            <a href="../index.html" class="nav-link">Buscador</a>
+            <a href="calculadora.html" class="nav-link active">Calculadora VG</a>
+            <a href="../plano.html" class="nav-link">Plano de Lubrificação</a>
+            <a href="../mistura.html" class="nav-link">Calculador de Mistura</a>
         </nav>
     </header>
 
@@ -48,9 +49,38 @@
                 </div>
             </section>
             <div id="calculator-search-results-container"></div>
+
+            <section class="saved-projects-section">
+                <h2><i class="fas fa-save"></i> Projetos Salvos</h2>
+                <div class="save-project-form">
+                    <div class="input-group">
+                        <label for="project-name">Nome para o Projeto Atual</label>
+                        <input type="text" id="project-name" placeholder="Ex: Motor Principal Prensa 1">
+                    </div>
+                    <button id="save-project-btn"><i class="fas fa-plus-circle"></i> Salvar Cálculo Atual</button>
+                </div>
+                <div class="load-project-form">
+                    <div class="input-group">
+                        <label for="saved-projects-select">Carregar Projeto Salvo</label>
+                        <select id="saved-projects-select">
+                            <option value="">-- Nenhum projeto salvo --</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button id="load-project-btn"><i class="fas fa-upload"></i> Carregar Projeto</button>
+                        <button id="delete-project-btn" class="delete-button"><i class="fas fa-trash-alt"></i> Apagar Projeto</button>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
     
-    <script type="module" src="js/calculadora.js"></script>
+    <script type="module" src="../js/calculadora.js"></script> <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('../sw.js').then(reg => console.log('Service worker registado.', reg));
+            });
+        }
+    </script>
 </body>
 </html>
