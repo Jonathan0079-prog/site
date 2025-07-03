@@ -9,76 +9,134 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003366">
-
-    <style>
-        #diagram-card {
-            display: none; /* Começa escondido */
-        }
-        #transmissionDiagram {
-            width: 100%;
-            height: auto;
-            max-height: 250px;
-            background: var(--background-color-light);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-        #transmissionDiagram .pulley {
-            fill: #7d8da1; /* Cinza azulado para as polias */
-            stroke: #333;
-            stroke-width: 1px;
-        }
-        #transmissionDiagram .belt {
-            fill: none;
-            stroke: #555; /* Cinza escuro para a correia */
-            stroke-width: 4px;
-            stroke-linejoin: round;
-        }
-        #transmissionDiagram .center-line {
-            stroke: var(--danger-color);
-            stroke-width: 0.5px;
-            stroke-dasharray: 4 2;
-        }
-         #transmissionDiagram .diagram-text {
-            font-size: 12px;
-            fill: var(--text-color);
-            text-anchor: middle;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
 
     <div class="app-container">
-        <header class="app-header"></header>
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-cogs"></i> Suíte de Engenharia de Transmissão</h1>
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch"><input type="checkbox" id="themeToggle"><span class="slider"></span></label>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
         <main class="app-main">
-            <section id="inputs-column"></section>
+            <section id="inputs-column">
+                <div class="card" id="mode-selector">
+                    <h2><i class="fas fa-toggle-on"></i> Modo de Operação</h2>
+                    <div class="button-group-toggle">
+                        <button id="modeDirectBtn" class="toggle-button active">Cálculo Direto</button>
+                        <button id="modeReverseBtn" class="toggle-button">Cálculo Reverso (Otimizador)</button>
+                    </div>
+                </div>
+
+                <div class="card calculation-module" id="direct-calculation-module">
+                    <h2><i class="fas fa-calculator"></i> Parâmetros do Sistema</h2>
+                    <div class="input-grid">
+                        <div class="input-group"><label for="rpmMotor">RPM do Motor</label><input type="number" id="rpmMotor" placeholder="Ex: 1750"></div>
+                        <div class="input-group"><label for="potenciaMotor">Potência do Motor (CV)</label><input type="number" id="potenciaMotor" placeholder="Ex: 5"></div>
+                    </div>
+                    <div class="input-group"><label for="fatorServico">Regime de Trabalho (Fator de Serviço)</label><select id="fatorServico"></select></div>
+                    <div class="input-group"><label for="tipoCorreia">Perfil da Correia</label><select id="tipoCorreia"></select></div>
+                    <div class="input-grid">
+                        <div class="input-group"><label for="diametroMotora">Polia Motora (mm)</label><select id="diametroMotora"></select></div>
+                        <div class="input-group"><label for="diametroMovida">Polia Movida (mm)</label><select id="diametroMovida"></select></div>
+                    </div>
+                    <div class="input-group"><label for="distanciaEixos">Distância entre Eixos (mm)</label><input type="number" id="distanciaEixos" placeholder="Distância customizada"></div>
+                    <div class="button-group">
+                        <button id="calcularBtn" class="main-button"><i class="fas fa-check-circle"></i> Calcular</button>
+                        <button id="resetBtn" class="secondary-button"><i class="fas fa-undo"></i> Zerar</button>
+                    </div>
+                </div>
+
+                <div class="card calculation-module" id="reverse-calculation-module" style="display: none;">
+                    <h2><i class="fas fa-magic"></i> Otimizador de Projeto</h2>
+                    <div class="input-grid">
+                        <div class="input-group"><label for="revRpmMotor">RPM do Motor</label><input type="number" id="revRpmMotor" placeholder="Ex: 1750"></div>
+                        <div class="input-group"><label for="revRpmFinal">RPM Final Desejado (±5%)</label><input type="number" id="revRpmFinal" placeholder="Ex: 450"></div>
+                    </div>
+                    <div class="input-group"><label for="revPotenciaMotor">Potência do Motor (CV)</label><input type="number" id="revPotenciaMotor" placeholder="Ex: 5"></div>
+                    <div class="input-group"><label for="revFatorServico">Regime de Trabalho (Fator de Serviço)</label><select id="revFatorServico"></select></div>
+                    <div class="button-group">
+                        <button id="optimizeBtn" class="main-button"><i class="fas fa-search"></i> Encontrar Soluções</button>
+                    </div>
+                </div>
+
+                <div class="card" id="saved-projects">
+                    <h2><i class="fas fa-save"></i> Projetos Salvos</h2>
+                    <div class="input-group"><label for="projectName">Nome do Projeto para Salvar</label><input type="text" id="projectName" placeholder="Ex: Ventilador Principal"></div>
+                    <button id="saveProjectBtn" class="main-button" style="background: var(--primary-color);"><i class="fas fa-plus-circle"></i> Salvar Projeto Atual</button>
+                    <div class="io-button-group">
+                        <button id="importBtn" class="secondary-button"><i class="fas fa-upload"></i> Importar</button>
+                        <button id="exportBtn" class="secondary-button"><i class="fas fa-download"></i> Exportar</button>
+                    </div>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;">
+                    <div id="projectList"></div>
+                </div>
+            </section>
 
             <section id="outputs-column">
-                <div class="card" id="diagram-card">
+                <div class="card" id="diagram-card" style="display: none;">
                     <h2><i class="fas fa-project-diagram"></i> Diagrama do Sistema</h2>
-                    <svg id="transmissionDiagram" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet">
-                        <line id="centerLine" class="center-line" x1="0" y1="150" x2="800" y2="150" />
-                        <circle id="pulley1" class="pulley" cx="150" cy="150" r="50" />
-                        <text id="pulley1_text" class="diagram-text" x="150" y="150">d1</text>
-                        <circle id="pulley2" class="pulley" cx="550" cy="150" r="100" />
-                        <text id="pulley2_text" class="diagram-text" x="550" y="150">d2</text>
-                        <path id="beltPath" class="belt" d="M150,100 L550,50 A100,100 0 1 1 550,250 L150,200 A50,50 0 1 1 150,100" />
-                    </svg>
+                    <svg id="transmissionDiagram" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet"></svg>
                 </div>
 
                 <div id="direct-results-container">
                     <div class="card" id="results-card">
-                       </div>
+                        <div class="card-header">
+                            <h2><i class="fas fa-chart-bar"></i> Resultados do Projeto</h2>
+                            <button id="printBtn" class="icon-button"><i class="fas fa-print"></i></button>
+                        </div>
+                        <div class="results-grid-main">
+                            <div class="result-item highlight-result"><span class="label">Correia Comercial</span><span class="value" id="resultadoCorreia">--</span></div>
+                            <div class="result-item highlight-result success"><span class="label">Nº de Correias</span><span class="value" id="resultadoNumCorreias">--</span></div>
+                        </div>
+                        <div class="results-grid-secondary">
+                            <div class="result-item"><span class="label">RPM Final</span><span class="value" id="resultadoRpm">--</span></div>
+                            <div class="result-item"><span class="label">Relação</span><span class="value" id="resultadoRelacao">--</span></div>
+                            <div class="result-item" id="velocidadeCorreiaCard"><span class="label">Velocidade (m/s)</span><span class="value" id="resultadoVelocidade">--</span></div>
+                            <div class="result-item" id="anguloAbracamentoCard"><span class="label">Abraçamento (°)</span><span class="value" id="resultadoAngulo">--</span></div>
+                            <div class="result-item" id="forcaEixoCard"><span class="label">Força no Eixo (kgf)</span><span class="value" id="resultadoForca">--</span></div>
+                            <div class="result-item" id="frequenciaVibracaoCard"><span class="label">Freq. Vibração (Hz)</span><span class="value" id="resultadoFrequencia">--</span></div>
+                        </div>
+                    </div>
                 </div>
 
-                </section>
+                <div id="reverse-results-container" style="display: none;">
+                    <div class="card">
+                        <h2><i class="fas fa-stream"></i> Soluções Encontradas</h2>
+                        <div class="table-container">
+                            <table id="solutionsTable">
+                                <thead><tr><th>Perfil</th><th>P. Motora</th><th>P. Movida</th><th>Correia</th><th>Custo Est.</th><th>Ação</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
-
+    
     <script src="database.js"></script>
     <script src="script.js"></script>
     <script>
-        // ...
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(r => console.log('SW ok'), e => console.log('SW erro', e));
+            });
+        }
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.body.className = currentTheme + '-theme';
+        if(themeToggle) themeToggle.checked = currentTheme === 'dark';
+        if(themeToggle) themeToggle.addEventListener('change', function() {
+            document.body.className = this.checked ? 'dark-theme' : 'light-theme';
+            localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+        });
     </script>
 </body>
 </html>
