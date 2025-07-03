@@ -3,9 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- SELEÇÃO DE ELEMENTOS DO DOM ---
     const dom = {};
     const ids = [
-        // ... todos os IDs anteriores ...
-        'dicasLista', 'tips-card',
-        // IDs NOVOS PARA O DIAGRAMA
+        // ... (lista de ids continua a mesma) ...
         'diagram-card', 'pulley1', 'pulley2', 'beltPath', 'centerLine', 'pulley1_text', 'pulley2_text'
     ];
     ids.forEach(id => dom[id] = document.getElementById(id));
@@ -13,129 +11,132 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- ESTADO DA APLICAÇÃO ---
     let currentResults = {};
     let modalCallback = null;
+    let currentMode = 'direct'; // Variável para rastrear o modo atual
+
+    // =======================================================
+    // --- NOVA SEÇÃO: ESTADO DO FORMULÁRIO (localStorage) ---
+    // =======================================================
+    const formStateKey = 'transmissionFormState';
+    const formInputIds = [
+        'rpmMotor', 'potenciaMotor', 'fatorServico', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos',
+        'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico'
+    ];
+    
+    function saveFormState() {
+        const state = {
+            mode: currentMode
+        };
+        formInputIds.forEach(id => {
+            if (dom[id]) {
+                state[id] = dom[id].value;
+            }
+        });
+        localStorage.setItem(formStateKey, JSON.stringify(state));
+    }
+
+    function loadFormState() {
+        const savedState = localStorage.getItem(formStateKey);
+        if (!savedState) return;
+
+        const state = JSON.parse(savedState);
+        
+        // Carrega os valores, mas segura os selects de polia
+        formInputIds.forEach(id => {
+            if (dom[id] && state[id] !== undefined && id !== 'diametroMotora' && id !== 'diametroMovida') {
+                dom[id].value = state[id];
+            }
+        });
+        
+        // Define o modo de operação salvo
+        setMode(state.mode || 'direct');
+        
+        // Agora que o perfil da correia foi carregado, atualiza as opções de polia
+        updatePulleySelects();
+        
+        // E finalmente, define os valores salvos para as polias
+        if(state.diametroMotora) dom.diametroMotora.value = state.diametroMotora;
+        if(state.diametroMovida) dom.diametroMovida.value = state.diametroMovida;
+    }
 
     // --- LÓGICA DE CÁLCULO (SEM ALTERAÇÕES) ---
     function performCalculations(params) { /* ... */ }
 
-    // --- LÓGICA DOS MÓDULOS ---
-    function runDirectCalculation() {
-        if (!validateInputs(true)) { showModal('Por favor, corrija os campos inválidos.'); return; }
-        const params = {
-            rpm: parseFloat(dom.rpmMotor.value),
-            power: parseFloat(dom.potenciaMotor.value),
-            fs: parseFloat(dom.fatorServico.value),
-            d1: parseFloat(dom.diametroMotora.value),
-            d2: parseFloat(dom.diametroMovida.value),
-            c: parseFloat(dom.distanciaEixos.value),
-            profile: dom.tipoCorreia.value
-        };
-        currentResults = performCalculations(params);
-        if (currentResults) {
-            updateDirectResultsUI(currentResults);
-            drawDiagram(currentResults); // <-- CHAMADA PARA DESENHAR O DIAGRAMA
-        }
-    }
-    // ... outras funções de módulos ...
+    // --- LÓGICA DOS MÓDULOS (SEM ALTERAÇÕES) ---
+    function runDirectCalculation() { /* ... */ }
+    function runReverseOptimization() { /* ... */ }
+    function runDiagnosis() { /* ... */ }
+    function runComparison() { /* ... */ }
 
     // --- ATUALIZAÇÃO DA UI ---
-    function updateDirectResultsUI(results) { /* ... */ }
-
-    // =======================================================
-    // --- NOVA SEÇÃO: LÓGICA DO DIAGRAMA ---
-    // =======================================================
-    function drawDiagram(results) {
-        const { d1, d2, c } = results;
-        if (!d1 || !d2 || !c) return;
-        
-        dom['diagram-card'].style.display = 'block';
-
-        const svgWidth = 800;
-        const svgHeight = 300;
-        const padding = 50;
-
-        // Escala: (largura total do sistema) -> (largura do SVG - paddings)
-        const totalWidth = d1 / 2 + c + d2 / 2;
-        const scale = (svgWidth - padding * 2) / totalWidth;
-
-        const r1 = (d1 / 2) * scale;
-        const r2 = (d2 / 2) * scale;
-        const c_scaled = c * scale;
-
-        const cy = svgHeight / 2;
-        const cx1 = padding + r1;
-        const cx2 = cx1 + c_scaled;
-        
-        // Atualiza polias
-        dom.pulley1.setAttribute('r', r1);
-        dom.pulley1.setAttribute('cx', cx1);
-        dom.pulley1.setAttribute('cy', cy);
-
-        dom.pulley2.setAttribute('r', r2);
-        dom.pulley2.setAttribute('cx', cx2);
-        dom.pulley2.setAttribute('cy', cy);
-
-        // Atualiza textos
-        dom.pulley1_text.setAttribute('x', cx1);
-        dom.pulley1_text.setAttribute('y', cy + 5);
-        dom.pulley1_text.textContent = `${d1}mm`;
-        
-        dom.pulley2_text.setAttribute('x', cx2);
-        dom.pulley2_text.setAttribute('y', cy + 5);
-        dom.pulley2_text.textContent = `${d2}mm`;
-
-        // Lógica da Correia (Trigonometria)
-        const delta_r = r2 - r1;
-        const alpha = Math.asin(delta_r / c_scaled);
-
-        // Pontos de tangência na polia 1 (motora)
-        const p1_x1 = cx1 + r1 * Math.sin(alpha);
-        const p1_y1 = cy - r1 * Math.cos(alpha);
-        const p1_x2 = cx1 - r1 * Math.sin(alpha);
-        const p1_y2 = cy + r1 * Math.cos(alpha);
-
-        // Pontos de tangência na polia 2 (movida)
-        const p2_x1 = cx2 + r2 * Math.sin(alpha);
-        const p2_y1 = cy - r2 * Math.cos(alpha);
-        const p2_x2 = cx2 - r2 * Math.sin(alpha);
-        const p2_y2 = cy + r2 * Math.cos(alpha);
-
-        // Grande arco na polia 2 (movida)
-        const largeArcFlag = (Math.PI - 2 * alpha) > Math.PI ? 1 : 0;
-        
-        // Monta o caminho (path) do SVG para a correia
-        const pathData = [
-            `M ${p1_x1} ${p1_y1}`, // Ponto de partida
-            `L ${p2_x1} ${p2_y1}`, // Linha reta superior
-            `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${p2_x2} ${p2_y2}`, // Arco na polia 2
-            `L ${p1_x2} ${p1_y2}`, // Linha reta inferior
-            `A ${r1} ${r1} 0 ${largeArcFlag} 1 ${p1_x1} ${p1_y1}`, // Arco na polia 1
-        ].join(' ');
-
-        dom.beltPath.setAttribute('d', pathData);
-        
-        // Atualiza linha de centro
-        dom.centerLine.setAttribute('x1', cx1);
-        dom.centerLine.setAttribute('x2', cx2);
+    function setMode(mode) {
+        currentMode = mode; // Atualiza o estado do modo
+        dom['direct-calculation-module'].style.display = mode === 'direct' ? 'block' : 'none';
+        dom['reverse-calculation-module'].style.display = mode === 'reverse' ? 'block' : 'none';
+        dom['direct-results-container'].style.display = mode === 'direct' ? 'block' : 'none';
+        dom['reverse-results-container'].style.display = mode === 'reverse' ? 'block' : 'none';
+        dom['comparison-results-container'].style.display = mode === 'compare' ? 'block' : 'none';
+        dom['tips-card'].style.display = (mode === 'direct' || mode === 'reverse') ? 'block' : 'none';
+        dom.modeDirectBtn.classList.toggle('active', mode === 'direct');
+        dom.modeReverseBtn.classList.toggle('active', mode === 'reverse');
+        resetDiagram(); // Reseta o diagrama ao trocar de modo
     }
-
-    function resetDiagram() {
-        if(dom['diagram-card']) {
-            dom['diagram-card'].style.display = 'none';
-        }
-    }
-
-    // ... restante das funções de UI ...
+    
+    // ... (demais funções de UI e Diagrama) ...
 
     // --- FUNÇÕES DE SETUP E EVENTOS ---
-    function setupEventListeners() { /* ... */ }
+    function setupEventListeners() {
+        // Eventos para trocar de modo
+        dom.modeDirectBtn.addEventListener('click', () => {
+            setMode('direct');
+            saveFormState(); // Salva o estado ao trocar de modo
+        });
+        dom.modeReverseBtn.addEventListener('click', () => {
+            setMode('reverse');
+            saveFormState(); // Salva o estado ao trocar de modo
+        });
 
-    function resetForm() {
-        // ... código do resetForm ...
-        resetDiagram(); // <-- CHAMADA PARA ESCONDER O DIAGRAMA
-        // ... resto do código ...
+        // Eventos dos botões principais
+        dom.calcularBtn.addEventListener('click', runDirectCalculation);
+        dom.optimizeBtn.addEventListener('click', runReverseOptimization);
+        dom.resetBtn.addEventListener('click', resetForm);
+        // ... (outros eventos de botões) ...
+
+        // Evento para salvar o estado em QUALQUER alteração de input ou select do formulário
+        formInputIds.forEach(id => {
+            if (dom[id]) {
+                dom[id].addEventListener('change', saveFormState);
+            }
+        });
+
+        // Eventos específicos que não foram cobertos acima
+        dom.diametroMotora.addEventListener('change', suggestDistance);
+        dom.diametroMovida.addEventListener('change', suggestDistance);
+        dom.tipoCorreia.addEventListener('change', updatePulleySelects); 
+        dom.failureType.addEventListener('change', runDiagnosis);
+        // ... (resto dos eventos) ...
     }
 
-    function init() { /* ... */ }
+    function resetForm() {
+        // ... (código do resetForm) ...
+        // Limpa também o estado salvo
+        localStorage.removeItem(formStateKey);
+    }
+    
+    // --- FUNÇÃO DE INICIALIZAÇÃO (ATUALIZADA) ---
+    function init() {
+        // Primeiro, popula os selects com as opções
+        populateBeltProfileSelect();
+        populateServiceFactorSelects();
+        
+        // Depois, carrega o estado salvo (que vai selecionar as opções corretas)
+        loadFormState();
+        
+        // Configura todos os eventos
+        setupEventListeners();
+        
+        // Carrega projetos salvos (localStorage de projetos)
+        loadProjects();
+    }
 
     init();
 });
