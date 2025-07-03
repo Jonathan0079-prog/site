@@ -315,3 +315,84 @@ footer { text-align: center; margin-top: 3rem; padding: 1rem; color: #6c757d; }
         grid-template-columns: 1fr;
     }
 }
+
+/* ... (todo o seu CSS anterior) ... */
+
+/* ============================================= */
+/* NOVOS ESTILOS PARA PROJETOS SALVOS            */
+/* ============================================= */
+.saved-projects-section {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-top: 2.5rem;
+    border-top: 4px solid var(--cor-destaque);
+}
+
+.saved-projects-section h2 {
+    text-align: center;
+    color: var(--cor-primaria);
+    margin-bottom: 2rem;
+    font-family: 'Oswald', sans-serif;
+}
+
+.save-project-form {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.save-project-form .input-group {
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+
+.save-project-form button, .load-project-form button {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: bold;
+    background-color: var(--cor-primaria);
+    transition: background-color 0.2s;
+    white-space: nowrap; /* Impede que o texto quebre */
+}
+.save-project-form button i, .load-project-form button i {
+    margin-right: 0.5rem;
+}
+
+.load-project-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.load-project-form .button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.load-project-form .button-group button {
+    flex-grow: 1;
+}
+
+.delete-button {
+    background-color: var(--cor-erro) !important;
+}
+
+.delete-button:hover {
+    background-color: #c82333 !important;
+}
+
+@media (max-width: 600px) {
+    .save-project-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
