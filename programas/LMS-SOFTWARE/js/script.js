@@ -1,100 +1,169 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGL - Buscador de Equivalentes</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <h1>Sistema de Gestão de Lubrificação</h1>
-        <nav class="main-nav">
-            <a href="index.html" class="nav-link active">Buscador</a>
-            <a href="calculadora.html" class="nav-link">Calculadora</a>
-            <a href="plano.html" class="nav-link">Plano de Lubrificação</a>
-        </nav>
-    </header>
+// js/script.js
 
-    <div class="container">
-        <main>
-            <div class="search-box">
-                <h2>Buscador de Equivalentes</h2>
-                <div class="input-group">
-                    <label for="marca-select">Marca:</label>
-                    <select id="marca-select">
-                        <option value="">-- Selecione a Marca --</option>
-                    </select>
+// O caminho agora sobe um nível (../) para encontrar a pasta 'data'
+import { tabelaSimilaridade, matrizCompatibilidade } from '../data/database.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- SELEÇÃO DE ELEMENTOS DOM ---
+    const marcaSelect = document.getElementById('marca-select');
+    const oleoSelect = document.getElementById('oleo-select');
+    const searchButton = document.getElementById('search-button');
+    const resultsContainer = document.getElementById('results-container');
+    
+    const modal = document.getElementById('compatibility-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const modalCloseButton = document.getElementById('modal-close-button');
+
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+    // --- LÓGICA DA BASE DE CONHECIMENTO ---
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            header.classList.toggle('active');
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    });
+
+    // --- LÓGICA DA MODAL ---
+    function exibirModalCompatibilidade(info) {
+        modalTitle.textContent = info.status;
+        modalTitle.className = `status-${info.status.toLowerCase()}`;
+        modalDescription.textContent = info.descricao;
+        modal.classList.remove('hidden');
+    }
+
+    function fecharModal() {
+        modal.classList.add('hidden');
+    }
+
+    // --- LÓGICA DO BUSCADOR ---
+    function popularMarcas() {
+        const marcas = new Set();
+        tabelaSimilaridade.forEach(grupo => Object.keys(grupo.PRODUTOS).forEach(marca => marcas.add(marca)));
+        const marcasOrdenadas = Array.from(marcas).sort();
+        marcasOrdenadas.forEach(marca => {
+            const option = document.createElement('option');
+            option.value = marca;
+            option.textContent = marca;
+            marcaSelect.appendChild(option);
+        });
+    }
+
+    function popularProdutosPorMarca(marcaSelecionada) {
+        oleoSelect.innerHTML = '';
+        oleoSelect.disabled = true;
+        if (!marcaSelecionada) {
+            oleoSelect.innerHTML = '<option value="">-- Primeiro selecione uma marca --</option>';
+            return;
+        }
+        oleoSelect.disabled = false;
+        oleoSelect.innerHTML = '<option value="">-- Selecione o Produto --</option>';
+        
+        const produtos = [];
+        tabelaSimilaridade.forEach((grupo, index) => {
+            if (grupo.PRODUTOS[marcaSelecionada]) {
+                produtos.push({ nome: grupo.PRODUTOS[marcaSelecionada].NOME, grupoIndex: index });
+            }
+        });
+
+        produtos.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(produto => {
+            const opt = document.createElement('option');
+            opt.value = produto.grupoIndex;
+            opt.textContent = produto.nome;
+            oleoSelect.appendChild(opt);
+        });
+    }
+    
+    function encontrarSubstitutos() {
+        resultsContainer.innerHTML = '';
+        const marcaSelecionada = marcaSelect.value;
+        const grupoIndex = oleoSelect.value;
+        if (!marcaSelecionada || !grupoIndex) {
+            resultsContainer.innerHTML = `<p class="error-message">Por favor, selecione uma marca e um produto.</p>`;
+            return;
+        }
+        const grupoEncontrado = tabelaSimilaridade[parseInt(grupoIndex)];
+        exibirResultados(grupoEncontrado, marcaSelecionada);
+    }
+
+    function exibirResultados(grupo, marcaOriginal) {
+        const produtoOriginal = grupo.PRODUTOS[marcaOriginal];
+        const substitutos = { ...grupo.PRODUTOS };
+        delete substitutos[marcaOriginal];
+
+        let htmlResultados = `
+            <h3 class="results-header">Análise de Equivalência</h3>
+            <div class="product-card original">
+                <h4>Seu Produto: ${produtoOriginal.NOME} (${marcaOriginal})</h4>
+                <p><strong>Aplicação:</strong> ${grupo.APLICACAO}</p>
+                <div class="tech-data-grid">
+                    <div class="tech-data-item"><span class="label">ISO VG / NLGI</span><span class="value">${grupo.ISO_VG}</span></div>
+                    <div class="tech-data-item"><span class="label">BASE</span><span class="value">${produtoOriginal.BASE}</span></div>
+                    <div class="tech-data-item"><span class="label">ÍNDICE VISC.</span><span class="value">${produtoOriginal.IV}</span></div>
+                    <div class="tech-data-item"><span class="label">P. FULGOR</span><span class="value">${produtoOriginal.PONTO_FULGOR}°C</span></div>
+                    <div class="tech-data-item"><span class="label">P. FLUIDEZ</span><span class="value">${produtoOriginal.PONTO_FLUIDEZ}°C</span></div>
                 </div>
-                <div class="input-group">
-                    <label for="oleo-select">Nome do Produto:</label>
-                    <select id="oleo-select" disabled>
-                        <option value="">-- Primeiro selecione uma marca --</option>
-                    </select>
-                </div>
-                <button id="search-button">Encontrar Equivalentes</button>
             </div>
-            <div id="results-container"></div>
+            <h4 class="equivalents-title">Produtos Equivalentes Recomendados:</h4>
+            <ul class="results-list">`;
+        
+        if (Object.keys(substitutos).length === 0) {
+             htmlResultados += `<li>Nenhum equivalente direto encontrado na base de dados.</li>`;
+        } else {
+            for (const marcaSubstituto in substitutos) {
+                const produtoSubstituto = substitutos[marcaSubstituto];
+                const infoCompat = matrizCompatibilidade[produtoOriginal.BASE]?.[produtoSubstituto.BASE] || { status: "Desconhecido", descricao: "A compatibilidade entre estas bases não está registrada." };
+                const statusClass = `compat-${infoCompat.status.toLowerCase()}`;
+                const statusText = infoCompat.status.replace("_", " ");
 
-            <section class="knowledge-base-section">
-                <h2>Base de Conhecimento Técnico</h2>
-                <div class="accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            O que é Viscosidade (ISO VG)?
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-content">
-                            <p>A viscosidade é a propriedade mais importante de um lubrificante. Ela mede a resistência do fluido ao escoamento. Em termos simples, é a "grossura" do óleo.</p>
-                            <ul>
-                                <li><strong>Óleos de baixa viscosidade (finos):</strong> Escoam facilmente (ex: água). São ideais para altas velocidades e baixas cargas.</li>
-                                <li><strong>Óleos de alta viscosidade (grossos):</strong> Escoam lentamente (ex: mel). São necessários para baixas velocidades e altas cargas, onde precisam suportar mais pressão.</li>
-                            </ul>
-                            <p>O <strong>ISO VG (International Standards Organization Viscosity Grade)</strong> é um sistema de classificação que define a viscosidade cinemática de um óleo industrial a 40°C. Um óleo "ISO VG 46" tem uma viscosidade de 46 centistokes (cSt) a 40°C, com uma tolerância de ±10%. Escolher o ISO VG correto, conforme a recomendação do fabricante e as condições de operação, é crucial para a proteção e eficiência do equipamento.</p>
+                htmlResultados += `
+                    <li>
+                        <div class="list-item-header">
+                            <div class="product-details">
+                                <span class="brand">${marcaSubstituto}:</span>
+                                <span class="product">${produtoSubstituto.NOME}</span>
+                            </div>
+                            <div class="compatibility-info ${statusClass}">
+                                <span>${statusText}</span>
+                                <i class="fas fa-info-circle info-icon" data-compat-info='${JSON.stringify(infoCompat)}'></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            Tipos de Óleo Base: Mineral vs. Sintético
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-content">
-                            <p>O óleo base compõe a maior parte do lubrificante e determina suas características fundamentais.</p>
-                            <p><strong>Óleo Mineral:</strong> Derivado do petróleo bruto, é o tipo mais comum e económico. É excelente para uma vasta gama de aplicações industriais padrão. No entanto, possui menor resistência a temperaturas extremas e oxidação em comparação com os sintéticos.</p>
-                            <p><strong>Óleo Sintético (PAO - Polialfaolefina):</strong> Produzido em laboratório, oferece performance superior. Possui excelente estabilidade térmica, alto índice de viscosidade (varia menos com a temperatura) e maior vida útil. É ideal para condições severas de operação (temperaturas muito altas ou muito baixas). É compatível com óleos minerais.</p>
-                            <p><strong>Óleo Sintético (PAG - Polialquileno Glicol):</strong> Outro tipo de sintético com altíssima performance, especialmente em aplicações de engrenagens sem-fim. Possui lubricidade natural superior, mas é <strong>INCOMPATÍVEL</strong> com óleos minerais e PAO. A mistura pode causar a formação de borra e gel, levando a falhas catastróficas. Exige limpeza completa (flushing) do sistema antes da troca.</p>
+                        <div class="tech-data-grid">
+                           <div class="tech-data-item"><span class="label">BASE</span><span class="value">${produtoSubstituto.BASE}</span></div>
+                            <div class="tech-data-item"><span class="label">ÍNDICE VISC.</span><span class="value">${produtoSubstituto.IV}</span></div>
+                            <div class="tech-data-item"><span class="label">P. FULGOR</span><span class="value">${produtoSubstituto.PONTO_FULGOR}°C</span></div>
+                            <div class="tech-data-item"><span class="label">P. FLUIDEZ</span><span class="value">${produtoSubstituto.PONTO_FLUIDEZ}°C</span></div>
                         </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-header">
-                            A Importância do Flushing (Limpeza do Sistema)
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-content">
-                            <p>O flushing é o processo de circulação de um fluido de limpeza pelo sistema para remover verniz, borra, contaminantes e resíduos do óleo antigo antes de introduzir o novo lubrificante.</p>
-                            <p><strong>Quando o Flushing é OBRIGATÓRIO?</strong></p>
-                            <ul>
-                                <li><strong>Troca de base incompatível:</strong> Ao mudar de um óleo mineral ou PAO para um óleo PAG (ou vice-versa). Como visto na nossa ferramenta, a mistura é proibida e destrutiva.</li>
-                                <li><strong>Alta contaminação:</strong> Quando o óleo antigo está severamente degradado, oxidado ou contaminado com água, partículas ou outros fluidos.</li>
-                                <li><strong>Falha de componente:</strong> Após uma falha de bomba, rolamento ou engrenagem, para remover as partículas metálicas geradas.</li>
-                            </ul>
-                            <p>Ignorar o flushing nestas situações é como tomar banho e vestir a mesma roupa suja. O novo óleo será imediatamente contaminado, a sua vida útil será drasticamente reduzida e o risco de uma nova falha permanece elevado.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+                    </li>`;
+            }
+        }
+        
+        htmlResultados += `</ul><div class="warning-message"><strong>ATENÇÃO:</strong> A compatibilidade de mistura é uma referência. Sempre confirme na ficha técnica (TDS).</div>`;
+        resultsContainer.innerHTML = htmlResultados;
 
-    <div id="compatibility-modal" class="modal-backdrop hidden">
-        <div class="modal-content">
-            <button id="modal-close-button" class="modal-close">&times;</button>
-            <h3 id="modal-title"></h3>
-            <p id="modal-description"></p>
-        </div>
-    </div>
+        document.querySelectorAll('.info-icon').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                const info = JSON.parse(e.currentTarget.getAttribute('data-compat-info'));
+                exibirModalCompatibilidade(info);
+            });
+        });
+    }
+    
+    // --- EVENT LISTENERS ---
+    marcaSelect.addEventListener('change', () => {
+        popularProdutosPorMarca(marcaSelect.value);
+        resultsContainer.innerHTML = '';
+    });
+    searchButton.addEventListener('click', encontrarSubstitutos);
+    modalCloseButton.addEventListener('click', fecharModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
 
-    <script type="module" src="js/script.js"></script>
-</body>
-</html>
+    // --- INICIALIZAÇÃO ---
+    popularMarcas();
+});
