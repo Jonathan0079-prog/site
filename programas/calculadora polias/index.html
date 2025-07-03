@@ -40,6 +40,7 @@
                         <div class="input-group"><label for="rpmMotor">RPM do Motor</label><input type="number" id="rpmMotor" placeholder="Ex: 1750"></div>
                         <div class="input-group"><label for="potenciaMotor">Potência do Motor (CV)</label><input type="number" id="potenciaMotor" placeholder="Ex: 5"></div>
                     </div>
+                                        <div class="input-group"><label for="fatorServico">Regime de Trabalho (Fator de Serviço)</label><select id="fatorServico"></select></div>
                     <div class="input-group"><label for="tipoCorreia">Perfil da Correia</label><select id="tipoCorreia"></select></div>
                     <div class="input-grid">
                         <div class="input-group"><label for="diametroMotora">Polia Motora (mm)</label><input type="number" id="diametroMotora" placeholder="Ex: 125"></div>
@@ -59,12 +60,13 @@
                         <div class="input-group"><label for="revRpmFinal">RPM Final Desejado (±5%)</label><input type="number" id="revRpmFinal" placeholder="Ex: 450"></div>
                     </div>
                     <div class="input-group"><label for="revPotenciaMotor">Potência do Motor (CV)</label><input type="number" id="revPotenciaMotor" placeholder="Ex: 5"></div>
+                                        <div class="input-group"><label for="revFatorServico">Regime de Trabalho (Fator de Serviço)</label><select id="revFatorServico"></select></div>
                     <div class="button-group">
                         <button id="optimizeBtn" class="main-button"><i class="fas fa-search"></i> Encontrar Soluções</button>
                     </div>
                 </div>
-
-                <div class="card" id="saved-projects">
+                
+                                <div class="card" id="saved-projects">
                     <h2><i class="fas fa-save"></i> Projetos Salvos</h2>
                     <div class="input-group"><label for="projectName">Nome do Projeto para Salvar</label><input type="text" id="projectName" placeholder="Ex: Ventilador Principal"></div>
                     <button id="saveProjectBtn" class="main-button" style="background: var(--primary-color);"><i class="fas fa-plus-circle"></i> Salvar Projeto Atual</button>
@@ -99,85 +101,14 @@
             </section>
 
             <section id="outputs-column">
-                <div id="direct-results-container">
-                    <div class="card" id="results-card">
-                        <div class="card-header">
-                            <h2><i class="fas fa-chart-bar"></i> Resultados do Projeto</h2>
-                            <button id="printBtn" class="icon-button"><i class="fas fa-print"></i> Imprimir Relatório</button>
-                        </div>
-                        <div class="results-grid-main">
-                            <div class="result-item highlight-result"><span class="label">Correia Comercial</span><span class="value" id="resultadoCorreia">--</span></div>
-                            <div class="result-item highlight-result success"><span class="label">Nº de Correias</span><span class="value" id="resultadoNumCorreias">--</span></div>
-                        </div>
-                        <div class="results-grid-secondary">
-              _
-<div class="result-item"><span class="label">RPM Final</span><span class="value" id="resultadoRpm">--</span></div>
-                            <div class="result-item"><span class="label">Relação</span><span class="value" id="resultadoRelacao">--</span></div>
-                            <div class="result-item" id="velocidadeCorreiaCard"><span class="label">Velocidade (m/s)</span><span class="value" id="resultadoVelocidade">--</span></div>
-                            <div class="result-item" id="anguloAbracamentoCard"><span class="label">Abraçamento (°)</span><span class="value" id="resultadoAngulo">--</span></div>
-                            <div class="result-item" id="forcaEixoCard"><span class="label">Força no Eixo (kgf)</span><span class="value" id="resultadoForca">--</span></div>
-                            <div class="result-item" id="frequenciaVibracaoCard"><span class="label">Freq. Vibração (Hz)</span><span class="value" id="resultadoFrequencia">--</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="reverse-results-container" style="display: none;">
-                    <div class="card">
-                        <h2><i class="fas fa-stream"></i> Soluções Encontradas</h2>
-                        <div class="table-container">
-                            <table id="solutionsTable">
-                                <thead><tr><th>Perfil</th><th>P. Motora</th><th>P. Movida</th><th>Correia</th><th>Custo Est.</th><th>Ação</th></tr></thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="comparison-results-container" style="display: none;">
-                    <div class="card">
-                        <h2><i class="fas fa-columns"></i> Tabela Comparativa</h2>
-                        <div class="table-container">
-                            <table id="comparisonTable"></table>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card" id="tips-card">
-                    <h2><i class="fas fa-lightbulb"></i> Dicas e Recomendações</h2>
-                    <div class="tips-section">
-                        <ul id="dicasLista">
-                            <li>Preencha os dados e clique em "Calcular".</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
+                            </section>
         </main>
     </div>
 
-    <div id="customModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <p id="modalMessage"></p>
-            <div class="modal-buttons">
-                <button id="modalConfirmBtn" class="main-button">Confirmar</button>
-                <button id="modalCancelBtn" class="secondary-button">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-        <script src="database.js"></script>
-    <script src="script.js"></script>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                // O caminho para o sw.js deve ser absoluto a partir da raiz do domínio
-                navigator.serviceWorker.register('sw.js').then(registration => {
-                    console.log('ServiceWorker registado com sucesso para todo o site!');
-                }, err => {
-                    console.log('Registo do ServiceWorker falhou: ', err);
-                });
-            });
-        }
-    </script>
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+    <script>
+    // ...
+    </script>
 </body>
 </html>
