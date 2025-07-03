@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGL - Buscador de Equivalentes</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#003366">
-    
+    <link rel="manifest" href="../manifest.json"> <meta name="theme-color" content="#003366">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -16,7 +13,7 @@
         <h1>Sistema de Gestão de Lubrificação</h1>
         <nav class="main-nav">
             <a href="index.html" class="nav-link active">Buscador</a>
-            <a href="calculadora.html" class="nav-link">Calculadora</a>
+            <a href="calculadora.html" class="nav-link">Calculadora VG</a>
             <a href="plano.html" class="nav-link">Plano de Lubrificação</a>
             <a href="mistura.html" class="nav-link">Calculador de Mistura</a>
         </nav>
@@ -26,14 +23,12 @@
         <main>
             <div class="search-box">
                 <h2>Buscador de Equivalentes</h2>
-                
                 <div class="input-group">
                     <label for="application-select">Tipo de Aplicação:</label>
                     <select id="application-select">
                         <option value="">-- Todas as Aplicações --</option>
                     </select>
                 </div>
-
                 <div class="input-group">
                     <label for="marca-select">Marca:</label>
                     <select id="marca-select" disabled>
@@ -53,25 +48,24 @@
             <section class="knowledge-base-section">
                 <h2>Base de Conhecimento Técnico</h2>
                 <div class="accordion">
-                  </div>
+                </div>
             </section>
         </main>
     </div>
 
     <div id="compatibility-modal" class="modal-backdrop hidden">
-      </div>
+        <div class="modal-content">
+            <button id="modal-close-button" class="modal-close">&times;</button>
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+        </div>
+    </div>
 
     <script type="module" src="js/script.js"></script>
-
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                // O caminho para o sw.js deve ser absoluto a partir da raiz do domínio
-                navigator.serviceWorker.register('sw.js').then(registration => {
-                    console.log('ServiceWorker registado com sucesso para todo o site!');
-                }, err => {
-                    console.log('Registo do ServiceWorker falhou: ', err);
-                });
+                navigator.serviceWorker.register('../sw.js').then(reg => console.log('Service worker registado.', reg));
             });
         }
     </script>
