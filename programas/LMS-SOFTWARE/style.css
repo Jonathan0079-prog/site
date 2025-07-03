@@ -396,3 +396,70 @@ footer { text-align: center; margin-top: 3rem; padding: 1rem; color: #6c757d; }
         align-items: stretch;
     }
 }
+
+/* ... (todo o seu CSS anterior) ... */
+
+/* ============================================= */
+/* NOVOS ESTILOS PARA A PÁGINA DE CONFIGURAÇÕES   */
+/* ============================================= */
+
+.settings-section {
+    border-top: 4px solid var(--cor-secundaria);
+}
+
+.section-description {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 2.5rem auto;
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+.settings-card {
+    background-color: #f8f9fa;
+    border: 1px solid var(--cor-borda);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.settings-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--cor-primaria);
+}
+
+.settings-card p {
+    margin-bottom: 1.5rem;
+}
+
+.settings-card button {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.settings-card .main-button { background-color: var(--cor-sucesso); }
+.settings-card .main-button:hover { background-color: #218838; }
+
+.settings-card .secondary-button { background-color: var(--cor-secundaria); }
+.settings-card .secondary-button:hover { background-color: var(--cor-primaria); }
+
+.settings-card.danger-zone {
+    border-color: var(--cor-erro);
+    background-color: #fdedee;
+}
+.settings-card.danger-zone h3 {
+    color: var(--cor-erro);
+}
+.settings-card .delete-button {
+    background-color: var(--cor-erro);
+}
+.settings-card .delete-button:hover {
+    background-color: #c82333;
+}
