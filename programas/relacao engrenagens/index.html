@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Relação de Engrenagens</title>
     
-    <link rel="manifest" href="/site/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003366">
     
     <link rel="stylesheet" href="style.css">
@@ -74,7 +74,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 // O caminho para o sw.js deve ser absoluto a partir da raiz do domínio
-                navigator.serviceWorker.register('/site/sw.js').then(registration => {
+                navigator.serviceWorker.register('sw.js').then(registration => {
                     console.log('ServiceWorker registado com sucesso para todo o site!');
                 }, err => {
                     console.log('Registo do ServiceWorker falhou: ', err);
