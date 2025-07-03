@@ -159,6 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function encontrarSubstitutos() {
+        resultsContainer.innerHTML = '';
+        calculatorSearchResultsContainer.innerHTML = '';
         const marcaSelecionada = marcaSelect.value;
         const grupoIndex = oleoSelect.value;
         if (!marcaSelecionada || !grupoIndex) {
@@ -170,8 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function exibirResultados(grupo, marcaOriginal) {
-        resultsContainer.innerHTML = '';
-        calculatorSearchResultsContainer.innerHTML = '';
         const produtoOriginal = grupo.PRODUTOS[marcaOriginal];
         const substitutos = { ...grupo.PRODUTOS };
         delete substitutos[marcaOriginal];
