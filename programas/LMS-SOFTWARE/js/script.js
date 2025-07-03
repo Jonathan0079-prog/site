@@ -1,10 +1,10 @@
 // js/script.js
 
-// O caminho agora sobe um nível (../) para encontrar a pasta 'data'
 import { tabelaSimilaridade, matrizCompatibilidade } from '../data/database.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- SELEÇÃO DE ELEMENTOS DOM ---
+    const applicationSelect = document.getElementById('application-select');
     const marcaSelect = document.getElementById('marca-select');
     const oleoSelect = document.getElementById('oleo-select');
     const searchButton = document.getElementById('search-button');
@@ -42,42 +42,71 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.add('hidden');
     }
 
-    // --- LÓGICA DO BUSCADOR ---
-    function popularMarcas() {
+    // --- LÓGICA DO BUSCADOR (ATUALIZADA) ---
+
+    function resetSelect(select, message, disabled = true) {
+        select.innerHTML = `<option value="">${message}</option>`;
+        select.disabled = disabled;
+    }
+
+    function popularAplicacoes() {
+        const aplicacoes = [...new Set(tabelaSimilaridade.map(item => item.APLICACAO))];
+        aplicacoes.sort().forEach(app => {
+            const option = document.createElement('option');
+            option.value = app;
+            option.textContent = app;
+            applicationSelect.appendChild(option);
+        });
+    }
+
+    function popularMarcas(aplicacaoSelecionada) {
+        resetSelect(marcaSelect, '-- Selecione uma aplicação --');
+        resetSelect(oleoSelect, '-- Selecione uma marca --');
+        
+        if (!aplicacaoSelecionada) return;
+
         const marcas = new Set();
-        tabelaSimilaridade.forEach(grupo => Object.keys(grupo.PRODUTOS).forEach(marca => marcas.add(marca)));
-        const marcasOrdenadas = Array.from(marcas).sort();
-        marcasOrdenadas.forEach(marca => {
+        tabelaSimilaridade
+            .filter(item => item.APLICACAO === aplicacaoSelecionada)
+            .forEach(grupo => {
+                Object.keys(grupo.PRODUTOS).forEach(marca => marcas.add(marca));
+            });
+
+        marcaSelect.innerHTML = '<option value="">-- Selecione a Marca --</option>';
+        Array.from(marcas).sort().forEach(marca => {
             const option = document.createElement('option');
             option.value = marca;
             option.textContent = marca;
             marcaSelect.appendChild(option);
         });
+        marcaSelect.disabled = false;
     }
 
-    function popularProdutosPorMarca(marcaSelecionada) {
-        oleoSelect.innerHTML = '';
-        oleoSelect.disabled = true;
-        if (!marcaSelecionada) {
-            oleoSelect.innerHTML = '<option value="">-- Primeiro selecione uma marca --</option>';
-            return;
-        }
-        oleoSelect.disabled = false;
-        oleoSelect.innerHTML = '<option value="">-- Selecione o Produto --</option>';
-        
-        const produtos = [];
-        tabelaSimilaridade.forEach((grupo, index) => {
-            if (grupo.PRODUTOS[marcaSelecionada]) {
-                produtos.push({ nome: grupo.PRODUTOS[marcaSelecionada].NOME, grupoIndex: index });
-            }
-        });
+    function popularProdutos(aplicacaoSelecionada, marcaSelecionada) {
+        resetSelect(oleoSelect, '-- Selecione uma marca --');
 
+        if (!marcaSelecionada) return;
+
+        const produtos = [];
+        tabelaSimilaridade
+            .filter(item => item.APLICACAO === aplicacaoSelecionada)
+            .forEach((grupo, index) => {
+                if (grupo.PRODUTOS[marcaSelecionada]) {
+                    produtos.push({
+                        nome: grupo.PRODUTOS[marcaSelecionada].NOME,
+                        grupoIndex: tabelaSimilaridade.indexOf(grupo) // Garante o índice correto do array original
+                    });
+                }
+            });
+
+        oleoSelect.innerHTML = '<option value="">-- Selecione o Produto --</option>';
         produtos.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(produto => {
             const opt = document.createElement('option');
             opt.value = produto.grupoIndex;
             opt.textContent = produto.nome;
             oleoSelect.appendChild(opt);
         });
+        oleoSelect.disabled = false;
     }
     
     function encontrarSubstitutos() {
@@ -85,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const marcaSelecionada = marcaSelect.value;
         const grupoIndex = oleoSelect.value;
         if (!marcaSelecionada || !grupoIndex) {
-            resultsContainer.innerHTML = `<p class="error-message">Por favor, selecione uma marca e um produto.</p>`;
+            resultsContainer.innerHTML = `<p class="error-message">Por favor, selecione uma aplicação, marca e produto.</p>`;
             return;
         }
         const grupoEncontrado = tabelaSimilaridade[parseInt(grupoIndex)];
@@ -156,14 +185,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // --- EVENT LISTENERS ---
-    marcaSelect.addEventListener('change', () => {
-        popularProdutosPorMarca(marcaSelect.value);
+    applicationSelect.addEventListener('change', () => {
+        popularMarcas(applicationSelect.value);
         resultsContainer.innerHTML = '';
     });
+    
+    marcaSelect.addEventListener('change', () => {
+        popularProdutos(applicationSelect.value, marcaSelect.value);
+        resultsContainer.innerHTML = '';
+    });
+
     searchButton.addEventListener('click', encontrarSubstitutos);
     modalCloseButton.addEventListener('click', fecharModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
 
     // --- INICIALIZAÇÃO ---
-    popularMarcas();
+    popularAplicacoes();
 });
