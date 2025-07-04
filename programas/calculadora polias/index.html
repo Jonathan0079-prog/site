@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suíte de Engenharia de Transmissão por Correias</title>
-    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003366">
-
     <style>
         #diagram-card {
         }
@@ -95,11 +93,11 @@
 
                 <div class="card" id="reverse-calculation-module" style="display: none;">
                     <h2><i class="fas fa-cogs"></i> Otimização Reversa</h2>
-                     <div class="input-group">
+                    <div class="input-group">
                         <label for="revRpmMotor">RPM do Motor:</label>
                         <input type="number" id="revRpmMotor" placeholder="Ex: 1750" required>
                     </div>
-                     <div class="input-group">
+                    <div class="input-group">
                         <label for="revRpmFinal">RPM Final Desejado:</label>
                         <input type="number" id="revRpmFinal" placeholder="Ex: 500" required>
                     </div>
@@ -107,38 +105,59 @@
                         <label for="revPotenciaMotor">Potência do Motor (HP):</label>
                         <input type="number" id="revPotenciaMotor" placeholder="Ex: 5" required>
                     </div>
-                     <div class="input-group">
+                    <div class="input-group">
                         <label for="revFatorServico">Fator de Serviço:</label>
                         <select id="revFatorServico"></select>
                     </div>
                     <button id="optimizeBtn">Otimizar</button>
-
                     <div id="reverse-results-container">
-                         <h3>Soluções Otimizadas:</h3>
-                         <div class="card">
-                              <table id="solutionsTable">
-                                   <thead>
-                                        <tr>
-                                             <th>Perfil</th>
-                                             <th>Motora</th>
-                                             <th>Movida</th>
-                                             <th>Correia</th>
-                                             <th>Custo Estimado</th>
-                                             <th>Ações</th>
-                                        </tr>
-                                   </thead>
-                                   <tbody>
-                                        <!-- Results will be populated by script.js -->
-                                   </tbody>
-                              </table>
-                         </div>
+                        <h3>Soluções Otimizadas:</h3>
+                        <div class="card">
+                            <table id="solutionsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Perfil</th>
+                                        <th>Motora</th>
+                                        <th>Movida</th>
+                                        <th>Correia</th>
+                                        <th>Custo Estimado</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Results will be populated by script.js -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                 <div class="card">
-                      <button id="resetBtn" class="secondary-button">Limpar</button>
-                       <button id="printBtn" class="secondary-button">Imprimir</button>
-                 </div>
+                <div class="card">
+                    <button id="resetBtn" class="secondary-button">Limpar</button>
+                    <button id="printBtn" class="secondary-button">Imprimir</button>
+                </div>
+
+                <!-- Adicione aqui o gerenciamento de projetos -->
+                <div class="card">
+                    <h3>Projetos Salvos</h3>
+                    <input type="text" id="projectName" placeholder="Nome do Projeto">
+                    <button id="saveProjectBtn">Salvar Projeto</button>
+                    <div id="projectList"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Importar/Exportar Projetos</h3>
+                    <button id="importBtn">Importar</button>
+                    <button id="exportBtn">Exportar</button>
+                    <input type="file" id="fileInput" style="display: none;">
+                </div>
+
+                <div class="card">
+                    <h3>Comparar Projetos</h3>
+                    <select id="compareProject1"></select>
+                    <select id="compareProject2"></select>
+                    <button id="compareBtn">Comparar</button>
+                </div>
             </section>
 
             <section id="outputs-column">
@@ -155,87 +174,80 @@
                 </div>
 
                 <div id="direct-results-container">
-                     <h3>Resultados do Cálculo:</h3>
+                    <h3>Resultados do Cálculo:</h3>
                     <div class="card" id="results-card">
-                         <p>RPM Final: <span id="resultadoRpm">--</span></p>
-                         <p>Relação de Transmissão: <span id="resultadoRelacao">--</span></p>
-                         <p>Correia Sugerida: <span id="resultadoCorreia">--</span></p>
-                         <p>Número de Correias: <span id="resultadoNumCorreias">--</span></p>
- <p>Potência de Projeto: <span id="resultadoPotenciaProjeto">--</span> HP</p>
- <p>Comprimento Teórico da Correia: <span id="resultadoComprimentoTeorico">--</span> mm</p>
+                        <p>RPM Final: <span id="resultadoRpm">--</span></p>
+                        <p>Relação de Transmissão: <span id="resultadoRelacao">--</span></p>
+                        <p>Correia Sugerida: <span id="resultadoCorreia">--</span></p>
+                        <p>Número de Correias: <span id="resultadoNumCorreias">--</span></p>
+                        <p>Potência de Projeto: <span id="resultadoPotenciaProjeto">--</span> HP</p>
+                        <p>Comprimento Teórico da Correia: <span id="resultadoComprimentoTeorico">--</span> mm</p>
+                        <p>Velocidade da Correia: <span id="resultadoVelocidade">--</span> m/s</p>
+                        <p>Ângulo de Abraçamento: <span id="resultadoAngulo">--</span> °</p>
+                        <p>Força no Eixo: <span id="resultadoForca">--</span> kgf</p>
+                        <p>Frequência de Vibração Natural da Correia: <span id="resultadoFrequencia">--</span> Hz</p>
                     </div>
-                     <div class="card" id="velocidadeCorreiaCard">
-                         <h4>Velocidade da Correia</h4>
-                         <p><span id="resultadoVelocidade">--</span> m/s</p>
-                     </div>
-                     <div class="card" id="anguloAbracamentoCard">
-                         <h4>Ângulo de Abraçamento</h4>
-                         <p><span id="resultadoAngulo">--</span> °</p>
-                     </div>
-                     <div class="card" id="forcaEixoCard">
-                         <h4>Força no Eixo</h4>
-                         <p><span id="resultadoForca">--</span> kgf</p>
-                     </div>
-                     <div class="card" id="frequenciaVibracaoCard">
-                         <h4>Frequência de Vibração Natural da Correia</h4>
-                         <p><span id="resultadoFrequencia">--</span> Hz</p>
-                     </div>
+                    <div class="card" id="velocidadeCorreiaCard">
+                        <h4>Velocidade da Correia</h4>
+                        <p><span id="resultadoVelocidade">--</span> m/s</p>
+                    </div>
+                    <div class="card" id="anguloAbracamentoCard">
+                        <h4>Ângulo de Abraçamento</h4>
+                        <p><span id="resultadoAngulo">--</span> °</p>
+                    </div>
+                    <div class="card" id="forcaEixoCard">
+                        <h4>Força no Eixo</h4>
+                        <p><span id="resultadoForca">--</span> kgf</p>
+                    </div>
+                    <div class="card" id="frequenciaVibracaoCard">
+                        <h4>Frequência de Vibração Natural da Correia</h4>
+                        <p><span id="resultadoFrequencia">--</span> Hz</p>
+                    </div>
                 </div>
 
                 <div class="card" id="tips-card" style="display: none;">
-                     <h2><i class="fas fa-lightbulb"></i> Dicas e Sugestões</h2>
-                     <ul id="dicasLista">
-                          <li>Preencha os dados e clique em "Calcular".</li>
-                     </ul>
+                    <h2><i class="fas fa-lightbulb"></i> Dicas e Sugestões</h2>
+                    <ul id="dicasLista">
+                        <li>Preencha os dados e clique em "Calcular".</li>
+                    </ul>
                 </div>
 
-                 <div class="card" id="diagnosis-module">
-                      <h2><i class="fas fa-stethoscope"></i> Diagnóstico de Falhas Comuns</h2>
-                       <div class="input-group">
-                           <label for="failureType">Tipo de Falha:</label>
-                           <select id="failureType">
-                                <option value="">Selecione...</option>
-                                <option value="slipping">Deslizamento da Correia</option>
-                                <option value="noise">Ruído Excessivo</option>
-                                <option value="vibration">Vibração Anormal</option>
-                                <option value="wear">Desgaste Excessivo da Correia</option>
-                           </select>
-                      </div>
-                       <div id="diagnosisResult">
-                           <!-- Diagnosis results will be displayed here -->
-                      </div>
+                <div class="card" id="diagnosis-module">
+                    <h2><i class="fas fa-stethoscope"></i> Diagnóstico de Falhas Comuns</h2>
+                    <div class="input-group">
+                        <label for="failureType">Tipo de Falha:</label>
+                        <select id="failureType">
+                            <option value="">Selecione...</option>
+                            <option value="slipping">Deslizamento da Correia</option>
+                            <option value="noise">Ruído Excessivo</option>
+                            <option value="vibration">Vibração Anormal</option>
+                            <option value="wear">Desgaste Excessivo da Correia</option>
+                        </select>
+                    </div>
+                    <div id="diagnosisResult">
+                        <!-- Diagnosis results will be displayed here -->
+                    </div>
                 </div>
 
-                </section>
+                <div id="comparison-results-container" style="display: none;">
+                    <table id="comparisonTable"></table>
+                </div>
+            </section>
         </main>
+    </div>
+
+    <div id="customModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="document.getElementById('customModal').style.display='none'">&times;</span>
+            <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button id="modalConfirmBtn" style="display: none;">Confirmar</button>
+                <button id="modalCancelBtn" style="display: none;">Cancelar</button>
+            </div>
+        </div>
     </div>
 
     <script src="database.js"></script>
     <script src="script.js"></script>
-    <script>
-        // Optional: Add any inline scripts here if needed, though it's
-        // generally better to keep most logic in script.js
-        // Example: document.addEventListener('DOMContentLoaded', () => { ... });
-    </script>
-
-     <!-- Modal Structure -->
-     <div id="customModal" class="modal">
-          <div class="modal-content">
-               <span class="close-button">&times;</span>
-               <p id="modalMessage"></p>
-               <div class="modal-buttons">
-                    <button id="modalConfirmBtn" style="display: none;">Confirmar</button>
-                    <button id="modalCancelBtn" style="display: none;">Cancelar</button>
-               </div>
-          </div>
-     </div>
-
-     <!-- File Input for Import (hidden) -->
-     <input type="file" id="fileInput" style="display: none;">
-
-      <!-- Comparison Results Container -->
-     <div id="comparison-results-container" style="display: none;">
-           <!-- Comparison table will be populated by script.js -->
-      </div>
 </body>
 </html>

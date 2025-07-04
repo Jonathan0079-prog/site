@@ -16,13 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'resultadoVelocidade', 'resultadoAngulo', 'resultadoForca', 'resultadoFrequencia', 'velocidadeCorreiaCard',
         'anguloAbracamentoCard', 'forcaEixoCard', 'frequenciaVibracaoCard', 'customModal',
         'modalMessage', 'modalConfirmBtn', 'modalCancelBtn', 'dicasLista', 'tips-card',
-        'diagram-card', 'transmissionDiagram', 'pulley1', 'pulley2', 'beltPath', 'centerLine', 'pulley1_text', 'pulley2_text'
+        'diagram-card', 'transmissionDiagram', 'pulley1', 'pulley2', 'beltPath', 'centerLine', 'pulley1_text', 'pulley2_text',
+        'results-card'
     ];
     ids.forEach(id => {
         const element = document.getElementById(id);
-        if (element) {
-            dom[id] = element;
-        }
+        if (element) dom[id] = element;
     });
 
     // --- ESTADO DA APLICAÇÃO ---
@@ -36,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'rpmMotor', 'potenciaMotor', 'fatorServico', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos',
         'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico'
     ];
-    
+
     function saveFormState() {
         const state = { mode: currentMode };
         formInputIds.forEach(id => {
@@ -48,60 +47,55 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadFormState() {
         const savedState = localStorage.getItem(formStateKey);
         if (!savedState) return;
-
         const state = JSON.parse(savedState);
-        
         formInputIds.forEach(id => {
             if (dom[id] && state[id] !== undefined && id !== 'diametroMotora' && id !== 'diametroMovida') {
                 dom[id].value = state[id];
             }
         });
-        
         setMode(state.mode || 'direct');
         updatePulleySelects();
-        
-        if(state.diametroMotora && dom.diametroMotora) dom.diametroMotora.value = state.diametroMotora;
-        if(state.diametroMovida && dom.diametroMovida) dom.diametroMovida.value = state.diametroMovida;
+        if (state.diametroMotora && dom.diametroMotora) dom.diametroMotora.value = state.diametroMotora;
+        if (state.diametroMovida && dom.diametroMovida) dom.diametroMovida.value = state.diametroMovida;
     }
 
     // --- LÓGICA DE CÁLCULO ---
     function performCalculations(params) {
         const { name, rpm, power, fs, d1, d2, c, profile } = params;
         if ([rpm, power, fs, d1, d2, c, profile].some(p => p === null || p === undefined || (typeof p === 'number' && p <= 0) || p === '')) return null;
+        if (!DB || !DB.powerTables || !DB.belts || !DB.lengthFactors || !DB.beltMass) return null;
 
         const designPower = power * fs;
         const ratio = d2 / d1;
-        
         const powerTable = DB.powerTables[profile];
         if (!powerTable) return null;
 
         const nominalBeltPower = (powerTable.baseHp * (rpm / 1750)) + ((ratio > 1) ? ((ratio - 1) * powerTable.ratioFactor) : 0);
-        
         const L = 2 * c + (Math.PI * (d1 + d2) / 2) + (Math.pow(d2 - d1, 2) / (4 * c));
         const angle = 180 - 2 * Math.asin((d2 - d1) / (2 * c)) * (180 / Math.PI);
-        if(isNaN(angle)) return null;
+        if (isNaN(angle)) return null;
 
         const Ka = (angle < 180) ? 1 - (0.003 * (180 - angle)) : 1.0;
-        
         const beltLengths = DB.belts[profile];
+        if (!beltLengths || !beltLengths.length) return null;
         const avgLength = beltLengths.reduce((a, b) => a + b, 0) / beltLengths.length;
         let Kl = DB.lengthFactors[profile].m;
         if (L < avgLength * 0.75) Kl = DB.lengthFactors[profile].s;
         else if (L > avgLength * 1.25) Kl = DB.lengthFactors[profile].l;
-        
+
         const correctedBeltPower = nominalBeltPower * Ka * Kl;
         if (correctedBeltPower <= 0) return null;
         const numBelts = Math.ceil(designPower / correctedBeltPower);
-        
+
         const rpmFinal = rpm * (d1 / d2);
         const beltSpeed = (d1 * rpm * Math.PI) / 60000;
         if (beltSpeed <= 0) return null;
 
-        const shaftLoad = (2 * (designPower * 735.5) / beltSpeed * numBelts) / 9.81;
+        const shaftLoad = (2 * (designPower * 735.5) / (beltSpeed * numBelts)) / 9.81;
         const vibrationFreq = (1 / (2 * c / 1000)) * Math.sqrt((shaftLoad * 9.81) / DB.beltMass[profile]);
         const bestFitBelt = findBestFit(L, beltLengths);
         const beltName = `${profile}${Math.round(bestFitBelt / 25.4)}0`;
-        
+
         return { name: name || 'Projeto Atual', rpm, power, fs, designPower, profile, d1, d2, c, rpmFinal, ratio, L, beltSpeed, angle, numBelts, shaftLoad, vibrationFreq, beltName, bestFitBelt };
     }
 
@@ -158,16 +152,28 @@ document.addEventListener('DOMContentLoaded', () => {
         displayOptimizationResults(solutions.slice(0, 50));
         setMode('reverse');
     }
-    
+
     function runDiagnosis() {
         const failure = dom.failureType.value;
         let diagnosis = "Selecione um problema para analisar ou calcule um projeto primeiro.";
-        if (failure && currentResults.rpm) {
+        if (failure && currentResults && currentResults.rpm) {
             switch (failure) {
-                case 'slipping': diagnosis = currentResults.angle < 120 ? `Causa provável: Ângulo de abraçamento baixo (${currentResults.angle.toFixed(1)}°). Aumente a distância entre eixos ou use polias maiores.` : "Verifique a tensão da correia e o desgaste das ranhuras das polias."; break;
-                case 'noise': diagnosis = "Causas comuns: Desalinhamento entre polias, tensão incorreta (muito alta ou baixa), ou desgaste nos rolamentos dos eixos."; break;
-                case 'vibration': diagnosis = currentResults.vibrationFreq > 0 && Math.abs(currentResults.vibrationFreq - (currentResults.rpm / 60)) < 10 ? `Causa provável: Risco de ressonância! A frequência de vibração da correia (${currentResults.vibrationFreq.toFixed(1)} Hz) está próxima da frequência de rotação do motor.` : "Verifique o balanceamento das polias e o alinhamento do sistema."; break;
-                case 'wear': diagnosis = "Causas comuns: Desalinhamento, tensão excessiva, polias gastas ou contaminação por óleo/graxa."; break;
+                case 'slipping':
+                    diagnosis = currentResults.angle < 120
+                        ? `Causa provável: Ângulo de abraçamento baixo (${currentResults.angle.toFixed(1)}°). Aumente a distância entre eixos ou use polias maiores.`
+                        : "Verifique a tensão da correia e o desgaste das ranhuras das polias.";
+                    break;
+                case 'noise':
+                    diagnosis = "Causas comuns: Desalinhamento entre polias, tensão incorreta (muito alta ou baixa), ou desgaste nos rolamentos dos eixos.";
+                    break;
+                case 'vibration':
+                    diagnosis = currentResults.vibrationFreq > 0 && Math.abs(currentResults.vibrationFreq - (currentResults.rpm / 60)) < 10
+                        ? `Causa provável: Risco de ressonância! A frequência de vibração da correia (${currentResults.vibrationFreq.toFixed(1)} Hz) está próxima da frequência de rotação do motor.`
+                        : "Verifique o balanceamento das polias e o alinhamento do sistema.";
+                    break;
+                case 'wear':
+                    diagnosis = "Causas comuns: Desalinhamento, tensão excessiva, polias gastas ou contaminação por óleo/graxa.";
+                    break;
             }
         }
         dom.diagnosisResult.innerHTML = `<p>${diagnosis}</p>`;
@@ -210,12 +216,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dom[mode + '-calculation-module']) dom[mode + '-calculation-module'].style.display = 'block';
         if (dom[mode + '-results-container']) dom[mode + '-results-container'].style.display = 'block';
 
-        dom['direct-results-container'].style.display = 'block';
-        dom['results-card'].style.display = (mode === 'direct' || mode === 'compare') ? 'block' : 'none';
-        
-        dom['tips-card'].style.display = (mode === 'direct' || mode === 'reverse') ? 'block' : 'none';
-        dom.modeDirectBtn.classList.toggle('active', mode === 'direct');
-        dom.modeReverseBtn.classList.toggle('active', mode === 'reverse');
+        if (dom['results-card']) dom['results-card'].style.display = (mode === 'direct' || mode === 'compare') ? 'block' : 'none';
+        if (dom['tips-card']) dom['tips-card'].style.display = (mode === 'direct' || mode === 'reverse') ? 'block' : 'none';
+
+        if (dom.modeDirectBtn) dom.modeDirectBtn.classList.toggle('active', mode === 'direct');
+        if (dom.modeReverseBtn) dom.modeReverseBtn.classList.toggle('active', mode === 'reverse');
         if (mode !== 'direct') resetDiagram();
     }
 
@@ -251,25 +256,25 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawDiagram(r) {
         if (!r || !dom.transmissionDiagram) return;
         dom['diagram-card'].style.display = 'block';
-        const w=800, h=300, p=50, scale = (w-p*2) / (r.d1/2 + r.c + r.d2/2);
-        const r1=r.d1/2*scale, r2=r.d2/2*scale, cs=r.c*scale, cx1=p+r1, cx2=cx1+cs, cy=h/2;
-        
+        const w = 800, h = 300, p = 50, scale = (w - p * 2) / (r.d1 / 2 + r.c + r.d2 / 2);
+        const r1 = r.d1 / 2 * scale, r2 = r.d2 / 2 * scale, cs = r.c * scale, cx1 = p + r1, cx2 = cx1 + cs, cy = h / 2;
+
         dom.pulley1.setAttribute('r', r1); dom.pulley1.setAttribute('cx', cx1); dom.pulley1.setAttribute('cy', cy);
         dom.pulley2.setAttribute('r', r2); dom.pulley2.setAttribute('cx', cx2); dom.pulley2.setAttribute('cy', cy);
 
         dom.pulley1_text.setAttribute('x', cx1); dom.pulley1_text.setAttribute('y', cy + 5); dom.pulley1_text.textContent = `${r.d1}mm`;
         dom.pulley2_text.setAttribute('x', cx2); dom.pulley2_text.setAttribute('y', cy + 5); dom.pulley2_text.textContent = `${r.d2}mm`;
-        
-        const alpha = Math.asin((r2-r1)/cs);
-        const p1x1=cx1+r1*Math.sin(alpha), p1y1=cy-r1*Math.cos(alpha), p1x2=cx1-r1*Math.sin(alpha), p1y2=cy+r1*Math.cos(alpha);
-        const p2x1=cx2+r2*Math.sin(alpha), p2y1=cy-r2*Math.cos(alpha), p2x2=cx2-r2*Math.sin(alpha), p2y2=cy+r2*Math.cos(alpha);
-        
-        dom.beltPath.setAttribute('d', `M ${p1x1} ${p1y1} L ${p2x1} ${p2y1} A ${r2} ${r2} 0 ${Math.PI - 2*alpha > Math.PI ? 1:0} 1 ${p2x2} ${p2y2} L ${p1x2} ${p1y2} A ${r1} ${r1} 0 ${Math.PI - 2*alpha > Math.PI ? 1:0} 1 ${p1x1} ${p1y1}`);
+
+        const alpha = Math.asin((r2 - r1) / cs);
+        const p1x1 = cx1 + r1 * Math.sin(alpha), p1y1 = cy - r1 * Math.cos(alpha), p1x2 = cx1 - r1 * Math.sin(alpha), p1y2 = cy + r1 * Math.cos(alpha);
+        const p2x1 = cx2 + r2 * Math.sin(alpha), p2y1 = cy - r2 * Math.cos(alpha), p2x2 = cx2 - r2 * Math.sin(alpha), p2y2 = cy + r2 * Math.cos(alpha);
+
+        dom.beltPath.setAttribute('d', `M ${p1x1} ${p1y1} L ${p2x1} ${p2y1} A ${r2} ${r2} 0 ${Math.PI - 2 * alpha > Math.PI ? 1 : 0} 1 ${p2x2} ${p2y2} L ${p1x2} ${p1y2} A ${r1} ${r1} 0 ${Math.PI - 2 * alpha > Math.PI ? 1 : 0} 1 ${p1x1} ${p1y1}`);
         dom.centerLine.setAttribute('x1', cx1); dom.centerLine.setAttribute('x2', cx2);
     }
 
     function resetDiagram() {
-        if(dom['diagram-card']) dom['diagram-card'].style.display = 'none';
+        if (dom['diagram-card']) dom['diagram-card'].style.display = 'none';
     }
 
     // --- FUNÇÕES AUXILIARES E DE SETUP ---
@@ -288,46 +293,46 @@ document.addEventListener('DOMContentLoaded', () => {
             el.value = currentValue;
         }
     }
-    
+
     function updatePulleySelects() {
         const profile = dom.tipoCorreia.value;
-        if(!profile || !DB.pulleys[profile]) return;
+        if (!profile || !DB.pulleys[profile]) return;
         const pulleySizes = DB.pulleys[profile];
         populateSelect(dom.diametroMotora, pulleySizes, (opt) => ({ value: opt, text: `${opt} mm` }));
         populateSelect(dom.diametroMovida, pulleySizes, (opt) => ({ value: opt, text: `${opt} mm` }));
     }
-    
-    function setupEventListeners() {
-        dom.modeDirectBtn.addEventListener('click', () => { setMode('direct'); saveFormState(); });
-        dom.modeReverseBtn.addEventListener('click', () => { setMode('reverse'); saveFormState(); });
 
-        dom.calcularBtn.addEventListener('click', runDirectCalculation);
-        dom.optimizeBtn.addEventListener('click', runReverseOptimization);
-        dom.resetBtn.addEventListener('click', resetForm);
-        dom.printBtn.addEventListener('click', () => window.print());
-        dom.saveProjectBtn.addEventListener('click', saveProject);
-        dom.compareBtn.addEventListener('click', runComparison);
-        dom.importBtn.addEventListener('click', importProjects);
-        dom.exportBtn.addEventListener('click', exportProjects);
+    function setupEventListeners() {
+        if (dom.modeDirectBtn) dom.modeDirectBtn.addEventListener('click', () => { setMode('direct'); saveFormState(); });
+        if (dom.modeReverseBtn) dom.modeReverseBtn.addEventListener('click', () => { setMode('reverse'); saveFormState(); });
+
+        if (dom.calcularBtn) dom.calcularBtn.addEventListener('click', runDirectCalculation);
+        if (dom.optimizeBtn) dom.optimizeBtn.addEventListener('click', runReverseOptimization);
+        if (dom.resetBtn) dom.resetBtn.addEventListener('click', resetForm);
+        if (dom.printBtn) dom.printBtn.addEventListener('click', () => window.print());
+        if (dom.saveProjectBtn) dom.saveProjectBtn.addEventListener('click', saveProject);
+        if (dom.compareBtn) dom.compareBtn.addEventListener('click', runComparison);
+        if (dom.importBtn) dom.importBtn.addEventListener('click', importProjects);
+        if (dom.exportBtn) dom.exportBtn.addEventListener('click', exportProjects);
 
         formInputIds.forEach(id => { if (dom[id]) dom[id].addEventListener('change', saveFormState); });
-        dom.tipoCorreia.addEventListener('change', updatePulleySelects);
-        dom.diametroMotora.addEventListener('change', suggestDistance);
-        dom.diametroMovida.addEventListener('change', suggestDistance);
-        dom.failureType.addEventListener('change', runDiagnosis);
-        dom.fileInput.addEventListener('change', handleFileSelect);
-        
-        dom.projectList.addEventListener('click', handleProjectListClick);
-        dom.solutionsTable.addEventListener('click', (e) => {
+        if (dom.tipoCorreia) dom.tipoCorreia.addEventListener('change', updatePulleySelects);
+        if (dom.diametroMotora) dom.diametroMotora.addEventListener('change', suggestDistance);
+        if (dom.diametroMovida) dom.diametroMovida.addEventListener('change', suggestDistance);
+        if (dom.failureType) dom.failureType.addEventListener('change', runDiagnosis);
+        if (dom.fileInput) dom.fileInput.addEventListener('change', handleFileSelect);
+
+        if (dom.projectList) dom.projectList.addEventListener('click', handleProjectListClick);
+        if (dom.solutionsTable) dom.solutionsTable.addEventListener('click', (e) => {
             if (e.target.classList.contains('action-button')) {
                 const sol = JSON.parse(e.target.dataset.solution);
                 loadSolutionIntoDirectForm(sol);
             }
         });
 
-        dom.modalConfirmBtn.addEventListener('click', () => { if (modalCallback) modalCallback(); hideModal(); });
-        dom.modalCancelBtn.addEventListener('click', hideModal);
-        
+        if (dom.modalConfirmBtn) dom.modalConfirmBtn.addEventListener('click', () => { if (modalCallback) modalCallback(); hideModal(); });
+        if (dom.modalCancelBtn) dom.modalCancelBtn.addEventListener('click', hideModal);
+
         document.querySelectorAll('input[type="number"]').forEach(input => {
             input.addEventListener('input', () => input.classList.remove('invalid'));
         });
@@ -335,10 +340,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validateInputs(isDirectMode) {
         let isValid = true;
-        const inputsToCheck = isDirectMode 
+        const inputsToCheck = isDirectMode
             ? [dom.rpmMotor, dom.potenciaMotor, dom.distanciaEixos]
             : [dom.revRpmMotor, dom.revRpmFinal, dom.revPotenciaMotor];
-        
+
         inputsToCheck.forEach(input => {
             if (!input) return;
             const value = parseFloat(input.value);
@@ -351,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         return isValid;
     }
-    
+
     function suggestDistance() {
         if (!dom.diametroMotora || !dom.diametroMovida) return;
         const d1 = parseFloat(dom.diametroMotora.value);
@@ -363,10 +368,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetForm() {
         document.querySelectorAll('input[type="number"], input[type="text"]').forEach(i => i.value = '');
+        document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
         updatePulleySelects();
         resetDiagram();
         localStorage.removeItem(formStateKey);
-        dom.dicasLista.innerHTML = '<li>Preencha os dados e clique em "Calcular".</li>';
+        if (dom.dicasLista) dom.dicasLista.innerHTML = '<li>Preencha os dados e clique em "Calcular".</li>';
         currentResults = {};
     }
 
@@ -374,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentResults.rpm) { showModal('Calcule um projeto antes de salvar.'); return; }
         const projectName = dom.projectName.value.trim();
         if (!projectName) { showModal('Por favor, dê um nome ao projeto.'); return; }
-        
+
         const { rpm, power, fs, profile, d1, d2, c } = currentResults;
         const projectData = { name: projectName, rpm, power, fs, profile, d1, d2, c };
 
@@ -395,31 +401,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    
     function loadProjects() {
         const projects = JSON.parse(localStorage.getItem('pulleyProjects')) || [];
-        populateSelect(dom.compareProject1, projects.map((p, i) => ({value: i, text: p.name})), (opt) => opt);
-        populateSelect(dom.compareProject2, projects.map((p, i) => ({value: i, text: p.name})), (opt) => opt);
-        
-        dom.projectList.innerHTML = '';
-        projects.forEach((proj, index) => {
-            const item = document.createElement('div');
-            item.className = 'project-item';
-            item.innerHTML = `<span>${proj.name}</span><button class="delete-project-btn" data-index="${index}"><i class="fas fa-trash-alt"></i></button>`;
-            dom.projectList.appendChild(item);
-        });
+        populateSelect(dom.compareProject1, projects.map((p, i) => ({ value: i, text: p.name })), (opt) => opt);
+        populateSelect(dom.compareProject2, projects.map((p, i) => ({ value: i, text: p.name })), (opt) => opt);
+
+        if (dom.projectList) {
+            dom.projectList.innerHTML = '';
+            projects.forEach((proj, index) => {
+                const item = document.createElement('div');
+                item.className = 'project-item';
+                item.innerHTML = `<span>${proj.name}</span><button class="delete-project-btn" data-index="${index}"><i class="fas fa-trash-alt"></i></button>`;
+                dom.projectList.appendChild(item);
+            });
+        }
     }
 
-                          function handleProjectListClick(e) {
+    function handleProjectListClick(e) {
         const target = e.target;
         const projectItem = target.closest('.project-item');
         if (!projectItem) return;
 
         const index = projectItem.querySelector('.delete-project-btn').dataset.index;
         if (index === undefined) return;
-        
+
         const projects = JSON.parse(localStorage.getItem('pulleyProjects')) || [];
-        
+
         if (target.closest('.delete-project-btn')) {
             showModal(`Tem a certeza que deseja apagar o projeto "${projects[index].name}"?`, 'confirm', () => {
                 projects.splice(index, 1);
@@ -429,29 +436,32 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (target.tagName === 'SPAN') {
             loadSolutionIntoDirectForm(projects[index]);
         }
-                          }
+    }
+
     function loadSolutionIntoDirectForm(sol) {
         dom.rpmMotor.value = sol.rpm;
         dom.potenciaMotor.value = sol.power;
         dom.fatorServico.value = sol.fs || '1.2';
         dom.tipoCorreia.value = sol.profile;
-        
+
         updatePulleySelects();
-        
+
         dom.diametroMotora.value = sol.d1;
         dom.diametroMovida.value = sol.d2;
         dom.distanciaEixos.value = sol.c.toFixed(0);
-        
+
         setMode('direct');
         runDirectCalculation();
         dom.projectName.value = sol.name;
     }
-    
+
     function findBestFit(target, options) {
-        return options.reduce((p, c) => Math.abs(c-target) < Math.abs(p-target) ? c : p);
+        if (!options || !options.length) return target;
+        return options.reduce((p, c) => Math.abs(c - target) < Math.abs(p - target) ? c : p);
     }
+
     function updateCardStatus(card, value, warnLimit, dangerLimit, higherIsBetter) {
-        if(!card) return;
+        if (!card) return;
         card.classList.remove('warning', 'danger', 'success');
         if ((higherIsBetter && value < dangerLimit) || (!higherIsBetter && value > dangerLimit)) {
             card.classList.add('danger');
@@ -461,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.add('success');
         }
     }
-    
+
     function generateTips(r) {
         if (!r || !dom.dicasLista) return;
         dom.dicasLista.innerHTML = '';
@@ -478,6 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showModal(message, type = 'alert', callback = null) {
+        if (!dom.modalMessage || !dom.customModal || !dom.modalConfirmBtn || !dom.modalCancelBtn) return;
         dom.modalMessage.textContent = message;
         modalCallback = callback;
         dom.modalConfirmBtn.style.display = type === 'confirm' ? 'inline-block' : 'none';
@@ -486,9 +497,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function hideModal() {
-        dom.customModal.style.display = 'none';
+        if (dom.customModal) dom.customModal.style.display = 'none';
     }
-    function importProjects() { dom.fileInput.click(); }
+
+    function importProjects() { if (dom.fileInput) dom.fileInput.click(); }
+
     function exportProjects() {
         const projects = localStorage.getItem('pulleyProjects');
         if (!projects || projects === '[]') { showModal('Não há projetos salvos para exportar.'); return; }
@@ -496,12 +509,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `projetos_polias_${new Date().toISOString().slice(0,10)}.json`;
+        a.download = `projetos_polias_${new Date().toISOString().slice(0, 10)}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     }
+
     function handleFileSelect(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -526,12 +540,14 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         reader.readAsText(file);
     }
+
     function init() {
+        if (!DB || !DB.pulleys || !DB.serviceFactors) return;
         populateSelect(dom.tipoCorreia, Object.keys(DB.pulleys), (opt) => ({ value: opt, text: opt }));
         const sfOpts = Object.values(DB.serviceFactors);
         populateSelect(dom.fatorServico, sfOpts, (opt) => ({ value: opt.value, text: `FS ${opt.value} - ${opt.text}` }));
         populateSelect(dom.revFatorServico, sfOpts, (opt) => ({ value: opt.value, text: `FS ${opt.value} - ${opt.text}` }));
-        
+
         updatePulleySelects();
         loadFormState();
         setupEventListeners();
