@@ -285,7 +285,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- DIAGRAMA ---
     function drawDiagram(r) {
-        if (!r || !dom.transmissionDiagram || r.d1 <= 0 || r.d2 <= 0 || r.c <= 0) {
+        const diagramElements = [dom.transmissionDiagram, dom.pulley1, dom.pulley2, dom.beltPath, dom.centerLine, dom.pulley1_text, dom.pulley2_text];
+        
+        if (diagramElements.some(el => !el)) {
+            console.error("Um ou mais elementos do diagrama SVG não foram encontrados no DOM. Verifique os IDs no HTML.");
+            resetDiagram();
+            return;
+        }
+        if (!r || r.d1 <= 0 || r.d2 <= 0 || r.c <= 0) {
             resetDiagram();
             return;
         }
@@ -307,12 +314,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const p2x1 = cx2 + r2 * Math.sin(alpha), p2y1 = cy - r2 * Math.cos(alpha);
         const p2x2 = cx2 - r2 * Math.sin(alpha), p2y2 = cy + r2 * Math.cos(alpha);
 
+        // Inicia a animação
+        const baseDuration = 5; // 5 segundos para uma rotação completa da polia motora
+        const duration2 = baseDuration * r.ratio; // Polia maior gira mais devagar
+
+        dom.pulley1.style.animation = `spin ${baseDuration}s linear infinite`;
+        dom.pulley2.style.animation = `spin ${duration2}s linear infinite`;
+        dom.beltPath.style.animation = `march 1s linear infinite`;
+
         const largeArcFlag = Math.PI - 2 * alpha > Math.PI ? 1 : 0;
         dom.beltPath.setAttribute('d', `M ${p1x1} ${p1y1} L ${p2x1} ${p2y1} A ${r2} ${r2} 0 ${largeArcFlag} 1 ${p2x2} ${p2y2} L ${p1x2} ${p1y2} A ${r1} ${r1} 0 ${largeArcFlag} 1 ${p1x1} ${p1y1}`);
         dom.centerLine.setAttribute('x1', cx1); dom.centerLine.setAttribute('x2', cx2);
     }
 
     function resetDiagram() {
+        // Para a animação ao resetar
+        if (dom.pulley1) dom.pulley1.style.animation = 'none';
+        if (dom.pulley2) dom.pulley2.style.animation = 'none';
+        if (dom.beltPath) dom.beltPath.style.animation = 'none';
         if (dom['diagram-card']) dom['diagram-card'].style.display = 'none';
     }
 
