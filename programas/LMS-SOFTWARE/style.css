@@ -3,19 +3,19 @@
 
 :root {
     --cor-primaria: #003366;      /* Azul Escuro */
-    --cor-secundaria: #005a9c;     /* Azul Médio */
+    --cor-secundaria: #005a9c;    /* Azul Médio */
     --cor-destaque: #ffc107;      /* Amarelo/Dourado */
     --cor-fundo: #f8f9fa;         /* Cinza bem claro */
     --cor-texto: #212529;         /* Preto Suave */
     --cor-sucesso: #28a745;       /* Verde */
     --cor-erro: #dc3545;          /* Vermelho */
     --cor-cuidado: #ffc107;       /* Amarelo para Cuidado */
-    --cor-borda: #dee2e6;        /* Cinza para bordas */
+    --cor-borda: #dee2e6;         /* Cinza para bordas */
 }
 
 /* --- ESTILOS GERAIS E DE NAVEGAÇÃO --- */
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
     line-height: 1.6;
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
@@ -38,7 +38,7 @@ header {
 }
 
 header h1 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Oswald', Arial, Helvetica, sans-serif;
     font-size: 2.2rem;
     margin-bottom: 1rem;
 }
@@ -100,7 +100,7 @@ select:disabled { background-color: #e9ecef; }
     text-align: center;
     color: var(--cor-primaria);
     margin-bottom: 2rem;
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Oswald', Arial, Helvetica, sans-serif;
 }
 
 /* BOTÕES */
@@ -146,7 +146,7 @@ button#find-oils-button:hover { background-color: var(--cor-primaria); color: wh
 .calculator-section { border-top: 4px solid var(--cor-secundaria); }
 .calculator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
 #calculator-result { margin-top: 2rem; padding: 1.5rem; border-radius: 6px; text-align: center; background-color: #eaf3fa; border: 2px solid var(--cor-secundaria); }
-#calculator-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: var(--cor-sucesso); font-family: 'Oswald', sans-serif; }
+#calculator-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: var(--cor-sucesso); font-family: 'Oswald', Arial, Helvetica, sans-serif; }
 .justification-text { font-size: 0.95em; color: #495057; margin-top: 10px; border-top: 1px solid var(--cor-borda); padding-top: 10px; }
 
 .blend-calculator-section { border-top: 4px solid #6f42c1; }
@@ -158,13 +158,13 @@ button#calculate-blend-button { background-color: #6f42c1; }
 button#calculate-blend-button:hover { background-color: #5a3d90; }
 #blend-result { margin-top: 2rem; padding: 1.5rem; border-radius: 6px; text-align: center; background-color: #f3eef9; border: 2px solid #6f42c1; }
 #blend-result h3 { margin: 0 0 10px 0; color: var(--cor-primaria); }
-#blend-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: #6f42c1; font-family: 'Oswald', sans-serif; }
+#blend-result .recommended-vg { font-size: 2.5rem; font-weight: bold; color: #6f42c1; font-family: 'Oswald', Arial, Helvetica, sans-serif; }
 
 
 /* --- CONTAINER DE RESULTADOS (COM LAYOUT CORRIGIDO) --- */
 #results-container, #calculator-search-results-container { margin-top: 2rem; }
 .product-card { background-color: #fff; border: 1px solid var(--cor-borda); border-left: 5px solid var(--cor-primaria); padding: 20px; margin-bottom: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.equivalents-title, .results-header { margin-top: 30px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px; color: var(--cor-primaria); font-family: 'Oswald', sans-serif; }
+.equivalents-title, .results-header { margin-top: 30px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px; color: var(--cor-primaria); font-family: 'Oswald', Arial, Helvetica, sans-serif; }
 
 .tech-data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; padding: 1rem; margin-top: 1rem; background-color: #f8f9fa; border-radius: 4px; border: 1px solid var(--cor-borda); }
 .tech-data-item { text-align: center; }
@@ -241,7 +241,7 @@ button#calculate-blend-button:hover { background-color: #5a3d90; }
 .modal-content { background-color: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
 .modal-close { position: absolute; top: 10px; right: 15px; font-size: 2rem; border: none; background: none; cursor: pointer; color: #aaa; }
 .modal-close:hover { color: #333; }
-#modal-title { margin-top: 0; font-family: 'Oswald', sans-serif; }
+#modal-title { margin-top: 0; font-family: 'Oswald', Arial, Helvetica, sans-serif; }
 #modal-title.status-ok { color: var(--cor-sucesso); }
 #modal-title.status-cuidado { color: var(--cor-cuidado); }
 #modal-title.status-incompativel { color: var(--cor-erro); }
