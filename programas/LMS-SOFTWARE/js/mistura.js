@@ -9,6 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const blendResultDiv = document.getElementById('blend-result');
     const blendResultText = document.getElementById('blend-result-text');
 
+    // Verifica se todos os elementos existem antes de continuar
+    if (
+        !viscosity1Input ||
+        !percentage1Input ||
+        !viscosity2Input ||
+        !calculateBlendButton ||
+        !blendResultDiv ||
+        !blendResultText
+    ) {
+        console.error('Erro: Um ou mais elementos do DOM não foram encontrados.');
+        return;
+    }
+
     /**
      * Calcula a viscosidade da mistura usando a equação de Arrhenius.
      * A viscosidade deve ser convertida para uma escala logarítmica (log-log) para o cálculo.

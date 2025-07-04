@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA DE PROJETOS SALVOS (NOVA) ---
     function populateSavedProjects() {
+        if (!savedProjectsSelect) return;
         savedProjectsSelect.innerHTML = '<option value="">-- Nenhum projeto salvo --</option>';
         if (savedProjects.length > 0) {
             savedProjects.forEach((project, index) => {
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function saveProject() {
+        if (!projectNameInput || !tempOperacaoInput || !tipoEquipamentoSelect) return;
         const name = projectNameInput.value.trim();
         if (!name) {
             alert('Por favor, dê um nome ao projeto antes de salvar.');
@@ -48,6 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
             tipo: tipoEquipamentoSelect.value
         };
 
+        // Evita duplicidade de nomes
+        const exists = savedProjects.some(p => p.name === name);
+        if (exists) {
+            alert('Já existe um projeto com esse nome. Escolha outro nome.');
+            return;
+        }
+
         savedProjects.push(projectData);
         localStorage.setItem('calculadoraVGProjects', JSON.stringify(savedProjects));
         
@@ -57,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadProject() {
+        if (!savedProjectsSelect || !tempOperacaoInput || !tipoEquipamentoSelect) return;
         const projectIndex = savedProjectsSelect.value;
         if (projectIndex === "") {
             alert("Por favor, selecione um projeto para carregar.");
@@ -64,21 +74,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const project = savedProjects[projectIndex];
+        if (!project) return;
         tempOperacaoInput.value = project.temp;
         tipoEquipamentoSelect.value = project.tipo;
         
         // Opcional: recalcular e mostrar os resultados automaticamente ao carregar
-        calculateButton.click();
+        if (calculateButton) calculateButton.click();
     }
 
     function deleteProject() {
+        if (!savedProjectsSelect) return;
         const projectIndex = savedProjectsSelect.value;
         if (projectIndex === "") {
             alert("Por favor, selecione um projeto para apagar.");
             return;
         }
 
-        const projectName = savedProjects[projectIndex].name;
+        const projectName = savedProjects[projectIndex]?.name || '';
         if (confirm(`Tem a certeza que deseja apagar o projeto "${projectName}"?`)) {
             savedProjects.splice(projectIndex, 1);
             localStorage.setItem('calculadoraVGProjects', JSON.stringify(savedProjects));
@@ -97,10 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- EVENT LISTENERS ---
-    calculateButton.addEventListener('click', calcularViscosidade);
-    saveProjectBtn.addEventListener('click', saveProject);
-    loadProjectBtn.addEventListener('click', loadProject);
-    deleteProjectBtn.addEventListener('click', deleteProject);
+    if (calculateButton) calculateButton.addEventListener('click', calcularViscosidade);
+    if (saveProjectBtn) saveProjectBtn.addEventListener('click', saveProject);
+    if (loadProjectBtn) loadProjectBtn.addEventListener('click', loadProject);
+    if (deleteProjectBtn) deleteProjectBtn.addEventListener('click', deleteProject);
 
     // --- INICIALIZAÇÃO ---
     populateSavedProjects();

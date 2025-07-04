@@ -79,6 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
             accordionContainer.appendChild(accordionItem);
 
             button.addEventListener('click', () => {
+                // Fecha todos os outros
+                document.querySelectorAll('.accordion-header').forEach(b => {
+                    if (b !== button) {
+                        b.classList.remove('active');
+                        const c = b.nextElementSibling;
+                        if (c) c.style.maxHeight = null;
+                    }
+                });
+                // Alterna o atual
                 button.classList.toggle('active');
                 const contentDiv = button.nextElementSibling;
                 if (contentDiv.style.maxHeight) {
@@ -109,6 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function popularAplicacoes() {
+        resetSelect(applicationSelect, '-- Selecione a Aplicação --', false);
+        resetSelect(marcaSelect, '-- Selecione a Marca --');
+        resetSelect(oleoSelect, '-- Selecione o Produto --');
         const aplicacoes = [...new Set(tabelaSimilaridade.map(item => item.APLICACAO))];
         aplicacoes.sort().forEach(app => {
             const option = document.createElement('option');
@@ -119,9 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function popularMarcas(aplicacaoSelecionada) {
-        resetSelect(marcaSelect, '-- Selecione uma aplicação --');
-        resetSelect(oleoSelect, '-- Selecione uma marca --');
-        
+        resetSelect(marcaSelect, '-- Selecione a Marca --');
+        resetSelect(oleoSelect, '-- Selecione o Produto --');
         if (!aplicacaoSelecionada) return;
 
         const marcas = new Set();
@@ -131,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 Object.keys(grupo.PRODUTOS).forEach(marca => marcas.add(marca));
             });
 
-        marcaSelect.innerHTML = '<option value="">-- Selecione a Marca --</option>';
         Array.from(marcas).sort().forEach(marca => {
             const option = document.createElement('option');
             option.value = marca;
@@ -142,8 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function popularProdutos(aplicacaoSelecionada, marcaSelecionada) {
-        resetSelect(oleoSelect, '-- Selecione uma marca --');
-
+        resetSelect(oleoSelect, '-- Selecione o Produto --');
         if (!marcaSelecionada) return;
 
         const produtos = [];
@@ -159,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-        oleoSelect.innerHTML = '<option value="">-- Selecione o Produto --</option>';
         produtos.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(produto => {
             const opt = document.createElement('option');
             opt.value = produto.grupoIndex;

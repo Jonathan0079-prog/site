@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA DE IMPORTAÇÃO ---
     function triggerImport() {
+        importFileInput.value = ""; // Limpa o input para permitir importar o mesmo arquivo novamente
         importFileInput.click();
     }
 
@@ -79,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
         reader.readAsText(file);
+        event.target.value = ""; // Limpa o input após o uso
     }
 
     // --- LÓGICA DE LIMPEZA ---
@@ -96,10 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     // --- EVENT LISTENERS ---
-    exportBtn.addEventListener('click', exportData);
-    importBtn.addEventListener('click', triggerImport);
-    importFileInput.addEventListener('change', importData);
-    clearBtn.addEventListener('click', clearAllData);
+    if (exportBtn) exportBtn.addEventListener('click', exportData);
+    if (importBtn) importBtn.addEventListener('click', triggerImport);
+    if (importFileInput) importFileInput.addEventListener('change', importData);
+    if (clearBtn) clearBtn.addEventListener('click', clearAllData);
 });
