@@ -1,4 +1,4 @@
-// VERSÃO FINAL COMPLETA - 3 DE JULHO DE 2025
+// VERSÃO FINAL COMPLETA - 3 DE JULHO DE 2025 (REVISADA)
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- SELEÇÃO DE ELEMENTOS DO DOM ---
@@ -19,10 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
         'diagram-card', 'transmissionDiagram', 'pulley1', 'pulley2', 'beltPath', 'centerLine', 'pulley1_text', 'pulley2_text',
         'results-card'
     ];
-    ids.forEach(id => {
+    // ATUALIZAÇÃO: Usando for...of para maior segurança e clareza.
+    for (const id of ids) {
         const element = document.getElementById(id);
-        if (element) dom[id] = element;
-    });
+        if (element) {
+            dom[id] = element;
+        }
+    }
 
     // --- ESTADO DA APLICAÇÃO ---
     let currentResults = {};
@@ -45,9 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadFormState() {
-        const savedState = localStorage.getItem(formStateKey);
-        if (!savedState) return;
-        const state = JSON.parse(savedState);
+        const savedStateJSON = localStorage.getItem(formStateKey);
+        if (!savedStateJSON) return;
+        const state = JSON.parse(savedStateJSON);
         formInputIds.forEach(id => {
             if (dom[id] && state[id] !== undefined && id !== 'diametroMotora' && id !== 'diametroMovida') {
                 dom[id].value = state[id];
@@ -62,41 +65,55 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- LÓGICA DE CÁLCULO ---
     function performCalculations(params) {
         const { name, rpm, power, fs, d1, d2, c, profile } = params;
-        if ([rpm, power, fs, d1, d2, c, profile].some(p => p === null || p === undefined || (typeof p === 'number' && p <= 0) || p === '')) return null;
-        if (!DB || !DB.powerTables || !DB.belts || !DB.lengthFactors || !DB.beltMass) return null;
+
+        // ATUALIZAÇÃO: Validação mais limpa e robusta.
+        if ([rpm, power, fs, d1, d2, c].some(p => p === null || p === undefined || (typeof p === 'number' && p <= 0)) || !profile) {
+            return { success: false, error: 'Parâmetros de entrada inválidos ou incompletos.' };
+        }
+        if (!DB?.powerTables?.[profile] || !DB?.belts?.[profile] || !DB?.lengthFactors?.[profile] || !DB?.beltMass?.[profile]) {
+            return { success: false, error: `Dados de referência (DB) para o perfil "${profile}" não encontrados.` };
+        }
 
         const designPower = power * fs;
         const ratio = d2 / d1;
         const powerTable = DB.powerTables[profile];
-        if (!powerTable) return null;
-
+        
         const nominalBeltPower = (powerTable.baseHp * (rpm / 1750)) + ((ratio > 1) ? ((ratio - 1) * powerTable.ratioFactor) : 0);
         const L = 2 * c + (Math.PI * (d1 + d2) / 2) + (Math.pow(d2 - d1, 2) / (4 * c));
         const angle = 180 - 2 * Math.asin((d2 - d1) / (2 * c)) * (180 / Math.PI);
-        if (isNaN(angle)) return null;
+        if (isNaN(angle)) {
+            return { success: false, error: 'Configuração geométrica inválida (verifique diâmetros e distância).' };
+        }
 
         const Ka = (angle < 180) ? 1 - (0.003 * (180 - angle)) : 1.0;
         const beltLengths = DB.belts[profile];
-        if (!beltLengths || !beltLengths.length) return null;
         const avgLength = beltLengths.reduce((a, b) => a + b, 0) / beltLengths.length;
         let Kl = DB.lengthFactors[profile].m;
         if (L < avgLength * 0.75) Kl = DB.lengthFactors[profile].s;
         else if (L > avgLength * 1.25) Kl = DB.lengthFactors[profile].l;
 
         const correctedBeltPower = nominalBeltPower * Ka * Kl;
-        if (correctedBeltPower <= 0) return null;
+        if (correctedBeltPower <= 0) {
+            return { success: false, error: 'A potência corrigida da correia é zero ou negativa.' };
+        }
         const numBelts = Math.ceil(designPower / correctedBeltPower);
 
         const rpmFinal = rpm * (d1 / d2);
         const beltSpeed = (d1 * rpm * Math.PI) / 60000;
-        if (beltSpeed <= 0) return null;
+        if (beltSpeed <= 0) {
+            return { success: false, error: 'A velocidade da correia é zero ou negativa.' };
+        }
 
         const shaftLoad = (2 * (designPower * 735.5) / (beltSpeed * numBelts)) / 9.81;
         const vibrationFreq = (1 / (2 * c / 1000)) * Math.sqrt((shaftLoad * 9.81) / DB.beltMass[profile]);
         const bestFitBelt = findBestFit(L, beltLengths);
         const beltName = `${profile}${Math.round(bestFitBelt / 25.4)}0`;
 
-        return { name: name || 'Projeto Atual', rpm, power, fs, designPower, profile, d1, d2, c, rpmFinal, ratio, L, beltSpeed, angle, numBelts, shaftLoad, vibrationFreq, beltName, bestFitBelt };
+        // ATUALIZAÇÃO: Retorno estruturado em caso de sucesso.
+        return { 
+            success: true,
+            data: { name: name || 'Projeto Atual', rpm, power, fs, designPower, profile, d1, d2, c, rpmFinal, ratio, L, beltSpeed, angle, numBelts, shaftLoad, vibrationFreq, beltName, bestFitBelt }
+        };
     }
 
     // --- LÓGICA DOS MÓDULOS ---
@@ -111,13 +128,16 @@ document.addEventListener('DOMContentLoaded', () => {
             c: parseFloat(dom.distanciaEixos.value),
             profile: dom.tipoCorreia.value
         };
-        currentResults = performCalculations(params);
-        if (currentResults) {
+        const result = performCalculations(params); // ATUALIZAÇÃO: Recebe o objeto de resultado
+
+        if (result.success) {
+            currentResults = result.data; // ATUALIZAÇÃO: Extrai os dados
             updateDirectResultsUI(currentResults);
             drawDiagram(currentResults);
             generateTips(currentResults);
         } else {
-            showModal('Não foi possível calcular com os parâmetros fornecidos. Verifique os valores de entrada.');
+            // ATUALIZAÇÃO: Usa a mensagem de erro específica
+            showModal(`Cálculo falhou: ${result.error}`);
         }
     }
 
@@ -135,14 +155,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetD2 = d1 * (rpmMotor / targetRpm);
                 const d2 = findBestFit(targetD2, DB.pulleys[profile]);
                 if (d2 <= d1) return;
-                const rpmFinal = rpmMotor * (d1 / d2);
+
+                const currentRatio = d1 / d2;
+                const rpmFinal = rpmMotor * currentRatio;
 
                 if (Math.abs(rpmFinal - targetRpm) / targetRpm <= tolerance) {
                     const c = 2 * (d1 + d2);
-                    const results = performCalculations({ name: 'Solução Otimizada', rpm: rpmMotor, power, fs, d1, d2, c, profile });
-                    if (results && results.angle >= 120) {
-                        const cost = (d1 + d2) * DB.costs.pulley + results.bestFitBelt * DB.costs.belt;
-                        solutions.push({ ...results, cost });
+                    const result = performCalculations({ name: 'Solução Otimizada', rpm: rpmMotor, power, fs, d1, d2, c, profile });
+                    // ATUALIZAÇÃO: Verifica o sucesso e o ângulo dentro do if
+                    if (result.success && result.data.angle >= 120) {
+                        const cost = (d1 + d2) * DB.costs.pulley + result.data.bestFitBelt * DB.costs.belt;
+                        solutions.push({ ...result.data, cost });
                     }
                 }
             });
@@ -180,14 +203,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function runComparison() {
-        const projects = JSON.parse(localStorage.getItem('pulleyProjects')) || [];
+        // ATUALIZAÇÃO: Lendo o localStorage apenas uma vez
+        const projectsJSON = localStorage.getItem('pulleyProjects');
+        const projects = projectsJSON ? JSON.parse(projectsJSON) : [];
+        
         const proj1Data = projects[dom.compareProject1.value];
         const proj2Data = projects[dom.compareProject2.value];
         if (!proj1Data || !proj2Data) { showModal("Selecione dois projetos válidos para comparar."); return; }
 
-        const results1 = performCalculations(proj1Data);
-        const results2 = performCalculations(proj2Data);
-        if (!results1 || !results2) { showModal("Erro ao recalcular um dos projetos para comparação."); return; }
+        const result1 = performCalculations(proj1Data);
+        const result2 = performCalculations(proj2Data);
+
+        // ATUALIZAÇÃO: Tratamento de erro robusto
+        if (!result1.success || !result2.success) {
+            const errorMsg1 = !result1.success ? `Projeto 1: ${result1.error}` : "";
+            const errorMsg2 = !result2.success ? `Projeto 2: ${result2.error}` : "";
+            showModal(`Erro ao recalcular projetos para comparação. ${errorMsg1} ${errorMsg2}`);
+            return;
+        }
+        
+        const results1 = result1.data;
+        const results2 = result2.data;
 
         const fields = [
             { label: "RPM Final", key: "rpmFinal", unit: " RPM", fixed: 0 },
@@ -206,6 +242,10 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.comparisonTable.innerHTML = tableHTML;
         setMode('compare');
     }
+    
+    // O restante do seu código (funções de UI, listeners, etc.) continuaria aqui...
+});
+
 
     // --- ATUALIZAÇÃO DA UI ---
     function setMode(mode) {
