@@ -68,5 +68,13 @@ const DB = {
         'Z': 0.04
     },
 
-    costs: { pulley: 0.5, belt: 0.1 }
+    costs: { pulley: 0.5, belt: 0.1 },
+
+    diagnosis: {
+        '': '--Selecione--',
+        'slipping': 'Correia Patinando',
+        'noise': 'Ruído Excessivo',
+        'vibration': 'Vibração Excessiva',
+        'wear': 'Desgaste Rápido da Correia'
+    }
 };
