@@ -17,7 +17,7 @@
             <div class="header-content">
                 <h1><i class="fas fa-cogs"></i> Suíte de Engenharia</h1>
                 <div class="header-actions">
-                    <button id="open-panel-btn" class="icon-button" title="Projetos e Ferramentas">
+                    <button id="open-panel-btn" class="icon-button" title="Projetos e Ferramentas" aria-label="Abrir painel de projetos e ferramentas">
                         <i class="fas fa-toolbox"></i>
                     </button>
                     <div class="theme-switcher">
@@ -77,7 +77,7 @@
                     <div class="card" id="results-card">
                         <div class="card-header">
                             <h2><i class="fas fa-chart-bar"></i> Resultados do Projeto</h2>
-                            <button id="printBtn" class="icon-button" title="Imprimir Relatório"><i class="fas fa-print"></i></button>
+                            <button id="printBtn" class="icon-button" title="Imprimir Relatório" aria-label="Imprimir Relatório"><i class="fas fa-print"></i></button>
                         </div>
                         <div class="results-grid-main">
                             <div class="result-item highlight-result"><span class="label">Correia Comercial</span><span class="value" id="resultadoCorreia">--</span></div>
@@ -94,20 +94,10 @@
                     </div>
                     <div class="card" id="diagram-card" style="display: none;">
                         <h2><i class="fas fa-project-diagram"></i> Diagrama do Sistema</h2>
-                        <svg id="transmissionDiagram" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet">
-                            <defs>
-                                <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-                                    <feOffset result="offOut" in="SourceAlpha" dx="3" dy="3" />
-                                    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="3" />
-                                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-                                </filter>
-                            </defs>
-                            <path id="beltPath" class="belt" filter="url(#shadow)"></path>
-                            <line id="centerLine" class="center-line"></line>
-                            <circle id="pulley1" class="pulley" filter="url(#shadow)"></circle>
-                            <circle id="pulley2" class="pulley" filter="url(#shadow)"></circle>
-                            <text id="pulley1_text" class="pulley-text"></text>
-                            <text id="pulley2_text" class="pulley-text"></text>
+                        <svg id="transmissionDiagram" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="diagramTitle diagramDesc">
+                            <title id="diagramTitle">Diagrama da transmissão por correia</title>
+                            <desc id="diagramDesc">Uma representação visual das polias motora e movida, conectadas por uma correia.</desc>
+                            <!-- O conteúdo do SVG será gerado pelo JavaScript -->
                         </svg>
                     </div>
                 </div>
@@ -140,7 +130,7 @@
     <div id="floating-panel" class="floating-panel">
         <div class="panel-header">
             <h3>Projetos e Ferramentas</h3>
-            <button id="close-panel-btn" class="icon-button"><i class="fas fa-times"></i></button>
+            <button id="close-panel-btn" class="icon-button" aria-label="Fechar painel"><i class="fas fa-times"></i></button>
         </div>
         <div class="panel-content">
             <div class="card" id="saved-projects">
@@ -166,14 +156,8 @@
 
             <div class="card" id="failure-diagnosis">
                 <h2><i class="fas fa-stethoscope"></i> Diagnóstico de Falhas</h2>
-                <div class="input-group"><label for="failureType">Selecione um Problema Comum</label><select id="failureType">
-                    <option value="">--Selecione--</option>
-                    <option value="slipping">Correia Patinando</option>
-                    <option value="noise">Ruído Excessivo</option>
-                    <option value="vibration">Vibração Excessiva</option>
-                    <option value="wear">Desgaste Rápido da Correia</option>
-                </select></div>
-                <div id="diagnosisResult"></div>
+                <div class="input-group"><label for="failureType">Selecione um Problema Comum</label><select id="failureType"></select></div>
+                <div id="diagnosisResult" role="status" aria-live="polite"></div>
             </div>
         </div>
     </div>
