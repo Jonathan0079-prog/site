@@ -1,52 +1,6 @@
 // VERSÃO FINAL COMPLETA - 4 DE JULHO DE 2025 (REVISADA)
+// Este script depende do arquivo 'database.js', que deve ser carregado ANTES dele no HTML.
 document.addEventListener('DOMContentLoaded', () => {
-
-    // --- BANCO DE DADOS (Exemplo) ---
-    // NOTA: Este objeto DB é um exemplo com a estrutura que o seu código espera.
-    // Os valores devem ser ajustados de acordo com dados técnicos reais.
-    const DB = {
-        pulleys: {
-            'A': [63, 71, 80, 90, 100, 112, 125, 140, 160, 180, 200, 250, 315],
-            'B': [100, 112, 125, 140, 160, 180, 200, 224, 250, 280, 315, 400],
-            'C': [200, 224, 250, 280, 315, 355, 400, 450, 500, 630]
-        },
-        belts: { // Comprimentos padrão em mm
-            'A': [660, 711, 762, 813, 864, 914, 965, 1016],
-            'B': [940, 1016, 1092, 1168, 1245, 1321, 1397],
-            'C': [1295, 1397, 1524, 1651, 1778, 1905]
-        },
-        powerTables: { // Dados de potência (valores de exemplo)
-            'A': { baseHp: 1.5, ratioFactor: 0.1 },
-            'B': { baseHp: 2.5, ratioFactor: 0.15 },
-            'C': { baseHp: 4.0, ratioFactor: 0.2 }
-        },
-        lengthFactors: { // Fatores de correção de comprimento (exemplo)
-            'A': { s: 0.8, m: 1.0, l: 1.1 },
-            'B': { s: 0.85, m: 1.0, l: 1.12 },
-            'C': { s: 0.9, m: 1.0, l: 1.15 }
-        },
-        beltMass: { // Massa linear da correia em kg/m (exemplo)
-            'A': 0.10,
-            'B': 0.18,
-            'C': 0.30
-        },
-        costs: { // CORREÇÃO: Objeto de custos adicionado, pois era usado no cálculo de otimização.
-            pulley: 1.5, // Custo por mm de diâmetro da polia
-            belt: 0.1 // Custo por mm de comprimento da correia
-        },
-        serviceFactors: [
-            { value: 1.0, text: "Cargas leves, <10h/dia (ventiladores)" },
-            { value: 1.2, text: "Cargas normais, <10h/dia (bombas, transportadores)" },
-            { value: 1.4, text: "Cargas pesadas ou com picos, <10h/dia (britadores)" },
-            { value: 1.6, text: "Cargas pesadas, >10h/dia (serviço contínuo severo)" }
-        ],
-        diagnosis: {
-            'slipping': 'Deslizamento',
-            'noise': 'Ruído Excessivo',
-            'vibration': 'Vibração',
-            'wear': 'Desgaste Rápido'
-        }
-    };
 
     // --- SELEÇÃO DE ELEMENTOS DO DOM ---
     const dom = {};
@@ -278,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fields.forEach(f => {
             tableHTML += `<tr><td>${f.label}</td><td>${results1[f.key].toFixed(f.fixed)}${f.unit}</td><td>${results2[f.key].toFixed(f.fixed)}${f.unit}</td></tr>`;
         });
-        // CORREÇÃO: Corrigido erro de digitação de 'tabeHTML' para 'tableHTML'.
         tableHTML += `</tbody>`;
         dom.comparisonTable.innerHTML = tableHTML;
         setMode('compare');
@@ -455,7 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetForm() {
-        // CORREÇÃO: Usando notação de colchetes para propriedade com hífen.
         if (dom['direct-calculation-module']) {
             const form = dom['direct-calculation-module'].querySelector('form');
             if (form) form.reset();
@@ -667,9 +619,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function init() {
-        if (!DB || !DB.pulleys || !DB.serviceFactors) {
-            console.error("Banco de dados (DB) não foi carregado ou está incompleto.");
-            showModal("Erro crítico: Não foi possível carregar os dados da aplicação.");
+        if (typeof DB === 'undefined' || !DB.pulleys || !DB.serviceFactors) {
+            console.error("Banco de dados (DB) não foi encontrado ou está incompleto. Verifique se 'database.js' foi carregado ANTES de 'script.js' no seu HTML.");
+            showModal("Erro crítico: Não foi possível carregar os dados da aplicação. Verifique a ordem de carregamento dos scripts no HTML.");
             return;
         }
         
