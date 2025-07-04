@@ -97,7 +97,13 @@
                         <svg id="transmissionDiagram" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="diagramTitle diagramDesc">
                             <title id="diagramTitle">Diagrama da transmissão por correia</title>
                             <desc id="diagramDesc">Uma representação visual das polias motora e movida, conectadas por uma correia.</desc>
-                            <!-- O conteúdo do SVG será gerado pelo JavaScript -->
+                            <!-- Elementos do diagrama que serão manipulados pelo JavaScript -->
+                            <line id="centerLine" y1="150" y2="150" class="center-line" />
+                            <path id="beltPath" class="belt" d="" />
+                            <circle id="pulley1" class="pulley" cy="150" />
+                            <circle id="pulley2" class="pulley" cy="150" />
+                            <text id="pulley1_text" class="diagram-text"></text>
+                            <text id="pulley2_text" class="diagram-text"></text>
                         </svg>
                     </div>
                 </div>
