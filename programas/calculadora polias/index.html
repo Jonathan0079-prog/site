@@ -94,7 +94,21 @@
                     </div>
                     <div class="card" id="diagram-card" style="display: none;">
                         <h2><i class="fas fa-project-diagram"></i> Diagrama do Sistema</h2>
-                        <svg id="transmissionDiagram" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet"></svg>
+                        <svg id="transmissionDiagram" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feOffset result="offOut" in="SourceAlpha" dx="3" dy="3" />
+                                    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="3" />
+                                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                                </filter>
+                            </defs>
+                            <path id="beltPath" class="belt" filter="url(#shadow)"></path>
+                            <line id="centerLine" class="center-line"></line>
+                            <circle id="pulley1" class="pulley" filter="url(#shadow)"></circle>
+                            <circle id="pulley2" class="pulley" filter="url(#shadow)"></circle>
+                            <text id="pulley1_text" class="pulley-text"></text>
+                            <text id="pulley2_text" class="pulley-text"></text>
+                        </svg>
                     </div>
                 </div>
 
