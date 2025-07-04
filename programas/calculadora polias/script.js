@@ -759,3 +759,4 @@ function init() {
 
 // Ponto de entrada da aplicação
 init();
+});
