@@ -348,6 +348,12 @@ thead {
     stroke: var(--cor-texto);
     stroke-width: 1px;
 }
+/* --- ANIMAÇÃO DO DIAGRAMA --- */
+/* Adiciona uma transição suave para todas as partes móveis do diagrama */
+#transmissionDiagram .pulley, #transmissionDiagram .belt, #transmissionDiagram .diagram-text, #transmissionDiagram .center-line {
+    transition: all 0.5s ease-in-out;
+}
+
 .dark-theme #transmissionDiagram .pulley {
     stroke: var(--cor-texto-claro);
 }
