@@ -4,66 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGL - Plano de Lubrificação</title>
+    <link rel="manifest" href="/site/manifest.json">
+    <meta name="theme-color" content="#003366">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/site/programas/LMS-SOFTWARE/style.css">
 </head>
 <body>
     <header>
         <h1>Sistema de Gestão de Lubrificação</h1>
         <nav class="main-nav">
-            <a href="index.html" class="nav-link">Buscador</a>
-            <a href="calculadora.html" class="nav-link">Calculadora</a>
-            <a href="plano.html" class="nav-link active">Plano de Lubrificação</a>
-            <a href="mistura.html" class="nav-link">Calculador de Mistura</a>
-            <a href="configuracoes.html" class="nav-link">Configurações</a>
+            <a href="/site/programas/LMS-SOFTWARE/index.html" class="nav-link">Buscador</a>
+            <a href="/site/programas/LMS-SOFTWARE/calculadora.html" class="nav-link">Calculadora VG</a>
+            <a href="/site/programas/LMS-SOFTWARE/plano.html" class="nav-link active">Plano de Lubrificação</a>
+            <a href="/site/programas/LMS-SOFTWARE/mistura.html" class="nav-link">Calculador de Mistura</a>
+            <a href="/site/programas/LMS-SOFTWARE/configuracoes.html" class="nav-link">Configurações</a>
         </nav>
     </header>
 
     <div class="container">
         <main>
             <section class="planner-section">
-                <h2>Plano de Lubrificação</h2>
-                <form id="equipment-form" class="planner-form">
+                <h2>Plano de Lubrificação Preditivo</h2>
+                <form id="plan-form" class="planner-form">
                     <div class="form-grid">
                         <div class="input-group">
-                            <label for="equipment-name">Nome do Equipamento / TAG</label>
-                            <input type="text" id="equipment-name" placeholder="Ex: Prensa Hidráulica 02" required>
+                            <label for="equipamento">Equipamento / TAG</label>
+                            <input type="text" id="equipamento" required>
                         </div>
                         <div class="input-group">
-                            <label for="equipment-oil">Óleo Utilizado</label>
-                            <select id="equipment-oil" required>
-                                <option value="">-- Selecione um óleo da base --</option>
-                            </select>
+                            <label for="oleo-aplicado">Óleo Aplicado</label>
+                            <input type="text" id="oleo-aplicado" required>
                         </div>
                         <div class="input-group">
-                            <label for="change-interval">Intervalo de Troca (em horas)</label>
-                            <input type="number" id="change-interval" placeholder="Ex: 4000" required>
+                            <label for="vida-util">Vida Útil do Óleo (horas)</label>
+                            <input type="number" id="vida-util" required>
                         </div>
                         <div class="input-group">
-                             <label for="start-date">Data de Início / Última Troca</label>
-                            <input type="date" id="start-date" required>
+                            <label for="data-ultima-troca">Data da Última Troca</label>
+                            <input type="date" id="data-ultima-troca" required>
                         </div>
                     </div>
-                    <button type="submit">Adicionar ao Plano</button>
+                    <button type="submit"><i class="fas fa-plus-circle"></i> Adicionar ao Plano</button>
                 </form>
 
                 <div class="plan-table-container">
-                     <div class="table-header">
-                        <h3>Cronograma de Manutenção</h3>
-                        <button id="generate-pdf-button" class="report-button">
-                            <i class="fas fa-file-pdf"></i> Gerar Relatório
-                        </button>
+                    <div class="table-header">
+                        <h3>Itens do Plano</h3>
+                        <button id="generate-report-btn" class="report-button"><i class="fas fa-file-pdf"></i> Gerar Relatório PDF</button>
                     </div>
                     <table id="plan-table">
                         <thead>
                             <tr>
                                 <th>Equipamento</th>
-                                <th>Óleo Utilizado</th>
+                                <th>Óleo</th>
+                                <th>Última Troca</th>
                                 <th>Próxima Troca</th>
-                                <th>Ações</th>
+                                <th>Ação</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="plan-table-body">
                             </tbody>
                     </table>
                 </div>
@@ -73,7 +72,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-
-    <script type="module" src="js/plano.js"></script>
+    <script type="module" src="/site/programas/LMS-SOFTWARE/js/plano.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Caminho Absoluto Corrigido para o Service Worker
+                navigator.serviceWorker.register('/site/sw.js').then(reg => console.log('Service worker registado.', reg));
+            });
+        }
+    </script>
 </body>
 </html>
