@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-                // --- ATUALIZAÇÃO DA UI ---
+              // --- ATUALIZAÇÃO DA UI ---
 
 /**
  * Altera o modo de operação da interface (Cálculo Direto, Reverso, etc.).
@@ -711,4 +711,51 @@ function handleFileSelect(event) {
                 const existingNames = new Set(existingProjects.map(p => p.name));
                 const newProjects = importedProjects.filter(p => p.name && !existingNames.has(p.name));
                 
+                if (newProjects.length === 0) {
+                    showModal('Nenhum projeto novo para importar. Os projetos do arquivo já existem na sua lista.');
+                    return;
+                }
+                
+                localStorage.setItem('pulleyProjects', JSON.stringify([...existingProjects, ...newProjects]));
+                loadProjects();
+                showModal(`${newProjects.length} projetos foram importados com sucesso!`);
+            });
+        } catch (error) {
+            showModal(`Erro ao importar o ficheiro: ${error.message}`);
+        } finally {
+            // Limpa o input para permitir re-seleção do mesmo arquivo
+            if (dom.fileInput) dom.fileInput.value = ''; 
+        }
+    };
+    reader.readAsText(file);
+}
+
+/**
+ * Função de inicialização da aplicação.
+ */
+function init() {
+    // ATUALIZAÇÃO: Checagem de segurança para garantir que o DB foi carregado.
+    if (!DB || !DB.pulleys || !DB.serviceFactors) {
+        console.error("Banco de dados (DB) não foi carregado ou está incompleto.");
+        showModal("Erro crítico: Não foi possível carregar os dados da aplicação.");
+        return;
+    }
     
+    populateSelect(dom.tipoCorreia, Object.keys(DB.pulleys), (opt) => ({ value: opt, text: opt }));
+    
+    const sfOpts = DB.serviceFactors || [];
+    populateSelect(dom.fatorServico, sfOpts, (opt) => ({ value: opt.value, text: `FS ${opt.value} - ${opt.text}` }));
+    populateSelect(dom.revFatorServico, sfOpts, (opt) => ({ value: opt.value, text: `FS ${opt.value} - ${opt.text}` }));
+    
+    // ATUALIZAÇÃO: Adicionada a população do select de diagnóstico.
+    const diagOpts = Object.keys(DB.diagnosis || {});
+    populateSelect(dom.failureType, diagOpts, (opt) => ({ value: opt, text: opt.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()) }));
+
+    updatePulleySelects();
+    loadFormState();
+    setupEventListeners();
+    loadProjects();
+}
+
+// Ponto de entrada da aplicação
+init();
