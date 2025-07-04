@@ -242,11 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.comparisonTable.innerHTML = tableHTML;
         setMode('compare');
     }
-    
-    // O restante do seu código (funções de UI, listeners, etc.) continuaria aqui...
-});
-
-
               // --- ATUALIZAÇÃO DA UI ---
 
 /**
