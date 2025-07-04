@@ -347,6 +347,7 @@ thead {
     fill: #adb5bd;
     stroke: var(--cor-texto);
     stroke-width: 1px;
+    transform-origin: center; /* Garante que a rotação seja a partir do centro */
 }
 /* --- ANIMAÇÃO DO DIAGRAMA --- */
 /* Adiciona uma transição suave para todas as partes móveis do diagrama */
@@ -361,6 +362,7 @@ thead {
     fill: none;
     stroke: #555;
     stroke-width: 4px;
+    stroke-dasharray: 15 10; /* Define o padrão de traço para a animação */
 }
 .dark-theme #transmissionDiagram .belt {
     stroke: #888;
@@ -375,6 +377,21 @@ thead {
     fill: var(--cor-texto);
     text-anchor: middle;
     font-weight: bold;
+}
+
+/* --- KEYFRAMES PARA ANIMAÇÃO --- */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes march {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: 25; } /* O valor deve ser a soma do dasharray (15+10) */
 }
 
 /* --- THEME SWITCHER --- */
