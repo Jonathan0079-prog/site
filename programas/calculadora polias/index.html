@@ -4,22 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suíte de Engenharia de Transmissão por Correias</title>
-    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003366">
 </head>
 <body>
-
     <div class="app-container">
         <header class="app-header">
             <div class="header-content">
                 <h1><i class="fas fa-cogs"></i> Suíte de Engenharia</h1>
                 <div class="header-actions">
-                    <button id="open-panel-btn" class="icon-button" title="Projetos e Ferramentas" aria-label="Abrir painel de projetos e ferramentas">
-                        <i class="fas fa-toolbox"></i>
-                    </button>
                     <div class="theme-switcher">
                         <i class="fas fa-sun"></i>
                         <label class="switch"><input type="checkbox" id="themeToggle"><span class="slider"></span></label>
@@ -30,7 +25,9 @@
         </header>
 
         <main class="app-main">
+            <!-- Coluna de Entradas: Todos os módulos de cálculo e ferramentas irão aqui -->
             <section id="inputs-column">
+                <!-- Módulo de Cálculo Direto (Visível por padrão) -->
                 <div class="card calculation-module" id="direct-calculation-module">
                     <h2><i class="fas fa-calculator"></i> Parâmetros do Sistema</h2>
                     <div class="input-grid">
@@ -49,17 +46,46 @@
                         <button id="resetBtn" class="secondary-button"><i class="fas fa-undo"></i> Zerar</button>
                     </div>
                 </div>
+
+                <!-- Módulo de Cálculo Reverso (Oculto por padrão) -->
+                <div class="card calculation-module" id="reverse-calculation-module" style="display: none;">
+                    <h2><i class="fas fa-magic"></i> Otimizador de Projeto</h2>
+                    <div class="input-grid">
+                        <div class="input-group"><label for="revRpmMotor">RPM do Motor</label><input type="number" id="revRpmMotor" placeholder="Ex: 1750"></div>
+                        <div class="input-group"><label for="revRpmFinal">RPM Final Desejado</label><input type="number" id="revRpmFinal" placeholder="Ex: 450"></div>
+                    </div>
+                    <div class="input-group"><label for="revPotenciaMotor">Potência (CV)</label><input type="number" id="revPotenciaMotor" placeholder="Ex: 5"></div>
+                    <div class="input-group"><label for="revFatorServico">Regime de Trabalho</label><select id="revFatorServico"></select></div>
+                    <div class="button-group">
+                        <button id="optimizeBtn" class="main-button"><i class="fas fa-search"></i> Encontrar Soluções</button>
+                    </div>
+                </div>
+
+                <!-- Módulo de Projetos Salvos (Oculto por padrão) -->
+                <div class="card calculation-module" id="saved-projects-module" style="display: none;">
+                    <h2><i class="fas fa-save"></i> Projetos Salvos</h2>
+                    <div class="input-group"><label for="projectName">Nome do Projeto p/ Salvar</label><input type="text" id="projectName" placeholder="Ex: Ventilador Principal"></div>
+                    <button id="saveProjectBtn" class="main-button"><i class="fas fa-plus-circle"></i> Salvar Projeto Atual</button>
+                    <div class="io-button-group">
+                        <button id="importBtn" class="secondary-button"><i class="fas fa-upload"></i> Importar</button>
+                        <button id="exportBtn" class="secondary-button"><i class="fas fa-download"></i> Exportar</button>
+                    </div>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;">
+                    <div id="projectList"></div>
+                </div>
             </section>
 
+            <!-- Coluna de Saídas: Todos os resultados irão aqui -->
             <section id="outputs-column">
+                <!-- Resultados do Cálculo Direto -->
                 <div id="direct-results-container">
                     <div class="card" id="results-card">
                         <div class="card-header">
                             <h2><i class="fas fa-chart-bar"></i> Resultados do Projeto</h2>
-                            <button id="printBtn" class="icon-button" title="Imprimir Relatório" aria-label="Imprimir Relatório"><i class="fas fa-print"></i></button>
+                            <button id="printBtn" class="icon-button" title="Imprimir Relatório"><i class="fas fa-print"></i></button>
                         </div>
                         <div class="results-grid-main">
-                            <div class="result-item highlight-result"><span class="label">Correia Comercial</span><span class="value" id="resultadoCorreia">--</span></div>
+                            <div class="result-item highlight-result"><span class="label">Correia</span><span class="value" id="resultadoCorreia">--</span></div>
                             <div class="result-item highlight-result success"><span class="label">Nº de Correias</span><span class="value" id="resultadoNumCorreias">--</span></div>
                         </div>
                         <div class="results-grid-secondary">
@@ -73,20 +99,11 @@
                     </div>
                     <div class="card" id="diagram-card" style="display: none;">
                         <h2><i class="fas fa-project-diagram"></i> Diagrama do Sistema</h2>
-                        <svg id="transmissionDiagram" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="diagramTitle diagramDesc">
-                            <title id="diagramTitle">Diagrama da transmissão por correia</title>
-                            <desc id="diagramDesc">Uma representação visual das polias motora e movida, conectadas por uma correia.</desc>
-                            <!-- Elementos do diagrama que serão manipulados pelo JavaScript -->
-                            <line id="centerLine" y1="150" y2="150" class="center-line" />
-                            <path id="beltPath" class="belt" d="" />
-                            <circle id="pulley1" class="pulley" cy="150" />
-                            <circle id="pulley2" class="pulley" cy="150" />
-                            <text id="pulley1_text" class="diagram-text"></text>
-                            <text id="pulley2_text" class="diagram-text"></text>
-                        </svg>
+                        <svg id="transmissionDiagram" viewBox="0 0 800 300"></svg>
                     </div>
                 </div>
 
+                <!-- Resultados do Cálculo Reverso -->
                 <div id="reverse-results-container" style="display: none;">
                     <div class="card">
                         <h2><i class="fas fa-stream"></i> Soluções Encontradas</h2>
@@ -98,69 +115,21 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="comparison-results-container" style="display: none;">
-                    <div class="card">
-                        <h2><i class="fas fa-columns"></i> Tabela Comparativa</h2>
-                        <div class="table-container">
-                            <table id="comparisonTable"></table>
-                        </div>
-                    </div>
-                </div>
             </section>
         </main>
-    </div>
 
-    <div id="panel-overlay" class="panel-overlay"></div>
-    <div id="floating-panel" class="floating-panel">
-        <div class="panel-header">
-            <h3>Projetos e Ferramentas</h3>
-            <button id="close-panel-btn" class="icon-button" aria-label="Fechar painel"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="panel-content">
-
-            <div class="card" id="saved-projects">
-                <h2><i class="fas fa-save"></i> Projetos Salvos</h2>
-                <div class="input-group"><label for="projectName">Nome do Projeto p/ Salvar</label><input type="text" id="projectName" placeholder="Ex: Ventilador Principal"></div>
-                <button id="saveProjectBtn" class="main-button"><i class="fas fa-plus-circle"></i> Salvar Projeto Atual</button>
-                <div class="io-button-group">
-                    <button id="importBtn" class="secondary-button"><i class="fas fa-upload"></i> Importar</button>
-                    <button id="exportBtn" class="secondary-button"><i class="fas fa-download"></i> Exportar</button>
-                </div>
-                <input type="file" id="fileInput" accept=".json" style="display: none;">
-                <div id="projectList"></div>
-            </div>
-
-            <div class="card" id="project-comparison">
-                <h2><i class="fas fa-exchange-alt"></i> Comparar Projetos</h2>
-                <div class="input-grid">
-                    <div class="input-group"><label for="compareProject1">Projeto 1</label><select id="compareProject1"></select></div>
-                    <div class="input-group"><label for="compareProject2">Projeto 2</label><select id="compareProject2"></select></div>
-                </div>
-                <button id="compareBtn" class="main-button"><i class="fas fa-balance-scale"></i> Comparar</button>
-            </div>
-
-            <div class="card" id="failure-diagnosis">
-                <h2><i class="fas fa-stethoscope"></i> Diagnóstico de Falhas</h2>
-                <div class="input-group"><label for="failureType">Selecione um Problema Comum</label><select id="failureType"></select></div>
-                <div id="diagnosisResult" role="status" aria-live="polite"></div>
-            </div>
-        </div>
-        <!-- Calculation modules and other tools moved here -->
-        <div class="card calculation-module" id="reverse-calculation-module" style="display: none;">
-            <h2><i class="fas fa-magic"></i> Otimizador de Projeto</h2>
-            <div class="input-grid">
-                <div class="input-group"><label for="revRpmMotor">RPM do Motor</label><input type="number" id="revRpmMotor" placeholder="Ex: 1750"></div>
-                <div class="input-group"><label for="revRpmFinal">RPM Final Desejado</label><input type="number" id="revRpmFinal" placeholder="Ex: 450"></div>
-            </div>
-            <div class="input-group"><label for="revPotenciaMotor">Potência do Motor (CV)</label><input type="number" id="revPotenciaMotor" placeholder="Ex: 5"></div>
-            <div class="input-group"><label for="revFatorServico">Regime de Trabalho</label><select id="revFatorServico"></select></div>
-            <div class="button-group">
-                <button id="optimizeBtn" class="main-button"><i class="fas fa-search"></i> Encontrar Soluções</button>
-            </div>
+        <!-- Menu Flutuante e Botão -->
+        <div id="floating-menu-button"><i class="fas fa-bars"></i></div>
+        <div id="floating-menu" style="display: none;">
+            <ul>
+                <li><a href="#" id="direct-calculation-option"><i class="fas fa-calculator"></i> Cálculo Direto</a></li>
+                <li><a href="#" id="reverse-calculation-option"><i class="fas fa-magic"></i> Cálculo Reverso</a></li>
+                <li><a href="#" id="saved-projects-option"><i class="fas fa-save"></i> Projetos Salvos</a></li>
+            </ul>
         </div>
     </div>
 
+    <!-- Modal Genérico -->
     <div id="customModal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <p id="modalMessage"></p>
@@ -173,11 +142,11 @@
     
     <script src="database.js"></script>
     <script src="script.js"></script>
-
     <script>
+        // Service Worker e Lógica do Tema
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(r => console.log('SW ok'), e => console.log('SW erro', e));
+                navigator.serviceWorker.register('sw.js').catch(e => console.error('SW registration failed:', e));
             });
         }
         const themeToggle = document.getElementById('themeToggle');
@@ -186,17 +155,11 @@
             document.body.className = currentTheme + '-theme';
             themeToggle.checked = currentTheme === 'dark';
             themeToggle.addEventListener('change', function() {
-                document.body.className = this.checked ? 'dark-theme' : 'light-theme';
-                localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+                const theme = this.checked ? 'dark' : 'light';
+                document.body.className = theme + '-theme';
+                localStorage.setItem('theme', theme);
             });
         }
     </script>
 </body>
-
-<div id="floating-menu-button">Menu</div>
-<div id="floating-menu">
-  <ul>
-    <li><a href="#" id="reverse-calculation-option">Cálculo Reverso</a></li>
-    </ul>
-</div>
 </html>

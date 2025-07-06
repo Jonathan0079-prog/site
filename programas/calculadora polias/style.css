@@ -576,4 +576,3 @@ input:checked + .slider:before {
 #floating-menu ul li:not(:last-child) {
     border-bottom: 1px solid var(--cor-borda);
 }
-
