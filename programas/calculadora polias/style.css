@@ -522,3 +522,58 @@ input:checked + .slider:before {
         flex-direction: column;
     }
 }
+
+#floating-menu-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--cor-secundaria); /* Usando a cor secundária do tema */
+    color: var(--cor-texto-claro);
+    padding: 10px 15px;
+    border-radius: var(--raio-borda);
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 2px 8px var(--sombra-cor);
+    transition: background-color var(--velocidade-transicao);
+}
+
+#floating-menu {
+    position: fixed;
+    bottom: 70px; /* Posiciona acima do botão */
+    right: 20px;
+    background-color: var(--background-color-light, #ffffff); /* Fundo adaptável ao tema */
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-borda);
+    box-shadow: 0px 0px 10px var(--sombra-cor);
+    z-index: 1000;
+    display: none; /* Inicialmente escondido */
+    padding: 0.5rem 0; /* Ajusta o padding interno */
+}
+
+#floating-menu ul {
+    list-style: none;
+    padding: 0; /* Remove padding padrão da lista */
+    margin: 0;
+}
+
+#floating-menu ul li {
+    margin-bottom: 0; /* Remove margin padrão */
+}
+
+#floating-menu ul li a {
+    text-decoration: none;
+    color: var(--cor-texto); /* Cor do texto adaptável ao tema */
+    padding: 10px 20px; /* Aumenta a área clicável */
+    display: block;
+    transition: background-color var(--velocidade-transicao), color var(--velocidade-transicao);
+}
+
+#floating-menu ul li a:hover {
+    background-color: var(--cor-fundo); /* Fundo ao passar o mouse, adaptável */
+}
+
+/* Adiciona um pouco de espaço entre os itens, se necessário */
+#floating-menu ul li:not(:last-child) {
+    border-bottom: 1px solid var(--cor-borda);
+}
+

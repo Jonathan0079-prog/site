@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- SELEÇÃO DE ELEMENTOS DO DOM ---
     const dom = {};
     const ids = [
-        'rpmMotor', 'potenciaMotor', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos',
+        'rpmMotor', 'potenciaMotor', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos', 'direct-calculation-module',
         'fatorServico',
-        'calcularBtn', 'resetBtn', 'printBtn', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn',
+ 'calcularBtn', 'resetBtn', 'printBtn', 'modeDirectBtn', 'modeReverseBtn', 'optimizeBtn', 'floating-menu-button', 'floating-menu',
         'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico',
         'projectName', 'saveProjectBtn', 'projectList',
         'importBtn', 'exportBtn', 'fileInput', 'compareProject1', 'compareProject2', 'compareBtn',
@@ -30,18 +30,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- ESTADO DA APLICAÇÃO ---
     let currentResults = {};
     let modalCallback = null;
-    let currentMode = 'direct';
 
     // --- ESTADO DO FORMULÁRIO (localStorage) ---
-    const formStateKey = 'transmissionFormState';
     const formInputIds = [
         'rpmMotor', 'potenciaMotor', 'fatorServico', 'tipoCorreia', 'diametroMotora', 'diametroMovida', 'distanciaEixos',
-        'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico'
+ 'revRpmMotor', 'revRpmFinal', 'revPotenciaMotor', 'revFatorServico'
     ];
 
     function saveFormState() {
         const state = { mode: currentMode };
-        formInputIds.forEach(id => {
+ formInputIds.forEach(id => {
             if (dom[id]) state[id] = dom[id].value;
         });
         localStorage.setItem(formStateKey, JSON.stringify(state));
@@ -51,14 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const savedStateJSON = localStorage.getItem(formStateKey);
         if (!savedStateJSON) return;
         const state = JSON.parse(savedStateJSON);
-        formInputIds.forEach(id => {
-            if (dom[id] && state[id] !== undefined && id !== 'diametroMotora' && id !== 'diametroMovida') {
+        formInputIds.forEach(id => { // Load all form fields, including those in the reverse module
+ if (dom[id] && state[id] !== undefined && id !== 'diametroMotora' && id !== 'diametroMovida') {
                 dom[id].value = state[id];
             }
         });
-        setMode(state.mode || 'direct');
         updatePulleySelects();
-        if (state.diametroMotora && dom.diametroMotora) dom.diametroMotora.value = state.diametroMotora;
         if (state.diametroMovida && dom.diametroMovida) dom.diametroMovida.value = state.diametroMovida;
     }
 
@@ -167,9 +163,39 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+    const reverseCalculationOption = document.getElementById('reverse-calculation-option');
+    const menuButton = document.getElementById('floating-menu-button');
+    const floatingMenu = document.getElementById('floating-menu');
+
+    console.log('Menu button:', menuButton); // Log para verificar se o botão foi encontrado
+    console.log('Floating menu:', floatingMenu); // Log para verificar se o menu foi encontrado
+
+    if (menuButton && floatingMenu) {
+        menuButton.addEventListener('click', function() {
+            console.log('Menu button clicked!'); // Log para verificar se o evento click está sendo disparado
+            if (floatingMenu.style.display === 'none' || floatingMenu.style.display === '') {
+                floatingMenu.style.display = 'block';
+            } else {
+                floatingMenu.style.display = 'none';
+            }
+        });
+    }
+
+    const directCalculationModule = document.getElementById('direct-calculation-module');
+    const reverseCalculationModule = document.getElementById('reverse-calculation-module');
+
+    if (reverseCalculationOption && directCalculationModule && reverseCalculationModule && floatingMenu) {
+        reverseCalculationOption.addEventListener('click', function(event) {
+            event.preventDefault(); // Previne o comportamento padrão do link
+            directCalculationModule.style.display = 'none';
+            reverseCalculationModule.style.display = 'block';
+            floatingMenu.style.display = 'none'; // Esconde o menu flutuante após a seleção
+        });
+    }
+
+
         solutions.sort((a, b) => a.cost - b.cost);
         displayOptimizationResults(solutions.slice(0, 50));
-        setMode('reverse');
     }
 
     function runDiagnosis() {
@@ -234,43 +260,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         tableHTML += `</tbody>`;
         dom.comparisonTable.innerHTML = tableHTML;
-        setMode('compare');
     }
 
     // --- ATUALIZAÇÃO DA UI ---
-    function setMode(mode) {
-        currentMode = mode;
-        ['direct-calculation-module', 'reverse-calculation-module', 'reverse-results-container', 'comparison-results-container'].forEach(id => {
-            if (dom[id]) dom[id].style.display = 'none';
-        });
-        if (dom[mode + '-calculation-module']) dom[mode + '-calculation-module'].style.display = 'block';
-        if (dom[mode + '-results-container']) dom[mode + '-results-container'].style.display = 'block';
-
-        if (dom['results-card']) dom['results-card'].style.display = (mode === 'direct' || mode === 'compare') ? 'block' : 'none';
-        if (dom['tips-card']) dom['tips-card'].style.display = (mode === 'direct' || mode === 'reverse') ? 'block' : 'none';
-
-        if (dom.modeDirectBtn) dom.modeDirectBtn.classList.toggle('active', mode === 'direct');
-        if (dom.modeReverseBtn) dom.modeReverseBtn.classList.toggle('active', mode === 'reverse');
-        
-        if (mode !== 'direct') resetDiagram();
-    }
-
     function updateDirectResultsUI(r) {
         if (!r) return;
-        dom.resultadoRpm.textContent = r.rpmFinal.toFixed(0);
-        dom.resultadoRelacao.textContent = r.ratio.toFixed(2);
-        dom.resultadoCorreia.textContent = `${r.beltName} (${r.bestFitBelt.toFixed(0)} mm)`;
-        dom.resultadoNumCorreias.textContent = r.numBelts;
-        dom.resultadoVelocidade.textContent = r.beltSpeed.toFixed(2);
-        dom.resultadoAngulo.textContent = r.angle.toFixed(1);
-        dom.resultadoForca.textContent = r.shaftLoad.toFixed(2);
-        dom.resultadoFrequencia.textContent = r.vibrationFreq.toFixed(1);
+        // Make sure the direct results are visible in the main layout
+        if (dom['results-card']) dom['results-card'].style.display = 'block';
+        if (dom['tips-card']) dom['tips-card'].style.display = 'block';
 
+        if (dom.resultadoRpm) dom.resultadoRpm.textContent = r.rpmFinal.toFixed(0);
+        if (dom.resultadoRelacao) dom.resultadoRelacao.textContent = r.ratio.toFixed(2);
         updateCardStatus(dom.velocidadeCorreiaCard, r.beltSpeed, 30, 35, false);
         updateCardStatus(dom.anguloAbracamentoCard, r.angle, 120, 100, true);
     }
 
     function displayOptimizationResults(solutions) {
+        // This function now assumes the solutions table is within the floating panel
         const tbody = dom.solutionsTable.querySelector('tbody');
         tbody.innerHTML = '';
         if (solutions.length === 0) {
@@ -337,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNÇÃO NOVA PARA ATUALIZAÇÃO DO DIAGRAMA EM TEMPO REAL ---
     function updateDiagramPreview() {
-        if (currentMode !== 'direct') return; // Só atualiza no modo direto
+        // Diagram is only shown for direct calculation
 
         const d1 = parseFloat(dom.diametroMotora.value);
         const d2 = parseFloat(dom.diametroMovida.value);
@@ -377,9 +383,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupEventListeners() {
-        if (dom.modeDirectBtn) dom.modeDirectBtn.addEventListener('click', () => { setMode('direct'); saveFormState(); });
-        if (dom.modeReverseBtn) dom.modeReverseBtn.addEventListener('click', () => { setMode('reverse'); saveFormState(); });
-
         if (dom.calcularBtn) dom.calcularBtn.addEventListener('click', runDirectCalculation);
         if (dom.optimizeBtn) dom.optimizeBtn.addEventListener('click', runReverseOptimization);
         if (dom.resetBtn) dom.resetBtn.addEventListener('click', resetForm);
@@ -391,8 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         formInputIds.forEach(id => { if (dom[id]) dom[id].addEventListener('change', saveFormState); });
         if (dom.tipoCorreia) dom.tipoCorreia.addEventListener('change', updatePulleySelects);
-        
-        // Eventos para o diagrama dinâmico e sugestão de distância
+
         if (dom.diametroMotora) dom.diametroMotora.addEventListener('change', () => { suggestDistance(); updateDiagramPreview(); });
         if (dom.diametroMovida) dom.diametroMovida.addEventListener('change', () => { suggestDistance(); updateDiagramPreview(); });
         if (dom.distanciaEixos) dom.distanciaEixos.addEventListener('input', updateDiagramPreview); // 'input' para atualização instantânea
@@ -403,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dom.projectList) dom.projectList.addEventListener('click', handleProjectListClick);
         if (dom.solutionsTable) dom.solutionsTable.addEventListener('click', (e) => {
             if (e.target.classList.contains('action-button')) {
-                const sol = JSON.parse(e.target.dataset.solution);
+                const sol = JSON.parse(e.target.dataset.solution); // Assuming this button is in the reverse results table
                 loadSolutionIntoDirectForm(sol);
             }
         });
@@ -550,8 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.diametroMotora.value = sol.d1;
         dom.diametroMovida.value = sol.d2;
         dom.distanciaEixos.value = sol.c.toFixed(0);
-        
-        setMode('direct');
         runDirectCalculation();
         if (sol.name) dom.projectName.value = sol.name;
     }
@@ -662,7 +662,11 @@ document.addEventListener('DOMContentLoaded', () => {
             showModal("Erro crítico: Não foi possível carregar os dados da aplicação. Verifique a ordem de carregamento dos scripts no HTML.");
             return;
         }
-        
+
+        // Ensure direct calculation module and results are visible by default
+        if (dom['direct-calculation-module']) dom['direct-calculation-module'].style.display = 'block';
+ if (dom['direct-results-container']) dom['direct-results-container'].style.display = 'block';
+
         populateSelect(dom.tipoCorreia, Object.keys(DB.pulleys), (opt) => ({ value: opt, text: opt }));
         
         // Correção: Converte o objeto de fatores de serviço em um array de seus valores.

@@ -31,14 +31,6 @@
 
         <main class="app-main">
             <section id="inputs-column">
-                <div class="card" id="mode-selector">
-                    <h2><i class="fas fa-toggle-on"></i> Modo de Operação</h2>
-                    <div class="button-group-toggle">
-                        <button id="modeDirectBtn" class="toggle-button active">Cálculo Direto</button>
-                        <button id="modeReverseBtn" class="toggle-button">Cálculo Reverso</button>
-                    </div>
-                </div>
-
                 <div class="card calculation-module" id="direct-calculation-module">
                     <h2><i class="fas fa-calculator"></i> Parâmetros do Sistema</h2>
                     <div class="input-grid">
@@ -55,19 +47,6 @@
                     <div class="button-group">
                         <button id="calcularBtn" class="main-button"><i class="fas fa-check-circle"></i> Calcular</button>
                         <button id="resetBtn" class="secondary-button"><i class="fas fa-undo"></i> Zerar</button>
-                    </div>
-                </div>
-
-                <div class="card calculation-module" id="reverse-calculation-module" style="display: none;">
-                    <h2><i class="fas fa-magic"></i> Otimizador de Projeto</h2>
-                    <div class="input-grid">
-                        <div class="input-group"><label for="revRpmMotor">RPM do Motor</label><input type="number" id="revRpmMotor" placeholder="Ex: 1750"></div>
-                        <div class="input-group"><label for="revRpmFinal">RPM Final Desejado</label><input type="number" id="revRpmFinal" placeholder="Ex: 450"></div>
-                    </div>
-                    <div class="input-group"><label for="revPotenciaMotor">Potência do Motor (CV)</label><input type="number" id="revPotenciaMotor" placeholder="Ex: 5"></div>
-                    <div class="input-group"><label for="revFatorServico">Regime de Trabalho</label><select id="revFatorServico"></select></div>
-                    <div class="button-group">
-                        <button id="optimizeBtn" class="main-button"><i class="fas fa-search"></i> Encontrar Soluções</button>
                     </div>
                 </div>
             </section>
@@ -139,6 +118,7 @@
             <button id="close-panel-btn" class="icon-button" aria-label="Fechar painel"><i class="fas fa-times"></i></button>
         </div>
         <div class="panel-content">
+
             <div class="card" id="saved-projects">
                 <h2><i class="fas fa-save"></i> Projetos Salvos</h2>
                 <div class="input-group"><label for="projectName">Nome do Projeto p/ Salvar</label><input type="text" id="projectName" placeholder="Ex: Ventilador Principal"></div>
@@ -164,6 +144,19 @@
                 <h2><i class="fas fa-stethoscope"></i> Diagnóstico de Falhas</h2>
                 <div class="input-group"><label for="failureType">Selecione um Problema Comum</label><select id="failureType"></select></div>
                 <div id="diagnosisResult" role="status" aria-live="polite"></div>
+            </div>
+        </div>
+        <!-- Calculation modules and other tools moved here -->
+        <div class="card calculation-module" id="reverse-calculation-module" style="display: none;">
+            <h2><i class="fas fa-magic"></i> Otimizador de Projeto</h2>
+            <div class="input-grid">
+                <div class="input-group"><label for="revRpmMotor">RPM do Motor</label><input type="number" id="revRpmMotor" placeholder="Ex: 1750"></div>
+                <div class="input-group"><label for="revRpmFinal">RPM Final Desejado</label><input type="number" id="revRpmFinal" placeholder="Ex: 450"></div>
+            </div>
+            <div class="input-group"><label for="revPotenciaMotor">Potência do Motor (CV)</label><input type="number" id="revPotenciaMotor" placeholder="Ex: 5"></div>
+            <div class="input-group"><label for="revFatorServico">Regime de Trabalho</label><select id="revFatorServico"></select></div>
+            <div class="button-group">
+                <button id="optimizeBtn" class="main-button"><i class="fas fa-search"></i> Encontrar Soluções</button>
             </div>
         </div>
     </div>
@@ -199,4 +192,11 @@
         }
     </script>
 </body>
+
+<div id="floating-menu-button">Menu</div>
+<div id="floating-menu">
+  <ul>
+    <li><a href="#" id="reverse-calculation-option">Cálculo Reverso</a></li>
+    </ul>
+</div>
 </html>
