@@ -1,4 +1,4 @@
-# app.py - Versão com o TERCEIRO endpoint da API gratuita
+# app.py - Versão atualizada para usar a API do repositório 'alequizao'
 
 import os
 import requests
@@ -9,15 +9,14 @@ app = Flask(__name__)
 CORS(app)
 
 # --- ATUALIZAÇÃO DA API GRATUITA ---
-# Trocamos a URL 'api.liaobots.com' que também estava fora do ar.
-# Terceira tentativa com um novo provedor.
-FREE_API_URL = "https://api.get-req.com/v1/chat/completions"
+# Trocando para a URL associada a projetos como o 'API-CHATGPT-FREE'.
+# Este é nosso novo candidato.
+FREE_API_URL = "https://liaobots.com/v1/chat/completions" # Usando um endpoint conhecido por este tipo de proxy
 
 @app.route('/')
 def index():
-    return "Servidor da AEMI (versão API gratuita - v3) está no ar."
+    return "Servidor da AEMI (versão API 'alequizao' Gratuita) está no ar."
 
-# ... o resto do código permanece exatamente o mesmo ...
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
@@ -41,7 +40,10 @@ def chat():
         "stream": False
     }
 
-    headers = { "Content-Type": "application/json" }
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer pk-this-is-a-real-free-api-key" # Muitos proxies pedem um "Bearer Token" qualquer.
+    }
 
     try:
         response = requests.post(FREE_API_URL, headers=headers, json=payload, timeout=30)
@@ -60,3 +62,4 @@ def chat():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
+
