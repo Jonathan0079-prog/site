@@ -12,7 +12,7 @@ from huggingface_hub import InferenceClient
 app = Flask(__name__)
 CORS(app)
 
-HUGGING_FACE_TOKEN = os.getenv("HF_TOKEN")
+HUGGING_FACE_TOKEN = os.getenv("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")
 client = None
 
 # Tenta inicializar o cliente uma vez quando o app liga.
