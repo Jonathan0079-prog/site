@@ -1,80 +1,90 @@
-# app.py - Versão com Layout Refinado e Limpeza de Chat
+# app.py - Versão Otimizada para Chat de Texto com Llama 3 70B Instruct (Hugging Face Direto)
 
 import os
-import sys
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from huggingface_hub import InferenceClient
 
-# --- CONFIGURAÇÃO INICIAL E BOAS PRÁTICAS ---
-
-FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY")
-if not FLASK_SECRET_KEY:
-    print("ERRO CRÍTICO: A variável de ambiente FLASK_SECRET_KEY não foi definida.")
-    sys.exit(1)
-
-HUGGING_FACE_TOKEN = os.getenv("HF_TOKEN")
-if not HUGGING_FACE_TOKEN:
-    print("ERRO CRÍTICO: A variável de ambiente HF_TOKEN não foi definida.")
-    sys.exit(1)
-
+# --- CONFIGURAÇÃO INICIAL ---
 app = Flask(__name__)
 CORS(app)
-app.secret_key = FLASK_SECRET_KEY
 
-try:
-    TEXT_CLIENT = InferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct", token=HUGGING_FACE_TOKEN)
-except Exception as e:
-    print(f"ERRO CRÍTICO: Falha ao inicializar o InferenceClient da Hugging Face. Detalhes: {e}")
-    sys.exit(1)
+# Chave secreta para gerenciar sessões do Flask (MUITO IMPORTANTE para produção!)
+# Altere isso para uma string longa e aleatória em um ambiente real.
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "sua_chave_secreta_muito_segura_e_aleatoria_aqui")
 
-MAX_HISTORY_LENGTH = 20
+# Pega o token de acesso da Hugging Face
+HUGGING_FACE_TOKEN = os.getenv("HF_TOKEN")
 
 # --- FUNÇÕES DE PROCESSAMENTO ---
 
+def get_text_client():
+    """Cria e retorna um cliente para o modelo de linguagem de texto (Llama 3 70B Instruct via HF Direto)."""
+    if not HUGGING_FACE_TOKEN:
+        raise ValueError("Token da Hugging Face (HF_TOKEN) não encontrado.")
+    # MODELO ALTERADO AQUI PARA O Llama 3 70B Instruct
+    return InferenceClient(model="meta-llama/Meta-Llama-3-70B-Instruct", token=HUGGING_FACE_TOKEN)
+
 def process_text_with_history(messages):
-    try:
-        response_generator = TEXT_CLIENT.chat_completion(
-            messages=messages,
-            max_tokens=1500,
-            stream=False
-        )
-        return response_generator.choices[0].message.content
-    except Exception as e:
-        print(f"ERRO ao chamar a API da Hugging Face: {e}")
-        return "Desculpe, não consegui processar sua mensagem no momento. Tente novamente mais tarde."
+    """
+    Processa uma conversa usando o modelo de texto, incluindo o histórico.
+    'messages' deve ser uma lista de dicionários no formato [{"role": "user", "content": "..."}]
+    ou [{"role": "assistant", "content": "..."}].
+    """
+    client = get_text_client()
+    # Usa o método chat_completion, que é o padrão para modelos instruct na Hugging Face Inference API
+    response_generator = client.chat_completion(
+        messages=messages, # Passa o histórico completo de mensagens
+        max_tokens=1500,
+        stream=False
+    )
+    return response_generator.choices[0].message.content
 
 # --- ROTAS DA API ---
 
 @app.route('/')
 def index():
-    return "Servidor da AEMI (versão com Layout Refinado) está no ar."
+    return "Servidor da AEMI (versão Otimizada para Chat de Texto com Llama 3 70B Instruct) está no ar."
 
 @app.route('/chat', methods=['POST'])
 def chat():
     try:
         user_message = request.form.get('message', '')
+
         if not user_message.strip():
             return jsonify({"error": "Nenhuma mensagem enviada."}), 400
 
+        bot_response = ""
+
+        # --- Gerenciamento do Histórico de Conversa ---
         if 'conversation_history' not in session:
-            session['conversation_history'] = [
-                {"role": "system", "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial, direta e objetiva. Responda apenas a perguntas relacionadas a este domínio. Se a pergunta não for sobre manutenção industrial, diga que você só pode ajudar com tópicos relacionados à manutenção industrial."}
-            ]
+            session['conversation_history'] = []
+            # Adiciona a instrução inicial para o modelo (persona da AEMI)
+            session['conversation_history'].append({"role": "system", "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial, direta e objetiva. Responda apenas a perguntas relacionadas a este domínio. Se a pergunta não for sobre manutenção industrial, diga que você só pode ajudar com tópicos relacionados à manutenção industrial."})
             
         current_history = session['conversation_history']
+
+        # Adiciona a nova mensagem do usuário ao histórico
         current_history.append({"role": "user", "content": user_message})
 
+        print("Processando uma mensagem de texto com histórico...")
+        
+        # Chama a função que processa o texto com o histórico completo
         bot_response = process_text_with_history(current_history)
         
+        # Adiciona a resposta da AEMI ao histórico
         current_history.append({"role": "assistant", "content": bot_response})
 
-        if len(current_history) > MAX_HISTORY_LENGTH: 
+        # --- Limpeza e Persistência do Histórico ---
+        # Limita o tamanho do histórico para evitar estouro de token e uso excessivo de memória.
+        # O Llama 3 70B tem uma janela de contexto de 8k tokens. 20 mensagens (10 pares) é um bom ponto de partida.
+        # Você pode ajustar o '20' se quiser mais ou menos contexto, mas esteja ciente do impacto no custo/latência.
+        if len(current_history) > 20: 
             system_prompt = current_history[0]
-            recent_history = current_history[-MAX_HISTORY_LENGTH+1:]
+            recent_history = current_history[-19:] 
             session['conversation_history'] = [system_prompt] + recent_history
         else:
-            session['conversation_history'] = current_history
+            session['conversation_history'] = current_history 
 
         return jsonify({"response": bot_response})
 
@@ -83,17 +93,6 @@ def chat():
         import traceback
         traceback.print_exc()
         return jsonify({"error": f"Ocorreu um erro inesperado no servidor. Detalhes: {str(e)}"}), 500
-
-# MELHORIA: Endpoint para limpar o histórico da conversa na sessão
-@app.route('/clear-session', methods=['POST'])
-def clear_session():
-    try:
-        session.pop('conversation_history', None) # Remove o histórico da sessão
-        return jsonify({"status": "success", "message": "Sessão limpa."}), 200
-    except Exception as e:
-        print(f"ERRO ao limpar a sessão: {e}")
-        return jsonify({"status": "error", "message": str(e)}), 500
-
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
