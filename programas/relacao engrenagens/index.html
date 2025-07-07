@@ -20,12 +20,12 @@
         
         <section class="animation-container">
             <div class="gear-wrapper">
-                <div class="gear" id="gear1"></div>
-                <label>Z1 (Motora)</label>
+                <img src="assets/gear.svg" class="gear" id="gear1" alt="Engrenagem Motora">
+                <label for="dentes-z1">Z1 (Motora)</label>
             </div>
             <div class="gear-wrapper">
-                <div class="gear" id="gear2"></div>
-                <label>Z2 (Movida)</label>
+                <img src="assets/gear.svg" class="gear" id="gear2" alt="Engrenagem Movida">
+                <label for="dentes-z2">Z2 (Movida)</label>
             </div>
         </section>
 
@@ -34,18 +34,18 @@
             <div class="input-grid">
                 <div class="input-group">
                     <label for="dentes-z1">Dentes da Eng. Motora (Z1):</label>
-                    <input type="number" id="dentes-z1" min="1" placeholder="Ex: 20">
+                    <input type="number" id="dentes-z1" min="1" placeholder="Ex: 20" required>
                 </div>
                 <div class="input-group">
                     <label for="dentes-z2">Dentes da Eng. Movida (Z2):</label>
-                    <input type="number" id="dentes-z2" min="1" placeholder="Ex: 60">
+                    <input type="number" id="dentes-z2" min="1" placeholder="Ex: 60" required>
                 </div>
                 <div class="input-group">
                     <label for="rpm-entrada">RPM de Entrada (Motor):</label>
                     <input type="number" id="rpm-entrada" min="0" placeholder="Ex: 1200">
                 </div>
             </div>
-            <button id="calcular-btn">Calcular e Animar</button>
+            <button id="calcular-btn" disabled>Calcular e Animar</button>
         </section>
 
         <section id="resultado-container" class="resultado-container hidden">
@@ -62,7 +62,7 @@
             </div>
         </section>
 
-        <div id="erro-container" class="erro-container hidden">
+        <div id="erro-container" class="erro-container hidden" aria-live="polite">
             <p>Por favor, insira valores válidos para o número de dentes (maiores que zero).</p>
         </div>
 
@@ -73,12 +73,9 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                // O caminho para o sw.js deve ser absoluto a partir da raiz do domínio
-                navigator.serviceWorker.register('sw.js').then(registration => {
-                    console.log('ServiceWorker registado com sucesso para todo o site!');
-                }, err => {
-                    console.log('Registo do ServiceWorker falhou: ', err);
-                });
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => console.log('ServiceWorker registrado com sucesso!'))
+                    .catch(err => console.log('Registo do ServiceWorker falhou: ', err));
             });
         }
     </script>
