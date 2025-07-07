@@ -13,7 +13,7 @@ const inputInitHeight = chatInput.scrollHeight;
 
 // --- URLs DAS APIS (ATUALIZADO) ---
 // Agora temos uma única API principal com duas rotas.
-const API_BASE_URL = "https://dockerfile-u20q.onrender.com"; // Sua URL base do Render
+const API_BASE_URL = "https://api-pgp1.onrender.com"; // Sua URL base do Render
 const CHAT_API_URL = `${API_BASE_URL}/chat`; // Rota para texto e pesquisa na web
 const RECOGNITION_API_URL = `${API_BASE_URL}/reconhecer`; // Rota para análise de arquivos
 
