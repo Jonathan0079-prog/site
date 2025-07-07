@@ -1,6 +1,8 @@
-# requirements.txt - Versão final para Hugging Face
+# requirements.txt - Versão com superpoderes
 
 Flask
 flask-cors
 gunicorn
 huggingface_hub
+pdfplumber
+Pillow
