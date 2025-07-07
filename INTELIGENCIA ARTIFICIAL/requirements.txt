@@ -1,8 +1,7 @@
-# requirements.txt - Versão com superpoderes
+# requirements.txt
 
 Flask
-flask-cors
+Flask-Cors
 gunicorn
 huggingface_hub
-pdfplumber
-Pillow
+python-dotenv
