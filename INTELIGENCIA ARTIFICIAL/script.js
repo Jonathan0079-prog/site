@@ -1,103 +1,98 @@
-// script.js - VERSÃO CORRIGIDA E COMPLETA
+// script.js - Versão final para Upload de Arquivos
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Seletores dos elementos do DOM (HTML)
     const chatInput = document.querySelector(".chat-input textarea");
-    // CORREÇÃO IMPORTANTE: Selecionando o botão pelo seu ID único para maior precisão
-    const sendChatBtn = document.querySelector("#send-btn"); 
+    const sendChatBtn = document.querySelector("#send-btn");
     const chatbox = document.querySelector(".chatbox");
+    const fileUpload = document.getElementById("file-upload");
+    const uploadIcon = document.getElementById("upload-icon");
 
-    // A URL do seu servidor no Render.com que já está funcionando
     const BACKEND_URL = "https://aemi.onrender.com";
+    let userFile = null;
 
-    let userMessage; // Variável para guardar a mensagem do usuário
+    if (uploadIcon) {
+        uploadIcon.addEventListener('click', () => fileUpload.click());
+    }
 
-    // Função para criar um novo balão de chat (<li>)
+    if (fileUpload) {
+        fileUpload.addEventListener('change', (event) => {
+            if (event.target.files.length > 0) {
+                userFile = event.target.files[0];
+                chatInput.placeholder = `Arquivo selecionado: ${userFile.name}. Digite uma pergunta ou clique em enviar.`;
+            }
+        });
+    }
+
     const createChatLi = (message, className) => {
         const chatLi = document.createElement("li");
         chatLi.classList.add("chat", className);
-        
-        // Define a estrutura do balão de chat (bot ou usuário)
-        let chatContent = className === "outgoing" 
-            ? `<p></p>` 
-            : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
-            
+        let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
         chatLi.innerHTML = chatContent;
-        // Usa textContent para inserir a mensagem, prevenindo problemas de segurança (injeção de HTML)
-        chatLi.querySelector("p").textContent = message; 
+        chatLi.querySelector("p").textContent = message;
         return chatLi;
-    }
+    };
 
-    // Função para gerar a resposta do bot fazendo a chamada ao back-end
-    const generateResponse = (incomingChatLi) => {
-        const API_URL = `${BACKEND_URL}/chat`; // A rota que criamos no Flask
+    const generateResponse = (formData, incomingChatLi) => {
+        const API_URL = `${BACKEND_URL}/chat`;
         const messageElement = incomingChatLi.querySelector("p");
 
-        // Configurações da requisição para o nosso servidor
         const requestOptions = {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                message: userMessage // Envia a mensagem do usuário no corpo da requisição
-            })
+            body: formData,
         };
 
-        // Faz a chamada de rede para o nosso back-end
         fetch(API_URL, requestOptions)
-            .then(res => res.json()) // Converte a resposta do servidor para JSON
-            .then(data => {
-                // Atualiza o balão de chat do bot com a resposta da IA
-                if (data.response) {
-                    messageElement.textContent = data.response;
-                } else {
-                    // Se o servidor retornar um erro conhecido
-                    messageElement.textContent = `Erro do servidor: ${data.error || "Resposta inválida."}`;
-                    console.error("Erro na resposta da API:", data);
+            .then(res => {
+                if (!res.ok) {
+                    // Se a resposta não for OK (ex: erro 500), tenta ler o erro como JSON
+                    return res.json().then(errorData => Promise.reject(errorData));
                 }
+                return res.json();
             })
-            .catch((error) => {
-                // Em caso de erro de rede (ex: servidor fora do ar, URL errada)
-                messageElement.textContent = "Oops! Algo deu errado. Não foi possível conectar ao servidor da AEMI. Verifique a URL do back-end e o status do serviço no Render.";
-                console.error("Erro de fetch:", error);
+            .then(data => {
+                messageElement.textContent = data.response || "Recebi uma resposta vazia do servidor.";
             })
-            .finally(() => chatbox.scrollTo(0, chatbox.scrollHeight)); // Rola o chat para o final
-    }
+            .catch(error => {
+                console.error("Erro de fetch ou de servidor:", error);
+                // Exibe a mensagem de erro que vem do servidor, se existir
+                messageElement.textContent = `Oops! Algo deu errado. ${error.error || 'Não foi possível conectar ao servidor da AEMI.'}`;
+            })
+            .finally(() => {
+                chatbox.scrollTo(0, chatbox.scrollHeight);
+                userFile = null;
+                fileUpload.value = "";
+                chatInput.placeholder = "Digite uma mensagem...";
+            });
+    };
 
-    // Função principal que lida com o envio da mensagem
     const handleChat = () => {
-        userMessage = chatInput.value.trim(); // Pega a mensagem e remove espaços em branco
-        if (!userMessage) return; // Se a mensagem estiver vazia, não faz nada
+        const userMessage = chatInput.value.trim();
+        if (!userMessage && !userFile) return;
 
-        chatInput.value = ""; // Limpa o campo de texto
+        const formData = new FormData();
+        formData.append("message", userMessage);
+        if (userFile) {
+            formData.append("file", userFile);
+        }
 
-        // Adiciona a mensagem do usuário à tela
-        chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+        const displayMessage = userMessage || `Analisando arquivo: ${userFile.name}`;
+        chatbox.appendChild(createChatLi(displayMessage, "outgoing"));
         chatbox.scrollTo(0, chatbox.scrollHeight);
         
-        // Aguarda um instante para dar a impressão de que a IA está "pensando"
+        chatInput.value = "";
+        
         setTimeout(() => {
-            const incomingChatLi = createChatLi("Pensando...", "incoming");
+            const incomingChatLi = createChatLi("Analisando...", "incoming");
             chatbox.appendChild(incomingChatLi);
             chatbox.scrollTo(0, chatbox.scrollHeight);
-            
-            // Chama a função que vai buscar a resposta real no back-end
-            generateResponse(incomingChatLi);
+            generateResponse(formData, incomingChatLi);
         }, 600);
-    }
+    };
 
-    // --- ADIÇÃO DOS EVENT LISTENERS ---
-    // A parte crucial para fazer o botão funcionar
-
-    // 1. Evento de clique no botão de enviar
     sendChatBtn.addEventListener("click", handleChat);
-
-    // 2. Evento de pressionar "Enter" no teclado para enviar
     chatInput.addEventListener("keydown", (e) => {
-        // Se a tecla for "Enter" e a tecla "Shift" NÃO estiver pressionada
         if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault(); // Impede que uma nova linha seja criada no textarea
+            e.preventDefault();
             handleChat();
         }
     });
