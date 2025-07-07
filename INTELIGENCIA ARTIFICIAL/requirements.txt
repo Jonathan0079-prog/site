@@ -5,5 +5,3 @@ Flask-Cors
 gunicorn
 huggingface_hub
 python-dotenv
-tinydb
-uuid
