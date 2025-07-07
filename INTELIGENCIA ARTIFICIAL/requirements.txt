@@ -1,4 +1,4 @@
-# requirements.txt - Versão para a API oficial da Hugging Face
+# requirements.txt - Versão final para Hugging Face
 
 Flask
 flask-cors
