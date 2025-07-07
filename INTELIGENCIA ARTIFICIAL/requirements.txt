@@ -1,9 +1,9 @@
-# requirements.txt
+# requirements.txt (Versão corrigida para MySQL)
 
 Flask
 Flask-Cors
 gunicorn
-huggingface_hub
 python-dotenv
-tinydb
-uuid
+huggingface_hub
+SQLAlchemy  # Adicionado para gerenciar o banco de dados
+PyMySQL     # Adicionado para conectar com o MySQL
