@@ -40,23 +40,31 @@
         </form>
 
         <section id="results" class="results-section hidden">
+            <div class="health-card">
+                <h3><i class="fas fa-heart-pulse"></i> Saúde da Graxa</h3>
+                <div class="health-bar-container">
+                    <div id="healthBar" class="health-bar">100%</div>
+                </div>
+                <p id="healthText" class="health-description">Condições operacionais ideais.</p>
+            </div>
+
             <div class="results-grid">
-                <div class="result-card"><h3>Carga Inicial <span class="tooltip">?<span class="tooltiptext">Quantidade de graxa para preencher o rolamento e parte do volume livre do mancal na montagem inicial.</span></span></h3><p><span id="initialFill">0</span> <small>gramas</small></p></div>
-                <div class="result-card"><h3>Volume Inicial <span class="tooltip">?<span class="tooltiptext">A carga inicial convertida para volume, usando a densidade da graxa.</span></span></h3><p><span id="initialFillCm3">0</span> <small>cm³</small></p></div>
-                <div class="result-card"><h3>Relubrificação <span class="tooltip">?<span class="tooltiptext">A quantidade de graxa a ser aplicada em cada intervalo de manutenção para repor o lubrificante degradado.</span></span></h3><p><span id="relubAmount">0</span> <small>gramas</small></p></div>
-                <div class="result-card"><h3>Vida da Graxa (L10) <span class="tooltip">?<span class="tooltiptext">Estimativa de tempo (em horas) até que 10% de uma população de rolamentos falhe por degradação da graxa. Não considera falha por fadiga do material.</span></span></h3><p><span id="greaseLife">0</span> <small>horas</small></p></div>
-                <div class="result-card"><h3>Intervalo (Horas) <span class="tooltip">?<span class="tooltiptext">O tempo em horas de operação entre cada aplicação de graxa.</span></span></h3><p><span id="relubIntervalHours">0</span> <small>horas</small></p></div>
-                <div class="result-card"><h3>Intervalo (Dias) <span class="tooltip">?<span class="tooltiptext">O intervalo convertido para dias corridos (24h/dia).</span></span></h3><p><span id="relubIntervalDays">0</span> <small>dias</small></p></div>
-                <div class="result-card"><h3>Intervalo (Semanas) <span class="tooltip">?<span class="tooltiptext">O intervalo convertido para semanas, com base nas horas de trabalho semanais informadas.</span></span></h3><p><span id="relubIntervalWeeks">0</span> <small>semanas</small></p></div>
-                <div class="result-card"><h3>Massa (Aprox.) <span class="tooltip">?<span class="tooltiptext">Massa estimada do rolamento com base em suas dimensões, assumindo densidade do aço de 7.85 g/cm³.</span></span></h3><p><span id="bearingMass">0</span> <small>kg</small></p></div>
+                <div class="result-card"><h3>Carga Inicial</h3><p><span id="initialFill">0</span> <small>gramas</small></p></div>
+                <div class="result-card"><h3>Volume Inicial</h3><p><span id="initialFillCm3">0</span> <small>cm³</small></p></div>
+                <div class="result-card"><h3>Relubrificação</h3><p><span id="relubAmount">0</span> <small>gramas</small></p></div>
+                <div class="result-card"><h3>Vida da Graxa (L10)</h3><p><span id="greaseLife">0</span> <small>horas</small></p></div>
+                <div class="result-card"><h3>Intervalo (Horas)</h3><p><span id="relubIntervalHours">0</span> <small>horas</small></p></div>
+                <div class="result-card"><h3>Intervalo (Dias)</h3><p><span id="relubIntervalDays">0</span> <small>dias</small></p></div>
+                <div class="result-card"><h3>Intervalo (Semanas)</h3><p><span id="relubIntervalWeeks">0</span> <small>semanas</small></p></div>
+                <div class="result-card"><h3>Massa (Aprox.)</h3><p><span id="bearingMass">0</span> <small>kg</small></p></div>
             </div>
              <div class="recommendation-card">
                 <h3>Recomendação de Graxa</h3>
                 <div class="recommendation-grid">
-                    <div class="recommendation-item"><div class="label">Viscosidade (ISO VG) <span class="tooltip">?<span class="tooltiptext">A fluidez do óleo base da graxa. Velocidades altas exigem óleos mais 'finos' (menor VG), enquanto cargas altas exigem óleos mais 'grossos' (maior VG).</span></span></div><div class="value" id="recViscosity">-</div></div>
-                    <div class="recommendation-item"><div class="label">Espessante <span class="tooltip">?<span class="tooltiptext">O 'esponja' que retém o óleo. Define a compatibilidade, resistência à água e estabilidade térmica da graxa. Ex: Lítio, Poliureia.</span></span></div><div class="value" id="recThickener">-</div></div>
-                    <div class="recommendation-item"><div class="label">Grau NLGI <span class="tooltip">?<span class="tooltiptext">Mede a 'dureza' da graxa. NLGI 2 é a mais comum, com consistência de pasta de amendoim.</span></span></div><div class="value" id="recNLGI">-</div></div>
-                    <div class="recommendation-item"><div class="label">Aditivos <span class="tooltip">?<span class="tooltiptext">Compostos químicos que melhoram o desempenho. Ex: EP (Extrema Pressão) para cargas de choque.</span></span></div><div class="value" id="recAdditives">-</div></div>
+                    <div class="recommendation-item"><div class="label">Viscosidade (ISO VG)</div><div class="value" id="recViscosity">-</div></div>
+                    <div class="recommendation-item"><div class="label">Espessante</div><div class="value" id="recThickener">-</div></div>
+                    <div class="recommendation-item"><div class="label">Grau NLGI</div><div class="value" id="recNLGI">-</div></div>
+                    <div class="recommendation-item"><div class="label">Aditivos</div><div class="value" id="recAdditives">-</div></div>
                 </div>
             </div>
              <div id="notesResult" class="alert-info">

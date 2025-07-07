@@ -6,6 +6,8 @@
     --cor-secundaria: #005a9c;
     --cor-destaque: #ffc107;
     --cor-sucesso: #28a745;
+    --cor-aviso: #ffc107;
+    --cor-perigo: #dc3545;
     --cor-texto: #212529;
     --cor-fundo: #f8f9fa;
     --card-bg: #ffffff;
@@ -31,21 +33,36 @@ input:focus, select:focus { outline: none; border-color: var(--cor-destaque); bo
 .calculate-btn { background-color: var(--cor-sucesso); color: #fff; }
 .reset-btn { background-color: #ccc; color: #333; }
 .calculate-btn:hover, .reset-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+
+/* --- Seção de Resultados --- */
 .results-section { margin-top: 2rem; }
-.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
 .result-card { background-color: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); text-align: center; border: 1px solid var(--border-color); border-top: 5px solid var(--cor-destaque); transition: transform 0.2s ease-in-out; }
 .result-card:hover { transform: translateY(-3px); }
 .result-card h3 { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 0; font-family: 'Oswald', sans-serif; color: var(--cor-primaria); font-size: 1.2rem; font-weight: 700; }
-.result-card .result-value { margin: 0.5rem 0 0 0; font-size: 1.8rem; font-weight: 700; color: var(--cor-secundaria); }
-.result-card .result-value small { font-size: 1rem; font-weight: 400; color: #6c757d; }
-.recommendation-card { background-color: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); margin-bottom: 1.5rem; }
+.result-card p { margin: 0.5rem 0 0 0; font-size: 1.8rem; font-weight: 700; color: var(--cor-secundaria); }
+.result-card p small { font-size: 1rem; font-weight: 400; color: #6c757d; }
+
+/* --- Card de Saúde da Graxa (NOVO) --- */
+.health-card { background-color: var(--card-bg); padding: 1.5rem 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+.health-card h3 { text-align: center; margin-top: 0; color: var(--cor-primaria); font-family: 'Oswald', sans-serif; }
+.health-bar-container { background-color: #e9ecef; border-radius: 20px; height: 30px; width: 100%; overflow: hidden; border: 1px solid #ccc; }
+.health-bar { height: 100%; width: 100%; text-align: center; font-weight: bold; color: #fff; font-size: 1rem; line-height: 30px; border-radius: 20px; transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out; }
+.health-bar.good { background-color: var(--cor-sucesso); }
+.health-bar.warning { background-color: var(--cor-aviso); color: #333; }
+.health-bar.danger { background-color: var(--cor-perigo); }
+.health-description { text-align: center; margin-top: 0.75rem; font-size: 0.9rem; color: #6c757d; }
+
+.recommendation-card { background-color: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); margin-top: 1.5rem; }
 .recommendation-card h3 { text-align: center; margin-top: 0; margin-bottom: 1rem; color: var(--cor-primaria); font-family: 'Oswald', sans-serif; }
 .recommendation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
 .recommendation-item { background-color: var(--cor-fundo); padding: 1rem; border-radius: 5px; border: 1px solid var(--border-color); }
 .recommendation-item .label { display: flex; align-items: center; gap: 8px; font-weight: 600; color: #555; font-size: 0.9rem; margin-bottom: 0.2rem; }
 .recommendation-item .value { font-weight: 700; font-size: 1rem; color: var(--cor-texto); }
-.alert-info { background-color: #fff3cd; color: #664d03; padding: 1rem; border-radius: 8px; border: 1px solid #ffecb5; font-size: 0.9rem; line-height: 1.6; }
-.alert-info strong { color: var(--cor-texto); }
+.alert-info { background-color: #e6f7ff; color: #005a9c; padding: 1rem; border-radius: 8px; border: 1px solid #b3e0ff; font-size: 0.9rem; line-height: 1.6; margin-top: 1.5rem; }
+.alert-info strong { color: var(--cor-primaria); }
+
+/* --- Estilos Gerais e Responsividade --- */
 footer { text-align: center; padding: 2rem 0 1rem; font-size: 0.9rem; color: #888; border-top: 1px solid var(--border-color); margin-top: 3rem; }
 .scroll-top-btn { position: fixed; bottom: 2rem; right: 2rem; background-color: var(--cor-destaque); color: #fff; border: none; padding: 0.8rem; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; }
 .scroll-top-btn:hover { background-color: var(--cor-destaque-hover); transform: translateY(-3px); }
