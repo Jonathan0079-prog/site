@@ -5,3 +5,4 @@ flask-cors
 gunicorn
 huggingface_hub
 pdfplumber
+Pillow
