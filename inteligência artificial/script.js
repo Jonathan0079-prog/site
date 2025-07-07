@@ -1,172 +1,80 @@
-// Arquivo JavaScript do Front-end (ex: script.js)
+// script.js
 
-// --- SELETORES DE ELEMENTOS HTML ---
-const chatbox = document.querySelector(".chatbox");
-const chatInput = document.querySelector(".chat-input textarea");
-const sendChatBtn = document.querySelector("#send-btn");
-const fileUploadInput = document.querySelector("#file-upload");
+document.addEventListener("DOMContentLoaded", () => {
+    const chatInput = document.querySelector(".chat-input textarea");
+    const sendChatBtn = document.querySelector(".chat-input span");
+    const chatbox = document.querySelector(".chatbox");
 
-// --- ESTADO DA APLICAÇÃO ---
-let userMessage = null;
-let fileContext = null; // Armazena o texto do último arquivo lido para contextualizar a próxima pergunta
-const inputInitHeight = chatInput.scrollHeight;
+    // IMPORTANTE: Substitua esta URL pela URL do seu back-end no Render.com
+    // Você obterá essa URL depois de criar o serviço no Render.
+    // Exemplo: "https://seu-app-aemi.onrender.com"
+    const BACKEND_URL = "https://seu-app-aemi.onrender.com"; // <-- MUDE AQUI QUANDO TIVER A URL
 
-// --- URLs DAS APIS (ATUALIZADO) ---
-// Agora temos uma única API principal com duas rotas.
-const API_BASE_URL = "https://api-pgp1.onrender.com"; // Sua URL base do Render
-const CHAT_API_URL = `${API_BASE_URL}/chat`; // Rota para texto e pesquisa na web
-const RECOGNITION_API_URL = `${API_BASE_URL}/reconhecer`; // Rota para análise de arquivos
+    let userMessage;
 
-// --- FUNÇÕES AUXILIARES ---
-
-// Cria um item na lista do chat (balão de mensagem)
-const createChatLi = (message, className) => {
-    const chatLi = document.createElement("li");
-    chatLi.classList.add("chat", className);
-    let chatContent = className === "outgoing" 
-        ? `<p></p>` 
-        : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
-    chatLi.innerHTML = chatContent;
-    // Usamos innerHTML para renderizar tags HTML como <strong> e <br> que vêm da API
-    chatLi.querySelector("p").innerHTML = message; 
-    return chatLi;
-};
-
-// Formata a resposta do bot para exibir corretamente no HTML
-const formatBotResponse = (text) => {
-    // Converte **negrito** para <strong>negrito</strong>
-    let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    // Converte quebras de linha \n para <br>
-    formattedText = formattedText.replace(/\n/g, '<br>');
-    return formattedText;
-};
-
-
-// --- FUNÇÕES PRINCIPAIS ---
-
-// Envia mensagem de texto para a API /chat
-const generateChatResponse = async (chatElement) => {
-    const messageElement = chatElement.querySelector("p");
-
-    let messageToSend = userMessage;
-
-    // Se houver contexto de um arquivo, anexa-o à mensagem
-    if (fileContext) {
-        messageToSend = `Com base neste conteúdo de um arquivo que analisei:\n\n---\n${fileContext}\n---\n\nPor favor, responda à seguinte pergunta: "${userMessage}"`;
-        fileContext = null; // Limpa o contexto após o uso
+    const createChatLi = (message, className) => {
+        const chatLi = document.createElement("li");
+        chatLi.classList.add("chat", className);
+        let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
+        chatLi.innerHTML = chatContent;
+        chatLi.querySelector("p").textContent = message;
+        return chatLi;
     }
 
-    // Corpo da requisição (simplificado para a nova API)
-    const requestBody = {
-        message: messageToSend 
-    };
+    const generateResponse = (incomingChatLi) => {
+        const API_URL = `${BACKEND_URL}/chat`;
+        const messageElement = incomingChatLi.querySelector("p");
 
-    const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-    };
-
-    try {
-        const response = await fetch(CHAT_API_URL, requestOptions);
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.erro || `Erro ${response.status}`);
-        }
-        
-        // A resposta agora vem em `data.response`
-        const formattedResponse = formatBotResponse(data.response);
-        messageElement.innerHTML = formattedResponse;
-
-    } catch (error) {
-        messageElement.textContent = `Desculpe, ocorreu um erro: ${error.message}`;
-        messageElement.classList.add("error");
-        console.error("Erro na chamada de chat:", error);
-    } finally {
-        chatbox.scrollTo(0, chatbox.scrollHeight);
-    }
-};
-
-// Lida com o envio da mensagem do usuário
-const handleChat = () => {
-    userMessage = chatInput.value.trim();
-    if (!userMessage) return;
-
-    chatInput.value = "";
-    chatInput.style.height = `${inputInitHeight}px`;
-
-    chatbox.appendChild(createChatLi(userMessage, "outgoing"));
-    chatbox.scrollTo(0, chatbox.scrollHeight);
-
-    // Adiciona o balão de "pensando..."
-    setTimeout(() => {
-        const incomingChatLi = createChatLi("A pensar...", "incoming");
-        chatbox.appendChild(incomingChatLi);
-        chatbox.scrollTo(0, chatbox.scrollHeight);
-        generateChatResponse(incomingChatLi); // Chama a função que fala com a API
-    }, 600);
-};
-
-// Lida com o upload e análise de um arquivo
-const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const statusChatLi = createChatLi(`Analisando o arquivo "${file.name}"...`, "incoming");
-    chatbox.appendChild(statusChatLi);
-    chatbox.scrollTo(0, chatbox.scrollHeight);
-    const statusMessageElement = statusChatLi.querySelector("p");
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-        const response = await fetch(RECOGNITION_API_URL, {
-            method: 'POST',
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.erro || 'Não foi possível ler o arquivo.');
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                message: userMessage
+            })
         }
 
-        const extractedText = data.conteudo_extraido;
-        fileContext = extractedText; // Salva o texto para a próxima pergunta
+        // Envia a mensagem do usuário para o seu back-end
+        fetch(API_URL, requestOptions).then(res => res.json()).then(data => {
+            // Atualiza o balão de chat do bot com a resposta recebida
+            if (data.response) {
+                messageElement.textContent = data.response;
+            } else {
+                messageElement.textContent = "Desculpe, não consegui obter uma resposta. Verifique se o servidor está funcionando corretamente.";
+                console.error("Erro na resposta da API:", data.error);
+            }
+        }).catch((error) => {
+            // Em caso de erro de rede (ex: servidor fora do ar)
+            messageElement.textContent = "Oops! Algo deu errado. Não foi possível conectar ao servidor da AEMI. Verifique a URL do back-end e o status do serviço no Render.";
+            console.error("Erro de fetch:", error);
+        }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+    }
 
-        const botResponseHTML = `
-            Consegui ler o arquivo <strong>"${file.name}"</strong>. Aqui está o conteúdo que extraí:
-            <blockquote class="file-content">
-                <pre>${extractedText}</pre>
-            </blockquote>
-            Agora você pode me fazer perguntas sobre este documento ou pedir um resumo.`;
-        
-        statusMessageElement.innerHTML = botResponseHTML;
+    const handleChat = () => {
+        userMessage = chatInput.value.trim();
+        if(!userMessage) return;
+        chatInput.value = "";
 
-    } catch (error) {
-        statusMessageElement.innerHTML = `Erro ao analisar: ${error.message}`;
-        console.error("Erro ao chamar a API de reconhecimento:", error);
-        fileContext = null; // Limpa o contexto em caso de erro
-    } finally {
-        event.target.value = '';
+        // Adiciona a mensagem do usuário ao chat
+        chatbox.appendChild(createChatLi(userMessage, "outgoing"));
         chatbox.scrollTo(0, chatbox.scrollHeight);
+        
+        setTimeout(() => {
+            // Cria um balão de "pensando..." para o bot
+            const incomingChatLi = createChatLi("Pensando...", "incoming");
+            chatbox.appendChild(incomingChatLi);
+            chatbox.scrollTo(0, chatbox.scrollHeight);
+            // Chama a função que vai buscar a resposta no back-end
+            generateResponse(incomingChatLi);
+        }, 600);
     }
-};
 
-// --- OUVINTES DE EVENTOS ---
-sendChatBtn.addEventListener("click", handleChat);
-fileUploadInput.addEventListener('change', handleFileUpload);
-
-chatInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        handleChat();
-    }
-});
-
-chatInput.addEventListener("input", () => {
-    chatInput.style.height = "auto";
-    chatInput.style.height = `${chatInput.scrollHeight}px`;
+    sendChatBtn.addEventListener("click", handleChat);
+    chatInput.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleChat();
+        }
+    });
 });
