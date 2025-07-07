@@ -7,6 +7,7 @@
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003366">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -92,7 +93,7 @@
             <li><a href="index.html"><i class="material-icons">home</i><span>Início</span></a></li>
             <li><a href="programas/index.html"><i class="material-icons">apps</i><span>Programas</span></a></li>
             <li><a href="newsletter/index.html"><i class="material-icons">email</i><span>Newsletter</span></a></li>
-            <li><a href="INTELIGENCIA ARTIFICIAL/index.html"><i class="material-icons">email</i><span>AEMI</span></a></li>
+            <li><a href="INTELIGENCIA ARTIFICIAL/index.html" id="aemi-wakeup-btn"><i class="material-icons">smart_toy</i><span>AEMI</span></a></li>
             <li><a href="PDF/downloads.html"><i class="material-icons">download</i><span>Downloads PDF's</span></a></li>
             <li><a href="contato/index.html"><i class="material-icons">call</i><span>Contato</span></a></li>
             <li><a href="créditos/index.html"><i class="material-icons">badge</i><span>Créditos</span></a></li>
@@ -107,17 +108,7 @@
     </nav>
 
     <script src="script.js"></script>
+    <script src="pwa.js"></script>
 
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(registration => {
-                    console.log('ServiceWorker registado com sucesso!');
-                }, err => {
-                    console.log('Registo do ServiceWorker falhou: ', err);
-                });
-            });
-        }
-    </script>
 </body>
 </html>
