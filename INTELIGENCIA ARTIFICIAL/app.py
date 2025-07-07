@@ -1,4 +1,4 @@
-# app.py - Versão FINAL e OTIMIZADA para funcionar no Render gratuito
+# app.py - Versão FINAL CORRIGIDA, sem dependências desnecessárias
 
 import os
 from flask import Flask, request, jsonify
@@ -9,7 +9,7 @@ from huggingface_hub import InferenceClient
 app = Flask(__name__)
 CORS(app)
 
-# --- CONFIGURAÇÃO DA API HUGGING FACE COM TOKEN E MODELO LEVE ---
+# --- CONFIGURAÇÃO DA API HUGGING FACE ---
 # 1. Pega o token de acesso que colocamos no "cofre" do Render
 HUGGING_FACE_TOKEN = os.getenv("HF_TOKEN")
 client = None
@@ -19,7 +19,7 @@ if not HUGGING_FACE_TOKEN:
     print("ERRO CRÍTICO: A variável de ambiente 'HF_TOKEN' não foi encontrada.")
 else:
     try:
-        # A MUDANÇA CRUCIAL: Usamos um modelo muito mais leve para não estourar a memória do Render
+        # Usamos o modelo leve para não estourar a memória do Render
         client = InferenceClient(
             model="microsoft/Phi-3-mini-4k-instruct", 
             token=HUGGING_FACE_TOKEN
@@ -44,7 +44,6 @@ def chat():
         return jsonify({"error": "Nenhuma mensagem recebida do usuário."}), 400
 
     try:
-        # A estrutura da chamada é a mesma, pois o modelo é compatível
         response_generator = client.chat_completion(
             messages=[
                 {"role": "system", "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial, direta e objetiva."},
