@@ -1,63 +1,65 @@
-# app.py - Versão atualizada para usar a API do repositório 'alequizao'
+# app.py - Versão ESTÁVEL usando a API Gratuita Oficial da Hugging Face
 
 import os
-import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from huggingface_hub import InferenceClient
 
+# Inicializa o aplicativo Flask
 app = Flask(__name__)
 CORS(app)
 
-# --- ATUALIZAÇÃO DA API GRATUITA ---
-# Trocando para a URL associada a projetos como o 'API-CHATGPT-FREE'.
-# Este é nosso novo candidato.
-FREE_API_URL = "https://liaobots.com/v1/chat/completions" # Usando um endpoint conhecido por este tipo de proxy
+# --- CONFIGURAÇÃO DA API HUGGING FACE (NÍVEL GRATUITO) ---
+# Não precisamos de chave de API. A biblioteca usará o acesso público.
+# Escolhemos um modelo popular e gratuito diretamente da plataforma.
+# O "Zephyr-7B-Beta" é um excelente modelo de 7 bilhões de parâmetros.
+try:
+    client = InferenceClient(model="HuggingFaceH4/zephyr-7b-beta")
+    print("Cliente de Inferência da Hugging Face inicializado com sucesso.")
+except Exception as e:
+    client = None
+    print(f"ERRO CRÍTICO ao inicializar o cliente de inferência: {e}")
+
 
 @app.route('/')
 def index():
-    return "Servidor da AEMI (versão API 'alequizao' Gratuita) está no ar."
+    return "Servidor da AEMI (versão API Hugging Face Gratuita) está no ar."
 
 @app.route('/chat', methods=['POST'])
 def chat():
+    if not client:
+        return jsonify({"error": "O serviço de IA não foi inicializado corretamente no servidor."}), 503
+
     data = request.get_json()
     user_message = data.get('message')
 
     if not user_message:
         return jsonify({"error": "Nenhuma mensagem recebida do usuário."}), 400
 
-    payload = {
-        "model": "gpt-3.5-turbo",
-        "messages": [
-            {
-                "role": "system",
-                "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial e rolamentos, criada por Jonathan da Silva Oliveira para o canal Manutenção Industrial ARQUIVOS."
-            },
-            {
-                "role": "user",
-                "content": user_message
-            }
-        ],
-        "stream": False
-    }
-
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer pk-this-is-a-real-free-api-key" # Muitos proxies pedem um "Bearer Token" qualquer.
-    }
-
     try:
-        response = requests.post(FREE_API_URL, headers=headers, json=payload, timeout=30)
-        response.raise_for_status()
-        api_data = response.json()
-        bot_response = api_data['choices'][0]['message']['content']
+        # A estrutura da chamada é um pouco diferente para modelos de chat da Hugging Face
+        # Usamos o método 'chat_completion'
+        response_generator = client.chat_completion(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial e rolamentos, criada por Jonathan da Silva Oliveira para o canal Manutenção Industrial ARQUIVOS."
+                },
+                {
+                    "role": "user",
+                    "content": user_message
+                }
+            ],
+            max_tokens=1024, # Limite de tokens para a resposta
+            stream=False,   # 'stream=False' para receber a resposta completa de uma vez
+        )
+        bot_response = response_generator.choices[0].message.content
         return jsonify({"response": bot_response})
-
-    except requests.exceptions.RequestException as e:
-        print(f"ERRO ao chamar a API gratuita: {e}")
-        return jsonify({"error": f"Não foi possível conectar à API de IA. O serviço pode estar temporariamente fora do ar. Detalhes: {e}"}), 500
-    except (KeyError, IndexError) as e:
-        print(f"ERRO ao processar a resposta da API: {e}")
-        return jsonify({"error": "A resposta da API de IA veio em um formato inesperado e não pôde ser lida."}), 500
+        
+    except Exception as e:
+        print(f"ERRO ao chamar a API da Hugging Face: {e}")
+        # Retorna uma mensagem de erro clara, mencionando o "cold start"
+        return jsonify({"error": f"Ocorreu um erro ao comunicar com a API da Hugging Face. Isso pode ser um 'cold start' (o modelo está 'acordando'), o que pode demorar até 60 segundos. Por favor, tente enviar sua mensagem novamente em um minuto. Detalhes: {e}"}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
