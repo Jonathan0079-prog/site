@@ -1,0 +1,65 @@
+[
+    {
+        "designacao": "608",
+        "d": 8,
+        "D": 22,
+        "B": 7,
+        "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6000",
+        "d": 10,
+        "D": 26,
+        "B": 8,
+        "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6001",
+        "d": 12,
+        "D": 28,
+        "B": 8,
+        "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6203",
+        "d": 17,
+        "D": 40,
+        "B": 12,
+        "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6204",
+        "d": 20,
+        "D": 47,
+        "B": 14,
+        "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6205",
+        "d": 25,
+        "D": 52,
+        "B": 15,
+        "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6305",
+        "d": 25,
+        "D": 62,
+        "B": 17,
+        "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "22208",
+        "d": 40,
+        "D": 80,
+        "B": 23,
+        "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "22210",
+        "d": 50,
+        "D": 90,
+        "B": 23,
+        "tipo": "Autocompensador de Rolos"
+    }
+]
