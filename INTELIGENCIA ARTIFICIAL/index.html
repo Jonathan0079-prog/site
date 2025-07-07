@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AEMI - Assistente Industrial</title>
     <link rel="stylesheet" href="style.css">
+    <!-- O link para o Material Icons já está presente, o que é ótimo. -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
@@ -13,11 +14,13 @@
         <div class="chatbot">
             <header>
                 <h2>AEMI - Assistente Industrial</h2>
+                <!-- MELHORIA: Adicionando um botão para limpar o chat -->
+                <span id="clear-btn" class="material-icons">delete_sweep</span>
             </header>
             <ul class="chatbox">
                 <li class="chat incoming">
                     <span class="material-symbols-outlined">smart_toy</span>
-                    <p>Olá. Sou AEMI, uma IA da Manutenção Industrial. Estou em fase de testes. Envie uma mensagem para começarmos.</p>
+                    <p>Olá. Sou AEMI, uma IA da Manutenção Industrial. Envie uma mensagem para começarmos.</p>
                 </li>
             </ul>
             <div class="chat-input">

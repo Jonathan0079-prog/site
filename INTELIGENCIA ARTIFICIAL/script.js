@@ -1,95 +1,119 @@
-// script.js - Versão final para Upload de Arquivos
+// script.js - Versão com Layout Refinado e Limpeza de Chat
 
 document.addEventListener("DOMContentLoaded", () => {
+    // --- Seletores do DOM ---
     const chatInput = document.querySelector(".chat-input textarea");
     const sendChatBtn = document.querySelector("#send-btn");
     const chatbox = document.querySelector(".chatbox");
-    const fileUpload = document.getElementById("file-upload");
-    const uploadIcon = document.getElementById("upload-icon");
+    const clearChatBtn = document.querySelector("#clear-btn"); // Botão de limpar
 
+    // --- Constantes ---
     const BACKEND_URL = "https://aemi.onrender.com";
-    let userFile = null;
+    const API_URL_CHAT = `${BACKEND_URL}/chat`;
+    const API_URL_CLEAR = `${BACKEND_URL}/clear-session`; // Novo endpoint
 
-    if (uploadIcon) {
-        uploadIcon.addEventListener('click', () => fileUpload.click());
-    }
+    let userMessage = null;
 
-    if (fileUpload) {
-        fileUpload.addEventListener('change', (event) => {
-            if (event.target.files.length > 0) {
-                userFile = event.target.files[0];
-                chatInput.placeholder = `Arquivo selecionado: ${userFile.name}. Digite uma pergunta ou clique em enviar.`;
-            }
-        });
-    }
-
+    /**
+     * Cria um novo elemento de lista de chat (<li>) para exibir na tela.
+     */
     const createChatLi = (message, className) => {
         const chatLi = document.createElement("li");
         chatLi.classList.add("chat", className);
-        let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
+        
+        let chatContent;
+        if (className === "incoming" && message === "typing") {
+            chatContent = `<span class="material-symbols-outlined">smart_toy</span><div class="typing-animation"><span></span><span></span><span></span></div>`;
+        } else {
+            const icon = className === "outgoing" ? "" : `<span class="material-symbols-outlined">smart_toy</span>`;
+            chatContent = `${icon}<p></p>`;
+        }
+        
         chatLi.innerHTML = chatContent;
-        chatLi.querySelector("p").textContent = message;
+        
+        if (message !== "typing") {
+            chatLi.querySelector("p").textContent = message;
+        }
+        
         return chatLi;
     };
 
-    const generateResponse = (formData, incomingChatLi) => {
-        const API_URL = `${BACKEND_URL}/chat`;
-        const messageElement = incomingChatLi.querySelector("p");
-
+    /**
+     * Envia a mensagem para a API do backend e atualiza a UI com a resposta.
+     */
+    const generateResponse = (incomingChatLi) => {
         const requestOptions = {
             method: "POST",
-            body: formData,
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ message: userMessage })
         };
 
-        fetch(API_URL, requestOptions)
-            .then(res => {
-                if (!res.ok) {
-                    // Se a resposta não for OK (ex: erro 500), tenta ler o erro como JSON
-                    return res.json().then(errorData => Promise.reject(errorData));
-                }
-                return res.json();
-            })
+        fetch(API_URL_CHAT, requestOptions)
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(data => {
-                messageElement.textContent = data.response || "Recebi uma resposta vazia do servidor.";
+                const p = document.createElement('p');
+                p.textContent = data.response || "Desculpe, não recebi uma resposta válida.";
+                incomingChatLi.querySelector(".typing-animation").parentElement.replaceWith(createChatLi(data.response, "incoming"));
             })
-            .catch(error => {
-                console.error("Erro de fetch ou de servidor:", error);
-                // Exibe a mensagem de erro que vem do servidor, se existir
-                messageElement.textContent = `Oops! Algo deu errado. ${error.error || 'Não foi possível conectar ao servidor da AEMI.'}`;
+            .catch(() => {
+                const errorLi = createChatLi("Oops! Algo deu errado. Não foi possível conectar ao servidor. Tente novamente.", "incoming");
+                errorLi.querySelector("p").classList.add("error");
+                incomingChatLi.parentElement.replaceChild(errorLi, incomingChatLi);
             })
             .finally(() => {
+                chatInput.disabled = false;
+                sendChatBtn.disabled = false;
                 chatbox.scrollTo(0, chatbox.scrollHeight);
-                userFile = null;
-                fileUpload.value = "";
-                chatInput.placeholder = "Digite uma mensagem...";
             });
     };
 
+    /**
+     * Controla o fluxo de envio da mensagem do usuário.
+     */
     const handleChat = () => {
-        const userMessage = chatInput.value.trim();
-        if (!userMessage && !userFile) return;
+        userMessage = chatInput.value.trim();
+        if (!userMessage) return;
 
-        const formData = new FormData();
-        formData.append("message", userMessage);
-        if (userFile) {
-            formData.append("file", userFile);
-        }
+        chatInput.value = "";
+        chatInput.disabled = true;
+        sendChatBtn.disabled = true;
 
-        const displayMessage = userMessage || `Analisando arquivo: ${userFile.name}`;
-        chatbox.appendChild(createChatLi(displayMessage, "outgoing"));
+        chatbox.appendChild(createChatLi(userMessage, "outgoing"));
         chatbox.scrollTo(0, chatbox.scrollHeight);
         
-        chatInput.value = "";
-        
         setTimeout(() => {
-            const incomingChatLi = createChatLi("Analisando...", "incoming");
+            const incomingChatLi = createChatLi("typing", "incoming");
             chatbox.appendChild(incomingChatLi);
             chatbox.scrollTo(0, chatbox.scrollHeight);
-            generateResponse(formData, incomingChatLi);
+            generateResponse(incomingChatLi);
         }, 600);
     };
 
+    /**
+     * MELHORIA: Limpa a tela de chat e a sessão no backend.
+     */
+    const clearChat = () => {
+        if (confirm("Você tem certeza que deseja limpar o histórico desta conversa?")) {
+            // Limpa a tela
+            const welcomeMessage = `
+                <li class="chat incoming">
+                    <span class="material-symbols-outlined">smart_toy</span>
+                    <p>Olá. Sou AEMI, uma IA da Manutenção Industrial. Envie uma mensagem para começarmos.</p>
+                </li>`;
+            chatbox.innerHTML = welcomeMessage;
+
+            // Limpa a sessão no backend
+            fetch(API_URL_CLEAR, { method: "POST" })
+                .then(res => {
+                    if (!res.ok) console.error("Falha ao limpar a sessão no servidor.");
+                })
+                .catch(err => console.error("Erro ao tentar limpar a sessão:", err));
+        }
+    };
+
+    // --- Event Listeners ---
     sendChatBtn.addEventListener("click", handleChat);
+    clearChatBtn.addEventListener("click", clearChat);
     chatInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
