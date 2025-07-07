@@ -51,6 +51,7 @@ header h1 {
     gap: 0;
     margin-bottom: 2rem;
     height: 200px;
+    overflow: hidden; /* Adicionado para evitar que a animação quebre o layout */
 }
 
 .gear-wrapper {
@@ -58,6 +59,7 @@ header h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 50%; /* Adicionado para limitar a largura em telas maiores */
 }
 
 .gear-wrapper label {
@@ -73,6 +75,10 @@ header h1 {
     animation-iteration-count: infinite;
     animation-play-state: paused;
     object-fit: contain;
+    max-width: 100%; /* Adicionado para garantir que a engrenagem não exceda o contêiner */
+    max-height: 100%; /* Adicionado para garantir que a engrenagem não exceda o contêiner */
+    width: 100%; /* Adicionado para responsividade */
+    height: auto; /* Adicionado para manter a proporção */
 }
 
 @keyframes rotate {
@@ -168,4 +174,23 @@ header h1 {
 .hidden {
     display: none;
     opacity: 0;
+}
+
+/* Media query para telas menores */
+@media (max-width: 600px) {
+    .animation-container {
+        height: 150px; /* Reduz a altura da animação em telas menores */
+    }
+
+    .gear-wrapper {
+        max-width: 45%; /* Ajusta a largura máxima para telas menores */
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .resultado-item p {
+        font-size: 1.5rem;
+    }
 }
