@@ -1,65 +1,78 @@
 [
     {
-        "designacao": "608",
-        "d": 8,
-        "D": 22,
-        "B": 7,
-        "tipo": "Rígido de Esferas"
+        "designacao": "608", "d": 8, "D": 22, "B": 7, "tipo": "Rígido de Esferas",
+        "C": 3.45, "C0": 1.37, "limite_rpm": 34000, "massa": 0.012
     },
     {
-        "designacao": "6000",
-        "d": 10,
-        "D": 26,
-        "B": 8,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6000", "d": 10, "D": 26, "B": 8, "tipo": "Rígido de Esferas",
+        "C": 4.55, "C0": 1.96, "limite_rpm": 30000, "massa": 0.019
     },
     {
-        "designacao": "6001",
-        "d": 12,
-        "D": 28,
-        "B": 8,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6001", "d": 12, "D": 28, "B": 8, "tipo": "Rígido de Esferas",
+        "C": 5.07, "C0": 2.39, "limite_rpm": 26000, "massa": 0.021
     },
     {
-        "designacao": "6203",
-        "d": 17,
-        "D": 40,
-        "B": 12,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6002", "d": 15, "D": 32, "B": 9, "tipo": "Rígido de Esferas",
+        "C": 5.85, "C0": 2.85, "limite_rpm": 22000, "massa": 0.032
     },
     {
-        "designacao": "6204",
-        "d": 20,
-        "D": 47,
-        "B": 14,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6003", "d": 17, "D": 35, "B": 10, "tipo": "Rígido de Esferas",
+        "C": 7.65, "C0": 3.75, "limite_rpm": 20000, "massa": 0.045
     },
     {
-        "designacao": "6205",
-        "d": 25,
-        "D": 52,
-        "B": 15,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6203", "d": 17, "D": 40, "B": 12, "tipo": "Rígido de Esferas",
+        "C": 9.56, "C0": 4.75, "limite_rpm": 18000, "massa": 0.065
     },
     {
-        "designacao": "6305",
-        "d": 25,
-        "D": 62,
-        "B": 17,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6204", "d": 20, "D": 47, "B": 14, "tipo": "Rígido de Esferas",
+        "C": 12.8, "C0": 6.55, "limite_rpm": 15000, "massa": 0.106
     },
     {
-        "designacao": "22208",
-        "d": 40,
-        "D": 80,
-        "B": 23,
-        "tipo": "Autocompensador de Rolos"
+        "designacao": "6205", "d": 25, "D": 52, "B": 15, "tipo": "Rígido de Esferas",
+        "C": 14.0, "C0": 7.8, "limite_rpm": 13000, "massa": 0.125
     },
     {
-        "designacao": "22210",
-        "d": 50,
-        "D": 90,
-        "B": 23,
-        "tipo": "Autocompensador de Rolos"
+        "designacao": "6305", "d": 25, "D": 62, "B": 17, "tipo": "Rígido de Esferas",
+        "C": 23.4, "C0": 11.6, "limite_rpm": 11000, "massa": 0.229
+    },
+    {
+        "designacao": "22208", "d": 40, "D": 80, "B": 23, "tipo": "Autocompensador de Rolos",
+        "C": 83.2, "C0": 81.6, "limite_rpm": 7000, "massa": 0.52
+    },
+    {
+        "designacao": "22210", "d": 50, "D": 90, "B": 23, "tipo": "Autocompensador de Rolos",
+        "C": 108, "C0": 108, "limite_rpm": 6000, "massa": 0.63
+    },
+    {
+        "designacao": "22212", "d": 60, "D": 110, "B": 28, "tipo": "Autocompensador de Rolos",
+        "C": 159, "C0": 166, "limite_rpm": 5000, "massa": 1.11
+    },
+    {
+        "designacao": "NU205", "d": 25, "D": 52, "B": 15, "tipo": "Rolos Cilíndricos",
+        "C": 16.7, "C0": 15.6, "limite_rpm": 14000, "massa": 0.13
+    },
+    {
+        "designacao": "NU305", "d": 25, "D": 62, "B": 17, "tipo": "Rolos Cilíndricos",
+        "C": 31.5, "C0": 28, "limite_rpm": 12000, "massa": 0.23
+    },
+    {
+        "designacao": "NU210", "d": 50, "D": 90, "B": 20, "tipo": "Rolos Cilíndricos",
+        "C": 70.8, "C0": 68, "limite_rpm": 7500, "massa": 0.55
+    },
+    {
+        "designacao": "7205", "d": 25, "D": 52, "B": 15, "tipo": "Contato Angular",
+        "C": 15.9, "C0": 9.3, "limite_rpm": 12000, "massa": 0.128
+    },
+    {
+        "designacao": "7305", "d": 25, "D": 62, "B": 17, "tipo": "Contato Angular",
+        "C": 27, "C0": 15.3, "limite_rpm": 10000, "massa": 0.226
+    },
+    {
+        "designacao": "30205", "d": 25, "D": 52, "B": 16.25, "tipo": "Rolos Cônicos",
+        "C": 33.2, "C0": 29, "limite_rpm": 11000, "massa": 0.15
+    },
+    {
+        "designacao": "30305", "d": 25, "D": 62, "B": 18.25, "tipo": "Rolos Cônicos",
+        "C": 52.1, "C0": 42.5, "limite_rpm": 9000, "massa": 0.26
     }
 ]

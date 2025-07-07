@@ -4,22 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const specInput = document.getElementById('bearing-spec');
     const calculateBtn = document.getElementById('calculate-btn');
     const boreSearchInput = document.getElementById('bore-diameter-search');
+    const outerDiameterSearchInput = document.getElementById('outer-diameter-search');
+    const widthSearchInput = document.getElementById('width-search');
     const searchByBoreBtn = document.getElementById('search-by-bore-btn');
     const clearBtn = document.getElementById('clear-btn');
     const resultDisplay = document.getElementById('result-display');
     const copyBtn = document.getElementById('copy-btn');
     const themeToggle = document.getElementById('theme-toggle-checkbox');
-    let rolamentosDB = []; // Variável para armazenar os dados do JSON
+    let rolamentosDB = [];
 
     // --- 2. CARREGAMENTO DE DADOS E TEMA ---
     async function loadData() {
         try {
-            const response = await fetch('rolamentos.json'); // Busca o arquivo JSON
+            const response = await fetch('rolamentos.json');
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            rolamentosDB = await response.json(); // Carrega os dados para a variável rolamentosDB
+            rolamentosDB = await response.json();
         } catch (error) {
             console.error("Falha fatal ao carregar o banco de dados de rolamentos:", error);
-            displayMessage('Erro crítico: Não foi possível carregar a base de dados. Verifique o console para mais detalhes.', 'error');
+            displayMessage('Erro crítico: Não foi possível carregar a base de dados.', 'error');
         }
     }
 
@@ -49,29 +51,39 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="results-grid-main">
                 <div class="result-item"><span class="label">Tipo</span><span class="value">${data.tipo}</span></div>
-                <div class="result-item"><span class="label">Diâmetro do Furo (d)</span><span class="value">${data.d} mm</span></div>
-                <div class="result-item"><span class="label">Diâmetro Externo (D)</span><span class="value">${data.D} mm</span></div>
+                <div class="result-item"><span class="label">Furo (d)</span><span class="value">${data.d} mm</span></div>
+                <div class="result-item"><span class="label">Externo (D)</span><span class="value">${data.D} mm</span></div>
                 <div class="result-item"><span class="label">Largura (B)</span><span class="value">${data.B} mm</span></div>
+            </div>
+            <hr>
+            <h4>Especificações Técnicas</h4>
+            <div class="results-grid-secondary">
+                <div class="result-item"><span class="label">Carga Din. (C)</span><span class="value">${data.C} kN</span></div>
+                <div class="result-item"><span class="label">Carga Est. (C0)</span><span class="value">${data.C0} kN</span></div>
+                <div class="result-item"><span class="label">RPM Limite</span><span class="value">${data.limite_rpm.toLocaleString('pt-BR')}</span></div>
+                <div class="result-item"><span class="label">Massa</span><span class="value">${data.massa} kg</span></div>
             </div>
         `;
         copyBtn.style.display = 'block';
     }
     
-    function displayReverseSearchResults(results, boreSize) {
+    function displayReverseSearchResults(results, params) {
+        const title = `Busca por ${params.join(', ')}`;
         resultDisplay.innerHTML = `
             <div class="result-item success">
-                <span class="label">${results.length} rolamento(s) encontrado(s) com furo de:</span>
-                <span class="value">${boreSize} mm</span>
+                <span class="label">${results.length} rolamento(s) encontrado(s) para:</span>
+                <span class="value">${title}</span>
             </div>
             <div class="table-container">
                 <table>
-                    <thead><tr><th>Designação</th><th>Tipo</th><th>Ext. (D)</th><th>Larg. (B)</th></tr></thead>
+                    <thead><tr><th>Designação</th><th>Tipo</th><th>d</th><th>D</th><th>B</th></tr></thead>
                     <tbody>
                         ${results.map(b => `<tr>
                             <td><strong>${b.designacao}</strong></td>
                             <td>${b.tipo}</td>
-                            <td>${b.D} mm</td>
-                            <td>${b.B} mm</td>
+                            <td>${b.d}</td>
+                            <td>${b.D}</td>
+                            <td>${b.B}</td>
                         </tr>`).join('')}
                     </tbody>
                 </table>
@@ -80,47 +92,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 4. FUNÇÕES PRINCIPAIS DE LÓGICA ---
-
-    // Nova função para calcular o furo baseada na especificação (lógica do Python)
     function calcularFuroRolamentoPorRegra(especificacao) {
         if (typeof especificacao !== 'string' || especificacao.length < 2) {
-            return { error: `Erro: A especificação do rolamento deve ser um texto com pelo menos 2 caracteres.`, type: 'error' };
+            return { error: `Erro: A especificação deve ter pelo menos 2 caracteres.`, type: 'error' };
         }
-
         try {
             const codigoFuroStr = especificacao.slice(-2);
             const codigoFuroInt = parseInt(codigoFuroStr, 10);
+            if (isNaN(codigoFuroInt)) return { error: `Erro: Os dois últimos caracteres ('${codigoFuroStr}') devem ser numéricos.`, type: 'error' };
 
-            if (isNaN(codigoFuroInt)) {
-                return { error: `Erro: Os dois últimos caracteres da especificação ('${codigoFuroStr}') devem ser numéricos.`, type: 'error' };
-            }
-
-            let diametro;
-            let mensagem;
-            let tipo = 'success';
-
-            if (codigoFuroInt === 0) {
-                diametro = 10;
-                mensagem = `Furo de ${diametro} mm (código 00).`;
-            } else if (codigoFuroInt === 1) {
-                diametro = 12;
-                mensagem = `Furo de ${diametro} mm (código 01).`;
-            } else if (codigoFuroInt === 2) {
-                diametro = 15;
-                mensagem = `Furo de ${diametro} mm (código 02).`;
-            } else if (codigoFuroInt === 3) {
-                diametro = 17;
-                mensagem = `Furo de ${diametro} mm (código 03).`;
-            } else if (codigoFuroInt >= 4 && codigoFuroInt <= 96) {
-                diametro = codigoFuroInt * 5;
-                mensagem = `Furo de ${diametro} mm (código ${codigoFuroStr}).`;
-            } else {
-                mensagem = `Código '${codigoFuroStr}' não segue a regra padrão de multiplicação. Verifique o catálogo do fabricante.`;
+            let diametro, mensagem, tipo = 'success';
+            if (codigoFuroInt === 0) diametro = 10;
+            else if (codigoFuroInt === 1) diametro = 12;
+            else if (codigoFuroInt === 2) diametro = 15;
+            else if (codigoFuroInt === 3) diametro = 17;
+            else if (codigoFuroInt >= 4 && codigoFuroInt <= 96) diametro = codigoFuroInt * 5;
+            else {
+                mensagem = `Código '${codigoFuroStr}' não segue a regra padrão. Verifique o catálogo.`;
                 tipo = 'warning';
-                diametro = null; // Indica que não foi possível calcular o diâmetro exato
+                diametro = null;
             }
-            return { success: `Rolamento '${especificacao}': ${mensagem}`, diameter: diametro, type: tipo };
-
+            if (!mensagem) mensagem = `Furo de ${diametro} mm (código ${codigoFuroStr}).`;
+            return { success: mensagem, diameter: diametro, type: tipo };
         } catch (e) {
             return { error: `Ocorreu um erro inesperado no cálculo: ${e.message}`, type: 'error' };
         }
@@ -129,32 +122,21 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handleDirectSearch() {
         toggleLoading(calculateBtn, true, '<i class="fa-solid fa-spinner fa-spin"></i> Consultando...');
         const spec = specInput.value.trim().toUpperCase();
-
         if (!spec) {
             displayMessage('Por favor, digite uma especificação.', 'warning');
             toggleLoading(calculateBtn, false, '<i class="fa-solid fa-calculator"></i> Consultar');
             return;
         }
 
-        // 1. Tenta encontrar o rolamento na base de dados (JSON)
         const bearingData = rolamentosDB.find(b => b.designacao === spec);
-
         if (bearingData) {
-            // Se encontrou no JSON, exibe os detalhes completos
             displayBearingDetails(bearingData);
         } else {
-            // Se não encontrou no JSON, tenta calcular o furo pela regra
-            const calculationResult = calcularFuroRolamentoPorRegra(spec);
-
-            if (calculationResult.success) {
-                // Se o cálculo pela regra foi bem-sucedido, exibe o resultado do cálculo
-                displayMessage(`Rolamento '${spec}': ${calculationResult.success}`, calculationResult.type, calculationResult.diameter ? `${calculationResult.diameter} mm` : 'Não Calculado');
-            } else if (calculationResult.error) {
-                // Se houve um erro no cálculo pela regra
-                displayMessage(calculationResult.error, calculationResult.type);
+            const calcResult = calcularFuroRolamentoPorRegra(spec);
+            if (calcResult.success) {
+                displayMessage(`Rolamento '${spec}': ${calcResult.success}`, calcResult.type, calcResult.diameter ? `${calcResult.diameter} mm` : 'Não Calculado');
             } else {
-                // Se a regra não aplicou ou deu uma mensagem de aviso
-                displayMessage(`Rolamento '${spec}': ${calculationResult.message || 'Não encontrado na base de dados e não segue regra padrão.'}`, calculationResult.type, 'Verificar Catálogo');
+                displayMessage(calcResult.error || `Não encontrado na base de dados e não segue regra padrão.`, calcResult.type || 'warning');
             }
         }
         toggleLoading(calculateBtn, false, '<i class="fa-solid fa-calculator"></i> Consultar');
@@ -162,21 +144,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleReverseSearch() {
         toggleLoading(searchByBoreBtn, true, '<i class="fa-solid fa-spinner fa-spin"></i> Procurando...');
-        const boreSize = parseInt(boreSearchInput.value, 10);
+        const d = parseFloat(boreSearchInput.value) || null;
+        const D = parseFloat(outerDiameterSearchInput.value) || null;
+        const B = parseFloat(widthSearchInput.value) || null;
 
-        if (isNaN(boreSize) || boreSize <= 0) {
-            displayMessage('Por favor, insira um diâmetro de furo válido.', 'error');
+        if (!d && !D && !B) {
+            displayMessage('Insira pelo menos uma medida para a busca.', 'error');
             toggleLoading(searchByBoreBtn, false, '<i class="fa-solid fa-search"></i> Procurar');
             return;
         }
 
-        // Filtra os rolamentos no banco de dados carregado do JSON pelo diâmetro do furo
-        const results = rolamentosDB.filter(b => b.d === boreSize);
+        let searchParams = [];
+        if (d) searchParams.push(`d=${d}mm`);
+        if (D) searchParams.push(`D=${D}mm`);
+        if (B) searchParams.push(`B=${B}mm`);
+
+        const results = rolamentosDB.filter(b => {
+            return (!d || b.d === d) &&
+                   (!D || b.D === D) &&
+                   (!B || b.B === B);
+        });
 
         if (results.length > 0) {
-            displayReverseSearchResults(results, boreSize);
+            displayReverseSearchResults(results, searchParams);
         } else {
-            displayMessage(`Nenhum rolamento encontrado com furo de ${boreSize} mm na base de dados.`, 'warning');
+            displayMessage(`Nenhum rolamento encontrado com os critérios fornecidos.`, 'warning');
         }
         toggleLoading(searchByBoreBtn, false, '<i class="fa-solid fa-search"></i> Procurar');
     }
@@ -185,21 +177,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function clearAll() {
         specInput.value = '';
         boreSearchInput.value = '';
+        outerDiameterSearchInput.value = '';
+        widthSearchInput.value = '';
         displayMessage('Aguardando consulta...', '');
-        copyBtn.style.display = 'none'; // Garante que o botão copiar seja ocultado ao limpar
+        copyBtn.style.display = 'none';
         specInput.focus();
     }
 
     function toggleLoading(button, isLoading, loadingText) {
         button.disabled = isLoading;
-        if (isLoading) {
-            button.innerHTML = loadingText;
-        } else {
-            // Retorna o texto original
-            button.innerHTML = button.id === 'calculate-btn' ?
-                '<i class="fa-solid fa-calculator"></i> Consultar' :
-                '<i class="fa-solid fa-search"></i> Procurar';
-        }
+        button.innerHTML = isLoading ? loadingText : (button.id === 'calculate-btn' ? '<i class="fa-solid fa-calculator"></i> Consultar' : '<i class="fa-solid fa-search"></i> Procurar');
     }
     
     // --- 6. EVENT LISTENERS ---
@@ -209,6 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     specInput.addEventListener('keyup', (e) => e.key === 'Enter' && handleDirectSearch());
     boreSearchInput.addEventListener('keyup', (e) => e.key === 'Enter' && handleReverseSearch());
+    outerDiameterSearchInput.addEventListener('keyup', (e) => e.key === 'Enter' && handleReverseSearch());
+    widthSearchInput.addEventListener('keyup', (e) => e.key === 'Enter' && handleReverseSearch());
     
     copyBtn.addEventListener('click', () => {
         const resultValue = document.getElementById('result-value')?.innerText;
@@ -227,6 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- INICIALIZAÇÃO ---
-    loadData(); // Carrega os dados do JSON quando a página é carregada
+    loadData();
     loadTheme();
 });
