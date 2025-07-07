@@ -1,22 +1,22 @@
-# Dockerfile
+# Dockerfile - Versão Otimizada para Multimodalidade
 
-# Use uma imagem base oficial do Python
-FROM python:3.10-slim
+# Usamos uma imagem "bullseye" que tem mais dependências de sistema pré-instaladas
+FROM python:3.10-bullseye
 
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copia o arquivo de dependências para o diretório de trabalho
+# Copia o arquivo de dependências primeiro
 COPY requirements.txt .
 
-# Instala as dependências listadas no requirements.txt
+# Instala as dependências
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia todos os outros arquivos do projeto (app.py) para o diretório de trabalho
+# Copia o resto do código do projeto
 COPY . .
 
-# Expõe a porta que o Flask vai usar (o Render vai gerenciar isso)
+# Expõe a porta que o app vai usar
 EXPOSE 10000
 
-# O comando para iniciar o aplicativo quando o contêiner for executado
-CMD ["python", "app.py"]
+# Comando para iniciar o servidor de produção
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "1", "--timeout", "120", "app:app"]
