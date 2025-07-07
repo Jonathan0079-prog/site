@@ -1,10 +1,9 @@
-# app.py - Versão OTIMIZADA com chamadas diretas via 'requests'
+# app.py - Versão FINAL CORRIGIDA, sem a dependência fantasma
 
 import os
 import io
 import requests
 import pdfplumber
-from PIL import Image
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -17,28 +16,27 @@ API_BASE_URL = "https://api-inference.huggingface.co/models/"
 
 # --- FUNÇÕES DE PROCESSAMENTO ---
 
-def call_huggingface_api(payload, model_name):
-    """Função central para chamar qualquer modelo na API da Hugging Face."""
+def call_text_model(prompt):
+    """Função para chamar o modelo de texto Gemma via API direta."""
     if not HUGGING_FACE_TOKEN:
         raise ValueError("Token da Hugging Face (HF_TOKEN) não encontrado.")
     
+    model_name = "google/gemma-2b-it"
     api_url = f"{API_BASE_URL}{model_name}"
     headers = {"Authorization": f"Bearer {HUGGING_FACE_TOKEN}"}
     
-    response = requests.post(api_url, headers=headers, json=payload, timeout=120)
-    if response.status_code != 200:
-        raise Exception(f"Erro na API da Hugging Face: {response.status_code} {response.text}")
-    return response.json()
-
-def process_text_prompt(prompt):
-    """Processa uma pergunta usando o modelo de texto (Gemma)."""
+    # O modelo Gemma espera um formato de prompt específico
     payload = {
         "inputs": f"<start_of_turn>user\n{prompt}<end_of_turn>\n<start_of_turn>model\n",
         "parameters": {"max_new_tokens": 1500}
     }
-    model_name = "google/gemma-2b-it"
-    result = call_huggingface_api(payload, model_name)
-    # A resposta da API direta vem em um formato diferente
+    
+    response = requests.post(api_url, headers=headers, json=payload, timeout=120)
+    if response.status_code != 200:
+        raise Exception(f"Erro na API da Hugging Face: {response.status_code} {response.text}")
+    
+    result = response.json()
+    # Extrai o texto gerado da resposta da API
     return result[0]['generated_text'].split('<start_of_turn>model\n')[-1].strip()
 
 def process_pdf(file, question):
@@ -50,45 +48,21 @@ def process_pdf(file, question):
             if page_text:
                 text_from_pdf += page_text + "\n"
     
-    limited_text = text_from_pdf[:8000]
+    limited_text = text_from_pdf[:8000] # Limita o texto para segurança
     
-    prompt = f"""Você é a AEMI, uma IA especialista. Baseado no seguinte texto extraído de um PDF, responda à pergunta do usuário.
+    prompt = f"""Baseado no seguinte texto extraído de um PDF, responda à pergunta do usuário.
+    Se a pergunta for genérica como "resuma", faça um resumo do conteúdo.
+    
     Texto do PDF: --- {limited_text} ---
     Pergunta do usuário: {question}"""
     
-    return process_text_prompt(prompt)
+    return call_text_model(prompt)
 
-def process_image(file, question):
-    """Analisa uma imagem e responde a uma pergunta sobre ela."""
-    if not HUGGING_FACE_TOKEN:
-        raise ValueError("Token da Hugging Face (HF_TOKEN) não encontrado.")
+# --- ROTAS DA API ---
 
-    model_name = "Salesforce/blip-vqa-base"
-    api_url = f"{API_BASE_URL}{model_name}"
-    headers = {"Authorization": f"Bearer {HUGGING_FACE_TOKEN}"}
-    
-    # Para VQA, o payload é diferente e não é JSON, então lemos o binário da imagem
-    image_bytes = file.read()
-    
-    payload = {
-        "inputs": {
-            "image": "data:image/jpeg;base64," + requests.utils.quote(image_bytes),
-            "question": question if question.strip() else "O que há nesta imagem? Descreva detalhadamente."
-        }
-    }
-    # Chamada específica para VQA pode precisar de ajustes, mas o princípio é este
-    # Para simplificar e garantir funcionamento, vamos usar a biblioteca apenas para este caso
-    from huggingface_hub import InferenceClient
-    client = InferenceClient(model=model_name, token=HUGGING_FACE_TOKEN)
-    pil_image = Image.open(io.BytesIO(image_bytes))
-    result = client.visual_Youtubeing(image=pil_image, question=payload["inputs"]["question"])
-    return result[0]['answer'] if result else "Não consegui analisar a imagem."
-
-
-# --- ROTA PRINCIPAL ---
 @app.route('/')
 def index():
-    return "Servidor da AEMI (versão leve com 'requests') está no ar."
+    return "Servidor da AEMI (versão leve e corrigida) está no ar."
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -105,14 +79,13 @@ def chat():
             if filename.endswith('.pdf'):
                 bot_response = process_pdf(file, user_message)
             elif filename.endswith(('.png', '.jpg', '.jpeg', '.webp')):
-                # A função de imagem ainda é complexa, vamos simplificá-la por enquanto
-                # bot_response = process_image(file, user_message)
+                # Mantemos a função de imagem desativada por enquanto para garantir estabilidade
                 bot_response = "A função de análise de imagem está em manutenção. Por favor, tente mais tarde."
             else:
                 bot_response = "Tipo de arquivo não suportado."
-        else:
+        else: # Se não houver arquivo, apenas texto
             prompt = f"Você é a AEMI, uma IA especialista em manutenção industrial. Responda: {user_message}"
-            bot_response = process_text_prompt(prompt)
+            bot_response = call_text_model(prompt)
 
         return jsonify({"response": bot_response})
 
@@ -124,4 +97,3 @@ def chat():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
-    
