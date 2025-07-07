@@ -1,4 +1,4 @@
-# app.py - Versão com o novo endpoint da API gratuita
+# app.py - Versão com o TERCEIRO endpoint da API gratuita
 
 import os
 import requests
@@ -9,13 +9,15 @@ app = Flask(__name__)
 CORS(app)
 
 # --- ATUALIZAÇÃO DA API GRATUITA ---
-# Trocamos a URL 'api.vcfun.com' que saiu do ar por uma alternativa da lista.
-FREE_API_URL = "https://api.liaobots.com/v1/chat/completions"
+# Trocamos a URL 'api.liaobots.com' que também estava fora do ar.
+# Terceira tentativa com um novo provedor.
+FREE_API_URL = "https://api.get-req.com/v1/chat/completions"
 
 @app.route('/')
 def index():
-    return "Servidor da AEMI (versão API gratuita - v2) está no ar."
+    return "Servidor da AEMI (versão API gratuita - v3) está no ar."
 
+# ... o resto do código permanece exatamente o mesmo ...
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
@@ -39,9 +41,7 @@ def chat():
         "stream": False
     }
 
-    headers = {
-        "Content-Type": "application/json"
-    }
+    headers = { "Content-Type": "application/json" }
 
     try:
         response = requests.post(FREE_API_URL, headers=headers, json=payload, timeout=30)
