@@ -1,71 +1,81 @@
-# app.py - Versão FINAL com modelo Gemma para máxima compatibilidade
+# app.py - Versão FINAL com rota /wakeup para manter a IA "quente"
 
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from huggingface_hub import InferenceClient
 
-# Inicializa o aplicativo Flask
+# --- CONFIGURAÇÃO INICIAL ---
 app = Flask(__name__)
 CORS(app)
 
-# --- CONFIGURAÇÃO DA API HUGGING FACE ---
-# 1. Pega o token de acesso que colocamos no "cofre" do Render
 HUGGING_FACE_TOKEN = os.getenv("HF_TOKEN")
 client = None
 
-# 2. Verifica se o token foi encontrado e inicializa o cliente
 if not HUGGING_FACE_TOKEN:
     print("ERRO CRÍTICO: A variável de ambiente 'HF_TOKEN' não foi encontrada.")
 else:
     try:
-        # A MUDANÇA FINAL: Usamos o modelo Gemma do Google, que tem excelente suporte
-        # na infraestrutura gratuita da Hugging Face.
-        client = InferenceClient(
-            model="google/gemma-2b-it", # "it" significa "instruction-tuned" (ótimo para chat)
-            token=HUGGING_FACE_TOKEN
-        )
+        # Inicializamos o cliente uma vez para reuso
+        client = InferenceClient(model="google/gemma-2b-it", token=HUGGING_FACE_TOKEN)
         print("Cliente de Inferência da Hugging Face inicializado com SUCESSO usando o modelo Gemma.")
     except Exception as e:
         print(f"ERRO CRÍTICO ao inicializar o cliente de inferência: {e}")
 
+# --- ROTAS DA API ---
+
 @app.route('/')
 def index():
-    return "Servidor da AEMI (versão estável com Gemma) está no ar."
+    return "Servidor da AEMI está no ar."
+
+# ROTA NOVA E ESPECIAL PARA O CRON JOB CHAMAR
+@app.route('/wakeup')
+def wakeup():
+    """
+    Endpoint leve que o cron job vai chamar para manter o modelo de IA aquecido.
+    """
+    if not client:
+        return jsonify({"status": "error", "message": "Cliente de IA não inicializado."}), 500
+    
+    try:
+        # Faz uma chamada muito pequena e rápida, apenas para "acordar" o modelo
+        client.chat_completion(messages=[{"role": "user", "content": "Olá"}], max_tokens=5)
+        print("Ping de 'wakeup' para a IA executado com sucesso.")
+        return jsonify({"status": "ok", "message": "Serviço de IA está aquecido."})
+    except Exception as e:
+        print(f"Erro durante o ping de 'wakeup': {e}")
+        return jsonify({"status": "error", "message": f"Erro ao aquecer o serviço: {str(e)}"}), 500
 
 @app.route('/chat', methods=['POST'])
 def chat():
     if not client:
-        return jsonify({"error": "O serviço de IA não foi inicializado corretamente no servidor. Verifique a variável de ambiente HF_TOKEN."}), 503
+        return jsonify({"error": "O serviço de IA não foi inicializado."}), 503
 
     data = request.get_json()
     user_message = data.get('message')
 
     if not user_message:
-        return jsonify({"error": "Nenhuma mensagem recebida do usuário."}), 400
+        return jsonify({"error": "Nenhuma mensagem recebida."}), 400
 
     try:
-        # Monta a conversa para o modelo de chat
         messages = [
             {"role": "system", "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial, útil e objetiva."},
             {"role": "user", "content": user_message}
         ]
         
-        # O método .chat_completion é o correto para modelos de instrução/chat como o Gemma
         response_generator = client.chat_completion(
-            messages=messages,
-            max_tokens=1500,
-            stream=False,
+            messages=messages, max_tokens=1500, stream=False
         )
         bot_response = response_generator.choices[0].message.content
         return jsonify({"response": bot_response})
         
     except Exception as e:
-        print(f"ERRO ao chamar a API da Hugging Face: {e}")
+        print(f"ERRO GERAL na rota /chat: {e}")
         import traceback
         traceback.print_exc()
-        return jsonify({"error": f"Ocorreu um erro ao comunicar com a API da Hugging Face. O modelo pode estar em 'cold start'. Por favor, tente novamente em um minuto. Detalhes: {str(e)}"}), 500
+        return jsonify({"error": f"Ocorreu um erro inesperado no servidor. Detalhes: {str(e)}"}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
+
