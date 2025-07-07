@@ -1,8 +1,6 @@
-# requirements.txt - Versão final e estável
+# requirements.txt - Versão final para Hugging Face
 
-Flask==2.3.3
-flask-cors==4.0.1
-gunicorn==22.0.0
-huggingface-hub==0.23.1
-pdfplumber==0.11.1
-Pillow==10.3.0
+Flask
+flask-cors
+gunicorn
+huggingface_hub
