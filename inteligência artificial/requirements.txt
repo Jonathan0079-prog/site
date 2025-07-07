@@ -1,6 +1,0 @@
-# requirements.txt
-
-Flask
-python-dotenv
-huggingface-hub
-flask-cors
