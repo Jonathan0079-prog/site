@@ -1,6 +1,6 @@
-# requirements.txt
+# requirements.txt - Versão Atualizada
 
 Flask
-python-dotenv
-huggingface-hub
 flask-cors
+gunicorn
+requests
