@@ -1,67 +1,37 @@
-# app.py - Versão Corrigida para MySQL com SQLAlchemy
+# app.py - Versão com Memória Persistente (TinyDB)
 
 import os
-import json
+import uuid  # Para gerar IDs de usuário únicos
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from huggingface_hub import InferenceClient
-from sqlalchemy import create_engine, Column, Integer, String, Text
-from sqlalchemy.orm import sessionmaker, declarative_base
-from sqlalchemy.exc import OperationalError
+from tinydb import TinyDB, Query
 
 # --- CONFIGURAÇÃO INICIAL ---
 app = Flask(__name__)
 CORS(app)
+
+# Chave secreta para gerenciar sessões do Flask (MUITO IMPORTANTE)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "uma_chave_secreta_muito_segura_e_diferente")
 
-# --- CONFIGURAÇÃO DO BANCO DE DADOS (A PARTE MAIS IMPORTANTE) ---
-
-# 1. Pega a URL do banco de dados que o Render injeta automaticamente
-DATABASE_URL = os.getenv("DATABASE_URL")
-if not DATABASE_URL:
-    raise ValueError("A variável de ambiente DATABASE_URL não foi encontrada. Verifique se o banco de dados está linkado ao serviço no Render.")
-
-# O PyMySQL não é o padrão para o SQLAlchemy, então ajustamos a URL
-if DATABASE_URL.startswith("mysql://"):
-    DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
-
-try:
-    # 2. Cria o "engine" do SQLAlchemy com a CORREÇÃO do timeout
-    engine = create_engine(
-        DATABASE_URL,
-        pool_recycle=3600,  # Recicla conexões a cada hora para evitar o "MySQL has gone away"
-        pool_pre_ping=True  # Verifica se a conexão está viva antes de usar
-    )
-
-    # 3. Define a estrutura da nossa tabela de conversas
-    Base = declarative_base()
-    class Conversation(Base):
-        __tablename__ = 'conversations'
-        id = Column(Integer, primary_key=True)
-        user_id = Column(String(36), unique=True, nullable=False)
-        history = Column(Text, nullable=False) # Armazena o histórico como um texto JSON
-
-    # 4. Cria a tabela no banco de dados, se ela não existir
-    Base.metadata.create_all(engine)
-
-    # 5. Cria a sessão para interagir com o banco de dados
-    Session = sessionmaker(bind=engine)
-    db_session = Session()
-
-except OperationalError as e:
-    # Captura erros de conexão na inicialização para facilitar o debug
-    raise RuntimeError(f"Não foi possível conectar ao banco de dados MySQL. Verifique a DATABASE_URL. Erro: {e}")
-
-
-# --- FUNÇÕES DE PROCESSAMENTO DA IA ---
+# Pega o token de acesso da Hugging Face
 HUGGING_FACE_TOKEN = os.getenv("HF_TOKEN")
 
+# --- CONFIGURAÇÃO DO BANCO DE DADOS ---
+# Inicializa o TinyDB. Ele vai criar e gerenciar um arquivo chamado 'conversations_db.json'
+db = TinyDB('conversations_db.json')
+Conversation = Query()
+
+# --- FUNÇÕES DE PROCESSAMENTO ---
+
 def get_text_client():
+    """Cria e retorna um cliente para o modelo de linguagem de texto."""
     if not HUGGING_FACE_TOKEN:
         raise ValueError("Token da Hugging Face (HF_TOKEN) não encontrado.")
     return InferenceClient(model="meta-llama/Meta-Llama-3-70B-Instruct", token=HUGGING_FACE_TOKEN)
 
 def process_text_with_history(messages):
+    """Processa uma conversa usando o modelo de texto, incluindo o histórico."""
     client = get_text_client()
     response_generator = client.chat_completion(
         messages=messages,
@@ -70,97 +40,92 @@ def process_text_with_history(messages):
     )
     return response_generator.choices[0].message.content
 
-
-# --- ROTAS DA API (Adaptadas para SQLAlchemy) ---
+# --- ROTAS DA API ---
 
 @app.route('/')
 def index():
-    return "Servidor da AEMI (versão com MySQL) está no ar."
+    return "Servidor da AEMI (versão com Memória Persistente) está no ar."
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    db_session = Session() # Pega uma nova sessão do pool
     try:
+        # --- NOVO: Gerenciamento de Usuário e Histórico Persistente ---
+        # 1. Verifica se o usuário já tem um ID na sessão. Se não, cria um.
         if 'user_id' not in session:
-            # Usando a sessão do Flask para gerar um ID único para o navegador do usuário
-            session.permanent = True 
-            session['user_id'] = os.urandom(16).hex()
+            session['user_id'] = str(uuid.uuid4())
             print(f"Novo usuário conectado. ID: {session['user_id']}")
 
         user_id = session['user_id']
         
-        # Procura o histórico de conversa deste usuário no banco de dados
-        user_data = db_session.query(Conversation).filter_by(user_id=user_id).first()
+        # 2. Procura o histórico de conversa deste usuário no banco de dados.
+        user_data = db.get(Conversation.user_id == user_id)
         
         if user_data:
-            current_history = json.loads(user_data.history) # Converte o texto JSON de volta para lista
+            # Se encontrou, carrega o histórico
+            current_history = user_data['history']
         else:
+            # Se não encontrou, é a primeira conversa. Cria o histórico inicial.
             print(f"Criando novo histórico para o usuário {user_id}")
             current_history = [
                 {"role": "system", "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial, direta e objetiva. Responda apenas a perguntas relacionadas a este domínio. Se a pergunta não for sobre manutenção industrial, diga que você só pode ajudar com tópicos relacionados à manutenção industrial."}
             ]
 
+        # --- Lógica de Chat (praticamente a mesma de antes) ---
         user_message = request.form.get('message', '')
         if not user_message.strip():
             return jsonify({"error": "Nenhuma mensagem enviada."}), 400
 
+        # Adiciona a nova mensagem do usuário ao histórico
         current_history.append({"role": "user", "content": user_message})
+
         print(f"Processando mensagem para o usuário {user_id}...")
         
+        # Chama a IA com o histórico carregado
         bot_response = process_text_with_history(current_history)
+        
+        # Adiciona a resposta da AEMI ao histórico
         current_history.append({"role": "assistant", "content": bot_response})
 
-        # Limpeza do histórico
+        # --- NOVO: Limpeza e Persistência do Histórico no DB ---
+        # Limita o tamanho do histórico para evitar custos e lentidão
         if len(current_history) > 20: 
+            # Mantém a mensagem de sistema e as 19 mensagens mais recentes
             system_prompt = current_history[0]
-            recent_history = current_history[-19:]
+            recent_history = current_history[-19:] 
             current_history = [system_prompt] + recent_history
         
-        # Salva (ou atualiza) o registro no banco de dados
-        history_json = json.dumps(current_history) # Converte a lista para texto JSON
-        if user_data:
-            user_data.history = history_json
-        else:
-            new_user_data = Conversation(user_id=user_id, history=history_json)
-            db_session.add(new_user_data)
-        
-        db_session.commit()
-        print(f"Histórico do usuário {user_id} salvo no banco de dados MySQL.")
+        # 3. Salva (ou atualiza) o registro do usuário com a conversa completa no banco de dados.
+        # O 'upsert' é perfeito: ele insere se for novo, ou atualiza se já existir.
+        db.upsert({'user_id': user_id, 'history': current_history}, Conversation.user_id == user_id)
+        print(f"Histórico do usuário {user_id} salvo no banco de dados.")
 
         return jsonify({"response": bot_response})
 
     except Exception as e:
-        db_session.rollback() # Desfaz qualquer mudança no banco em caso de erro
         print(f"ERRO GERAL na rota /chat: {e}")
         import traceback
         traceback.print_exc()
         return jsonify({"error": f"Ocorreu um erro inesperado no servidor. Detalhes: {str(e)}"}), 500
-    finally:
-        db_session.close() # Libera a conexão de volta para o pool
 
 @app.route('/clear-session', methods=['POST'])
 def clear_chat_history():
-    db_session = Session()
-    try:
-        if 'user_id' in session:
-            user_id = session['user_id']
-            # Remove o registro do usuário do banco de dados
-            user_to_delete = db_session.query(Conversation).filter_by(user_id=user_id).first()
-            if user_to_delete:
-                db_session.delete(user_to_delete)
-                db_session.commit()
-                print(f"Histórico do usuário {user_id} removido do banco de dados.")
-                return jsonify({"status": "success", "message": "Histórico limpo."})
-            else:
-                return jsonify({"status": "not_found", "message": "Nenhum histórico para limpar."})
-        
-        return jsonify({"status": "no_session", "message": "Nenhuma sessão ativa para limpar."})
-    except Exception as e:
-        db_session.rollback()
-        print(f"ERRO ao limpar sessão: {e}")
-        return jsonify({"error": "Erro ao limpar histórico."}), 500
-    finally:
-        db_session.close()
+    """
+    NOVO: Rota para limpar o histórico de um usuário específico no banco de dados.
+    """
+    if 'user_id' in session:
+        user_id = session['user_id']
+        # Remove o registro do usuário do banco de dados
+        removed_count = db.remove(Conversation.user_id == user_id)
+        if removed_count > 0:
+            print(f"Histórico do usuário {user_id} removido do banco de dados.")
+            # Opcional: remover o user_id da sessão para forçar a criação de um novo na próxima mensagem
+            # session.pop('user_id', None)
+            return jsonify({"status": "success", "message": "Histórico limpo."})
+        else:
+            return jsonify({"status": "not_found", "message": "Nenhum histórico para limpar."})
+    
+    return jsonify({"status": "no_session", "message": "Nenhuma sessão ativa para limpar."})
+
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
