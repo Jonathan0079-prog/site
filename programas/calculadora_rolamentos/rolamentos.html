@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Furo de Rolamentos</title>
+    <style>
+        /* Este é o tema CSS que você solicitou */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        h1 {
+            color: #00aaff;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 24px); /* Desconta padding */
+            padding: 12px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            font-size: 1.1em;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #00aaff;
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 6px;
+            border: none;
+            background-color: #00aaff;
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        
+        button:hover {
+            background-color: #0088cc;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #resultado {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #2a2a2a;
+            border-radius: 6px;
+            min-height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            border: 1px dashed #444;
+            transition: all 0.3s ease;
+        }
+        
+        .success {
+            color: #4CAF50; /* Verde */
+            border-color: #4CAF50;
+        }
+        
+        .error {
+            color: #F44336; /* Vermelho */
+            border-color: #F44336;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Calculadora de Furo de Rolamentos</h1>
+        <label for="especificacao">Digite a especificação do rolamento:</label>
+        <input type="text" id="especificacao" placeholder="Ex: 6205, 22310, 608, 6001...">
+        <button onclick="calcular()">Calcular Diâmetro do Furo</button>
+        <div id="resultado">
+            Aguardando entrada...
+        </div>
+    </div>
+
+    <script>
+        // Função principal para o cálculo, contida dentro do script da página
+        function calcular() {
+            const especificacaoInput = document.getElementById('especificacao');
+            const resultadoDiv = document.getElementById('resultado');
+            
+            const especificacao = especificacaoInput.value.trim();
+            
+            // Remove as classes de estilização anteriores
+            resultadoDiv.classList.remove('success', 'error');
+
+            // Validação da entrada
+            if (especificacao.length < 2) {
+                resultadoDiv.textContent = 'Erro: Digite uma especificação válida.';
+                resultadoDiv.classList.add('error');
+                return;
+            }
+
+            const codigoFuroStr = especificacao.slice(-2);
+            const codigoFuroInt = parseInt(codigoFuroStr, 10);
+            
+            // Verifica se os 2 últimos dígitos são realmente números
+            if (isNaN(codigoFuroInt)) {
+                resultadoDiv.textContent = 'Erro: Os 2 últimos caracteres devem ser números.';
+                resultadoDiv.classList.add('error');
+                return;
+            }
+
+            let diametro;
+            let mensagem;
+
+            // Uso de switch-case para a lógica, uma alternativa ao if-elif-else
+            switch (codigoFuroInt) {
+                case 0:
+                    diametro = 10;
+                    mensagem = `Furo de ${diametro} mm (código 00)`;
+                    break;
+                case 1:
+                    diametro = 12;
+                    mensagem = `Furo de ${diametro} mm (código 01)`;
+                    break;
+                case 2:
+                    diametro = 15;
+                    mensagem = `Furo de ${diametro} mm (código 02)`;
+                    break;
+                case 3:
+                    diametro = 17;
+                    mensagem = `Furo de ${diametro} mm (código 03)`;
+                    break;
+                default:
+                    if (codigoFuroInt >= 4 && codigoFuroInt <= 96) {
+                        diametro = codigoFuroInt * 5;
+                        mensagem = `Furo de ${diametro} mm (código ${codigoFuroStr})`;
+                    } else {
+                        mensagem = `Código '${codigoFuroStr}' não segue a regra padrão.`;
+                        resultadoDiv.classList.add('error');
+                        resultadoDiv.textContent = mensagem;
+                        return;
+                    }
+            }
+            
+            resultadoDiv.textContent = mensagem;
+            resultadoDiv.classList.add('success');
+        }
+
+        // Adiciona um listener para a tecla "Enter" no campo de input
+        document.getElementById('especificacao').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Impede o comportamento padrão do Enter (como submeter um formulário)
+                calcular();
+            }
+        });
+    </script>
+
+</body>
+</html>
