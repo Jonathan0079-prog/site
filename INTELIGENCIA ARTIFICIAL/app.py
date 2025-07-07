@@ -1,40 +1,40 @@
-# app.py - Versão Otimizada para Chat de Texto com Llama 3 70B Instruct (Hugging Face Direto)
+# app.py - Versão com Memória Persistente (TinyDB)
 
 import os
+import uuid  # Para gerar IDs de usuário únicos
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from huggingface_hub import InferenceClient
+from tinydb import TinyDB, Query
 
 # --- CONFIGURAÇÃO INICIAL ---
 app = Flask(__name__)
 CORS(app)
 
-# Chave secreta para gerenciar sessões do Flask (MUITO IMPORTANTE para produção!)
-# Altere isso para uma string longa e aleatória em um ambiente real.
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "sua_chave_secreta_muito_segura_e_aleatoria_aqui")
+# Chave secreta para gerenciar sessões do Flask (MUITO IMPORTANTE)
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "uma_chave_secreta_muito_segura_e_diferente")
 
 # Pega o token de acesso da Hugging Face
 HUGGING_FACE_TOKEN = os.getenv("HF_TOKEN")
 
+# --- CONFIGURAÇÃO DO BANCO DE DADOS ---
+# Inicializa o TinyDB. Ele vai criar e gerenciar um arquivo chamado 'conversations_db.json'
+db = TinyDB('conversations_db.json')
+Conversation = Query()
+
 # --- FUNÇÕES DE PROCESSAMENTO ---
 
 def get_text_client():
-    """Cria e retorna um cliente para o modelo de linguagem de texto (Llama 3 70B Instruct via HF Direto)."""
+    """Cria e retorna um cliente para o modelo de linguagem de texto."""
     if not HUGGING_FACE_TOKEN:
         raise ValueError("Token da Hugging Face (HF_TOKEN) não encontrado.")
-    # MODELO ALTERADO AQUI PARA O Llama 3 70B Instruct
     return InferenceClient(model="meta-llama/Meta-Llama-3-70B-Instruct", token=HUGGING_FACE_TOKEN)
 
 def process_text_with_history(messages):
-    """
-    Processa uma conversa usando o modelo de texto, incluindo o histórico.
-    'messages' deve ser uma lista de dicionários no formato [{"role": "user", "content": "..."}]
-    ou [{"role": "assistant", "content": "..."}].
-    """
+    """Processa uma conversa usando o modelo de texto, incluindo o histórico."""
     client = get_text_client()
-    # Usa o método chat_completion, que é o padrão para modelos instruct na Hugging Face Inference API
     response_generator = client.chat_completion(
-        messages=messages, # Passa o histórico completo de mensagens
+        messages=messages,
         max_tokens=1500,
         stream=False
     )
@@ -44,47 +44,60 @@ def process_text_with_history(messages):
 
 @app.route('/')
 def index():
-    return "Servidor da AEMI (versão Otimizada para Chat de Texto com Llama 3 70B Instruct) está no ar."
+    return "Servidor da AEMI (versão com Memória Persistente) está no ar."
 
 @app.route('/chat', methods=['POST'])
 def chat():
     try:
-        user_message = request.form.get('message', '')
+        # --- NOVO: Gerenciamento de Usuário e Histórico Persistente ---
+        # 1. Verifica se o usuário já tem um ID na sessão. Se não, cria um.
+        if 'user_id' not in session:
+            session['user_id'] = str(uuid.uuid4())
+            print(f"Novo usuário conectado. ID: {session['user_id']}")
 
+        user_id = session['user_id']
+        
+        # 2. Procura o histórico de conversa deste usuário no banco de dados.
+        user_data = db.get(Conversation.user_id == user_id)
+        
+        if user_data:
+            # Se encontrou, carrega o histórico
+            current_history = user_data['history']
+        else:
+            # Se não encontrou, é a primeira conversa. Cria o histórico inicial.
+            print(f"Criando novo histórico para o usuário {user_id}")
+            current_history = [
+                {"role": "system", "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial, direta e objetiva. Responda apenas a perguntas relacionadas a este domínio. Se a pergunta não for sobre manutenção industrial, diga que você só pode ajudar com tópicos relacionados à manutenção industrial."}
+            ]
+
+        # --- Lógica de Chat (praticamente a mesma de antes) ---
+        user_message = request.form.get('message', '')
         if not user_message.strip():
             return jsonify({"error": "Nenhuma mensagem enviada."}), 400
-
-        bot_response = ""
-
-        # --- Gerenciamento do Histórico de Conversa ---
-        if 'conversation_history' not in session:
-            session['conversation_history'] = []
-            # Adiciona a instrução inicial para o modelo (persona da AEMI)
-            session['conversation_history'].append({"role": "system", "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial, direta e objetiva. Responda apenas a perguntas relacionadas a este domínio. Se a pergunta não for sobre manutenção industrial, diga que você só pode ajudar com tópicos relacionados à manutenção industrial."})
-            
-        current_history = session['conversation_history']
 
         # Adiciona a nova mensagem do usuário ao histórico
         current_history.append({"role": "user", "content": user_message})
 
-        print("Processando uma mensagem de texto com histórico...")
+        print(f"Processando mensagem para o usuário {user_id}...")
         
-        # Chama a função que processa o texto com o histórico completo
+        # Chama a IA com o histórico carregado
         bot_response = process_text_with_history(current_history)
         
         # Adiciona a resposta da AEMI ao histórico
         current_history.append({"role": "assistant", "content": bot_response})
 
-        # --- Limpeza e Persistência do Histórico ---
-        # Limita o tamanho do histórico para evitar estouro de token e uso excessivo de memória.
-        # O Llama 3 70B tem uma janela de contexto de 8k tokens. 20 mensagens (10 pares) é um bom ponto de partida.
-        # Você pode ajustar o '20' se quiser mais ou menos contexto, mas esteja ciente do impacto no custo/latência.
+        # --- NOVO: Limpeza e Persistência do Histórico no DB ---
+        # Limita o tamanho do histórico para evitar custos e lentidão
         if len(current_history) > 20: 
+            # Mantém a mensagem de sistema e as 19 mensagens mais recentes
             system_prompt = current_history[0]
             recent_history = current_history[-19:] 
-            session['conversation_history'] = [system_prompt] + recent_history
-        else:
-            session['conversation_history'] = current_history 
+            current_history = [system_prompt] + recent_history
+        
+        # 3. Salva (ou atualiza) o registro do usuário com a conversa completa no banco de dados.
+        # O 'upsert' é perfeito: ele insere se for novo, ou atualiza se já existir.
+        db.upsert({'user_id': user_id, 'history': current_history}, Conversation.user_id == user_id)
+        print(f"Histórico do usuário {user_id} salvo no banco de dados.")
 
         return jsonify({"response": bot_response})
 
@@ -93,6 +106,26 @@ def chat():
         import traceback
         traceback.print_exc()
         return jsonify({"error": f"Ocorreu um erro inesperado no servidor. Detalhes: {str(e)}"}), 500
+
+@app.route('/clear-session', methods=['POST'])
+def clear_chat_history():
+    """
+    NOVO: Rota para limpar o histórico de um usuário específico no banco de dados.
+    """
+    if 'user_id' in session:
+        user_id = session['user_id']
+        # Remove o registro do usuário do banco de dados
+        removed_count = db.remove(Conversation.user_id == user_id)
+        if removed_count > 0:
+            print(f"Histórico do usuário {user_id} removido do banco de dados.")
+            # Opcional: remover o user_id da sessão para forçar a criação de um novo na próxima mensagem
+            # session.pop('user_id', None)
+            return jsonify({"status": "success", "message": "Histórico limpo."})
+        else:
+            return jsonify({"status": "not_found", "message": "Nenhum histórico para limpar."})
+    
+    return jsonify({"status": "no_session", "message": "Nenhuma sessão ativa para limpar."})
+
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
