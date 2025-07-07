@@ -1,10 +1,8 @@
-# requirements.txt - Versão final com versões travadas para estabilidade
+# requirements.txt - Versão leve com 'requests'
 
 Flask==2.3.3
 flask-cors==4.0.1
 gunicorn==22.0.0
-huggingface-hub==0.23.1
 pdfplumber==0.11.1
 Pillow==10.3.0
-httpx==0.27.0
-httpcore>=1.0.0,<2.0.0
+requests==2.31.0
