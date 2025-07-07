@@ -9,14 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultDisplay = document.getElementById('result-display');
     const copyBtn = document.getElementById('copy-btn');
     const themeToggle = document.getElementById('theme-toggle-checkbox');
-    let rolamentosDB = [];
+    let rolamentosDB = []; // Variável para armazenar os dados do JSON
 
     // --- 2. CARREGAMENTO DE DADOS E TEMA ---
     async function loadData() {
         try {
-            const response = await fetch('rolamentos.json');
+            const response = await fetch('rolamentos.json'); // Busca o arquivo JSON
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            rolamentosDB = await response.json();
+            rolamentosDB = await response.json(); // Carrega os dados para a variável rolamentosDB
         } catch (error) {
             console.error("Falha fatal ao carregar o banco de dados de rolamentos:", error);
             displayMessage('Erro crítico: Não foi possível carregar a base de dados. Verifique o console para mais detalhes.', 'error');
@@ -80,6 +80,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 4. FUNÇÕES PRINCIPAIS DE LÓGICA ---
+
+    // Nova função para calcular o furo baseada na especificação (lógica do Python)
+    function calcularFuroRolamentoPorRegra(especificacao) {
+        if (typeof especificacao !== 'string' || especificacao.length < 2) {
+            return { error: `Erro: A especificação do rolamento deve ser um texto com pelo menos 2 caracteres.`, type: 'error' };
+        }
+
+        try {
+            const codigoFuroStr = especificacao.slice(-2);
+            const codigoFuroInt = parseInt(codigoFuroStr, 10);
+
+            if (isNaN(codigoFuroInt)) {
+                return { error: `Erro: Os dois últimos caracteres da especificação ('${codigoFuroStr}') devem ser numéricos.`, type: 'error' };
+            }
+
+            let diametro;
+            let mensagem;
+            let tipo = 'success';
+
+            if (codigoFuroInt === 0) {
+                diametro = 10;
+                mensagem = `Furo de ${diametro} mm (código 00).`;
+            } else if (codigoFuroInt === 1) {
+                diametro = 12;
+                mensagem = `Furo de ${diametro} mm (código 01).`;
+            } else if (codigoFuroInt === 2) {
+                diametro = 15;
+                mensagem = `Furo de ${diametro} mm (código 02).`;
+            } else if (codigoFuroInt === 3) {
+                diametro = 17;
+                mensagem = `Furo de ${diametro} mm (código 03).`;
+            } else if (codigoFuroInt >= 4 && codigoFuroInt <= 96) {
+                diametro = codigoFuroInt * 5;
+                mensagem = `Furo de ${diametro} mm (código ${codigoFuroStr}).`;
+            } else {
+                mensagem = `Código '${codigoFuroStr}' não segue a regra padrão de multiplicação. Verifique o catálogo do fabricante.`;
+                tipo = 'warning';
+                diametro = null; // Indica que não foi possível calcular o diâmetro exato
+            }
+            return { success: `Rolamento '${especificacao}': ${mensagem}`, diameter: diametro, type: tipo };
+
+        } catch (e) {
+            return { error: `Ocorreu um erro inesperado no cálculo: ${e.message}`, type: 'error' };
+        }
+    }
+
     async function handleDirectSearch() {
         toggleLoading(calculateBtn, true, '<i class="fa-solid fa-spinner fa-spin"></i> Consultando...');
         const spec = specInput.value.trim().toUpperCase();
@@ -90,12 +136,26 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // 1. Tenta encontrar o rolamento na base de dados (JSON)
         const bearingData = rolamentosDB.find(b => b.designacao === spec);
 
         if (bearingData) {
+            // Se encontrou no JSON, exibe os detalhes completos
             displayBearingDetails(bearingData);
         } else {
-            displayMessage(`Rolamento '${spec}' não encontrado na base de dados.`, 'warning', 'Verificar Catálogo');
+            // Se não encontrou no JSON, tenta calcular o furo pela regra
+            const calculationResult = calcularFuroRolamentoPorRegra(spec);
+
+            if (calculationResult.success) {
+                // Se o cálculo pela regra foi bem-sucedido, exibe o resultado do cálculo
+                displayMessage(`Rolamento '${spec}': ${calculationResult.success}`, calculationResult.type, calculationResult.diameter ? `${calculationResult.diameter} mm` : 'Não Calculado');
+            } else if (calculationResult.error) {
+                // Se houve um erro no cálculo pela regra
+                displayMessage(calculationResult.error, calculationResult.type);
+            } else {
+                // Se a regra não aplicou ou deu uma mensagem de aviso
+                displayMessage(`Rolamento '${spec}': ${calculationResult.message || 'Não encontrado na base de dados e não segue regra padrão.'}`, calculationResult.type, 'Verificar Catálogo');
+            }
         }
         toggleLoading(calculateBtn, false, '<i class="fa-solid fa-calculator"></i> Consultar');
     }
@@ -110,12 +170,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Filtra os rolamentos no banco de dados carregado do JSON pelo diâmetro do furo
         const results = rolamentosDB.filter(b => b.d === boreSize);
 
         if (results.length > 0) {
             displayReverseSearchResults(results, boreSize);
         } else {
-            displayMessage(`Nenhum rolamento encontrado com furo de ${boreSize} mm.`, 'warning');
+            displayMessage(`Nenhum rolamento encontrado com furo de ${boreSize} mm na base de dados.`, 'warning');
         }
         toggleLoading(searchByBoreBtn, false, '<i class="fa-solid fa-search"></i> Procurar');
     }
@@ -125,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         specInput.value = '';
         boreSearchInput.value = '';
         displayMessage('Aguardando consulta...', '');
+        copyBtn.style.display = 'none'; // Garante que o botão copiar seja ocultado ao limpar
         specInput.focus();
     }
 
@@ -165,6 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- INICIALIZAÇÃO ---
-    loadData();
+    loadData(); // Carrega os dados do JSON quando a página é carregada
     loadTheme();
 });
