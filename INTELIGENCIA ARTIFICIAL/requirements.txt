@@ -1,6 +1,6 @@
-# requirements.txt - Versão Atualizada
+# requirements.txt - Versão para a API oficial da Hugging Face
 
 Flask
 flask-cors
 gunicorn
-requests
+huggingface_hub
