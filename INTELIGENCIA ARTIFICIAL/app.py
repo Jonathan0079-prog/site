@@ -1,68 +1,65 @@
-# app.py
+# app.py - Versão FINAL e OTIMIZADA para funcionar no Render gratuito
 
 import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from huggingface_hub import InferenceClient
-from dotenv import load_dotenv
 
-# Carrega as variáveis de ambiente do arquivo .env (bom para teste local)
-load_dotenv()
-
+# Inicializa o aplicativo Flask
 app = Flask(__name__)
+CORS(app)
 
-# Pega a chave da API da variável de ambiente. 
-# Usaremos o nome 'NOVITA_HF_TOKEN' para ser mais específico.
-API_KEY = os.getenv("NOVITA_HF_TOKEN")
+# --- CONFIGURAÇÃO DA API HUGGING FACE COM TOKEN E MODELO LEVE ---
+# 1. Pega o token de acesso que colocamos no "cofre" do Render
+HUGGING_FACE_TOKEN = os.getenv("HF_TOKEN")
+client = None
 
-# Verifica se a chave foi configurada
-if not API_KEY:
-    raise ValueError("A chave da API 'NOVITA_HF_TOKEN' não foi encontrada nas variáveis de ambiente.")
+# 2. Verifica se o token foi encontrado e inicializa o cliente
+if not HUGGING_FACE_TOKEN:
+    print("ERRO CRÍTICO: A variável de ambiente 'HF_TOKEN' não foi encontrada.")
+else:
+    try:
+        # A MUDANÇA CRUCIAL: Usamos um modelo muito mais leve para não estourar a memória do Render
+        client = InferenceClient(
+            model="microsoft/Phi-3-mini-4k-instruct", 
+            token=HUGGING_FACE_TOKEN
+        )
+        print("Cliente de Inferência da Hugging Face inicializado com SUCESSO usando o modelo Phi-3-mini.")
+    except Exception as e:
+        print(f"ERRO CRÍTICO ao inicializar o cliente de inferência: {e}")
 
-# Inicializa o cliente da API
-# Note que passamos a chave diretamente aqui, em vez de depender da variável global do Hugging Face.
-client = InferenceClient(
-    provider="novita",
-    api_key=API_KEY,
-)
+@app.route('/')
+def index():
+    return "Servidor da AEMI (versão estável com Phi-3-mini) está no ar."
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    # Pega a mensagem do usuário que veio do front-end
+    if not client:
+        return jsonify({"error": "O serviço de IA não foi inicializado corretamente no servidor. Verifique a variável de ambiente HF_TOKEN."}), 503
+
     data = request.get_json()
     user_message = data.get('message')
 
     if not user_message:
-        return jsonify({"error": "Nenhuma mensagem recebida."}), 400
+        return jsonify({"error": "Nenhuma mensagem recebida do usuário."}), 400
 
     try:
-        # Monta a requisição para a API
-        completion = client.chat.completions.create(
-            # Você pode mudar o modelo aqui se desejar
-            model="meta-llama/Llama-3.2-3B-Instruct", 
+        # A estrutura da chamada é a mesma, pois o modelo é compatível
+        response_generator = client.chat_completion(
             messages=[
-                {
-                    "role": "user",
-                    "content": user_message
-                }
+                {"role": "system", "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial, direta e objetiva."},
+                {"role": "user", "content": user_message}
             ],
-            # Parâmetros opcionais para controlar a geração
-            max_tokens=500,
-            temperature=0.7,
+            max_tokens=1024,
+            stream=False,
         )
-
-        # Extrai a resposta da IA
-        bot_response = completion.choices[0].message.content
-
-        # Retorna a resposta para o front-end
+        bot_response = response_generator.choices[0].message.content
         return jsonify({"response": bot_response})
-
+        
     except Exception as e:
-        # Em caso de erro na API, retorna uma mensagem clara
-        print(f"Erro ao chamar a API: {e}")
-        return jsonify({"error": "Desculpe, ocorreu um erro ao me comunicar com a IA."}), 500
+        print(f"ERRO ao chamar a API da Hugging Face: {e}")
+        return jsonify({"error": f"Ocorreu um erro ao comunicar com a API da Hugging Face. O modelo pode estar em 'cold start'. Por favor, tente novamente em um minuto. Detalhes: {e}"}), 500
 
 if __name__ == '__main__':
-    # Usa a porta definida pelo Render ou 5000 para teste local
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
-
