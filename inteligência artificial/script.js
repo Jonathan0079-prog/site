@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // IMPORTANTE: Substitua esta URL pela URL do seu back-end no Render.com
     // Você obterá essa URL depois de criar o serviço no Render.
     // Exemplo: "https://seu-app-aemi.onrender.com"
-    const BACKEND_URL = "https://seu-app-aemi.onrender.com"; // <-- MUDE AQUI QUANDO TIVER A URL
+    const BACKEND_URL = "https://aemi.onrender.com"; // <-- MUDE AQUI QUANDO TIVER A URL
 
     let userMessage;
 
