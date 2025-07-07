@@ -5,12 +5,56 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatbox = document.querySelector(".chatbox");
     const chatList = document.querySelector("#chat-list");
     const newChatBtn = document.querySelector("#new-chat-btn");
+    
+    // NOVOS seletores para o menu responsivo
+    const sidebar = document.getElementById("sidebar");
+    const menuToggleBtn = document.getElementById("menu-toggle-btn");
+    const backdrop = document.getElementById("backdrop");
 
     // --- Constantes e Variáveis de Estado ---
     const API_BASE_URL = "https://aemi.onrender.com"; // Altere se o seu URL for diferente
     let userMessage = null;
     let currentConversationId = null;
 
+    // --- LÓGICA DO MENU LATERAL RESPONSIVO ---
+    const toggleSidebar = () => {
+        sidebar.classList.toggle("visible");
+        backdrop.classList.toggle("visible");
+    };
+
+    menuToggleBtn.addEventListener("click", toggleSidebar);
+    backdrop.addEventListener("click", toggleSidebar);
+
+    // Detecção de Gesto de Deslizar (Swipe) para Celular
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.body.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    document.body.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipeGesture();
+    }, { passive: true });
+
+    function handleSwipeGesture() {
+        // Deslizar da esquerda para a direita para ABRIR
+        if (touchEndX > touchStartX && (touchEndX - touchStartX > 75)) {
+            if (!sidebar.classList.contains("visible")) {
+                toggleSidebar();
+            }
+        }
+        // Deslizar da direita para a esquerda para FECHAR
+        if (touchStartX > touchEndX && (touchStartX - touchEndX > 75)) {
+            if (sidebar.classList.contains("visible")) {
+                toggleSidebar();
+            }
+        }
+    }
+
+
+    // --- LÓGICA DO CHAT (funções já existentes) ---
     const createChatLi = (message, className) => {
         const chatLi = document.createElement("li");
         chatLi.classList.add("chat", className);
@@ -23,13 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const showTypingAnimation = () => {
-        const html = `
-            <li class="chat incoming">
-                <span class="material-symbols-outlined">smart_toy</span>
-                <div class="typing-animation">
-                    <span></span><span></span><span></span>
-                </div>
-            </li>`;
+        const html = `<li class="chat incoming"><span class="material-symbols-outlined">smart_toy</span><div class="typing-animation"><span></span><span></span><span></span></div></li>`;
         chatbox.insertAdjacentHTML("beforeend", html);
         chatbox.scrollTo(0, chatbox.scrollHeight);
         return chatbox.lastChild;
@@ -52,30 +90,26 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`${API_BASE_URL}/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    message: userMessage,
-                    conversation_id: currentConversationId
-                })
+                body: JSON.stringify({ message: userMessage, conversation_id: currentConversationId })
             });
 
-            if (!response.ok) {
-                throw new Error("A requisição falhou.");
-            }
-
+            if (!response.ok) throw new Error("A requisição falhou.");
             const data = await response.json();
             
             typingLi.remove();
             chatbox.appendChild(createChatLi(data.response, "incoming"));
 
-            // Se for uma nova conversa, atualiza a lista de chats
-            if (data.is_new_conversation || !currentConversationId) {
+            if (!currentConversationId && data.conversation_id) { // Se era uma conversa nova
                 currentConversationId = data.conversation_id;
-                await loadChatList();
+                const li = document.createElement("li");
+                li.dataset.id = data.conversation_id;
+                li.textContent = data.title;
+                li.addEventListener("click", () => loadConversation(data.conversation_id));
+                chatList.prepend(li); // Adiciona no topo da lista
             }
             updateActiveChatItem(currentConversationId);
 
         } catch (error) {
-            console.error("Erro ao enviar mensagem:", error);
             const errorLi = createChatLi("Oops! Algo deu errado. Tente novamente.", "incoming");
             errorLi.querySelector("p").classList.add("error");
             typingLi.replaceWith(errorLi);
@@ -91,8 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) throw new Error("Falha ao buscar conversas.");
             const conversations = await response.json();
 
-            chatList.innerHTML = ""; // Limpa a lista antiga
-            conversations.forEach(convo => {
+            chatList.innerHTML = "";
+            conversations.reverse().forEach(convo => { // Inverte para mostrar as mais novas primeiro
                 const li = document.createElement("li");
                 li.dataset.id = convo.id;
                 li.textContent = convo.title;
@@ -100,9 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 chatList.appendChild(li);
             });
             updateActiveChatItem(currentConversationId);
-        } catch (error) {
-            console.error("Erro ao carregar lista de chats:", error);
-        }
+        } catch (error) { console.error("Erro ao carregar lista de chats:", error); }
     };
 
     const loadConversation = async (conversationId) => {
@@ -111,55 +143,37 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) throw new Error("Falha ao carregar conversa.");
             const data = await response.json();
 
-            chatbox.innerHTML = ""; // Limpa o chatbox
+            chatbox.innerHTML = "";
             data.history.forEach(message => {
-                if (message.role === "user") {
-                    chatbox.appendChild(createChatLi(message.content, "outgoing"));
-                } else if (message.role === "assistant") {
-                    chatbox.appendChild(createChatLi(message.content, "incoming"));
-                }
+                if (message.role === "user") chatbox.appendChild(createChatLi(message.content, "outgoing"));
+                else if (message.role === "assistant") chatbox.appendChild(createChatLi(message.content, "incoming"));
             });
             currentConversationId = conversationId;
             updateActiveChatItem(conversationId);
             chatbox.scrollTo(0, chatbox.scrollHeight);
-        } catch (error) {
-            console.error("Erro ao carregar histórico:", error);
-        }
+            if (window.innerWidth < 768) toggleSidebar(); // Fecha o menu no celular após selecionar
+        } catch (error) { console.error("Erro ao carregar histórico:", error); }
     };
 
     const startNewChat = () => {
         currentConversationId = null;
-        chatbox.innerHTML = `
-            <li class="chat incoming">
-                <span class="material-symbols-outlined">smart_toy</span>
-                <p>Olá! Como posso te ajudar hoje?</p>
-            </li>`;
+        chatbox.innerHTML = `<li class="chat incoming"><span class="material-symbols-outlined">smart_toy</span><p>Olá! Como posso te ajudar hoje?</p></li>`;
         updateActiveChatItem(null);
+        if (window.innerWidth < 768) toggleSidebar(); // Fecha o menu no celular
     };
 
     const updateActiveChatItem = (activeId) => {
         const items = chatList.querySelectorAll("li");
         items.forEach(item => {
-            if (item.dataset.id === activeId) {
-                item.classList.add("active");
-            } else {
-                item.classList.remove("active");
-            }
+            if (item.dataset.id === activeId) item.classList.add("active");
+            else item.classList.remove("active");
         });
     };
 
-
     // --- Event Listeners ---
     sendChatBtn.addEventListener("click", handleOutgoingChat);
-    chatInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleOutgoingChat();
-        }
-    });
-    chatInput.addEventListener("input", () => {
-        sendChatBtn.style.visibility = chatInput.value.trim() ? 'visible' : 'hidden';
-    });
+    chatInput.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleOutgoingChat(); } });
+    chatInput.addEventListener("input", () => { sendChatBtn.style.visibility = chatInput.value.trim() ? 'visible' : 'hidden'; });
     newChatBtn.addEventListener("click", startNewChat);
 
     // Carrega a lista de chats ao iniciar a página
