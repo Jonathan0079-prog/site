@@ -1,42 +1,35 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF--8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AEMI - Assistente Industrial</title>
     <link rel="stylesheet" href="style.css">
+    <!-- O link para o Material Icons já está presente, o que é ótimo. -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
-    <div class="main-container">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h1>AEMI</h1>
-                <button id="new-chat-btn" class="sidebar-new-chat">
-                    <span class="material-symbols-outlined">add_comment</span>
-                    Nova Conversa
-                </button>
-            </div>
-            <ul id="chat-list" class="sidebar-chat-list">
-                </ul>
-        </aside>
-
-        <main class="chat-container">
-            <header class="chat-header">
-                <h2>Assistente Industrial</h2>
+    <div class="chatbot-container">
+        <div class="chatbot">
+            <header>
+                <h2>AEMI - Assistente Industrial</h2>
+                <!-- MELHORIA: Adicionando um botão para limpar o chat -->
+                <span id="clear-btn" class="material-icons">delete_sweep</span>
             </header>
             <ul class="chatbox">
                 <li class="chat incoming">
                     <span class="material-symbols-outlined">smart_toy</span>
-                    <p>Olá. Sou AEMI, sua assistente de IA para Manutenção Industrial. Inicie uma nova conversa ou selecione uma existente no menu.</p>
+                    <p>Olá. Sou AEMI, uma IA da Manutenção Industrial. Envie uma mensagem para começarmos.</p>
                 </li>
             </ul>
             <div class="chat-input">
-                <textarea placeholder="Digite uma mensagem..." required></textarea>
-                <span id="send-btn" class="material-symbols-outlined">send</span>
+                <textarea placeholder="Digite uma mensagem..." spellcheck="false" required></textarea>
+                <span id="send-btn" class="material-icons">send</span>
             </div>
-        </main>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
