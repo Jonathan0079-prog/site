@@ -57,13 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Sempre consulte o catálogo do fabricante para obter as informações mais atualizadas."
             ]
         }
-        // ADICIONE NOVOS MANCAIS AQUI SEGUINDO A MESMA ESTRUTURA
     };
 
     // Seleciona os elementos do HTML com os quais vamos interagir
     const searchForm = document.getElementById('search-form');
     const searchInput = document.getElementById('search-input');
     const resultsContainer = document.getElementById('results-container');
+    const yearSpan = document.getElementById('current-year'); // <<< NOVO
+
+    // *** INÍCIO DA NOVA LÓGICA ***
+    // Define o ano atual no rodapé automaticamente
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+    // *** FIM DA NOVA LÓGICA ***
 
     // Função para exibir a lista inicial de mancais disponíveis
     function displayAvailableMancais() {
@@ -82,50 +89,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Função que gera o HTML para exibir os dados de um mancal
     function displayMancalData(mancal) {
-        // Gera as linhas da tabela de dimensões
         const dimensoesRows = Object.entries(mancal.dimensoes)
             .map(([chave, valor]) => `<tr><td>${chave}</td><td>${valor}</td></tr>`)
             .join('');
 
-        // Gera as linhas da tabela de rolamentos
         const rolamentosRows = mancal.rolamentos_compativeis
             .map(r => `<tr><td>${r.rolamento}</td><td>${r.bucha}</td><td>${r.anel_fixacao}</td><td>${r.obs}</td></tr>`)
             .join('');
 
-        // Gera as linhas da tabela de vedações
         const vedacoesRows = mancal.vedacoes_compativeis
             .map(v => `<tr><td>${v.designacao}</td><td>${v.tipo}</td><td>${v.aplicacao}</td></tr>`)
             .join('');
         
-        // Gera a lista de notas técnicas
         const notasList = mancal.notas_tecnicas
             .map(nota => `<li>${nota}</li>`)
             .join('');
 
-        // Monta o HTML final com todos os dados
         resultsContainer.innerHTML = `
             <div class="mancal-info">
                 <h2 class="section-title">${mancal.designacao_completa}</h2>
                 <p>${mancal.descricao}</p>
-
                 <h3 class="section-title">Especificações Dimensionais</h3>
-                <table>
-                    <thead><tr><th>Parâmetro</th><th>Valor</th></tr></thead>
-                    <tbody>${dimensoesRows}</tbody>
-                </table>
-
+                <table><thead><tr><th>Parâmetro</th><th>Valor</th></tr></thead><tbody>${dimensoesRows}</tbody></table>
                 <h3 class="section-title">Tabela de Rolamentos Compatíveis</h3>
-                <table>
-                    <thead><tr><th>Rolamento</th><th>Bucha</th><th>Anel Fixação</th><th>Observação</th></tr></thead>
-                    <tbody>${rolamentosRows}</tbody>
-                </table>
-
+                <table><thead><tr><th>Rolamento</th><th>Bucha</th><th>Anel Fixação</th><th>Observação</th></tr></thead><tbody>${rolamentosRows}</tbody></table>
                 <h3 class="section-title">Tabela de Vedações Compatíveis</h3>
-                <table>
-                    <thead><tr><th>Designação</th><th>Tipo</th><th>Aplicação</th></tr></thead>
-                    <tbody>${vedacoesRows}</tbody>
-                </table>
-                
+                <table><thead><tr><th>Designação</th><th>Tipo</th><th>Aplicação</th></tr></thead><tbody>${vedacoesRows}</tbody></table>
                 <h3 class="section-title">Notas Técnicas</h3>
                 <ul>${notasList}</ul>
             </div>
@@ -143,21 +132,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adiciona um "escutador" ao formulário para o evento de "submit" (envio)
     searchForm.addEventListener('submit', (event) => {
-        // Previne o comportamento padrão do formulário, que é recarregar a página
         event.preventDefault(); 
-        
-        // Pega o valor digitado, remove espaços e converte para maiúsculas
         const searchTerm = searchInput.value.trim().toUpperCase();
 
         if (searchTerm) {
-            // Verifica se o termo pesquisado existe como uma chave na nossa base de dados
             if (DB_MANCAIS[searchTerm]) {
                 displayMancalData(DB_MANCAIS[searchTerm]);
             } else {
                 displayError(searchTerm);
             }
         } else {
-            // Se o usuário clicar em buscar sem digitar nada, mostra a lista inicial
             displayAvailableMancais();
         }
     });
