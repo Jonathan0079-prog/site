@@ -1,79 +1,152 @@
 [
     {
-        "designacao": "608",
-        "d": 8,
-        "D": 22,
-        "B": 7,
-        "tipo": "Rígido de Esferas"
+        "designacao": "607", "d": 7, "D": 19, "B": 6, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "6000",
-        "d": 10,
-        "D": 26,
-        "B": 8,
-        "tipo": "Rígido de Esferas"
+        "designacao": "608", "d": 8, "D": 22, "B": 7, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "6001",
-        "d": 12,
-        "D": 28,
-        "B": 8,
-        "tipo": "Rígido de Esferas"
+        "designacao": "609", "d": 9, "D": 24, "B": 7, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "6203",
-        "d": 17,
-        "D": 40,
-        "B": 12,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6000", "d": 10, "D": 26, "B": 8, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "6204",
-        "d": 20,
-        "D": 47,
-        "B": 14,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6001", "d": 12, "D": 28, "B": 8, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "6205",
-        "d": 25,
-        "D": 52,
-        "B": 15,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6002", "d": 15, "D": 32, "B": 9, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "6305",
-        "d": 25,
-        "D": 62,
-        "B": 17,
-        "tipo": "Rígido de Esferas"
+        "designacao": "6003", "d": 17, "D": 35, "B": 10, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "22208",
-        "d": 40,
-        "D": 80,
-        "B": 23,
-        "tipo": "Autocompensador de Rolos"
+        "designacao": "6004", "d": 20, "D": 42, "B": 12, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "22210",
-        "d": 50,
-        "D": 90,
-        "B": 23,
-        "tipo": "Autocompensador de Rolos"
+        "designacao": "6005", "d": 25, "D": 47, "B": 12, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "30204",
-        "d": 20,
-        "D": 47,
-        "T": 15.25,
-        "tipo": "Rolo Cônico"
+        "designacao": "6200", "d": 10, "D": 30, "B": 9, "tipo": "Rígido de Esferas"
     },
     {
-        "designacao": "30205",
-        "d": 25,
-        "D": 52,
-        "T": 16.25,
-        "tipo": "Rolo Cônico"
+        "designacao": "6201", "d": 12, "D": 32, "B": 10, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6202", "d": 15, "D": 35, "B": 11, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6203", "d": 17, "D": 40, "B": 12, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6204", "d": 20, "D": 47, "B": 14, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6205", "d": 25, "D": 52, "B": 15, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6206", "d": 30, "D": 62, "B": 16, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6301", "d": 12, "D": 37, "B": 12, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6302", "d": 15, "D": 42, "B": 13, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6303", "d": 17, "D": 47, "B": 14, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6304", "d": 20, "D": 52, "B": 15, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6305", "d": 25, "D": 62, "B": 17, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6306", "d": 30, "D": 72, "B": 19, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6307", "d": 35, "D": 80, "B": 21, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6308", "d": 40, "D": 90, "B": 23, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "7205", "d": 25, "D": 52, "B": 15, "tipo": "Contato Angular de Esferas"
+    },
+    {
+        "designacao": "7305", "d": 25, "D": 62, "B": 17, "tipo": "Contato Angular de Esferas"
+    },
+    {
+        "designacao": "1205", "d": 25, "D": 52, "B": 15, "tipo": "Autocompensador de Esferas"
+    },
+    {
+        "designacao": "1206", "d": 30, "D": 62, "B": 16, "tipo": "Autocompensador de Esferas"
+    },
+    {
+        "designacao": "2205", "d": 25, "D": 52, "B": 18, "tipo": "Autocompensador de Esferas"
+    },
+    {
+        "designacao": "NU204", "d": 20, "D": 47, "B": 14, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "NU205", "d": 25, "D": 52, "B": 15, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "NU305", "d": 25, "D": 62, "B": 17, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "NU306", "d": 30, "D": 72, "B": 19, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "22208", "d": 40, "D": 80, "B": 23, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "22210", "d": 50, "D": 90, "B": 23, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "22211", "d": 55, "D": 100, "B": 25, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "22212", "d": 60, "D": 110, "B": 28, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "22308", "d": 40, "D": 90, "B": 33, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "22310", "d": 50, "D": 110, "B": 40, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "30203", "d": 17, "D": 40, "T": 13.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "30204", "d": 20, "D": 47, "T": 15.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "30205", "d": 25, "D": 52, "T": 16.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "30206", "d": 30, "D": 62, "T": 17.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "32205", "d": 25, "D": 52, "T": 19.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "32206", "d": 30, "D": 62, "T": 21.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "32305", "d": 25, "D": 62, "T": 25.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "32306", "d": 30, "D": 72, "T": 28.75, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "51104", "d": 20, "D": 35, "T": 10, "tipo": "Axial de Esferas"
+    },
+    {
+        "designacao": "51105", "d": 25, "D": 42, "T": 11, "tipo": "Axial de Esferas"
+    },
+    {
+        "designacao": "51205", "d": 25, "D": 47, "T": 15, "tipo": "Axial de Esferas"
     }
 ]
