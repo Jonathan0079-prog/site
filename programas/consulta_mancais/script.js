@@ -6,25 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('theme-toggle');
 
     // --- FUNÇÃO PRINCIPAL DE INICIALIZAÇÃO ---
-    // Usamos async/await para esperar o carregamento da base de dados
     async function initializeApp() {
-        // Lógica do Tema Escuro
         setupTheme();
-
-        // Tenta carregar a base de dados
         try {
             const response = await fetch('database.json');
             if (!response.ok) {
                 throw new Error(`Erro ao carregar a base de dados: ${response.statusText}`);
             }
             const DB_MANCAIS = await response.json();
-            
-            // Se carregou com sucesso, configura os eventos da aplicação
             setupEventListeners(DB_MANCAIS);
             showInitialMessage();
-
         } catch (error) {
-            // Se falhar, exibe uma mensagem de erro
             console.error("Não foi possível carregar a base de dados:", error);
             showErrorMessage("Falha crítica: Não foi possível carregar a base de dados. Verifique o console para mais detalhes.");
         }
@@ -78,25 +70,36 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.appendChild(listContainer);
     }
     
+    // FUNÇÃO ATUALIZADA PARA MOSTRAR O DIÂMETRO DO EIXO NA TABELA
     function displayMancalData(mancal) {
+        // Constrói o cabeçalho inicial com o diâmetro principal ou em polegadas
+        let eixoPrincipal = mancal.eixo_mm ? `${mancal.eixo_mm} mm` : (mancal.eixo_pol ? `${mancal.eixo_pol} (${mancal.eixo_mm} mm)` : 'N/A');
         let detailsHtml = `
             <h2><i class="fas fa-info-circle"></i> ${mancal.designacao_completa}</h2>
-            <p><strong>Tipo:</strong> ${mancal.tipo} | <strong>Eixo Padrão:</strong> ${mancal.eixo_mm} mm</p>`;
+            <p><strong>Tipo:</strong> ${mancal.tipo} | <strong>Eixo Padrão:</strong> ${eixoPrincipal}</p>`;
 
+        // Se for mancal bipartido, cria a tabela de rolamentos com a nova coluna de eixo
         if (mancal.rolamentos_compativeis) {
-            const rolamentosRows = mancal.rolamentos_compativeis.map(r => `<tr><td>${r.tipo}</td><td>${r.rolamento}</td><td>${r.bucha}</td></tr>`).join('');
+            const rolamentosRows = mancal.rolamentos_compativeis.map(r => `<tr><td>${r.tipo}</td><td>${r.rolamento}</td><td>${r.bucha || 'N/A'}</td><td>${r.eixo} mm</td></tr>`).join('');
             const vedacoesRows = mancal.vedacoes_compativeis.map(v => `<tr><td>${v}</td></tr>`).join('');
             detailsHtml += `
-                <div class="table-container"><table><thead><tr><th>Tipo de Rolamento</th><th>Designação</th><th>Bucha de Fixação</th></tr></thead><tbody>${rolamentosRows}</tbody></table></div>
-                <div class="table-container"><table><thead><tr><th>Vedações Compatíveis</th></tr></thead><tbody>${vedacoesRows}</tbody></table></div>`;
+                <div class="table-container">
+                    <table><thead><tr><th>Tipo de Rolamento</th><th>Designação</th><th>Bucha de Fixação</th><th>Ø Eixo</th></tr></thead><tbody>${rolamentosRows}</tbody></table>
+                </div>
+                <div class="table-container">
+                    <table><thead><tr><th>Vedações Compatíveis</th></tr></thead><tbody>${vedacoesRows}</tbody></table>
+                </div>`;
         }
 
+        // Se for unidade de rolamento (Y-Bearing, UCP, UCF, etc.)
         if (mancal.unidade_rolamento) {
             detailsHtml += `
-                <div class="table-container"><table><thead><tr><th>Componente</th><th>Designação</th></tr></thead><tbody>
-                    <tr><td>Rolamento de Inserção</td><td>${mancal.unidade_rolamento.rolamento_inserido}</td></tr>
-                    <tr><td>Método de Fixação</td><td>${mancal.unidade_rolamento.metodo_fixacao}</td></tr>
-                </tbody></table></div>`;
+                <div class="table-container">
+                    <table><thead><tr><th>Componente</th><th>Designação</th></tr></thead><tbody>
+                        <tr><td>Rolamento de Inserção</td><td>${mancal.unidade_rolamento.rolamento_inserido}</td></tr>
+                        <tr><td>Método de Fixação</td><td>${mancal.unidade_rolamento.metodo_fixacao}</td></tr>
+                    </tbody></table>
+                </div>`;
         }
         
         if (mancal.notas_tecnicas) {
@@ -106,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showInitialMessage() {
-        resultsContainer.innerHTML = '<h2><i class="fas fa-hand-pointer"></i> Bem-vindo!</h2><p>Use a barra de busca para filtrar e encontrar as especificações do mancal que você precisa.</p>';
+        resultsContainer.innerHTML = '<h2><i class="fas fa-hand-pointer"></i> Bem-vindo!</h2><p>Use a barra de busca acima para filtrar e encontrar as especificações do mancal que você precisa.</p>';
     }
 
     function showErrorMessage(message) {
