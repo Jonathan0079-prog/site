@@ -1,4 +1,4 @@
-// script.js - Versão Corrigida e Otimizada
+// script.js - Versão com URL de Backend Dinâmica
 
 document.addEventListener("DOMContentLoaded", () => {
     // --- Seletores do DOM ---
@@ -7,10 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatbox = document.querySelector(".chatbox");
     const clearChatBtn = document.querySelector("#clear-btn");
 
-    // --- Constantes ---
-    const BACKEND_URL = "https://aemi.onrender.com";
+    // --- MELHORIA: Configuração Dinâmica da URL do Backend ---
+    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    // Define a URL do backend com base no ambiente (local ou produção)
+    const BACKEND_URL = isLocal ? "http://127.0.0.1:10000" : "https://aemi.onrender.com";
+    
+    console.log(`Backend configurado para: ${BACKEND_URL}`); // Ajuda a depurar qual URL está em uso
+
     const API_URL_CHAT = `${BACKEND_URL}/chat`;
-    const API_URL_CLEAR = `${BACKEND_URL}/clear-session`;
+    // Nota: A rota /clear-session não existe no app.py atual. A lógica do frontend está preparada para quando for implementada.
+    const API_URL_CLEAR = `${BACKEND_URL}/clear-session`; 
 
     let userMessage = null;
 
@@ -23,10 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
         
         let chatContent;
         if (className === "incoming" && message === "typing") {
-            // Conteúdo para a animação de "digitando"
             chatContent = `<span class="material-symbols-outlined">smart_toy</span><div class="typing-animation"><span></span><span></span><span></span></div>`;
         } else {
-            // Conteúdo para mensagens normais (enviadas ou recebidas)
             const icon = className === "outgoing" ? "" : `<span class="material-symbols-outlined">smart_toy</span>`;
             chatContent = `${icon}<p></p>`;
         }
@@ -50,41 +54,30 @@ document.addEventListener("DOMContentLoaded", () => {
             body: new URLSearchParams({ message: userMessage })
         };
 
-        const messageElement = incomingChatLi.querySelector(".typing-animation");
+        const typingElement = incomingChatLi.querySelector(".typing-animation");
 
         fetch(API_URL_CHAT, requestOptions)
-            .then(res => {
-                if (!res.ok) {
-                    // Se a resposta do servidor for um erro (4xx, 5xx), rejeita a promise
-                    return Promise.reject(res);
-                }
-                return res.json();
-            })
+            .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(data => {
-                // --- CORREÇÃO APLICADA AQUI ---
-                // 1. Cria um novo elemento de parágrafo para a resposta
                 const pElement = document.createElement("p");
                 pElement.textContent = data.response || "Desculpe, não recebi uma resposta válida.";
-
-                // 2. Substitui a animação "digitando" pelo parágrafo com a resposta
-                // Isso acontece dentro do 'li' que já existe.
-                messageElement.replaceWith(pElement);
+                
+                // Substitui a animação de "digitando" pela resposta final
+                if (typingElement) {
+                    typingElement.replaceWith(pElement);
+                }
             })
             .catch(() => {
-                // Em caso de erro de rede ou falha no servidor
-                const pElement = incomingChatLi.querySelector("p") || document.createElement("p");
-                pElement.textContent = "Oops! Algo deu errado. Não foi possível conectar ao servidor. Tente novamente.";
-                pElement.classList.add("error");
+                const errorPElement = document.createElement("p");
+                errorPElement.classList.add("error");
+                errorPElement.textContent = "Oops! Algo deu errado. Não foi possível conectar ao servidor. Verifique sua conexão ou tente novamente mais tarde.";
                 
-                // Substitui a animação pelo parágrafo de erro
-                if (messageElement) {
-                    messageElement.replaceWith(pElement);
-                } else {
-                    incomingChatLi.appendChild(pElement);
+                // Substitui a animação pelo erro
+                if (typingElement) {
+                    typingElement.replaceWith(errorPElement);
                 }
             })
             .finally(() => {
-                // Este bloco sempre será executado, garantindo que a UI não fique travada
                 chatInput.disabled = false;
                 sendChatBtn.disabled = false;
                 chatbox.scrollTo(0, chatbox.scrollHeight);
@@ -114,11 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     /**
-     * Limpa a tela de chat e a sessão no backend.
+     * Limpa a tela de chat e tenta limpar a sessão no backend.
      */
     const clearChat = () => {
         if (confirm("Você tem certeza que deseja limpar o histórico desta conversa?")) {
-            // Limpa a tela
             const welcomeMessage = `
                 <li class="chat incoming">
                     <span class="material-symbols-outlined">smart_toy</span>
@@ -126,12 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 </li>`;
             chatbox.innerHTML = welcomeMessage;
 
-            // Limpa a sessão no backend
+            // Tenta limpar a sessão no backend (não vai falhar se a rota não existir)
             fetch(API_URL_CLEAR, { method: "POST" })
-                .then(res => {
-                    if (!res.ok) console.error("Falha ao limpar a sessão no servidor.");
-                })
-                .catch(err => console.error("Erro ao tentar limpar a sessão:", err));
+                .catch(err => console.error("Ocorreu um erro ao tentar limpar a sessão no backend (a rota pode não estar implementada).", err));
         }
     };
 
