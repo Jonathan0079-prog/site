@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- BASE DE DADOS GIGANTE (sem alterações) ---
+    // --- BASE DE DADOS (sem alterações) ---
     const DB_MANCAIS = {
         "SNL 505":{tipo:"Bipartido Padrão",designacao_completa:"Mancal Bipartido SNL 505",eixo_mm:20,rolamentos_compativeis:[{tipo:"Autocompensador de Esferas",rolamento:"1205 K",bucha:"H 205"},{tipo:"Autocompensador de Rolos",rolamento:"22205 K",bucha:"H 305"}],vedacoes_compativeis:["TSN 505 L","TSN 505 S"]},
         "SNL 506":{tipo:"Bipartido Padrão",designacao_completa:"Mancal Bipartido SNL 506",eixo_mm:25,rolamentos_compativeis:[{tipo:"Autocompensador de Esferas",rolamento:"1206 K",bucha:"H 206"},{tipo:"Autocompensador de Rolos",rolamento:"22206 K",bucha:"H 306"}],vedacoes_compativeis:["TSN 506 L","TSN 506 S"]},
@@ -32,23 +32,40 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- SELEÇÃO DOS ELEMENTOS DO DOM ---
-    const searchForm = document.getElementById('search-form');
     const searchInput = document.getElementById('search-input');
     const resultsContainer = document.getElementById('results-container');
-    const yearSpan = document.getElementById('current-year');
+    const themeToggle = document.getElementById('theme-toggle');
 
-    // Define o ano atual no rodapé
-    if (yearSpan) {
-        yearSpan.textContent = new Date().getFullYear();
+    // --- LÓGICA DO TEMA ESCURO (DARK MODE) ---
+    // Verifica a preferência do usuário no localStorage
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeToggle.checked = true;
     }
 
-    // --- NOVA LÓGICA DE FILTRAGEM E EXIBIÇÃO ---
+    // Evento para o interruptor de tema
+    themeToggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark-theme');
+        // Salva a preferência
+        if (document.body.classList.contains('dark-theme')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.removeItem('theme');
+        }
+    });
+
+    // --- LÓGICA DE BUSCA E EXIBIÇÃO ---
 
     // Função que exibe os resultados filtrados como botões clicáveis
     function displayFilteredResults(keys) {
         resultsContainer.innerHTML = ''; // Limpa resultados anteriores
+        
+        const title = document.createElement('h2');
+        title.innerHTML = `<i class="fas fa-list-ul"></i> Resultados da Busca`;
+        resultsContainer.appendChild(title);
+
         if (keys.length === 0) {
-            resultsContainer.innerHTML = `<div class="error-message">Nenhum resultado encontrado.</div>`;
+            resultsContainer.innerHTML += `<p>Nenhum resultado encontrado.</p>`;
             return;
         }
         
@@ -57,56 +74,60 @@ document.addEventListener('DOMContentLoaded', () => {
         
         keys.forEach(key => {
             const button = document.createElement('button');
-            button.className = 'result-item';
+            button.className = 'result-item-button'; // Classe do novo CSS
             button.textContent = key;
-            button.dataset.key = key; // Armazena a chave exata no botão
+            button.dataset.key = key;
             listContainer.appendChild(button);
         });
 
         resultsContainer.appendChild(listContainer);
     }
     
-    // Função que exibe os detalhes completos de um mancal específico (sem alterações)
+    // Função que exibe os detalhes completos de um mancal
     function displayMancalData(mancal) {
         let detailsHtml = `
-            <div class="mancal-info">
-                <h2 class="section-title">${mancal.designacao_completa}</h2>
-                <p><strong>Tipo:</strong> ${mancal.tipo}</p>
-                <p><strong>Diâmetro do Eixo Padrão:</strong> ${mancal.eixo_mm} mm</p>
-            </div>`;
+            <h2><i class="fas fa-info-circle"></i> ${mancal.designacao_completa}</h2>
+            <p><strong>Tipo:</strong> ${mancal.tipo} | <strong>Eixo Padrão:</strong> ${mancal.eixo_mm} mm</p>`;
 
         if (mancal.rolamentos_compativeis) {
             const rolamentosRows = mancal.rolamentos_compativeis.map(r => `<tr><td>${r.tipo}</td><td>${r.rolamento}</td><td>${r.bucha}</td></tr>`).join('');
             const vedacoesRows = mancal.vedacoes_compativeis.map(v => `<tr><td>${v}</td></tr>`).join('');
             detailsHtml += `
-                <h3 class="section-title">Combinações de Rolamentos e Buchas</h3>
-                <table><thead><tr><th>Tipo de Rolamento</th><th>Designação</th><th>Bucha de Fixação</th></tr></thead><tbody>${rolamentosRows}</tbody></table>
-                <h3 class="section-title">Vedações Compatíveis</h3>
-                <table><thead><tr><th>Designação</th></tr></thead><tbody>${vedacoesRows}</tbody></table>`;
+                <div class="table-container">
+                    <table><thead><tr><th>Tipo de Rolamento</th><th>Designação</th><th>Bucha de Fixação</th></tr></thead><tbody>${rolamentosRows}</tbody></table>
+                </div>
+                <div class="table-container">
+                    <table><thead><tr><th>Vedações Compatíveis</th></tr></thead><tbody>${vedacoesRows}</tbody></table>
+                </div>`;
         }
 
         if (mancal.unidade_rolamento) {
             detailsHtml += `
-                <h3 class="section-title">Especificação da Unidade</h3>
-                <table><thead><tr><th>Componente</th><th>Designação</th></tr></thead><tbody>
+                <div class="table-container">
+                    <table><thead><tr><th>Componente</th><th>Designação</th></tr></thead><tbody>
                         <tr><td>Rolamento de Inserção</td><td>${mancal.unidade_rolamento.rolamento_inserido}</td></tr>
                         <tr><td>Método de Fixação</td><td>${mancal.unidade_rolamento.metodo_fixacao}</td></tr>
-                </tbody></table>`;
+                    </tbody></table>
+                </div>`;
         }
         
         if (mancal.notas_tecnicas) {
-             detailsHtml += `<h3 class="section-title">Notas Técnicas</h3><p>${mancal.notas_tecnicas}</p>`;
+             detailsHtml += `<br><p><strong>Nota:</strong> ${mancal.notas_tecnicas}</p>`;
         }
         resultsContainer.innerHTML = detailsHtml;
     }
+    
+    // Mostra uma mensagem inicial
+    function showInitialMessage() {
+        resultsContainer.innerHTML = '<h2><i class="fas fa-hand-pointer"></i> Bem-vindo!</h2><p>Use a barra de busca acima para filtrar e encontrar as especificações do mancal que você precisa.</p>';
+    }
 
-    // --- NOVOS EVENTOS DE INTERAÇÃO ---
+    // --- EVENTOS DE INTERAÇÃO ---
 
-    // Evento que dispara a cada tecla digitada no campo de busca
     searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.trim().toUpperCase();
         if (searchTerm === '') {
-            resultsContainer.innerHTML = ''; // Limpa se a busca estiver vazia
+            showInitialMessage(); // Mostra mensagem inicial se a busca estiver vazia
             return;
         }
         
@@ -115,25 +136,17 @@ document.addEventListener('DOMContentLoaded', () => {
         displayFilteredResults(filteredKeys);
     });
 
-    // Evento de clique no container de resultados (para os botões dinâmicos)
     resultsContainer.addEventListener('click', (event) => {
-        // Verifica se o clique foi em um botão de resultado
-        if (event.target && event.target.classList.contains('result-item')) {
+        if (event.target && event.target.classList.contains('result-item-button')) {
             const key = event.target.dataset.key;
-            const mancalData = DB_MANCAIS[key];
-            if (mancalData) {
-                displayMancalData(mancalData);
+            if (DB_MANCAIS[key]) {
+                displayMancalData(DB_MANCAIS[key]);
+                // Opcional: rolar a tela para o topo do card de resultados
+                document.getElementById('results-card').scrollIntoView({ behavior: 'smooth' });
             }
         }
     });
 
-    // Impede o formulário de recarregar a página ao pressionar Enter
-    searchForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        // Opcional: pode-se pegar o primeiro resultado da lista e exibi-lo
-        const firstResult = resultsContainer.querySelector('.result-item');
-        if (firstResult) {
-            firstResult.click(); // Simula um clique no primeiro item da lista filtrada
-        }
-    });
+    // Inicia a aplicação com a mensagem de boas-vindas
+    showInitialMessage();
 });
