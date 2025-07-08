@@ -1,4 +1,4 @@
-# app_sem_memoria.py
+# app.py - Versão Final com Llama 3 8B
 
 import os
 from flask import Flask, request, jsonify
@@ -9,8 +9,6 @@ from huggingface_hub import InferenceClient
 app = Flask(__name__)
 CORS(app)
 
-# A chave secreta do Flask não é mais estritamente necessária se não usarmos sessões,
-# mas é uma boa prática mantê-la.
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "uma_chave_secreta_muito_segura_e_diferente")
 
 # Pega o token de acesso da Hugging Face
@@ -22,7 +20,9 @@ def get_text_client():
     """Cria e retorna um cliente para o modelo de linguagem de texto."""
     if not HUGGING_FACE_TOKEN:
         raise ValueError("Token da Hugging Face (HF_TOKEN) não encontrado.")
-    return InferenceClient(model="meta-llama/Meta-Llama-3-70B-Instruct", token=HUGGING_FACE_TOKEN)
+    
+    # <<< A ÚNICA ALTERAÇÃO É NESTA LINHA
+    return InferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct", token=HUGGING_FACE_TOKEN)
 
 def process_text_without_history(user_message):
     """
@@ -40,7 +40,7 @@ def process_text_without_history(user_message):
     response_generator = client.chat_completion(
         messages=messages,
         max_tokens=1500,
-        stream=False  # Mantido como False por enquanto, veja a discussão abaixo.
+        stream=False
     )
     return response_generator.choices[0].message.content
 
@@ -48,7 +48,7 @@ def process_text_without_history(user_message):
 
 @app.route('/')
 def index():
-    return "Servidor da AEMI (versão SEM Memória) está no ar."
+    return "Servidor da AEMI (versão com Llama 3 8B) está no ar."
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -57,7 +57,7 @@ def chat():
         if not user_message.strip():
             return jsonify({"error": "Nenhuma mensagem enviada."}), 400
 
-        print("Processando nova mensagem (sem histórico)...")
+        print("Processando nova mensagem com Llama 3 8B...")
         
         # Chama a IA apenas com a mensagem atual
         bot_response = process_text_without_history(user_message)
@@ -67,16 +67,11 @@ def chat():
         return jsonify({"response": bot_response})
 
     except Exception as e:
-        # Este bloco de tratamento de erro é agora AINDA MAIS IMPORTANTE.
         print(f"ERRO GERAL na rota /chat: {e}")
         import traceback
-        traceback.print_exc() # Isso imprimirá o traceback completo no log, como na sua imagem.
+        traceback.print_exc()
         return jsonify({"error": f"Ocorreu um erro inesperado no servidor. Detalhes: {str(e)}"}), 500
 
-# A rota '/clear-session' foi removida pois não há mais sessão ou banco de dados para limpar.
-
 if __name__ == '__main__':
-    # A porta padrão para serviços web como a Render é frequentemente 10000.
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
-
