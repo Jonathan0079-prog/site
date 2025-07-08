@@ -1,4 +1,4 @@
-# app.py - Versão Final com Llama 3 8B
+# app.py - Versão com nova identidade da AEMI
 
 import os
 from flask import Flask, request, jsonify
@@ -21,7 +21,6 @@ def get_text_client():
     if not HUGGING_FACE_TOKEN:
         raise ValueError("Token da Hugging Face (HF_TOKEN) não encontrado.")
     
-    # <<< A ÚNICA ALTERAÇÃO É NESTA LINHA
     return InferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct", token=HUGGING_FACE_TOKEN)
 
 def process_text_without_history(user_message):
@@ -33,7 +32,8 @@ def process_text_without_history(user_message):
     
     # O histórico agora é simples: apenas a instrução de sistema e a mensagem atual do usuário.
     messages = [
-        {"role": "system", "content": "Você é a AEMI, uma assistente de IA especialista em manutenção industrial, direta e objetiva. Responda apenas a perguntas relacionadas a este domínio. Se a pergunta não for sobre manutenção industrial, diga que você só pode ajudar com tópicos relacionados à manutenção industrial."},
+        # <<< A PERSONALIDADE FOI ALTERADA NESTA LINHA
+        {"role": "system", "content": "Você é a AEMI, uma IA especialista em manutenção industrial e um projeto do canal 'Manutenção Industrial ARQUIVOS'. Seja direta e objetiva. Responda apenas a perguntas relacionadas a este domínio. Se a pergunta não for sobre manutenção industrial, diga que você só pode ajudar com tópicos relacionados à manutenção industrial."},
         {"role": "user", "content": user_message}
     ]
     
