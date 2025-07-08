@@ -142,6 +142,156 @@
     { "designacao": "51110", "d": 50, "D": 70, "T": 14, "tipo": "Axial de Esferas" },
     { "designacao": "AXK1024", "d": 10, "D": 24, "B": 2, "tipo": "Axial de Agulhas" },
     { "designacao": "AXK1528", "d": 15, "D": 28, "B": 2, "tipo": "Axial de Agulhas" },
-    { "designacao": "AXK2035", "d": 20, "D": 35, "B": 2, "tipo": "Axial de Agulhas" }
+    { "designacao": "AXK2035", "d": 20, "D": 35, "B": 2, "tipo": "Axial de Agulhas" },
+    {
+        "designacao": "SS6001", "d": 12, "D": 28, "B": 8, "tipo": "Rígido de Esferas (Aço Inox)"
+    },
+    {
+        "designacao": "SS6002", "d": 15, "D": 32, "B": 9, "tipo": "Rígido de Esferas (Aço Inox)"
+    },
+    {
+        "designacao": "SS6203", "d": 17, "D": 40, "B": 12, "tipo": "Rígido de Esferas (Aço Inox)"
+    },
+    {
+        "designacao": "SS6204", "d": 20, "D": 47, "B": 14, "tipo": "Rígido de Esferas (Aço Inox)"
+    },
+    {
+        "designacao": "SS6205", "d": 25, "D": 52, "B": 15, "tipo": "Rígido de Esferas (Aço Inox)"
+    },
+    {
+        "designacao": "6314", "d": 70, "D": 150, "B": 35, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6315", "d": 75, "D": 160, "B": 37, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6316", "d": 80, "D": 170, "B": 39, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6408", "d": 40, "D": 110, "B": 27, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "6410", "d": 50, "D": 130, "B": 31, "tipo": "Rígido de Esferas"
+    },
+    {
+        "designacao": "7210", "d": 50, "D": 90, "B": 20, "tipo": "Contato Angular de Esferas"
+    },
+    {
+        "designacao": "7211", "d": 55, "D": 100, "B": 21, "tipo": "Contato Angular de Esferas"
+    },
+    {
+        "designacao": "7310", "d": 50, "D": 110, "B": 27, "tipo": "Contato Angular de Esferas"
+    },
+    {
+        "designacao": "7311", "d": 55, "D": 120, "B": 29, "tipo": "Contato Angular de Esferas"
+    },
+    {
+        "designacao": "B7008-C-T-P4S", "d": 40, "D": 68, "B": 15, "tipo": "Contato Angular de Superprecisão"
+    },
+    {
+        "designacao": "B7205-E-T-P4S", "d": 25, "D": 52, "B": 15, "tipo": "Contato Angular de Superprecisão"
+    },
+    {
+        "designacao": "1307", "d": 35, "D": 80, "B": 21, "tipo": "Autocompensador de Esferas"
+    },
+    {
+        "designacao": "1308", "d": 40, "D": 90, "B": 23, "tipo": "Autocompensador de Esferas"
+    },
+    {
+        "designacao": "1309", "d": 45, "D": 100, "B": 25, "tipo": "Autocompensador de Esferas"
+    },
+    {
+        "designacao": "NU2205", "d": 25, "D": 52, "B": 18, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "NU2206", "d": 30, "D": 62, "B": 20, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "NU312", "d": 60, "D": 130, "B": 31, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "NU313", "d": 65, "D": 140, "B": 33, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "NU314", "d": 70, "D": 150, "B": 35, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "NU315", "d": 75, "D": 160, "B": 37, "tipo": "Rolo Cilíndrico"
+    },
+    {
+        "designacao": "22222", "d": 110, "D": 200, "B": 53, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "22224", "d": 120, "D": 215, "B": 58, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "22315", "d": 75, "D": 160, "B": 55, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "22316", "d": 80, "D": 170, "B": 60, "tipo": "Autocompensador de Rolos"
+    },
+    {
+        "designacao": "30308", "d": 40, "D": 90, "T": 25.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "30309", "d": 45, "D": 100, "T": 27.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "30310", "d": 50, "D": 110, "T": 29.25, "tipo": "Rolo Cônico"
+    },
+    {
+        "designacao": "SET1 (LM11749/10)", "d": 17.46, "D": 39.88, "T": 13.84, "tipo": "Rolo Cônico (Polegada)"
+    },
+    {
+        "designacao": "SET2 (L44649/10)", "d": 26.99, "D": 50.29, "T": 14.22, "tipo": "Rolo Cônico (Polegada)"
+    },
+    {
+        "designacao": "SET4 (LM11949/10)", "d": 19.05, "D": 45.24, "T": 15.49, "tipo": "Rolo Cônico (Polegada)"
+    },
+    {
+        "designacao": "SET17 (LM67048/10)", "d": 31.75, "D": 59.13, "T": 15.88, "tipo": "Rolo Cônico (Polegada)"
+    },
+    {
+        "designacao": "SET34 (LM48548/10)", "d": 34.92, "D": 65.09, "T": 18.03, "tipo": "Rolo Cônico (Polegada)"
+    },
+    {
+        "designacao": "SET37 (LM501349/10)", "d": 41.27, "D": 73.43, "T": 19.56, "tipo": "Rolo Cônico (Polegada)"
+    },
+    {
+        "designacao": "51208", "d": 40, "D": 68, "T": 19, "tipo": "Axial de Esferas"
+    },
+    {
+        "designacao": "51209", "d": 45, "D": 73, "T": 19, "tipo": "Axial de Esferas"
+    },
+    {
+        "designacao": "51210", "d": 50, "D": 78, "T": 22, "tipo": "Axial de Esferas"
+    },
+    {
+        "designacao": "29320", "d": 100, "D": 170, "T": 42, "tipo": "Axial Autocompensador de Rolos"
+    },
+    {
+        "designacao": "29412", "d": 60, "D": 125, "T": 42, "tipo": "Axial Autocompensador de Rolos"
+    },
+    {
+        "designacao": "29413", "d": 65, "D": 130, "T": 42, "tipo": "Axial Autocompensador de Rolos"
+    },
+    {
+        "designacao": "RNA6906", "d": 30, "D": 47, "B": 30, "tipo": "Rolo de Agulhas"
+    },
+    {
+        "designacao": "RNA6907", "d": 35, "D": 55, "B": 30, "tipo": "Rolo de Agulhas"
+    },
+    {
+        "designacao": "NKX15", "d": 15, "D": 27, "B": 26, "tipo": "Agulhas Combinado com Axial"
+    },
+    {
+        "designacao": "NKX20", "d": 20, "D": 32, "B": 28, "tipo": "Agulhas Combinado com Axial"
+    },
+    {
+        "designacao": "KR16", "d": 6, "D": 16, "B": 28, "tipo": "Rolo de Leva (Seguidor de Came)"
+    },
+    {
+        "designacao": "NUKR35", "d": 15, "D": 35, "B": 52, "tipo": "Rolo de Leva (Seguidor de Came)"
+    }
     ]
     
